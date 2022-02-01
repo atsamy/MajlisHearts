@@ -4,32 +4,76 @@ using UnityEngine;
 
 public class Player
 {
-    public List<Card> OwnedCards;
+    List<Card> ownedCards;
+    int index;
+    int dealScore;
+    int totalScore;
 
 
-    public Player()
+    public delegate void PassCardsReady(int playerIndex,List<Card> cards);
+    public event PassCardsReady OnPassCardsReady;
+
+    public delegate void CardReady(int playerIndex, Card card);
+    public event CardReady OnCardReady;
+    public Player(int index)
     {
-        OwnedCards = new List<Card>();
+        ownedCards = new List<Card>();
+        this.index = index;
     }
 
-    public virtual Card ChooseCard(Card card)
+    public virtual void ChooseCard(Card card)
     {
-
-        OwnedCards.Remove(card);
-        return card;
+        ownedCards.Remove(card);
+        OnCardReady?.Invoke(index,card);
     }
-    public virtual List<Card> ChoosePassCards(List<Card> cards)
+    public virtual void ChoosePassCards(List<Card> cards)
     {
         foreach (var item in cards)
         {
-            OwnedCards.Remove(item);
+            ownedCards.Remove(item);
         }
-        return cards;
+
+        OnPassCardsReady?.Invoke(index,cards);
     }
+
+    public virtual void SetTurn()
+    {
+        
+    }
+
+    //public bool CheckStart()
+    //{
+    //    foreach (var item in ownedCards)
+    //    {
+    //        if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
+    //        {
+    //            return true;
+    //        }
+    //    }
+
+    //    return false;
+    //}
+
+
 
     public void AddCard(Card card)
     {
-        OwnedCards.Add(card);
+        ownedCards.Add(card);
+    }
+
+    public void AddCards(List<Card> cards)
+    {
+        ownedCards.AddRange(cards);
+    }
+
+    public void IncrementScore(int score)
+    {
+        dealScore += score;
+    }
+
+    public void Reset()
+    {
+        dealScore = 0;
     }
 
 }
