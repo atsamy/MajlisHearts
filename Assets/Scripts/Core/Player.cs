@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player
 {
-    List<Card> ownedCards;
+    public List<Card> OwnedCards { get; protected set; }
+
     int index;
     int dealScore;
     int totalScore;
@@ -17,20 +18,21 @@ public class Player
     public event CardReady OnCardReady;
     public Player(int index)
     {
-        ownedCards = new List<Card>();
+        OwnedCards = new List<Card>();
         this.index = index;
     }
 
     public virtual void ChooseCard(Card card)
     {
-        ownedCards.Remove(card);
+        OwnedCards.Remove(card);
         OnCardReady?.Invoke(index,card);
     }
+
     public virtual void ChoosePassCards(List<Card> cards)
     {
         foreach (var item in cards)
         {
-            ownedCards.Remove(item);
+            OwnedCards.Remove(item);
         }
 
         OnPassCardsReady?.Invoke(index,cards);
@@ -58,12 +60,12 @@ public class Player
 
     public void AddCard(Card card)
     {
-        ownedCards.Add(card);
+        OwnedCards.Add(card);
     }
 
     public void AddCards(List<Card> cards)
     {
-        ownedCards.AddRange(cards);
+        OwnedCards.AddRange(cards);
     }
 
     public void IncrementScore(int score)

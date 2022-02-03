@@ -16,6 +16,8 @@ public class DealScript
 
     int PlayingIndex = -1;
 
+    public TrickInfo TrickInfo;
+
     int round;
     bool heartsBroken;
     public void StartDeal()
@@ -35,6 +37,8 @@ public class DealScript
         Deal();
 
         Players[PlayingIndex].SetTurn();
+
+        TrickInfo = new TrickInfo();
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)

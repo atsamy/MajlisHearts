@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
-    DealScript deal;
+    public DealScript Deal;
     void Start()
     {
         deal = new DealScript();
