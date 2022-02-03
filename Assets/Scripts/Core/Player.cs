@@ -10,6 +10,8 @@ public class Player
     int dealScore;
     int totalScore;
 
+    Dictionary<CardShape,int> shapeCount;
+
 
     public delegate void PassCardsReady(int playerIndex,List<Card> cards);
     public event PassCardsReady OnPassCardsReady;
@@ -18,6 +20,7 @@ public class Player
     public event CardReady OnCardReady;
     public Player(int index)
     {
+        shapeCount = new Dictionary<CardShape, int>();
         OwnedCards = new List<Card>();
         this.index = index;
     }
@@ -25,6 +28,7 @@ public class Player
     public virtual void ChooseCard(Card card)
     {
         OwnedCards.Remove(card);
+        shapeCount[card.Shape]--;
         OnCardReady?.Invoke(index,card);
     }
 
@@ -33,14 +37,20 @@ public class Player
         foreach (var item in cards)
         {
             OwnedCards.Remove(item);
+            shapeCount[item.Shape]--;
         }
 
         OnPassCardsReady?.Invoke(index,cards);
     }
 
-    public virtual void SetTurn()
+    public virtual void SetTurn(int hand)
     {
         
+    }
+
+    public bool HasShape(CardShape shape)
+    {
+        return shapeCount[shape] > 0;
     }
 
     //public bool CheckStart()
@@ -61,11 +71,15 @@ public class Player
     public void AddCard(Card card)
     {
         OwnedCards.Add(card);
+        shapeCount[card.Shape]++;
     }
 
     public void AddCards(List<Card> cards)
     {
-        OwnedCards.AddRange(cards);
+        foreach (var item in cards)
+        {
+            AddCard(item);
+        }
     }
 
     public void IncrementScore(int score)

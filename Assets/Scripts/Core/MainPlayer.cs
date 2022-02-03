@@ -5,7 +5,7 @@ using System.Linq;
 
 public class MainPlayer : Player
 {
-    public delegate void PlayerTurn();
+    public delegate void PlayerTurn(bool firstHand);
     public PlayerTurn OnPlayerTurn;
 
     public MainPlayer(int index) : base(index)
@@ -13,10 +13,10 @@ public class MainPlayer : Player
 
     }
 
-    public override void SetTurn()
+    public override void SetTurn(int hand)
     {
-        OnPlayerTurn.Invoke();
-        base.SetTurn();
+        OnPlayerTurn.Invoke(hand == 0);
+        base.SetTurn(hand);
     }
 
     public void OrderCards()

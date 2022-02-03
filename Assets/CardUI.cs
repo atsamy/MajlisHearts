@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CardUI : MonoBehaviour
 {
-    Card cardInfo;
+    public Card CardInfo;
     Image image;
     Button button;
 
@@ -20,7 +20,7 @@ public class CardUI : MonoBehaviour
 
     public void Set(Card card,Action<Card> Pressed)
     {
-        cardInfo = card;
+        CardInfo = card;
 
         image.sprite = Resources.Load<Sprite>("Cards/" + card.Shape + card.Rank);
 
@@ -29,12 +29,13 @@ public class CardUI : MonoBehaviour
 
     public void Pressed()
     {
-        OnPressed?.Invoke(cardInfo);
+        OnPressed?.Invoke(CardInfo);
         //move to position
     }
 
     public void SetInteractable(bool value)
     {
+
         button.interactable = value;
     }
 }

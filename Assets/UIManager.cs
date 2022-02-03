@@ -14,9 +14,9 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void PlayerTurn()
+    public void PlayerTurn(bool firstHand)
     {
-        cardsUIManager.SetPlayableCards();
+        cardsUIManager.SetPlayableCards(game.Deal.TrickInfo, firstHand);
     }
 
     public void OnDisable()

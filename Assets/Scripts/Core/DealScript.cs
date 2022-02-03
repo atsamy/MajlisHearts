@@ -18,12 +18,8 @@ public class DealScript
 
     public TrickInfo TrickInfo;
 
-    int round;
-    bool heartsBroken;
     public void StartDeal()
     {
-        round = 0;
-
         Players = new Player[4];
         cardsOnDeck = new Dictionary<int, Card>();
 
@@ -36,7 +32,7 @@ public class DealScript
 
         Deal();
 
-        Players[PlayingIndex].SetTurn();
+        Players[PlayingIndex].SetTurn(0);
 
         TrickInfo = new TrickInfo();
     }
@@ -46,7 +42,12 @@ public class DealScript
         cardsOnDeck.Add(playerIndex, card);
 
         if (card.Shape == CardShape.Heart)
-            heartsBroken = true;
+            TrickInfo.heartBroken = true;
+
+        if (cardsOnDeck.Count == 1)
+        {
+            TrickInfo.TrickShape = card.Shape;
+        }
 
         if (cardsOnDeck.Count == 4)
         {
@@ -56,11 +57,11 @@ public class DealScript
             Players[winningHand].IncrementScore(value);
 
             PlayingIndex = winningHand;
-            round++;
+            TrickInfo.roundNumber++;
 
-            if (round < 13)
+            if (TrickInfo.roundNumber < 13)
             {
-                Players[PlayingIndex].SetTurn();
+                Players[PlayingIndex].SetTurn(0);
             }
             else
             {
@@ -71,6 +72,13 @@ public class DealScript
 
                 OnDealFinished?.Invoke();
             }
+        }
+        else
+        {
+            PlayingIndex++;
+            playerIndex %= 4;
+
+            Players[PlayingIndex].SetTurn(cardsOnDeck.Count);
         }
     }
 

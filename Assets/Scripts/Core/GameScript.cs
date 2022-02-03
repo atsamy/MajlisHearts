@@ -7,8 +7,8 @@ public class GameScript : MonoBehaviour
     public DealScript Deal;
     void Start()
     {
-        deal = new DealScript();
-        deal.OnDealFinished += Deal_OnDealFinished;
+        Deal = new DealScript();
+        Deal.OnDealFinished += Deal_OnDealFinished;
     }
 
     private void Deal_OnDealFinished()
@@ -18,12 +18,12 @@ public class GameScript : MonoBehaviour
 
     public void AddPlayer(int index,Player player)
     {
-        deal.Players[index] = player;
+        Deal.Players[index] = player;
     }
 
     public void StartGame()
     {
-        deal.StartDeal();
+        Deal.StartDeal();
     }
 
     GameState GameState;
