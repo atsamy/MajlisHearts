@@ -12,30 +12,26 @@ public class CardUI : MonoBehaviour
 
     public Action<Card> OnPressed;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         image = GetComponent<Image>();
         button = GetComponent<Button>();
     }
 
-    public void Set(Card card,Action<Card> Pressed)
+    public void Set(Sprite sprite, Card card, Action<Card> Pressed)
     {
         CardInfo = card;
-
-        image.sprite = Resources.Load<Sprite>("Cards/" + card.Shape + card.Rank);
-
+        image.sprite = sprite;
         OnPressed = Pressed;
     }
 
     public void Pressed()
     {
         OnPressed?.Invoke(CardInfo);
-        //move to position
     }
 
     public void SetInteractable(bool value)
     {
-
         button.interactable = value;
     }
 }

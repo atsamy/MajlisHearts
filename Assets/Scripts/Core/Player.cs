@@ -18,9 +18,16 @@ public class Player
 
     public delegate void CardReady(int playerIndex, Card card);
     public event CardReady OnCardReady;
+
     public Player(int index)
     {
         shapeCount = new Dictionary<CardShape, int>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            shapeCount.Add((CardShape)i,0);
+        }
+
         OwnedCards = new List<Card>();
         this.index = index;
     }

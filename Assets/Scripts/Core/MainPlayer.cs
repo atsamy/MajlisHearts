@@ -15,7 +15,7 @@ public class MainPlayer : Player
 
     public override void SetTurn(int hand)
     {
-        OnPlayerTurn.Invoke(hand == 0);
+        OnPlayerTurn?.Invoke(hand == 0);
         base.SetTurn(hand);
     }
 

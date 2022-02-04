@@ -5,10 +5,19 @@ using UnityEngine;
 public class GameScript : MonoBehaviour
 {
     public DealScript Deal;
+    public static GameScript Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+        Deal = new DealScript();
+    }
+
     void Start()
     {
-        Deal = new DealScript();
         Deal.OnDealFinished += Deal_OnDealFinished;
+
+        StartGame();
     }
 
     private void Deal_OnDealFinished()

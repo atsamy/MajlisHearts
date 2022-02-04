@@ -9,6 +9,9 @@ public class DealScript
     public delegate void DealFinished();
     public event DealFinished OnDealFinished;
 
+    public delegate void CardsDealt();
+    public event CardsDealt OnCardsDealt;
+
     public Player[] Players;
     GameState currentState;
 
@@ -25,16 +28,21 @@ public class DealScript
 
         for (int i = 0; i < 4; i++)
         {
-            Players[i] = new Player(i);
+            if (i == 0)
+                Players[i] = new MainPlayer(i);
+            else
+                Players[i] = new Player(i);
+
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
         }
 
         Deal();
 
-        Players[PlayingIndex].SetTurn(0);
+        OnCardsDealt?.Invoke();
 
         TrickInfo = new TrickInfo();
+        Players[PlayingIndex].SetTurn(0);
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)

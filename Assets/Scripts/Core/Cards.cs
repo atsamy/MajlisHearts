@@ -18,10 +18,10 @@ public class Card
 
 public enum CardShape
 {
-    Heart,
-    Spade,
-    Club,
-    Diamond
+    Club = 0,
+    Spade = 1,
+    Heart = 2,
+    Diamond = 3
 }
 
 public enum CardRank
