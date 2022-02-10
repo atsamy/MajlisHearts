@@ -25,6 +25,11 @@ public class CardUI : MonoBehaviour
         OnPressed = Pressed;
     }
 
+    public void SetOnPressed(Action<Card> Pressed)
+    {
+        OnPressed = Pressed;
+    }
+
     public void Pressed()
     {
         OnPressed?.Invoke(CardInfo);

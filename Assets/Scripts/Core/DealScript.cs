@@ -9,8 +9,14 @@ public class DealScript
     public delegate void DealFinished();
     public event DealFinished OnDealFinished;
 
-    public delegate void CardsDealt();
+    public delegate void TrickFinished(int winningHand);
+    public event TrickFinished OnTrickFinished;
+
+    public delegate void CardsDealt(bool waitPass);
     public event CardsDealt OnCardsDealt;
+
+    public delegate void CardsPassed();
+    public event CardsPassed OnCardsPassed;
 
     public Player[] Players;
     GameState currentState;
@@ -20,6 +26,7 @@ public class DealScript
     int PlayingIndex = -1;
 
     public TrickInfo TrickInfo;
+    int passCardsCount = 0;
 
     public void StartDeal()
     {
@@ -31,22 +38,18 @@ public class DealScript
             if (i == 0)
                 Players[i] = new MainPlayer(i);
             else
-                Players[i] = new Player(i);
+                Players[i] = new AIPlayer(i);
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
         }
 
-        Deal();
-
-        OnCardsDealt?.Invoke();
-
-        TrickInfo = new TrickInfo();
-        Players[PlayingIndex].SetTurn(0);
+        StartNewGame();
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
+        Debug.Log(playerIndex + " played " + card.Shape + " " + card.Rank);
         cardsOnDeck.Add(playerIndex, card);
 
         if (card.Shape == CardShape.Heart)
@@ -61,7 +64,7 @@ public class DealScript
         {
             int value = 0;
             int winningHand = EvaluateDeck(out value);
-
+            cardsOnDeck.Clear();
             Players[winningHand].IncrementScore(value);
 
             PlayingIndex = winningHand;
@@ -69,25 +72,41 @@ public class DealScript
 
             if (TrickInfo.roundNumber < 13)
             {
-                Players[PlayingIndex].SetTurn(0);
+                trickFinished();
             }
             else
             {
-                currentState++;
-
-                if (currentState == GameState.DontPass)
-                    currentState = GameState.PassLeft;
-
-                OnDealFinished?.Invoke();
+                dealFinished();
             }
         }
         else
         {
             PlayingIndex++;
-            playerIndex %= 4;
+            PlayingIndex %= 4;
 
-            Players[PlayingIndex].SetTurn(cardsOnDeck.Count);
+            Players[PlayingIndex].SetTurn(TrickInfo, cardsOnDeck.Count);
         }
+    }
+
+    async void trickFinished()
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnTrickFinished?.Invoke(PlayingIndex);
+        await System.Threading.Tasks.Task.Delay(1000);
+        Players[PlayingIndex].SetTurn(TrickInfo, 0);
+    }
+
+    async void dealFinished()
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnTrickFinished?.Invoke(PlayingIndex);
+        await System.Threading.Tasks.Task.Delay(1000);
+        currentState++;
+
+        if (currentState == GameState.DontPass)
+            currentState = GameState.PassLeft;
+
+        OnDealFinished?.Invoke();
     }
 
     private int EvaluateDeck(out int value)
@@ -102,7 +121,7 @@ public class DealScript
         for (int i = 1; i < 4; i++)
         {
             Card currentCard = cardsOnDeck.ElementAt(i).Value;
-
+            value += GetValue(currentCard);
             if (currentCard.Shape == winningCard.Shape)
             {
                 if (currentCard.Rank > winningCard.Rank)
@@ -143,8 +162,28 @@ public class DealScript
                 break;
         }
 
+        Players[playerIndex].AddPassCards(cards);
 
-        Players[playerIndex].AddCards(cards);
+        passCardsCount++;
+
+        if (passCardsCount == Players.Length)
+        {
+            OnCardsPassed?.Invoke();
+            GetStartingIndex();
+            Players[PlayingIndex].SetTurn(TrickInfo, 0);
+        }
+    }
+
+    void GetStartingIndex()
+    {
+        for (int i = 0; i < Players.Length; i++)
+        {
+            foreach (var item in Players[i].OwnedCards)
+            {
+                if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
+                    PlayingIndex = i;
+            }
+        }
     }
 
     public void Deal()
@@ -171,6 +210,8 @@ public class DealScript
                 AllCards.RemoveAt(getRandom);
             }
         }
+
+        Debug.Log("start Player: " + PlayingIndex);
     }
 
     private List<Card> GetAllCards()
@@ -186,6 +227,36 @@ public class DealScript
         }
 
         return cards;
+    }
+
+    public void Reset()
+    {
+        StartNewGame();
+    }
+
+    public void StartNewGame()
+    {
+        passCardsCount = 0;
+
+        Deal();
+
+        OnCardsDealt?.Invoke(currentState != GameState.DontPass);
+
+        TrickInfo = new TrickInfo();
+
+        if (currentState == GameState.DontPass)
+        {
+            Players[PlayingIndex].SetTurn(TrickInfo, 0);
+        }
+        else
+        {
+            //OnPassCards?.Invoke();
+
+            foreach (var item in Players)
+            {
+                item.SelectPassCards();
+            }
+        }
     }
 }
 

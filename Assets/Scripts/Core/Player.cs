@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Player
 {
@@ -10,7 +11,9 @@ public class Player
     int dealScore;
     int totalScore;
 
-    Dictionary<CardShape,int> shapeCount;
+    public int Score { get => dealScore; }
+
+    protected Dictionary<CardShape,int> shapeCount;
 
 
     public delegate void PassCardsReady(int playerIndex,List<Card> cards);
@@ -39,7 +42,7 @@ public class Player
         OnCardReady?.Invoke(index,card);
     }
 
-    public virtual void ChoosePassCards(List<Card> cards)
+    public virtual void PassCards(List<Card> cards)
     {
         foreach (var item in cards)
         {
@@ -50,7 +53,12 @@ public class Player
         OnPassCardsReady?.Invoke(index,cards);
     }
 
-    public virtual void SetTurn(int hand)
+    public virtual void SelectPassCards()
+    {
+
+    }
+
+    public virtual void SetTurn(TrickInfo info, int hand)
     {
         
     }
@@ -81,7 +89,7 @@ public class Player
         shapeCount[card.Shape]++;
     }
 
-    public void AddCards(List<Card> cards)
+    public virtual void AddPassCards(List<Card> cards)
     {
         foreach (var item in cards)
         {
