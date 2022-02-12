@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,8 +12,12 @@ public class UIManager : MonoBehaviour
     //Player[] players;
     [SerializeField]
     GameObject passCardsPanel;
+    [SerializeField]
+    DealResult DealFinishedPanel;
+
     CardsUIManager cardsUIManager;
     GameScript game;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -22,8 +27,20 @@ public class UIManager : MonoBehaviour
         game.Deal.OnCardsDealt += Deal_OnCardsDealt;
         game.Deal.OnTrickFinished += Deal_OnTrickFinished;
         game.Deal.OnCardsPassed += Deal_OnCardsPassed;
+        game.Deal.OnDealFinished += Deal_OnDealFinished;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
+    }
+
+    private void Deal_OnDealFinished()
+    {
+        Player[] players = game.Deal.Players;
+        players = players.OrderBy(a => a.TotalScore).ToArray();
+
+        DealFinishedPanel.Show(players,() =>
+        {
+            game.Deal.StartNewGame();
+        });
     }
 
     private void Deal_OnCardsPassed()
@@ -55,15 +72,22 @@ public class UIManager : MonoBehaviour
             cardsUIManager.MainPlayerCard(card);
     }
 
+    bool once;
+
     private void Deal_OnCardsDealt(bool waitPass)
     {
         mainPlayer = (MainPlayer)game.Deal.Players[0];
         mainPlayer.OnPlayerTurn += PlayerTurn;
         mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
 
-        SetPlayers(game.Deal.Players);
+
+        if (!once)
+        {
+            SetPlayers(game.Deal.Players);
+            once = true;
+        }
         cardsUIManager.ResetScores();
-        DealCards(waitPass);
+        cardsUIManager.ShowPlayerCards(mainPlayer, waitPass);
     }
 
     private void MainPlayer_OnWaitPassCards()
@@ -76,11 +100,6 @@ public class UIManager : MonoBehaviour
         cardsUIManager.SetPlayableCards(game.Deal.TrickInfo, mainPlayer, firstHand);
     }
 
-    public void DealCards(bool waitPass)
-    {
-        cardsUIManager.ShowPlayerCards(mainPlayer,waitPass);
-    }
-
     public void OnDisable()
     {
 
@@ -91,6 +110,5 @@ public class UIManager : MonoBehaviour
         mainPlayer.PassCards(selectedPassCards);
         passCardsPanel.SetActive(false);
         cardsUIManager.RemovePassedCards();
-
     }
 }

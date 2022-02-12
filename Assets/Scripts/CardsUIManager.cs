@@ -140,9 +140,6 @@ public class CardsUIManager : MonoBehaviour
     {
         Transform playedCard = (CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount)));
 
-        //GameObject newCard = Instantiate(playerCard, CardsHolder.GetChild(0));
-        //newCard.transform.localPosition = Vector3.zero;
-
         int rankModifid = ((int)card.Rank) + 1;
         rankModifid %= 13;
 

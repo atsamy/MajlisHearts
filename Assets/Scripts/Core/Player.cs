@@ -12,9 +12,11 @@ public class Player
     int totalScore;
 
     public int Score { get => dealScore; }
+    public int TotalScore { get => totalScore; }
 
     protected Dictionary<CardShape,int> shapeCount;
 
+    public string Name;
 
     public delegate void PassCardsReady(int playerIndex,List<Card> cards);
     public event PassCardsReady OnPassCardsReady;
@@ -102,8 +104,9 @@ public class Player
         dealScore += score;
     }
 
-    public void Reset()
+    public void SetTotalScore()
     {
+        totalScore += dealScore;
         dealScore = 0;
     }
 

@@ -22,7 +22,7 @@ public class GameScript : MonoBehaviour
 
     private void Deal_OnDealFinished()
     {
-        Deal.StartNewGame();
+        //Deal.StartNewGame();
     }
 
     public void AddPlayer(int index,Player player)

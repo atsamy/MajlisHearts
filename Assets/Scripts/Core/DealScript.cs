@@ -42,6 +42,8 @@ public class DealScript
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
+
+            Players[i].Name = "Player " + (i + 1);
         }
 
         StartNewGame();
@@ -105,6 +107,11 @@ public class DealScript
 
         if (currentState == GameState.DontPass)
             currentState = GameState.PassLeft;
+
+        foreach (var item in Players)
+        {
+            item.SetTotalScore();
+        }
 
         OnDealFinished?.Invoke();
     }
@@ -265,6 +272,5 @@ public enum GameState
     PassLeft,
     PassRight,
     PassAcross,
-    DontPass,
-
+    DontPass
 }
