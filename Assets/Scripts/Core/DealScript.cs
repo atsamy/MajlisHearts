@@ -19,7 +19,7 @@ public class DealScript
     public event CardsPassed OnCardsPassed;
 
     public Player[] Players;
-    GameState currentState;
+    public GameState CurrentState { get; private set; }
 
     Dictionary<int, Card> cardsOnDeck;
 
@@ -103,13 +103,30 @@ public class DealScript
         await System.Threading.Tasks.Task.Delay(1000);
         OnTrickFinished?.Invoke(PlayingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
-        currentState++;
 
-        if (currentState == GameState.DontPass)
-            currentState = GameState.PassLeft;
+        if (CurrentState == GameState.DontPass)
+            CurrentState = GameState.PassLeft;
+        else
+            CurrentState++;
+
+
+
+        bool isMoonShot = Players.Any(a => a.Score == 26);
 
         foreach (var item in Players)
         {
+            if (isMoonShot)
+            {
+                if (item.Score == 26)
+                {
+                    item.Score = 0;
+                }
+                else
+                {
+                    item.Score = 13;
+                }
+            }
+
             item.SetTotalScore();
         }
 
@@ -153,7 +170,7 @@ public class DealScript
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
-        switch (currentState)
+        switch (CurrentState)
         {
             case GameState.PassLeft:
                 playerIndex++;
@@ -247,11 +264,11 @@ public class DealScript
 
         Deal();
 
-        OnCardsDealt?.Invoke(currentState != GameState.DontPass);
+        OnCardsDealt?.Invoke(CurrentState != GameState.DontPass);
 
         TrickInfo = new TrickInfo();
 
-        if (currentState == GameState.DontPass)
+        if (CurrentState == GameState.DontPass)
         {
             Players[PlayingIndex].SetTurn(TrickInfo, 0);
         }

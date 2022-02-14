@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class UIManager : MonoBehaviour
     GameObject passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
+
+    public Text PassText;
 
     CardsUIManager cardsUIManager;
     GameScript game;
@@ -93,6 +96,7 @@ public class UIManager : MonoBehaviour
     private void MainPlayer_OnWaitPassCards()
     {
         passCardsPanel.SetActive(true);
+        PassText.text = game.Deal.CurrentState.ToString();
     }
 
     public void PlayerTurn(bool firstHand)

@@ -34,9 +34,10 @@ public class AIPlayer : Player
 
                 if (selectedShape == CardShape.Heart && !info.heartBroken)
                 {
-                    selectedShape = sorted.ElementAt(1).Key;
+                    if(sorted.ElementAt(1).Value > 0)
+                        selectedShape = sorted.ElementAt(1).Key;
                 }
-
+                //bug here
                 Card selectedCard = OwnedCards.First(a => a.Shape == selectedShape);
 
                 ChooseCard(selectedCard);
