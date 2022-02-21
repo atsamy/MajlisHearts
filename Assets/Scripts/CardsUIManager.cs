@@ -237,7 +237,7 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    public void SetPlayableCards(TrickInfo info, Player player,bool firstHand)
+    public void SetPlayableCards(DealInfo info, Player player,bool firstHand)
     {
         foreach (var item in playerCardsUI)
         {
@@ -254,7 +254,7 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    bool checkIfPlayable(Card card, TrickInfo trickInfo, Player player,bool firstHand)
+    bool checkIfPlayable(Card card, DealInfo trickInfo, Player player,bool firstHand)
     {
         if (trickInfo.roundNumber == 0 && firstHand && !(card.Shape == CardShape.Club && card.Rank == CardRank.Two))
             return false;
@@ -274,16 +274,3 @@ public class CardsUIManager : MonoBehaviour
     }
 }
 
-public class TrickInfo
-{
-    public CardShape TrickShape;
-    public bool heartBroken;
-    public int roundNumber;
-
-    public TrickInfo()
-    {
-        TrickShape = CardShape.Club;
-        heartBroken = false;
-        roundNumber = 0;
-    }
-}

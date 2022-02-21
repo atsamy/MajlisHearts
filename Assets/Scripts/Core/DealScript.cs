@@ -25,7 +25,7 @@ public class DealScript
 
     int PlayingIndex = -1;
 
-    public TrickInfo TrickInfo;
+    public DealInfo DealInfo;
     int passCardsCount = 0;
 
     public void StartDeal()
@@ -54,12 +54,16 @@ public class DealScript
         Debug.Log(playerIndex + " played " + card.Shape + " " + card.Rank);
         cardsOnDeck.Add(playerIndex, card);
 
+        DealInfo.CardsOntable.Add(card);
+        //DealInfo.CardsDrawn.Add(card);
+        DealInfo.ShapesOnGround[card.Shape]++;
+
         if (card.Shape == CardShape.Heart)
-            TrickInfo.heartBroken = true;
+            DealInfo.heartBroken = true;
 
         if (cardsOnDeck.Count == 1)
         {
-            TrickInfo.TrickShape = card.Shape;
+            DealInfo.TrickShape = card.Shape;
         }
 
         if (cardsOnDeck.Count == 4)
@@ -70,9 +74,10 @@ public class DealScript
             Players[winningHand].IncrementScore(value);
 
             PlayingIndex = winningHand;
-            TrickInfo.roundNumber++;
 
-            if (TrickInfo.roundNumber < 13)
+            DealInfo.DrawCards();
+
+            if (DealInfo.roundNumber < 13)
             {
                 trickFinished();
             }
@@ -86,7 +91,7 @@ public class DealScript
             PlayingIndex++;
             PlayingIndex %= 4;
 
-            Players[PlayingIndex].SetTurn(TrickInfo, cardsOnDeck.Count);
+            Players[PlayingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
         }
     }
 
@@ -95,7 +100,7 @@ public class DealScript
         await System.Threading.Tasks.Task.Delay(1000);
         OnTrickFinished?.Invoke(PlayingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
-        Players[PlayingIndex].SetTurn(TrickInfo, 0);
+        Players[PlayingIndex].SetTurn(DealInfo, 0);
     }
 
     async void dealFinished()
@@ -194,7 +199,7 @@ public class DealScript
         {
             OnCardsPassed?.Invoke();
             GetStartingIndex();
-            Players[PlayingIndex].SetTurn(TrickInfo, 0);
+            Players[PlayingIndex].SetTurn(DealInfo, 0);
         }
     }
 
@@ -266,11 +271,11 @@ public class DealScript
 
         OnCardsDealt?.Invoke(CurrentState != GameState.DontPass);
 
-        TrickInfo = new TrickInfo();
+        DealInfo = new DealInfo();
 
         if (CurrentState == GameState.DontPass)
         {
-            Players[PlayingIndex].SetTurn(TrickInfo, 0);
+            Players[PlayingIndex].SetTurn(DealInfo, 0);
         }
         else
         {

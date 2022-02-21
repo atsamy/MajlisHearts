@@ -7,6 +7,10 @@ public class Card
     public CardShape Shape;
     public CardRank Rank;
 
+    public bool IsQueenOfSpades { get => Shape == CardShape.Spade && Rank == CardRank.Queen; }
+
+    public static Card QueenOfSpades { get => new Card(CardShape.Spade, CardRank.Queen); }
+
     public Card(CardShape cardShape,CardRank rank)
     {
         Shape = cardShape;

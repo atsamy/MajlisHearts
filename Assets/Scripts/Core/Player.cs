@@ -37,6 +37,11 @@ public class Player
         this.index = index;
     }
 
+    public int GetShapeCount(CardShape shape)
+    {
+        return shapeCount[shape];
+    }
+
     public virtual void ChooseCard(Card card)
     {
         OwnedCards.Remove(card);
@@ -60,7 +65,7 @@ public class Player
 
     }
 
-    public virtual void SetTurn(TrickInfo info, int hand)
+    public virtual void SetTurn(DealInfo info, int hand)
     {
         
     }
@@ -69,20 +74,6 @@ public class Player
     {
         return shapeCount[shape] > 0;
     }
-
-    //public bool CheckStart()
-    //{
-    //    foreach (var item in ownedCards)
-    //    {
-    //        if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
-    //        {
-    //            return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
 
 
     public void AddCard(Card card)

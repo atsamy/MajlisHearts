@@ -30,7 +30,7 @@ public class MainPlayer : Player
         base.AddPassCards(cards);
     }
 
-    public override void SetTurn(TrickInfo info, int hand)
+    public override void SetTurn(DealInfo info, int hand)
     {
         OnPlayerTurn?.Invoke(hand == 0);
         base.SetTurn(info, hand);

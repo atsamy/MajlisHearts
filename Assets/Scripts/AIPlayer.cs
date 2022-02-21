@@ -10,67 +10,59 @@ public class AIPlayer : Player
 
     }
 
-    public override void SetTurn(TrickInfo info, int hand)
+    public override void SetTurn(DealInfo info, int hand)
     {
         playCard(info, hand);
     }
 
-    async void playCard(TrickInfo info, int hand)
+    async void playCard(DealInfo info, int hand)
     {
         await System.Threading.Tasks.Task.Delay(1000);
 
         if (hand == 0 && info.roundNumber == 0)
         {
             ChooseCard(new Card(CardShape.Club, CardRank.Two));
+            return;
+        }
+
+        var sorted = shapeCount.OrderByDescending(a => a.Value);
+
+        if (hand == 0)
+        {
+            ChooseCard(ChooseFirstHand(info));
         }
         else
         {
-            var sorted = shapeCount.OrderByDescending(a => a.Value);
+            List<Card> specificShape = OwnedCards.Where(a => a.Shape == info.TrickShape).ToList();
 
-            if (hand == 0)
+            if (specificShape.Count > 0)
             {
-
-                CardShape selectedShape = sorted.ElementAt(0).Key;
-
-                if (selectedShape == CardShape.Heart && !info.heartBroken)
-                {
-                    if(sorted.ElementAt(1).Value > 0)
-                        selectedShape = sorted.ElementAt(1).Key;
-                }
-                //bug here
-                Card selectedCard = OwnedCards.First(a => a.Shape == selectedShape);
-
-                ChooseCard(selectedCard);
+                ChooseCard(ChooseSpecificShape(specificShape,info));
             }
             else
             {
-                List<Card> specificShape = OwnedCards.Where(a => a.Shape == info.TrickShape).ToList();
+                specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).ToList();
 
-                if (specificShape.Count > 0)
+                if (OwnedCards.Contains(Card.QueenOfSpades))
                 {
-                    ChooseCard(specificShape[0]);
+                    ChooseCard(Card.QueenOfSpades);
+                }
+                else if (specificShape.Count > 0)
+                {
+                    ChooseCard(specificShape.Last());
                 }
                 else
                 {
-                    specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).ToList();
-
-                    if (OwnedCards.Contains(new Card(CardShape.Spade, CardRank.Queen)))
-                    {
-                        ChooseCard(new Card(CardShape.Spade, CardRank.Queen));
-                    }
-                    else if (specificShape.Count > 0)
-                    {
-                        ChooseCard(specificShape.Last());
-                    }
-                    else
-                    {
-                        CardShape selectedShape = sorted.ElementAt(0).Key;
-
-                        ChooseCard(OwnedCards.Where(a => a.Shape == selectedShape).Last());
-                    }
+                    ChooseCard(ChooseRiskyCards(info));
                 }
             }
         }
+
+    }
+
+    public void AddWeightToCards()
+    {
+
     }
 
     public override void SelectPassCards()
@@ -95,5 +87,156 @@ public class AIPlayer : Player
         PassCards(passCards);
     }
 
-    
+
+    public Card ChooseRiskyCards(DealInfo info)
+    {
+        Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
+
+        foreach (var item in OwnedCards)
+        {
+            int risk = GetRiskfactor(item, info);
+            AllCards.Add(item, risk);
+        }
+
+        AllCards.OrderBy(a => a.Value);
+
+        return AllCards.Last().Key;
+    }
+
+    public Card ChooseFirstHand(DealInfo info)
+    {
+        Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
+
+        foreach (var item in OwnedCards)
+        {
+            if (!info.heartBroken && item.Shape == CardShape.Heart)
+                continue;
+
+            int risk = GetRiskfactor(item, info);
+            AllCards.Add(item, risk);
+        }
+
+        AllCards.OrderBy(a => a.Value);
+
+        return AllCards.Last().Key;
+        //bug here
+        //Card selectedCard = OwnedCards.First(a => a.Shape == selectedShape);
+
+        //ChooseCard(selectedCard);
+    }
+
+    public Card ChooseSpecificShape(List<Card> specificShape, DealInfo info)
+    {
+        Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
+
+        int risk = AvoidHand(info);
+
+        if (risk > 50)
+        {
+            return GetLeastAvoidCard(info,specificShape);
+        }
+        else
+        {
+            return specificShape.OrderByDescending(a => a.Rank).First();
+        }
+    }
+
+    int GetRiskfactor(Card card, DealInfo info)
+    {
+        int risk = (int)card.Rank;
+
+        List<Card> sameShape = OwnedCards.Where(a => a.Shape == card.Shape).ToList();
+
+        foreach (var item in sameShape)
+        {
+            if (item.Rank < card.Rank)
+                risk--;
+        }
+
+        List<Card> groundShape = info.CardsDrawn.Where(a => a.Shape == card.Shape).ToList();
+
+        foreach (var item in groundShape)
+        {
+            if (item.Rank < card.Rank)
+                risk--;
+        }
+
+        int riskToCut = groundShape.Count + sameShape.Count;
+
+        return risk + riskToCut;
+    }
+
+    Card GetLeastAvoidCard(DealInfo info, List<Card> specificShape)
+    {
+        Card HighestCard = new Card(info.TrickShape, CardRank.Two);
+
+        foreach (var item in info.CardsOntable)
+        {
+            if (item.Shape == info.TrickShape)
+            {
+                if (item.Rank > HighestCard.Rank)
+                {
+                    HighestCard = item;
+                }
+            }
+        }
+
+        Card chosenOne = specificShape[0];
+        bool canAvoid = false;
+        foreach (var item in specificShape)
+        {
+            if (item.Rank < HighestCard.Rank)
+            {
+                chosenOne = item;
+                canAvoid = true;
+            }
+        }
+
+        if (!canAvoid && info.CardsOntable.Count == 3)
+        {
+            //if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
+            //    return chosenOne;
+
+            chosenOne = specificShape.Last();
+        }
+
+        return chosenOne;
+    }
+
+    int AvoidHand(DealInfo info)
+    {
+        int avoidWeight = 0;
+
+        if (info.CardsOntable.Count == 3)
+        {
+            foreach (var item in info.CardsOntable)
+            {
+                if (item.Shape == CardShape.Heart)
+                {
+                    avoidWeight += 50;
+                }
+                else if (item.IsQueenOfSpades)
+                {
+                    avoidWeight += 100;
+                }
+            }
+        }
+        else
+        {
+            if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
+            {
+                avoidWeight += 100;
+            }
+            else if (info.TrickShape == CardShape.Heart)
+            {
+                avoidWeight += 100;
+            }
+            else
+            {
+                avoidWeight = info.ShapesOnGround[info.TrickShape] + GetShapeCount(info.TrickShape);
+            }
+        }
+
+        return avoidWeight;
+    }
 }
