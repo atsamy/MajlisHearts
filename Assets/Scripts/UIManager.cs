@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     DealResult DealFinishedPanel;
 
+    public GameObject Scores;
+
     public Text PassText;
 
     CardsUIManager cardsUIManager;
@@ -44,6 +46,8 @@ public class UIManager : MonoBehaviour
         {
             game.Deal.StartNewGame();
         });
+
+        Scores.SetActive(false);
     }
 
     private void Deal_OnCardsPassed()
@@ -114,5 +118,7 @@ public class UIManager : MonoBehaviour
         mainPlayer.PassCards(selectedPassCards);
         passCardsPanel.SetActive(false);
         cardsUIManager.RemovePassedCards();
+
+        Scores.SetActive(true);
     }
 }

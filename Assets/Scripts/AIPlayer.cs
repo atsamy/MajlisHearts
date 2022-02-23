@@ -33,7 +33,7 @@ public class AIPlayer : Player
         }
         else
         {
-            List<Card> specificShape = OwnedCards.Where(a => a.Shape == info.TrickShape).ToList();
+            List<Card> specificShape = OwnedCards.Where(a => a.Shape == info.TrickShape).OrderBy(a => a.Rank).ToList();
 
             if (specificShape.Count > 0)
             {
@@ -41,7 +41,7 @@ public class AIPlayer : Player
             }
             else
             {
-                specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).ToList();
+                specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).OrderBy(a => a.Rank).ToList();
 
                 if (OwnedCards.Contains(Card.QueenOfSpades))
                 {
@@ -90,6 +90,8 @@ public class AIPlayer : Player
 
     public Card ChooseRiskyCards(DealInfo info)
     {
+        // revisit this code we need to choose hight cards from a stack with few options 
+
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
 
         foreach (var item in OwnedCards)
@@ -118,7 +120,7 @@ public class AIPlayer : Player
 
         AllCards.OrderBy(a => a.Value);
 
-        return AllCards.Last().Key;
+        return AllCards.First().Key;
         //bug here
         //Card selectedCard = OwnedCards.First(a => a.Shape == selectedShape);
 
@@ -137,7 +139,7 @@ public class AIPlayer : Player
         }
         else
         {
-            return specificShape.OrderByDescending(a => a.Rank).First();
+            return specificShape.Last();
         }
     }
 
@@ -181,8 +183,9 @@ public class AIPlayer : Player
             }
         }
 
-        Card chosenOne = specificShape[0];
+        Card chosenOne = specificShape.First();
         bool canAvoid = false;
+
         foreach (var item in specificShape)
         {
             if (item.Rank < HighestCard.Rank)
