@@ -5,6 +5,7 @@ using System.Linq;
 
 public class AIPlayer : Player
 {
+    List<Card> passCards;
     public AIPlayer(int index) : base(index)
     {
 
@@ -25,7 +26,7 @@ public class AIPlayer : Player
             return;
         }
 
-        var sorted = shapeCount.OrderByDescending(a => a.Value);
+        shapeCount = shapeCount.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
         if (hand == 0)
         {
@@ -37,7 +38,7 @@ public class AIPlayer : Player
 
             if (specificShape.Count > 0)
             {
-                ChooseCard(ChooseSpecificShape(specificShape,info));
+                ChooseCard(ChooseSpecificShape(specificShape, info));
             }
             else
             {
@@ -69,22 +70,73 @@ public class AIPlayer : Player
     {
         Dictionary<Card, int> weightedCards = new Dictionary<Card, int>();
 
+        Dictionary<CardShape, int> ShapesValue = new Dictionary<CardShape, int>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            CardShape shape = (CardShape)i;
+            List<Card> cards = OwnedCards.Where(a => a.Shape == shape).ToList();
+
+            int totalValue = 0;
+
+            foreach (var item in cards)
+            {
+                totalValue += (int)item.Rank;
+            }
+
+            ShapesValue.Add(shape, totalValue);
+        }
+
+
 
         foreach (var item in OwnedCards)
         {
-            weightedCards.Add(item, (int)item.Rank);
+            weightedCards.Add(item, CalculatePassCardsRisk(item, ShapesValue[item.Shape]));
+            UIManager.Instance.AddDebugWeight(Index - 1, item, weightedCards.Last().Value);
         }
 
-        weightedCards.OrderByDescending(a => a.Value);
+        weightedCards = weightedCards.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
-        List<Card> passCards = new List<Card>();
+        passCards = new List<Card>();
 
         for (int i = 0; i < 3; i++)
         {
             passCards.Add(weightedCards.ElementAt(i).Key);
         }
 
+       // PassCards(passCards);
+    }
+
+    public void PassCards()
+    {
         PassCards(passCards);
+    }
+
+    int CalculatePassCardsRisk(Card card, int totalValue)
+    {
+        if (totalValue == 0)
+            return 0;
+
+        if (card.Shape == CardShape.Spade)
+        {
+            return (int)card.Rank * 150 / totalValue;
+            //if (card.Rank >= CardRank.Queen)
+            //{
+            //    return Mathf.Max(0, (4 - shapeCount[CardShape.Spade]) * 100);
+            //}
+            //else
+            //{
+            //    return 0;
+            //}
+        }
+        //else if (card.Shape == CardShape.Heart)
+        //{
+        //    return (int)card.Rank * 150 / totalValue;
+        //}
+        else
+        {
+            return (int)card.Rank * 100 / totalValue;
+        }
     }
 
 
@@ -100,7 +152,7 @@ public class AIPlayer : Player
             AllCards.Add(item, risk);
         }
 
-        AllCards.OrderBy(a => a.Value);
+        AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
         return AllCards.Last().Key;
     }
@@ -118,7 +170,7 @@ public class AIPlayer : Player
             AllCards.Add(item, risk);
         }
 
-        AllCards.OrderBy(a => a.Value);
+        AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
         return AllCards.First().Key;
         //bug here
@@ -135,7 +187,7 @@ public class AIPlayer : Player
 
         if (risk > 50)
         {
-            return GetLeastAvoidCard(info,specificShape);
+            return GetLeastAvoidCard(info, specificShape);
         }
         else
         {

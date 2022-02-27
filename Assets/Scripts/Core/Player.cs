@@ -11,6 +11,8 @@ public class Player
     int dealScore;
     int totalScore;
 
+    public int Index { get => index; }
+
     public int Score { get => dealScore; set => dealScore = value; }
     public int TotalScore { get => totalScore; }
 

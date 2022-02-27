@@ -51,7 +51,7 @@ public class DealScript
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        Debug.Log(playerIndex + " played " + card.Shape + " " + card.Rank);
+        Debug.Log(playerIndex + " played " + card.ToString());
         cardsOnDeck.Add(playerIndex, card);
 
         DealInfo.CardsOntable.Add(card);
@@ -177,11 +177,11 @@ public class DealScript
     {
         switch (CurrentState)
         {
-            case GameState.PassLeft:
+            case GameState.PassRight:
                 playerIndex++;
                 playerIndex %= 4;
                 break;
-            case GameState.PassRight:
+            case GameState.PassLeft:
                 playerIndex += 3;
                 playerIndex %= 4;
                 break;

@@ -16,6 +16,11 @@ public class Card
         Shape = cardShape;
         Rank = rank;
     }
+
+    public override string ToString()
+    {
+        return Rank + " of " + Shape;
+    }
 }
 
 

@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     CardsUIManager cardsUIManager;
     GameScript game;
 
+    public DebugCards[] debugCards;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -48,6 +50,11 @@ public class UIManager : MonoBehaviour
         });
 
         Scores.SetActive(false);
+    }
+
+    public void AddDebugWeight(int playerIndex,Card card,int Weight)
+    {
+        debugCards[playerIndex].ShowWeight(card, Weight);
     }
 
     private void Deal_OnCardsPassed()
@@ -95,6 +102,11 @@ public class UIManager : MonoBehaviour
         }
         cardsUIManager.ResetScores();
         cardsUIManager.ShowPlayerCards(mainPlayer, waitPass);
+
+        for (int i = 1; i < game.Deal.Players.Length; i++)
+        {
+            debugCards[i - 1].AddCards(game.Deal.Players[i].OwnedCards);
+        }
     }
 
     private void MainPlayer_OnWaitPassCards()
@@ -115,9 +127,19 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
+        for (int i = 1; i < 4; i++)
+        {
+            ((AIPlayer)game.Deal.Players[i]).PassCards();
+        }
+
         mainPlayer.PassCards(selectedPassCards);
         passCardsPanel.SetActive(false);
         cardsUIManager.RemovePassedCards();
+
+        for (int i = 1; i < 4; i++)
+        {
+            debugCards[i - 1].UpdateCards(game.Deal.Players[i].OwnedCards);
+        }
 
         Scores.SetActive(true);
     }

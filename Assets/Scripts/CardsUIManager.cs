@@ -49,7 +49,6 @@ public class CardsUIManager : MonoBehaviour
         }
 
         AddCards();
-
         OrganizeCards();
     }
 
@@ -179,9 +178,9 @@ public class CardsUIManager : MonoBehaviour
         Vector3[] moveDirections = new Vector3[]
         {
             Vector3.down,
-            Vector3.left,
+            Vector3.right,
             Vector3.up,
-            Vector3.right
+            Vector3.left
         };
 
         foreach (Transform item in DeckCards)
