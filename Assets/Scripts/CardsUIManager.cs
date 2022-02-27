@@ -35,10 +35,7 @@ public class CardsUIManager : MonoBehaviour
 
             Card card = mainPlayer.OwnedCards[i];
 
-            int rankModifid = ((int)card.Rank) + 1;
-            rankModifid %= 13;
-
-            Sprite sprite = cardSprites.Single(s => s.name == "classic-playing-cards_" + (((int)card.Shape * 13) + rankModifid));
+            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_"+ card.Rank);
 
             playerCardsUI.Last().Set(sprite, card, (card) =>
              {
@@ -58,11 +55,11 @@ public class CardsUIManager : MonoBehaviour
 
     void OrganizeCards()
     {
-        playerCardsUI = playerCardsUI.OrderBy(a => a.CardInfo.Shape).ThenBy(a => a.CardInfo.Rank).ToList();
+        playerCardsUI = playerCardsUI.OrderBy(a => a.CardInfo.Shape).ThenByDescending(a => a.CardInfo.Rank).ToList();
 
-        foreach (var item in playerCardsUI)
+        for (int i = 0; i < playerCardsUI.Count; i++)
         {
-            item.transform.SetAsFirstSibling();
+            playerCardsUI[i].transform.SetSiblingIndex(i);
         }
     }
 
@@ -87,10 +84,7 @@ public class CardsUIManager : MonoBehaviour
 
             Card card = mainPlayer.PassedCards[i];
 
-            int rankModifid = ((int)card.Rank) + 1;
-            rankModifid %= 13;
-
-            Sprite sprite = cardSprites.Single(s => s.name == "classic-playing-cards_" + (((int)card.Shape * 13) + rankModifid));
+            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
 
             playerCardsUI.Last().Set(sprite, card, (card) =>
             {
@@ -140,10 +134,7 @@ public class CardsUIManager : MonoBehaviour
     {
         Transform playedCard = (CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount)));
 
-        int rankModifid = ((int)card.Rank) + 1;
-        rankModifid %= 13;
-
-        Sprite sprite = cardSprites.Single(s => s.name == "classic-playing-cards_" + (((int)card.Shape * 13) + rankModifid));
+        Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
         playedCard.GetComponent<Image>().sprite = sprite;
 
         playedCard.parent = DeckCards.GetChild(playerIndex);

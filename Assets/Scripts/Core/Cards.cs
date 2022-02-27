@@ -22,10 +22,10 @@ public class Card
 
 public enum CardShape
 {
-    Club = 0,
+    Heart = 0,
     Spade = 1,
-    Heart = 2,
-    Diamond = 3
+    Diamond = 2,
+    Club = 3
 }
 
 public enum CardRank

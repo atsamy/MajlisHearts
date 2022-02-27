@@ -109,10 +109,10 @@ public class DealScript
         OnTrickFinished?.Invoke(PlayingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
 
-        if (CurrentState == GameState.DontPass)
-            CurrentState = GameState.PassLeft;
-        else
-            CurrentState++;
+        //if (CurrentState == GameState.DontPass)
+        //    CurrentState = GameState.PassLeft;
+        //else
+        //    CurrentState++;
 
 
 
@@ -291,8 +291,8 @@ public class DealScript
 
 public enum GameState
 {
-    PassLeft,
     PassRight,
+    PassLeft,
     PassAcross,
     DontPass
 }
