@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
 
     private void Deal_OnDealFinished()
     {
-        Player[] players = game.Deal.Players;
+        Player[] players = game.Players;
         players = players.OrderBy(a => a.TotalScore).ToArray();
 
         DealFinishedPanel.Show(players,() =>
@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour
 
     private void Deal_OnTrickFinished(int winningHand)
     {
-        cardsUIManager.SetScores(game.Deal.Players);
+        cardsUIManager.SetScores(game.Players);
         cardsUIManager.RemoveCards(winningHand);
     }
 
@@ -80,8 +80,13 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnCardReady(int playerIndex, Card card)
     {
-        if (playerIndex != 0)
-            cardsUIManager.CardsPlayed(playerIndex, card);
+        if (playerIndex != game.MainPlayerIndex)
+        {
+            int index = playerIndex - game.MainPlayerIndex;
+            index = (index < 0 ? index + 4 : index);
+
+            cardsUIManager.CardsPlayed(index, card);
+        }
         else
             cardsUIManager.MainPlayerCard(card);
     }
@@ -90,23 +95,23 @@ public class UIManager : MonoBehaviour
 
     private void Deal_OnCardsDealt(bool waitPass)
     {
-        mainPlayer = (MainPlayer)game.Deal.Players[0];
+        mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
         mainPlayer.OnPlayerTurn += PlayerTurn;
         mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
 
 
         if (!once)
         {
-            SetPlayers(game.Deal.Players);
+            SetPlayers(game.Players);
             once = true;
         }
         cardsUIManager.ResetScores();
         cardsUIManager.ShowPlayerCards(mainPlayer, waitPass);
 
-        for (int i = 1; i < game.Deal.Players.Length; i++)
-        {
-            debugCards[i - 1].AddCards(game.Deal.Players[i].OwnedCards);
-        }
+        //for (int i = 1; i < 4; i++)
+        //{
+        //    debugCards[i - 1].AddCards(game.Players[i].OwnedCards);
+        //}
     }
 
     private void MainPlayer_OnWaitPassCards()
@@ -129,7 +134,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 1; i < 4; i++)
         {
-            ((AIPlayer)game.Deal.Players[i]).PassCards();
+            ((AIPlayer)game.Players[i]).PassCards();
         }
 
         mainPlayer.PassCards(selectedPassCards);
@@ -138,7 +143,7 @@ public class UIManager : MonoBehaviour
 
         for (int i = 1; i < 4; i++)
         {
-            debugCards[i - 1].UpdateCards(game.Deal.Players[i].OwnedCards);
+            debugCards[i - 1].UpdateCards(game.Players[i].OwnedCards);
         }
 
         Scores.SetActive(true);

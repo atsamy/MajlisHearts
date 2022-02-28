@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,10 @@ public class GameScript : MonoBehaviour
 {
     public DealScript Deal;
     public static GameScript Instance;
+    public Player[] Players;
+    
+    [HideInInspector]
+    public int MainPlayerIndex = 0;
 
     private void Awake()
     {
@@ -17,17 +22,45 @@ public class GameScript : MonoBehaviour
     {
         Deal.OnDealFinished += Deal_OnDealFinished;
 
+
+        Players = new Player[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (i == 0)
+                Players[i] = new MainPlayer(i);
+            else
+                Players[i] = new AIPlayer(i);
+
+            Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
+            Players[i].OnCardReady += GameScript_OnCardReady;
+
+            Players[i].Name = "Player " + (i + 1);
+        }
+
+        Deal.SetPlayers(Players);
+
         StartGame();
+    }
+
+    private void GameScript_OnCardReady(int playerIndex, Card card)
+    {
+        Deal.GameScript_OnCardReady(playerIndex, card);
+    }
+
+    private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
+    {
+        Deal.GameScript_OnPassCardsReady(playerIndex,cards);
     }
 
     private void Deal_OnDealFinished()
     {
-        //Deal.StartNewGame();
+
     }
 
     public void AddPlayer(int index, Player player)
     {
-        Deal.Players[index] = player;
+        Players[index] = player;
     }
 
     private void Update()
@@ -38,7 +71,7 @@ public class GameScript : MonoBehaviour
 
             for (int i = 0; i < 4; i++)
             {
-                foreach (var item in Deal.Players[i].OwnedCards)
+                foreach (var item in Players[i].OwnedCards)
                 {
                     if (!cards.Contains(item))
                         cards.Add(item);

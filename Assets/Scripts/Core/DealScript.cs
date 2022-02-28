@@ -17,8 +17,6 @@ public class DealScript
 
     public delegate void CardsPassed();
     public event CardsPassed OnCardsPassed;
-
-    public Player[] Players;
     public GameState CurrentState { get; private set; }
 
     Dictionary<int, Card> cardsOnDeck;
@@ -28,28 +26,21 @@ public class DealScript
     public DealInfo DealInfo;
     int passCardsCount = 0;
 
+    Player[] players;
+
+    public void SetPlayers(Player[] players)
+    {
+        this.players = players;
+    }
+
     public void StartDeal()
     {
-        Players = new Player[4];
         cardsOnDeck = new Dictionary<int, Card>();
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (i == 0)
-                Players[i] = new MainPlayer(i);
-            else
-                Players[i] = new AIPlayer(i);
-
-            Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
-            Players[i].OnCardReady += GameScript_OnCardReady;
-
-            Players[i].Name = "Player " + (i + 1);
-        }
 
         StartNewGame();
     }
 
-    private void GameScript_OnCardReady(int playerIndex, Card card)
+    public void GameScript_OnCardReady(int playerIndex, Card card)
     {
         Debug.Log(playerIndex + " played " + card.ToString());
         cardsOnDeck.Add(playerIndex, card);
@@ -71,7 +62,7 @@ public class DealScript
             int value = 0;
             int winningHand = EvaluateDeck(out value);
             cardsOnDeck.Clear();
-            Players[winningHand].IncrementScore(value);
+            players[winningHand].IncrementScore(value);
 
             PlayingIndex = winningHand;
 
@@ -91,7 +82,7 @@ public class DealScript
             PlayingIndex++;
             PlayingIndex %= 4;
 
-            Players[PlayingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+            players[PlayingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
         }
     }
 
@@ -100,7 +91,7 @@ public class DealScript
         await System.Threading.Tasks.Task.Delay(1000);
         OnTrickFinished?.Invoke(PlayingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
-        Players[PlayingIndex].SetTurn(DealInfo, 0);
+        players[PlayingIndex].SetTurn(DealInfo, 0);
     }
 
     async void dealFinished()
@@ -116,9 +107,9 @@ public class DealScript
 
 
 
-        bool isMoonShot = Players.Any(a => a.Score == 26);
+        bool isMoonShot = players.Any(a => a.Score == 26);
 
-        foreach (var item in Players)
+        foreach (var item in players)
         {
             if (isMoonShot)
             {
@@ -173,7 +164,7 @@ public class DealScript
         return 0;
     }
 
-    private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
+    public void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
         switch (CurrentState)
         {
@@ -191,23 +182,23 @@ public class DealScript
                 break;
         }
 
-        Players[playerIndex].AddPassCards(cards);
+        players[playerIndex].AddPassCards(cards);
 
         passCardsCount++;
 
-        if (passCardsCount == Players.Length)
+        if (passCardsCount == 4)
         {
             OnCardsPassed?.Invoke();
             GetStartingIndex();
-            Players[PlayingIndex].SetTurn(DealInfo, 0);
+            players[PlayingIndex].SetTurn(DealInfo, 0);
         }
     }
 
     void GetStartingIndex()
     {
-        for (int i = 0; i < Players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            foreach (var item in Players[i].OwnedCards)
+            foreach (var item in players[i].OwnedCards)
             {
                 if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
                     PlayingIndex = i;
@@ -220,13 +211,13 @@ public class DealScript
         List<Card> AllCards = GetAllCards();
 
 
-        for (int i = 0; i < Players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
             for (int j = 0; j < 13; j++)
             {
                 int getRandom = Random.Range(0, AllCards.Count);
 
-                Players[i].AddCard(AllCards[getRandom]);
+                players[i].AddCard(AllCards[getRandom]);
 
                 if (PlayingIndex == -1)
                 {
@@ -275,13 +266,13 @@ public class DealScript
 
         if (CurrentState == GameState.DontPass)
         {
-            Players[PlayingIndex].SetTurn(DealInfo, 0);
+            players[PlayingIndex].SetTurn(DealInfo, 0);
         }
         else
         {
             //OnPassCards?.Invoke();
 
-            foreach (var item in Players)
+            foreach (var item in players)
             {
                 item.SelectPassCards();
             }

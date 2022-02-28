@@ -14,7 +14,7 @@ public class CardsUIManager : MonoBehaviour
     public Transform DeckCards;
     public Transform passCardsHolder;
 
-    Sprite[] cardSprites;
+    //Sprite[] cardSprites;
 
     List<CardUI> playerCardsUI;
     List<Card> selectedPassCards;
@@ -26,7 +26,7 @@ public class CardsUIManager : MonoBehaviour
         playerCardsUI = new List<CardUI>();
         selectedPassCards = new List<Card>();
 
-        cardSprites = Resources.LoadAll<Sprite>("Cards/classic-playing-cards");
+        //cardSprites = Resources.LoadAll<Sprite>("Cards/classic-playing-cards");
 
         for (int i = 0; i < 13; i++)
         {

@@ -92,7 +92,7 @@ public class AIPlayer : Player
         foreach (var item in OwnedCards)
         {
             weightedCards.Add(item, CalculatePassCardsRisk(item, ShapesValue[item.Shape]));
-            UIManager.Instance.AddDebugWeight(Index - 1, item, weightedCards.Last().Value);
+            //UIManager.Instance.AddDebugWeight(Index - 1, item, weightedCards.Last().Value);
         }
 
         weightedCards = weightedCards.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
