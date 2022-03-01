@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
+    public delegate void CardsReady();
+    public event CardsReady OnCardsReady;
+
     public DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -21,7 +24,7 @@ public class GameScript : MonoBehaviour
     void Start()
     {
         Deal.OnDealFinished += Deal_OnDealFinished;
-
+        Deal.OnCardsDealt += Deal_OnCardsDealt;
 
         Players = new Player[4];
 
@@ -43,6 +46,11 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
+    private void Deal_OnCardsDealt(bool waitPass)
+    {
+        SetCardsReady();
+    }
+
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         Deal.GameScript_OnCardReady(playerIndex, card);
@@ -56,6 +64,11 @@ public class GameScript : MonoBehaviour
     private void Deal_OnDealFinished()
     {
 
+    }
+
+    public void SetCardsReady()
+    {
+        OnCardsReady?.Invoke();
     }
 
     public void AddPlayer(int index, Player player)

@@ -188,10 +188,15 @@ public class DealScript
 
         if (passCardsCount == 4)
         {
-            OnCardsPassed?.Invoke();
-            GetStartingIndex();
-            players[PlayingIndex].SetTurn(DealInfo, 0);
+            PassingCardsDone();
         }
+    }
+
+    public void PassingCardsDone()
+    {
+        OnCardsPassed?.Invoke();
+        GetStartingIndex();
+        players[PlayingIndex].SetTurn(DealInfo, 0);
     }
 
     void GetStartingIndex()

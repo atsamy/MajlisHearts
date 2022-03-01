@@ -72,6 +72,11 @@ public class Player
         
     }
 
+    public bool HasTwoClub()
+    {
+        return OwnedCards.Contains(new Card(CardShape.Club,CardRank.Two));
+    }
+
     public bool HasShape(CardShape shape)
     {
         return shapeCount[shape] > 0;

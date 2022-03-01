@@ -14,6 +14,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public Text gameInfoTop;
 
+    public GameObject StartGameButton;
     //public GameObject UserInput;
     //public Text RoomCode;
     bool joinRoom = false;
@@ -48,30 +49,27 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("ResetText", 2);
-
+        //Invoke("ResetText", 2);
         timer = 0;
     }
 
-
-
     // Update is called once per frame
-    void Update()
-    {
-        //if (GameManager.Instance.IsRankingGame)
-        //{
-        //    Circle.Rotate(0, 0, -Time.deltaTime * 25);
-        //    OppositeCircle.Rotate(0, 0, Time.deltaTime * 25);
+    //void Update()
+    //{
+    //    //if (GameManager.Instance.IsRankingGame)
+    //    //{
+    //    //    Circle.Rotate(0, 0, -Time.deltaTime * 25);
+    //    //    OppositeCircle.Rotate(0, 0, Time.deltaTime * 25);
 
-        //    Color color = gameInfoTop.color;
-        //    color.a = Mathf.Abs(Mathf.Cos(Time.time * 2));
-        //    gameInfoTop.color = color;
+    //    //    Color color = gameInfoTop.color;
+    //    //    color.a = Mathf.Abs(Mathf.Cos(Time.time * 2));
+    //    //    gameInfoTop.color = color;
 
-        //    timer += Time.deltaTime;
-        //}
+    //    //    timer += Time.deltaTime;
+    //    //}
 
-        //print(roomCreated);
-    }
+    //    //print(roomCreated);
+    //}
 
     //IEnumerable startAIGame()
     //{
@@ -167,6 +165,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
         //SFXManager.Instance.FadeMusic();
         BackButton.SetActive(true);
+
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             print("not connected");
@@ -323,7 +322,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
         //PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { "rank", GameManager.Instance.Me.RankIndex } }, 2);
 
-        PhotonNetwork.NickName = PlayerPrefs.GetString("Name");
+        PhotonNetwork.NickName = PlayerPrefs.GetString("userName");
 
         if (mode == GameMode.Random)
         {
@@ -376,28 +375,41 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         //Audio.mute = true;
         gameReady = true;
         PhotonNetwork.RemoveCallbackTarget(this);
-        GetComponent<AudioSource>().Stop();
+        //GetComponent<AudioSource>().Stop();
         while (time > 0)
         {
             gameInfoTop.text = time.ToString();//LanguageManager.Instance.getString("startafter") + " " + time;
             yield return new WaitForSeconds(1);
             time -= 1;
         }
-
-        SceneManager.LoadScene(2);
+        GameManager.Instance.IsMultiGame = true;
+        SceneManager.LoadScene(1);
     }
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         if (PhotonNetwork.PlayerList.Length == 2)
         {
+            //if (PhotonNetwork.IsMasterClient)
+            //{
+            //    StartGameButton.SetActive(true);
+            //}
             StartCoroutine(StartGameIn(3));
             //GetOtherPlayerData();
 
             //if (mode == GameMode.CreateRoom)
             //    InfoText.text = "Starting The Game";
         }
+
+        InfoText.text = PhotonNetwork.PlayerList.Length + " Players"; 
         //throw new NotImplementedException();
+    }
+
+    public void StartGame()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+        GameManager.Instance.IsMultiGame = true;
+        SceneManager.LoadScene(1);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)

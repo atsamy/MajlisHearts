@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     MainPlayer mainPlayer;
     public static UIManager Instance;
 
+    [SerializeField]
+    private Text debugText;
     //Player[] players;
     [SerializeField]
     GameObject passCardsPanel;
@@ -31,7 +33,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         game = GameScript.Instance;
 
-        game.Deal.OnCardsDealt += Deal_OnCardsDealt;
+        game.OnCardsReady += Deal_OnCardsDealt;
         game.Deal.OnTrickFinished += Deal_OnTrickFinished;
         game.Deal.OnCardsPassed += Deal_OnCardsPassed;
         game.Deal.OnDealFinished += Deal_OnDealFinished;
@@ -93,7 +95,7 @@ public class UIManager : MonoBehaviour
 
     bool once;
 
-    private void Deal_OnCardsDealt(bool waitPass)
+    private void Deal_OnCardsDealt()//bool waitPass)
     {
         mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
         mainPlayer.OnPlayerTurn += PlayerTurn;
@@ -106,12 +108,17 @@ public class UIManager : MonoBehaviour
             once = true;
         }
         cardsUIManager.ResetScores();
-        cardsUIManager.ShowPlayerCards(mainPlayer, waitPass);
+        cardsUIManager.ShowPlayerCards(mainPlayer, true);
 
         //for (int i = 1; i < 4; i++)
         //{
         //    debugCards[i - 1].AddCards(game.Players[i].OwnedCards);
         //}
+    }
+
+    internal void Debug(string v)
+    {
+        debugText.text = v;
     }
 
     private void MainPlayer_OnWaitPassCards()
