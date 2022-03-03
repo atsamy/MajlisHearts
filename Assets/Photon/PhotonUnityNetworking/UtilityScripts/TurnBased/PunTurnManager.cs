@@ -116,7 +116,7 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// The turn manager event offset event message byte. Used internaly for defining data in Room Custom Properties
         /// </summary>
-        public const byte TurnManagerEventOffset = 0;
+        public const byte TurnManagerEventOffset = 10;
 
         /// <summary>
         /// The Move event message byte. Used internaly for saving data in Room Custom Properties

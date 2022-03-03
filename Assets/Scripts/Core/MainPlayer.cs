@@ -5,7 +5,7 @@ using System.Linq;
 
 public class MainPlayer : Player
 {
-    public delegate void PlayerTurn(bool firstHand);
+    public delegate void PlayerTurn();
     public PlayerTurn OnPlayerTurn;
 
 
@@ -16,7 +16,7 @@ public class MainPlayer : Player
 
     public MainPlayer(int index) : base(index)
     {
-
+        isPlayer = false;
     }
 
     public override void SelectPassCards()
@@ -32,7 +32,7 @@ public class MainPlayer : Player
 
     public override void SetTurn(DealInfo info, int hand)
     {
-        OnPlayerTurn?.Invoke(hand == 0);
+        OnPlayerTurn?.Invoke();
         base.SetTurn(info, hand);
     }
 

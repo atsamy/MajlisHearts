@@ -44,4 +44,20 @@ public static class Utils
     {
         return new Card((CardShape)data[1], (CardRank)data[0]);
     }
+
+    public static int[] SerializeCardAndPlayer(Card card , int playerIndex)
+    {
+        int[] cardSerialized = new int[3];
+
+        cardSerialized[0] = (int)card.Rank;
+        cardSerialized[1] = (int)card.Shape;
+        cardSerialized[2] = playerIndex;
+
+        return cardSerialized;
+    }
+
+    public static KeyValuePair<int,Card> DeSerializeCardAndPlayer(int[] data)
+    {
+        return new KeyValuePair<int, Card>(data[2], new Card((CardShape)data[1], (CardRank)data[0]));
+    }
 }

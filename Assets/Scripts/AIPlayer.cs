@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class AIPlayer : Player
 {
     List<Card> passCards;
     public AIPlayer(int index) : base(index)
     {
-
+        isPlayer = false;
     }
 
     public override void SetTurn(DealInfo info, int hand)
@@ -104,11 +105,12 @@ public class AIPlayer : Player
             passCards.Add(weightedCards.ElementAt(i).Key);
         }
 
-       // PassCards(passCards);
+        PassCards();
     }
 
-    public void PassCards()
+    async void PassCards()
     {
+        await Task.Yield();
         PassCards(passCards);
     }
 

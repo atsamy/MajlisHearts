@@ -218,7 +218,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     IEnumerator TimeOut()
     {
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 20; i++)
         {
             Debug.Log(i);
             yield return new WaitForSeconds(1);

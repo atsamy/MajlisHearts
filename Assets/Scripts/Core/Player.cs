@@ -16,16 +16,19 @@ public class Player
     public int Score { get => dealScore; set => dealScore = value; }
     public int TotalScore { get => totalScore; }
 
-    protected Dictionary<CardShape,int> shapeCount;
+    protected Dictionary<CardShape, int> shapeCount;
 
     public string Name;
 
-    public delegate void PassCardsReady(int playerIndex,List<Card> cards);
+    public delegate void PassCardsReady(int playerIndex, List<Card> cards);
     public event PassCardsReady OnPassCardsReady;
 
     public delegate void CardReady(int playerIndex, Card card);
     public event CardReady OnCardReady;
 
+    protected bool isPlayer;
+
+    public bool IsPlayer { get => isPlayer; }
     public Player(int index)
     {
         shapeCount = new Dictionary<CardShape, int>();
@@ -37,6 +40,8 @@ public class Player
 
         OwnedCards = new List<Card>();
         this.index = index;
+
+        isPlayer = true;
     }
 
     public int GetShapeCount(CardShape shape)
@@ -49,6 +54,11 @@ public class Player
         OwnedCards.Remove(card);
         shapeCount[card.Shape]--;
         OnCardReady?.Invoke(index,card);
+    }
+
+    public void ShowCard(Card card)
+    {
+        OnCardReady?.Invoke(index, card);
     }
 
     public virtual void PassCards(List<Card> cards)

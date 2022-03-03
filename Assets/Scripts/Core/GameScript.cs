@@ -8,6 +8,9 @@ public class GameScript : MonoBehaviour
     public delegate void CardsReady();
     public event CardsReady OnCardsReady;
 
+    public delegate void StartPlaying();
+    public event StartPlaying OnStartPlaying;
+
     public DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -25,6 +28,11 @@ public class GameScript : MonoBehaviour
     {
         Deal.OnDealFinished += Deal_OnDealFinished;
         Deal.OnCardsDealt += Deal_OnCardsDealt;
+
+        Deal.OnCardsPassed += SetStartPlaying;
+
+        Deal.OnTrickFinished += Deal_OnTrickFinished;
+        //Deal.OnNextTurn += Deal_OnNextTurn;
 
         Players = new Player[4];
 
@@ -46,6 +54,16 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
+    //private void Deal_OnNextTurn()
+    //{
+    //    Deal.SetTurn();
+    //}
+
+    private void Deal_OnTrickFinished(int winningHand)
+    {
+        Deal.SetTurn();
+    }
+
     private void Deal_OnCardsDealt(bool waitPass)
     {
         SetCardsReady();
@@ -63,7 +81,13 @@ public class GameScript : MonoBehaviour
 
     private void Deal_OnDealFinished()
     {
+        OnStartPlaying?.Invoke();
+        Deal.SetTurn();
+    }
 
+    public void SetStartPlaying()
+    {
+        OnStartPlaying?.Invoke();
     }
 
     public void SetCardsReady()

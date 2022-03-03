@@ -227,12 +227,12 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    public void SetPlayableCards(DealInfo info, Player player,bool firstHand)
+    public void SetPlayableCards(DealInfo info, Player player)
     {
         foreach (var item in playerCardsUI)
         {
             print(item.CardInfo.Rank + " " + item.CardInfo.Shape);
-            item.SetInteractable(checkIfPlayable(item.CardInfo, info,player, firstHand));
+            item.SetInteractable(checkIfPlayable(item.CardInfo, info,player));
         }
     }
 
@@ -244,8 +244,10 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    bool checkIfPlayable(Card card, DealInfo trickInfo, Player player,bool firstHand)
+    bool checkIfPlayable(Card card, DealInfo trickInfo, Player player)
     {
+        bool firstHand = trickInfo.CardsOntable.Count == 0;
+
         if (trickInfo.roundNumber == 0 && firstHand && !(card.Shape == CardShape.Club && card.Rank == CardRank.Two))
             return false;
         if (trickInfo.TrickShape != card.Shape && player.HasShape(trickInfo.TrickShape) && !firstHand)

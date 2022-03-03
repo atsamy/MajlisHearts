@@ -17,11 +17,16 @@ public class DealScript
 
     public delegate void CardsPassed();
     public event CardsPassed OnCardsPassed;
+
+    //public delegate void NextTurn();
+    //public event NextTurn OnNextTurn;
     public GameState CurrentState { get; private set; }
 
     Dictionary<int, Card> cardsOnDeck;
 
-    int PlayingIndex = -1;
+    int playingIndex = -1;
+
+    public int PlayingIndex { get => playingIndex; }
 
     public DealInfo DealInfo;
     int passCardsCount = 0;
@@ -38,6 +43,27 @@ public class DealScript
         cardsOnDeck = new Dictionary<int, Card>();
 
         StartNewGame();
+    }
+
+    int noOfCards = 0;
+    public void UpdateDealInfo(int playerIndex, Card card)
+    {
+        noOfCards++;
+
+        DealInfo.CardsOntable.Add(card);
+        DealInfo.ShapesOnGround[card.Shape]++;
+
+        if (card.Shape == CardShape.Heart)
+            DealInfo.heartBroken = true;
+
+        if (noOfCards == 1)
+        {
+            DealInfo.TrickShape = card.Shape;
+        }
+        else if (noOfCards == 4)
+        {
+            noOfCards = 0;
+        }
     }
 
     public void GameScript_OnCardReady(int playerIndex, Card card)
@@ -64,7 +90,7 @@ public class DealScript
             cardsOnDeck.Clear();
             players[winningHand].IncrementScore(value);
 
-            PlayingIndex = winningHand;
+            playingIndex = winningHand;
 
             DealInfo.DrawCards();
 
@@ -79,25 +105,31 @@ public class DealScript
         }
         else
         {
-            PlayingIndex++;
-            PlayingIndex %= 4;
+            playingIndex++;
+            playingIndex %= 4;
 
-            players[PlayingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+            //OnNextTurn?.Invoke();
+            players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
         }
+    }
+
+    public void SetTurn()
+    {
+        players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
     }
 
     async void trickFinished()
     {
         await System.Threading.Tasks.Task.Delay(1000);
-        OnTrickFinished?.Invoke(PlayingIndex);
+        OnTrickFinished?.Invoke(playingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
-        players[PlayingIndex].SetTurn(DealInfo, 0);
+        //players[PlayingIndex].SetTurn(DealInfo, 0);
     }
 
     async void dealFinished()
     {
         await System.Threading.Tasks.Task.Delay(1000);
-        OnTrickFinished?.Invoke(PlayingIndex);
+        OnTrickFinished?.Invoke(playingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
 
         //if (CurrentState == GameState.DontPass)
@@ -196,7 +228,7 @@ public class DealScript
     {
         OnCardsPassed?.Invoke();
         GetStartingIndex();
-        players[PlayingIndex].SetTurn(DealInfo, 0);
+        //players[playingIndex].SetTurn(DealInfo, 0);
     }
 
     void GetStartingIndex()
@@ -206,7 +238,7 @@ public class DealScript
             foreach (var item in players[i].OwnedCards)
             {
                 if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
-                    PlayingIndex = i;
+                    playingIndex = i;
             }
         }
     }
@@ -224,11 +256,11 @@ public class DealScript
 
                 players[i].AddCard(AllCards[getRandom]);
 
-                if (PlayingIndex == -1)
+                if (playingIndex == -1)
                 {
                     if (AllCards[getRandom].Shape == CardShape.Club && AllCards[getRandom].Rank == CardRank.Two)
                     {
-                        PlayingIndex = i;
+                        playingIndex = i;
                     }
                 }
 
@@ -236,7 +268,7 @@ public class DealScript
             }
         }
 
-        Debug.Log("start Player: " + PlayingIndex);
+        Debug.Log("start Player: " + playingIndex);
     }
 
     private List<Card> GetAllCards()
@@ -271,7 +303,7 @@ public class DealScript
 
         if (CurrentState == GameState.DontPass)
         {
-            players[PlayingIndex].SetTurn(DealInfo, 0);
+            players[playingIndex].SetTurn(DealInfo, 0);
         }
         else
         {

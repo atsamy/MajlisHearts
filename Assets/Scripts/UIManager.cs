@@ -35,10 +35,15 @@ public class UIManager : MonoBehaviour
 
         game.OnCardsReady += Deal_OnCardsDealt;
         game.Deal.OnTrickFinished += Deal_OnTrickFinished;
-        game.Deal.OnCardsPassed += Deal_OnCardsPassed;
+        game.OnStartPlaying += Game_OnStartPlaying;
         game.Deal.OnDealFinished += Deal_OnDealFinished;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
+    }
+
+    private void Game_OnStartPlaying()
+    {
+        cardsUIManager.UpdateCards(mainPlayer);
     }
 
     private void Deal_OnDealFinished()
@@ -59,10 +64,6 @@ public class UIManager : MonoBehaviour
         debugCards[playerIndex].ShowWeight(card, Weight);
     }
 
-    private void Deal_OnCardsPassed()
-    {
-        cardsUIManager.UpdateCards(mainPlayer);
-    }
 
     private void Deal_OnTrickFinished(int winningHand)
     {
@@ -97,6 +98,8 @@ public class UIManager : MonoBehaviour
 
     private void Deal_OnCardsDealt()//bool waitPass)
     {
+        Debug("myIndex: " + game.MainPlayerIndex);
+
         mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
         mainPlayer.OnPlayerTurn += PlayerTurn;
         mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
@@ -127,9 +130,9 @@ public class UIManager : MonoBehaviour
         PassText.text = game.Deal.CurrentState.ToString();
     }
 
-    public void PlayerTurn(bool firstHand)
+    public void PlayerTurn()
     {
-        cardsUIManager.SetPlayableCards(game.Deal.DealInfo, mainPlayer, firstHand);
+        cardsUIManager.SetPlayableCards(game.Deal.DealInfo, mainPlayer);
     }
 
     public void OnDisable()
@@ -139,19 +142,14 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        for (int i = 1; i < 4; i++)
-        {
-            ((AIPlayer)game.Players[i]).PassCards();
-        }
-
         mainPlayer.PassCards(selectedPassCards);
         passCardsPanel.SetActive(false);
         cardsUIManager.RemovePassedCards();
 
-        for (int i = 1; i < 4; i++)
-        {
-            debugCards[i - 1].UpdateCards(game.Players[i].OwnedCards);
-        }
+        //for (int i = 1; i < 4; i++)
+        //{
+        //    debugCards[i - 1].UpdateCards(game.Players[i].OwnedCards);
+        //}
 
         Scores.SetActive(true);
     }
