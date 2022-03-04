@@ -21,7 +21,7 @@ public class CardsUIManager : MonoBehaviour
 
     public Text[] Scores;
 
-    public void ShowPlayerCards(MainPlayer mainPlayer,bool passCards)
+    public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
     {
         playerCardsUI = new List<CardUI>();
         selectedPassCards = new List<Card>();
@@ -35,14 +35,14 @@ public class CardsUIManager : MonoBehaviour
 
             Card card = mainPlayer.OwnedCards[i];
 
-            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_"+ card.Rank);
+            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
 
             playerCardsUI.Last().Set(sprite, card, (card) =>
              {
                  if (passCards)
                      AddToPassCards(newCard.GetComponent<CardUI>());
                  else
-                    mainPlayer.ChooseCard(card);
+                     mainPlayer.ChooseCard(card);
              });
 
             playerCardsUI.Last().SetInteractable(passCards);
@@ -103,7 +103,7 @@ public class CardsUIManager : MonoBehaviour
             playerCardsUI.Remove(cardUI);
             cardUI.transform.SetParent(passCardsHolder);
             selectedPassCards.Add(cardUI.CardInfo);
-            cardUI.SetOnPressed((card)=>
+            cardUI.SetOnPressed((card) =>
             {
                 ReturnToStack(cardUI);
             });
@@ -138,16 +138,13 @@ public class CardsUIManager : MonoBehaviour
 
         playedCard.parent = DeckCards.GetChild(playerIndex);
         //playedCard.localPosition = Vector3.zero;
-        playedCard.DOLocalMove(Vector3.zero,0.5f);
+        playedCard.DOLocalMove(Vector3.zero, 0.5f);
 
     }
 
-    public void SetScores(Player[] scores)
+    public void SetScore(int index, int score)
     {
-        for (int i = 0; i < Scores.Length; i++)
-        {
-            Scores[i].text = scores[i].Score.ToString();
-        }
+        Scores[index].text = score.ToString();
     }
 
     public void ResetScores()
@@ -213,8 +210,8 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < 13; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent);
-            newCard.transform.localPosition = new Vector3(0,(i - 6) * 60 );
-            newCard.transform.eulerAngles = new Vector3(0,0,90);
+            newCard.transform.localPosition = new Vector3(0, (i - 6) * 60);
+            newCard.transform.eulerAngles = new Vector3(0, 0, 90);
         }
     }
 
@@ -223,7 +220,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < 13; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent);
-            newCard.transform.localPosition = new Vector3((i - 6) * 60,0);
+            newCard.transform.localPosition = new Vector3((i - 6) * 60, 0);
         }
     }
 
@@ -232,7 +229,7 @@ public class CardsUIManager : MonoBehaviour
         foreach (var item in playerCardsUI)
         {
             print(item.CardInfo.Rank + " " + item.CardInfo.Shape);
-            item.SetInteractable(checkIfPlayable(item.CardInfo, info,player));
+            item.SetInteractable(checkIfPlayable(item.CardInfo, info, player));
         }
     }
 

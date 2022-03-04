@@ -34,9 +34,9 @@ public class UIManager : MonoBehaviour
         game = GameScript.Instance;
 
         game.OnCardsReady += Deal_OnCardsDealt;
-        game.Deal.OnTrickFinished += Deal_OnTrickFinished;
+        game.OnTrickFinished += Deal_OnTrickFinished;
         game.OnStartPlaying += Game_OnStartPlaying;
-        game.Deal.OnDealFinished += Deal_OnDealFinished;
+        game.OnDealFinished += Deal_OnDealFinished;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
     }
@@ -67,8 +67,24 @@ public class UIManager : MonoBehaviour
 
     private void Deal_OnTrickFinished(int winningHand)
     {
-        cardsUIManager.SetScores(game.Players);
-        cardsUIManager.RemoveCards(winningHand);
+        int index = CorrectIndex(winningHand);
+
+        for (int i = 0; i < game.Players.Length; i++)
+        {
+            int correctIndex = i + game.MainPlayerIndex;
+            correctIndex %= 4;
+
+            cardsUIManager.SetScore(i,game.Players[correctIndex].Score);
+        }
+
+        cardsUIManager.RemoveCards(index);
+    }
+
+    private int CorrectIndex(int index)
+    {
+        int correctedIndex = index - game.MainPlayerIndex;
+        correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
+        return correctedIndex;
     }
 
     public void SetPlayers(Player[] players)
@@ -85,8 +101,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerIndex != game.MainPlayerIndex)
         {
-            int index = playerIndex - game.MainPlayerIndex;
-            index = (index < 0 ? index + 4 : index);
+            int index = CorrectIndex(playerIndex);
 
             cardsUIManager.CardsPlayed(index, card);
         }
@@ -112,11 +127,6 @@ public class UIManager : MonoBehaviour
         }
         cardsUIManager.ResetScores();
         cardsUIManager.ShowPlayerCards(mainPlayer, true);
-
-        //for (int i = 1; i < 4; i++)
-        //{
-        //    debugCards[i - 1].AddCards(game.Players[i].OwnedCards);
-        //}
     }
 
     internal void Debug(string v)

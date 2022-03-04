@@ -71,7 +71,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         Deal.SetPlayers(Players);
         Deal.OnCardsDealt += Deal_OnCardsDealt;
-        Deal.OnTrickFinished += Deal_OnTrickFinished;
+        Deal.OnTrickFinished += DealTrickFinished;
         //Deal.OnNextTurn += Deal_OnNextTurn;
 
         if (PhotonNetwork.IsMasterClient)
@@ -87,8 +87,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     //    //turnManager.BeginTurn();
     //}
 
-    private void Deal_OnTrickFinished(int winningHand)
+    private void DealTrickFinished(int winningHand)
     {
+        SetTrickFinished(winningHand);
+
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(2, winningHand, raiseEventOptions, SendOptions.SendReliable);
     }
@@ -111,7 +113,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (photonEvent.Code == 0)
         {
-            myPlayer.OwnedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+            List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+
+            foreach (var item in cards)
+            {
+                myPlayer.AddCard(item);
+            }
+
             SetCardsReady();
 
             myPlayer.SelectPassCards();
@@ -145,7 +153,19 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (PhotonNetwork.IsMasterClient)
             {
-                turnManager.BeginTurn();
+                if (Deal.DealInfo.roundNumber < 13)
+                    turnManager.BeginTurn();
+            }
+            else
+            {
+                SetTrickFinished(beginIndex);
+            }
+        }
+        else if (photonEvent.Code == 3)
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                SetDealFinished();
             }
         }
     }
@@ -180,15 +200,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnPlayerMove(Photon.Realtime.Player player, int turn, object move)
     {
-        PlayerMove(move);
+        PlayerMove(move, false);
     }
 
     public void OnPlayerFinished(Photon.Realtime.Player player, int turn, object move)
     {
-        PlayerMove(move);
+        PlayerMove(move, true);
     }
 
-    private void PlayerMove(object move)
+    private void PlayerMove(object move, bool finished)
     {
         KeyValuePair<int, Card> hand = Utils.DeSerializeCardAndPlayer((int[])move);
 
@@ -207,9 +227,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             Players[hand.Key].ShowCard(hand.Value);
 
-            UIManager.Instance.Debug(nextIndex + " " + MainPlayerIndex);
+            //UIManager.Instance.Debug(nextIndex + " " + MainPlayerIndex);
 
-            if (nextIndex == MainPlayerIndex)
+            if (nextIndex == MainPlayerIndex && !finished)
             {
                 myPlayer.SetTurn(Deal.DealInfo, handIndex);
             }
@@ -221,17 +241,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         if (turn == 1)
         {
             SetStartPlaying();
-
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                Deal.DealInfo = new DealInfo();
-            }
         }
+
         if (!PhotonNetwork.IsMasterClient)
         {
+            UIManager.Instance.Debug("begin " + beginIndex + " my " + MainPlayerIndex);
+
             if (beginIndex == MainPlayerIndex)
             {
-                Deal.SetTurn();
+                myPlayer.SetTurn(Deal.DealInfo, 0);
             }
         }
         else if (!Players[beginIndex].IsPlayer)
@@ -249,6 +267,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
 
     }
+
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         int finishIndex = beginIndex - 1;
@@ -298,6 +317,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     private void Deal_OnDealFinished()
     {
-        //turnManager
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(3, null, raiseEventOptions, SendOptions.SendReliable);
+
+        SetDealFinished();
     }
 }

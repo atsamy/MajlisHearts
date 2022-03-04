@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameScript : MonoBehaviour
@@ -10,6 +11,12 @@ public class GameScript : MonoBehaviour
 
     public delegate void StartPlaying();
     public event StartPlaying OnStartPlaying;
+
+    public delegate void TrickFinished(int winningHand);
+    public event TrickFinished OnTrickFinished;
+
+    public delegate void DealFinished();
+    public event DealFinished OnDealFinished;
 
     public DealScript Deal;
     public static GameScript Instance;
@@ -59,9 +66,10 @@ public class GameScript : MonoBehaviour
     //    Deal.SetTurn();
     //}
 
-    private void Deal_OnTrickFinished(int winningHand)
+    public void Deal_OnTrickFinished(int winningHand)
     {
         Deal.SetTurn();
+        OnTrickFinished?.Invoke(winningHand);
     }
 
     private void Deal_OnCardsDealt(bool waitPass)
@@ -81,13 +89,25 @@ public class GameScript : MonoBehaviour
 
     private void Deal_OnDealFinished()
     {
-        OnStartPlaying?.Invoke();
-        Deal.SetTurn();
+        SetDealFinished();
+        //OnStartPlaying?.Invoke();
+        //Deal.SetTurn();
+    }
+
+    public void SetDealFinished()
+    {
+        SetFinalScore();
+        OnDealFinished?.Invoke();
     }
 
     public void SetStartPlaying()
     {
         OnStartPlaying?.Invoke();
+    }
+
+    public void SetTrickFinished(int winningHand)
+    {
+        OnTrickFinished?.Invoke(winningHand);
     }
 
     public void SetCardsReady()
@@ -98,6 +118,28 @@ public class GameScript : MonoBehaviour
     public void AddPlayer(int index, Player player)
     {
         Players[index] = player;
+    }
+
+    public void SetFinalScore()
+    {
+        bool isMoonShot = Players.Any(a => a.Score == 26);
+
+        foreach (var item in Players)
+        {
+            if (isMoonShot)
+            {
+                if (item.Score == 26)
+                {
+                    item.Score = 0;
+                }
+                else
+                {
+                    item.Score = 13;
+                }
+            }
+
+            item.SetTotalScore();
+        }
     }
 
     private void Update()

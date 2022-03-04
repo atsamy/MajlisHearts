@@ -5,7 +5,7 @@ using System.Linq;
 
 public class Player
 {
-    public List<Card> OwnedCards { get; set; }
+    public List<Card> OwnedCards { get; protected set; }
 
     int index;
     int dealScore;

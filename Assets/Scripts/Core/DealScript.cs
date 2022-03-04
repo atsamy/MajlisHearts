@@ -33,6 +33,12 @@ public class DealScript
 
     Player[] players;
 
+    public DealScript()
+    {
+        cardsOnDeck = new Dictionary<int, Card>();
+        DealInfo = new DealInfo();
+    }
+
     public void SetPlayers(Player[] players)
     {
         this.players = players;
@@ -53,6 +59,8 @@ public class DealScript
         DealInfo.CardsOntable.Add(card);
         DealInfo.ShapesOnGround[card.Shape]++;
 
+        cardsOnDeck.Add(playerIndex, card);
+
         if (card.Shape == CardShape.Heart)
             DealInfo.heartBroken = true;
 
@@ -62,6 +70,12 @@ public class DealScript
         }
         else if (noOfCards == 4)
         {
+            int value = 0;
+            int winningHand = EvaluateDeck(out value);
+            cardsOnDeck.Clear();
+            players[winningHand].IncrementScore(value);
+
+            DealInfo.DrawCards();
             noOfCards = 0;
         }
     }
@@ -131,33 +145,6 @@ public class DealScript
         await System.Threading.Tasks.Task.Delay(1000);
         OnTrickFinished?.Invoke(playingIndex);
         await System.Threading.Tasks.Task.Delay(1000);
-
-        //if (CurrentState == GameState.DontPass)
-        //    CurrentState = GameState.PassLeft;
-        //else
-        //    CurrentState++;
-
-
-
-        bool isMoonShot = players.Any(a => a.Score == 26);
-
-        foreach (var item in players)
-        {
-            if (isMoonShot)
-            {
-                if (item.Score == 26)
-                {
-                    item.Score = 0;
-                }
-                else
-                {
-                    item.Score = 13;
-                }
-            }
-
-            item.SetTotalScore();
-        }
-
         OnDealFinished?.Invoke();
     }
 
