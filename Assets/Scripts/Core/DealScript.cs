@@ -6,20 +6,24 @@ using UnityEngine;
 
 public class DealScript
 {
-    public delegate void DealFinished();
-    public event DealFinished OnDealFinished;
+    //public delegate void DealFinished();
+    //public event DealFinished OnDealFinished;
 
-    public delegate void TrickFinished(int winningHand);
-    public event TrickFinished OnTrickFinished;
+    //public delegate void TrickFinished(int winningHand);
+    //public event TrickFinished OnTrickFinished;
 
-    public delegate void CardsDealt(bool waitPass);
-    public event CardsDealt OnCardsDealt;
+    //public delegate void CardsDealt(bool waitPass);
+    //public event CardsDealt OnCardsDealt;
 
-    public delegate void CardsPassed();
-    public event CardsPassed OnCardsPassed;
+    //public delegate void CardsPassed();
+    //public event CardsPassed OnCardsPassed;
 
     //public delegate void NextTurn();
     //public event NextTurn OnNextTurn;
+
+    public delegate void Event(EventType eventType);
+    public event Event OnEvent;
+
     public GameState CurrentState { get; private set; }
 
     Dictionary<int, Card> cardsOnDeck;
@@ -135,7 +139,7 @@ public class DealScript
     async void trickFinished()
     {
         await System.Threading.Tasks.Task.Delay(1000);
-        OnTrickFinished?.Invoke(playingIndex);
+        OnEvent?.Invoke(EventType.TrickFinished);
         await System.Threading.Tasks.Task.Delay(1000);
         //players[PlayingIndex].SetTurn(DealInfo, 0);
     }
@@ -143,9 +147,9 @@ public class DealScript
     async void dealFinished()
     {
         await System.Threading.Tasks.Task.Delay(1000);
-        OnTrickFinished?.Invoke(playingIndex);
+        OnEvent?.Invoke(EventType.TrickFinished);
         await System.Threading.Tasks.Task.Delay(1000);
-        OnDealFinished?.Invoke();
+        OnEvent?.Invoke(EventType.DealFinished);
     }
 
     private int EvaluateDeck(out int value)
@@ -213,7 +217,7 @@ public class DealScript
 
     public void PassingCardsDone()
     {
-        OnCardsPassed?.Invoke();
+        OnEvent?.Invoke(EventType.CardsPassed);
         GetStartingIndex();
         //players[playingIndex].SetTurn(DealInfo, 0);
     }
@@ -284,7 +288,8 @@ public class DealScript
 
         Deal();
 
-        OnCardsDealt?.Invoke(CurrentState != GameState.DontPass);
+        //OnCardsDealt?.Invoke(CurrentState != GameState.DontPass);
+        OnEvent?.Invoke(EventType.CardsDealt);
 
         DealInfo = new DealInfo();
 
@@ -302,6 +307,14 @@ public class DealScript
             }
         }
     }
+}
+
+public enum EventType
+{
+    CardsDealt,
+    CardsPassed,
+    TrickFinished,
+    DealFinished
 }
 
 public enum GameState
