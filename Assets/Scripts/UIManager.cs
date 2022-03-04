@@ -31,12 +31,13 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
         game = GameScript.Instance;
 
-        game.OnCardsReady += Deal_OnCardsDealt;
-        game.OnTrickFinished += Deal_OnTrickFinished;
+        game.OnCardsReady += Game_OnCardsDealt;
+        game.OnTrickFinished += Game_OnTrickFinished;
         game.OnStartPlaying += Game_OnStartPlaying;
-        game.OnDealFinished += Deal_OnDealFinished;
+        game.OnDealFinished += Game_OnDealFinished;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
     }
@@ -46,7 +47,7 @@ public class UIManager : MonoBehaviour
         cardsUIManager.UpdateCards(mainPlayer);
     }
 
-    private void Deal_OnDealFinished()
+    private void Game_OnDealFinished()
     {
         Player[] players = game.Players;
         players = players.OrderBy(a => a.TotalScore).ToArray();
@@ -65,7 +66,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    private void Deal_OnTrickFinished(int winningHand)
+    private void Game_OnTrickFinished(int winningHand)
     {
         int index = CorrectIndex(winningHand);
 
@@ -74,7 +75,7 @@ public class UIManager : MonoBehaviour
             int correctIndex = i + game.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetScore(i,game.Players[correctIndex].Score);
+            cardsUIManager.SetScore(i,game.Players[correctIndex]);
         }
 
         cardsUIManager.RemoveCards(index);
@@ -111,7 +112,7 @@ public class UIManager : MonoBehaviour
 
     bool once;
 
-    private void Deal_OnCardsDealt()//bool waitPass)
+    private void Game_OnCardsDealt()//bool waitPass)
     {
         Debug("myIndex: " + game.MainPlayerIndex);
 

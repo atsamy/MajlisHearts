@@ -142,9 +142,9 @@ public class CardsUIManager : MonoBehaviour
 
     }
 
-    public void SetScore(int index, int score)
+    public void SetScore(int index, Player player)
     {
-        Scores[index].text = score.ToString();
+        Scores[index].text = player.Name + " " + player.Score.ToString();
     }
 
     public void ResetScores()

@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback
 {
+    public float TurnDuration = 10;
 
     PunTurnManager turnManager;
     int passedCardsNo;
@@ -24,8 +25,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         turnManager = gameObject.AddComponent<PunTurnManager>();
         turnManager.TurnManagerListener = this;
-
-        Deal.OnDealFinished += Deal_OnDealFinished;
+        turnManager.TurnDuration = TurnDuration;
 
         passedCardsNo = 0;
         Players = new Player[4];
@@ -39,14 +39,17 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     myPlayer = new MainPlayer(i);
                     Players[i] = myPlayer;
+                    Players[i].Name = PhotonNetwork.PlayerList[i].NickName;
                 }
                 else if (playerNumbers > i)
                 {
                     Players[i] = new Player(i);
+                    Players[i].Name = PhotonNetwork.PlayerList[i].NickName;
                 }
                 else
                 {
                     Players[i] = new AIPlayer(i);
+                    Players[i].Name = "AI " + i;
                 }
             }
             else
@@ -61,31 +64,58 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     Players[i] = new Player(i);
                 }
+
+                if (i < PhotonNetwork.PlayerList.Length)
+                {
+                    Players[i].Name = PhotonNetwork.PlayerList[i].NickName;
+                }
+                else
+                {
+                    Players[i].Name = "AI " + i;
+                }
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
 
-            Players[i].Name = "Player " + (i + 1);
+            //Players[i].Name = "Player " + (i + 1);
         }
 
         Deal.SetPlayers(Players);
-        Deal.OnCardsDealt += Deal_OnCardsDealt;
-        Deal.OnTrickFinished += DealTrickFinished;
-        //Deal.OnNextTurn += Deal_OnNextTurn;
+
+        Deal.OnEvent += Deal_OnEvent;
 
         if (PhotonNetwork.IsMasterClient)
             StartGame();
-
-        //UIManager.Instance.Debug("player: " + PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
-    //private void Deal_OnNextTurn()
-    //{
-    //    //throw new NotImplementedException();
+    private void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
 
-    //    //turnManager.BeginTurn();
-    //}
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    private void Deal_OnEvent(EventType eventType)
+    {
+        switch (eventType)
+        {
+            case EventType.CardsDealt:
+                Deal_OnCardsDealt();
+                break;
+            case EventType.CardsPassed:
+                break;
+            case EventType.TrickFinished:
+                DealTrickFinished(Deal.PlayingIndex);
+                break;
+            case EventType.DealFinished:
+                Deal_OnDealFinished();
+                break;
+        }
+    }
 
     private void DealTrickFinished(int winningHand)
     {
@@ -95,7 +125,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         PhotonNetwork.RaiseEvent(2, winningHand, raiseEventOptions, SendOptions.SendReliable);
     }
 
-    private void Deal_OnCardsDealt(bool waitPass)
+    private void Deal_OnCardsDealt()
     {
 
         for (int i = 1; i < playerNumbers; i++)
@@ -181,21 +211,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             PhotonNetwork.RaiseEvent(2, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
         }
-    }
-
-    private void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
-    private void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
-
-    public void SendCards(List<Card> cards)
-    {
-
     }
 
     public void OnPlayerMove(Photon.Realtime.Player player, int turn, object move)
