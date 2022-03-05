@@ -217,8 +217,8 @@ public class DealScript
 
     public void PassingCardsDone()
     {
-        OnEvent?.Invoke(EventType.CardsPassed);
         GetStartingIndex();
+        OnEvent?.Invoke(EventType.CardsPassed);
         //players[playingIndex].SetTurn(DealInfo, 0);
     }
 

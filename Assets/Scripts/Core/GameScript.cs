@@ -68,6 +68,7 @@ public class GameScript : MonoBehaviour
                 break;
             case EventType.CardsPassed:
                 SetStartPlaying();
+                Deal.SetTurn();
                 break;
             case EventType.TrickFinished:
                 Deal_OnTrickFinished(Deal.PlayingIndex);

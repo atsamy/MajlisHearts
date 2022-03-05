@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-1)]
 public class GameSelector : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (GameManager.Instance.IsMultiGame)
         {
-            GetComponent<MultiGameScript>().enabled = true;
+            gameObject.AddComponent<MultiGameScript>().enabled = true;
         }
         else
         {
-            GetComponent<GameScript>().enabled = true;
+            gameObject.AddComponent<GameScript>().enabled = true;
         }
     }
 }
