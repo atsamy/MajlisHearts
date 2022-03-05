@@ -29,11 +29,13 @@ public class GameScript : MonoBehaviour
     {
         Instance = this;
         Deal = new DealScript();
-        Deal.OnEvent += Deal_OnEvent;
+        
     }
 
     void Start()
     {
+        Deal.OnEvent += Deal_OnEvent;
+
         Players = new Player[4];
 
         for (int i = 0; i < 4; i++)

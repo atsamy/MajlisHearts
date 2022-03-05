@@ -91,8 +91,34 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         Deal.OnEvent += Deal_OnEvent;
 
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash.Add("LoadedGame",1);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
         if (PhotonNetwork.IsMasterClient)
-            StartGame();
+            StartCoroutine(WaitForOthers());
+    }
+
+    IEnumerator WaitForOthers()
+    {
+        bool waitForPlayers = true;
+        
+        while (waitForPlayers)
+        {
+            waitForPlayers = false;
+            foreach (var item in PhotonNetwork.PlayerList)
+            {
+                if (!item.CustomProperties.ContainsKey("LoadedGame"))
+                {
+                    waitForPlayers = true;
+                    break;
+                }
+            }
+
+            yield return null;
+        }
+
+        StartGame();
     }
 
     private void OnEnable()

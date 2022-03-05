@@ -45,11 +45,11 @@ public class AIPlayer : Player
             {
                 specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).OrderBy(a => a.Rank).ToList();
 
-                if (OwnedCards.Contains(Card.QueenOfSpades))
+                if (OwnedCards.Contains(Card.QueenOfSpades) && info.roundNumber != 0)
                 {
                     ChooseCard(Card.QueenOfSpades);
                 }
-                else if (specificShape.Count > 0)
+                else if (specificShape.Count > 0 && info.roundNumber != 0)
                 {
                     ChooseCard(specificShape.Last());
                 }
