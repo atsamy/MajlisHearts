@@ -45,18 +45,26 @@ public class UIManager : MonoBehaviour
     private void Game_OnStartPlaying()
     {
         cardsUIManager.UpdateCards(mainPlayer);
+        SetScore();
     }
 
-    private void Game_OnDealFinished()
+    private void Game_OnDealFinished(bool hostPlayer)
     {
         Player[] players = game.Players;
         players = players.OrderBy(a => a.TotalScore).ToArray();
 
-        DealFinishedPanel.Show(players,() =>
+        if (hostPlayer)
         {
-            game.Deal.StartNewGame();
-        });
-
+            DealFinishedPanel.Show(players, () =>
+             {
+                 game.StartNextDeal();
+             });
+        }
+        else
+        {
+            DealFinishedPanel.Show(players, null);
+        }   
+        
         Scores.SetActive(false);
     }
 
@@ -68,17 +76,21 @@ public class UIManager : MonoBehaviour
 
     private void Game_OnTrickFinished(int winningHand)
     {
-        int index = CorrectIndex(winningHand);
+        SetScore();
 
+        int index = CorrectIndex(winningHand);
+        cardsUIManager.RemoveCards(index);
+    }
+
+    public void SetScore()
+    {
         for (int i = 0; i < game.Players.Length; i++)
         {
             int correctIndex = i + game.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetScore(i,game.Players[correctIndex]);
+            cardsUIManager.SetScore(i, game.Players[correctIndex]);
         }
-
-        cardsUIManager.RemoveCards(index);
     }
 
     private int CorrectIndex(int index)
@@ -126,7 +138,9 @@ public class UIManager : MonoBehaviour
             SetPlayers(game.Players);
             once = true;
         }
-        cardsUIManager.ResetScores();
+        //cardsUIManager.ResetScores();
+        SetScore();
+
         cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 
@@ -137,13 +151,14 @@ public class UIManager : MonoBehaviour
 
     private void MainPlayer_OnWaitPassCards()
     {
+        DealFinishedPanel.gameObject.SetActive(false);
         passCardsPanel.SetActive(true);
-        PassText.text = game.Deal.CurrentState.ToString();
+        PassText.text = "Pass Right";
     }
 
-    public void PlayerTurn()
+    public void PlayerTurn(DealInfo info)
     {
-        cardsUIManager.SetPlayableCards(game.Deal.DealInfo, mainPlayer);
+        cardsUIManager.SetPlayableCards(info, mainPlayer);
     }
 
     public void OnDisable()

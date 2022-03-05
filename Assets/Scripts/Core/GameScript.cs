@@ -15,10 +15,10 @@ public class GameScript : MonoBehaviour
     public delegate void TrickFinished(int winningHand);
     public event TrickFinished OnTrickFinished;
 
-    public delegate void DealFinished();
+    public delegate void DealFinished(bool hostPlayer);
     public event DealFinished OnDealFinished;
 
-    public DealScript Deal;
+    protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
     
@@ -29,12 +29,11 @@ public class GameScript : MonoBehaviour
     {
         Instance = this;
         Deal = new DealScript();
+        Deal.OnEvent += Deal_OnEvent;
     }
 
     void Start()
     {
-        Deal.OnEvent += Deal_OnEvent;
-
         Players = new Player[4];
 
         for (int i = 0; i < 4; i++)
@@ -55,12 +54,17 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
+    public virtual void StartNextDeal()
+    {
+        Deal.StartNewGame();
+    }
+
     private void Deal_OnEvent(EventType eventType)
     {
         switch (eventType)
         {
             case EventType.CardsDealt:
-                Deal_OnCardsDealt();
+                SetCardsReady();
                 break;
             case EventType.CardsPassed:
                 SetStartPlaying();
@@ -82,11 +86,6 @@ public class GameScript : MonoBehaviour
         OnTrickFinished?.Invoke(winningHand);
     }
 
-    private void Deal_OnCardsDealt()
-    {
-        SetCardsReady();
-    }
-
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         Deal.GameScript_OnCardReady(playerIndex, card);
@@ -99,13 +98,13 @@ public class GameScript : MonoBehaviour
 
     private void Deal_OnDealFinished()
     {
-        SetDealFinished();
+        SetDealFinished(true);
     }
 
-    public void SetDealFinished()
+    public void SetDealFinished(bool hostPlayer)
     {
         SetFinalScore();
-        OnDealFinished?.Invoke();
+        OnDealFinished?.Invoke(hostPlayer);
     }
 
     public void SetStartPlaying()

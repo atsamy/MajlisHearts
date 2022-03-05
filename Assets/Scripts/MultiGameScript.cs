@@ -20,6 +20,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     int nextIndex;
     int beginIndex;
     int handIndex = 0;
+
+    const int cardsdealtCode = 40;
+    const int trickFinishedCode = 41;
+    const int passCardsCode = 42;
+    const int gameReadyCode = 43;
+    const int dealFinishedCode = 44;
     // Start is called before the first frame update
     void Start()
     {
@@ -101,102 +107,104 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     private void Deal_OnEvent(EventType eventType)
     {
+
         switch (eventType)
         {
             case EventType.CardsDealt:
-                Deal_OnCardsDealt();
+                for (int i = 1; i < playerNumbers; i++)
+                {
+                    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { i + 1 } };
+                    PhotonNetwork.RaiseEvent(cardsdealtCode, Utils.SerializeListOfCards(Players[i].OwnedCards), eventOptionsCards, SendOptions.SendReliable);
+                }
+
+                SetCardsReady();
                 break;
             case EventType.CardsPassed:
                 break;
             case EventType.TrickFinished:
-                DealTrickFinished(Deal.PlayingIndex);
+                SetTrickFinished(Deal.PlayingIndex);
+
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(trickFinishedCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
                 break;
             case EventType.DealFinished:
-                Deal_OnDealFinished();
+                passedCardsNo = 0;
+
+                RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+                PhotonNetwork.RaiseEvent(dealFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
+
+                SetDealFinished(true);
                 break;
         }
-    }
-
-    private void DealTrickFinished(int winningHand)
-    {
-        SetTrickFinished(winningHand);
-
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(2, winningHand, raiseEventOptions, SendOptions.SendReliable);
-    }
-
-    private void Deal_OnCardsDealt()
-    {
-
-        for (int i = 1; i < playerNumbers; i++)
-        {
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { i + 1 } };
-            PhotonNetwork.RaiseEvent(0, Utils.SerializeListOfCards(Players[i].OwnedCards), raiseEventOptions, SendOptions.SendReliable);
-        }
-
-        SetCardsReady();
     }
 
     public void OnEvent(EventData photonEvent)
     {
-        //UIManager.Instance.Debug("event code: " + photonEvent.Code);
-
-        if (photonEvent.Code == 0)
+        switch (photonEvent.Code)
         {
-            List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+            case cardsdealtCode:
+                List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+                
+                myPlayer.Reset();
 
-            foreach (var item in cards)
-            {
-                myPlayer.AddCard(item);
-            }
-
-            SetCardsReady();
-
-            myPlayer.SelectPassCards();
-        }
-        else if (photonEvent.Code == 1)
-        {
-            List<Card> passedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                int recieverIndex = photonEvent.Sender % 4;
-                int senderIndex = photonEvent.Sender - 1;
-
-                if (Players[senderIndex].IsPlayer)
+                foreach (var item in cards)
                 {
-                    Players[senderIndex].PassCards(passedCards);
+                    myPlayer.AddCard(item);
                 }
 
-                Players[recieverIndex].AddPassCards(passedCards);
+                SetCardsReady();
+                myPlayer.SelectPassCards();
+                break;
+            case passCardsCode:
+                List<Card> passedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
 
-                //InrementPassedCards();
-            }
-            else
-            {
-                myPlayer.AddPassCards(passedCards);
-            }
-        }
-        else if (photonEvent.Code == 2)
-        {
-            beginIndex = (int)photonEvent.CustomData;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    int recieverIndex = photonEvent.Sender % 4;
+                    int senderIndex = photonEvent.Sender - 1;
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                if (Deal.DealInfo.roundNumber < 13)
-                    turnManager.BeginTurn();
-            }
-            else
-            {
+                    if (Players[senderIndex].IsPlayer)
+                    {
+                        Players[senderIndex].PassCards(passedCards);
+                    }
+
+                    Players[recieverIndex].AddPassCards(passedCards);
+                }
+                else
+                {
+                    myPlayer.AddPassCards(passedCards);
+                }
+                break;
+            case gameReadyCode:
+                beginIndex = (int)photonEvent.CustomData;
+
+                BeginTurn();
+                SetStartPlaying();
+                break;
+            case trickFinishedCode:
+                beginIndex = (int)photonEvent.CustomData;
+
+                BeginTurn();
                 SetTrickFinished(beginIndex);
-            }
+                break;
+            case dealFinishedCode:
+                if (!PhotonNetwork.IsMasterClient)
+                {
+                    passedCardsNo = 0;
+                    SetDealFinished(false);
+                }
+                break;
+            default:
+                break;
         }
-        else if (photonEvent.Code == 3)
+    }
+
+    private void BeginTurn()
+    {
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (!PhotonNetwork.IsMasterClient)
-            {
-                SetDealFinished();
-            }
+            if (Deal.DealInfo.roundNumber < 13)
+                turnManager.BeginTurn();
         }
     }
 
@@ -209,7 +217,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             Deal.PassingCardsDone();
 
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            PhotonNetwork.RaiseEvent(2, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
         }
     }
 
@@ -253,11 +261,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnTurnBegins(int turn)
     {
-        if (turn == 1)
-        {
-            SetStartPlaying();
-        }
-
         if (!PhotonNetwork.IsMasterClient)
         {
             UIManager.Instance.Debug("begin " + beginIndex + " my " + MainPlayerIndex);
@@ -306,35 +309,31 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         int recieverIndex = (playerIndex + 1) % 4;
 
-        InrementPassedCards();
-
         if (Players[playerIndex].IsPlayer)
         {
+            InrementPassedCards();
             return;
         }
         if (!PhotonNetwork.IsMasterClient)
         {
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
-            PhotonNetwork.RaiseEvent(1, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(passCardsCode, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
+
+            InrementPassedCards();
             return;
         }
 
         if (Players[recieverIndex].IsPlayer)
         {
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { recieverIndex + 1 } };
-            PhotonNetwork.RaiseEvent(1, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(passCardsCode, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
         }
         else
         {
             Players[recieverIndex].AddPassCards(cards);
         }
+
+        InrementPassedCards();
     }
 
-    private void Deal_OnDealFinished()
-    {
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(3, null, raiseEventOptions, SendOptions.SendReliable);
-
-        SetDealFinished();
-    }
 }

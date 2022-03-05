@@ -118,6 +118,17 @@ public class Player
         dealScore = 0;
     }
 
+    public virtual void Reset()
+    {
+        OwnedCards.Clear();
+
+        for (int i = 0; i < 4; i++)
+        {
+            shapeCount[(CardShape)i] = 0;
+        }
+        //shapeCount.Clear();
+    }
+
 }
 
 public enum PlayerState

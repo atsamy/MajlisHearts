@@ -5,7 +5,7 @@ using System.Linq;
 
 public class MainPlayer : Player
 {
-    public delegate void PlayerTurn();
+    public delegate void PlayerTurn(DealInfo info);
     public PlayerTurn OnPlayerTurn;
 
 
@@ -32,7 +32,7 @@ public class MainPlayer : Player
 
     public override void SetTurn(DealInfo info, int hand)
     {
-        OnPlayerTurn?.Invoke();
+        OnPlayerTurn?.Invoke(info);
         base.SetTurn(info, hand);
     }
 
@@ -40,4 +40,10 @@ public class MainPlayer : Player
     {
         OwnedCards = OwnedCards.OrderBy(a => a.Shape).ToList();
     }
+
+    //public override void Reset()
+    //{
+    //    base.Reset();
+    //    PassedCards.Clear();
+    //}
 }

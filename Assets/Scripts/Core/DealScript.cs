@@ -241,20 +241,13 @@ public class DealScript
 
         for (int i = 0; i < players.Length; i++)
         {
+            players[i].Reset();
+
             for (int j = 0; j < 13; j++)
             {
                 int getRandom = Random.Range(0, AllCards.Count);
 
                 players[i].AddCard(AllCards[getRandom]);
-
-                if (playingIndex == -1)
-                {
-                    if (AllCards[getRandom].Shape == CardShape.Club && AllCards[getRandom].Rank == CardRank.Two)
-                    {
-                        playingIndex = i;
-                    }
-                }
-
                 AllCards.RemoveAt(getRandom);
             }
         }
@@ -299,8 +292,6 @@ public class DealScript
         }
         else
         {
-            //OnPassCards?.Invoke();
-
             foreach (var item in players)
             {
                 item.SelectPassCards();

@@ -39,10 +39,10 @@ public class CardsUIManager : MonoBehaviour
 
             playerCardsUI.Last().Set(sprite, card, (card) =>
              {
-                 if (passCards)
-                     AddToPassCards(newCard.GetComponent<CardUI>());
-                 else
-                     mainPlayer.ChooseCard(card);
+                 //if (passCards)
+                 AddToPassCards(newCard.GetComponent<CardUI>());
+                 //else
+                 //    mainPlayer.ChooseCard(card);
              });
 
             playerCardsUI.Last().SetInteractable(passCards);
@@ -119,6 +119,8 @@ public class CardsUIManager : MonoBehaviour
         {
             AddToPassCards(cardUI);
         });
+
+        OrganizeCards();
     }
 
     public void SelectPassCard()
@@ -147,13 +149,13 @@ public class CardsUIManager : MonoBehaviour
         Scores[index].text = player.Name + " " + player.Score.ToString();
     }
 
-    public void ResetScores()
-    {
-        for (int i = 0; i < Scores.Length; i++)
-        {
-            Scores[i].text = "0";
-        }
-    }
+    //public void ResetScores()
+    //{
+    //    for (int i = 0; i < Scores.Length; i++)
+    //    {
+    //        Scores[i].text = "0";
+    //    }
+    //}
 
     public void MainPlayerCard(Card card)
     {

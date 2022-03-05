@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class AIPlayer : Player
 {
-    List<Card> passCards;
+    //List<Card> passCards;
     public AIPlayer(int index) : base(index)
     {
         isPlayer = false;
@@ -98,17 +98,17 @@ public class AIPlayer : Player
 
         weightedCards = weightedCards.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
-        passCards = new List<Card>();
+        List<Card> passCards = new List<Card>();
 
         for (int i = 0; i < 3; i++)
         {
             passCards.Add(weightedCards.ElementAt(i).Key);
         }
 
-        PassCards();
+        PassAICards(passCards);
     }
 
-    async void PassCards()
+    async void PassAICards(List<Card> passCards)
     {
         await Task.Yield();
         PassCards(passCards);
@@ -140,7 +140,6 @@ public class AIPlayer : Player
             return (int)card.Rank * 100 / totalValue;
         }
     }
-
 
     public Card ChooseRiskyCards(DealInfo info)
     {

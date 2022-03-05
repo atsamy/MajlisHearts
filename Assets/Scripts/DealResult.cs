@@ -10,9 +10,11 @@ public class DealResult : MonoBehaviour
     public Text[] PlayerNames;
     public Text[] PlayerScores;
 
+    public GameObject StartButton;
+
     Action PanelClosed;
 
-    public void Show(Player[] players,Action OnPanelClosed)
+    public void Show(Player[] players, Action OnPanelClosed)
     {
         gameObject.SetActive(true);
 
@@ -22,7 +24,10 @@ public class DealResult : MonoBehaviour
             PlayerScores[i].text = players[i].TotalScore.ToString();
         }
 
+
         this.PanelClosed = OnPanelClosed;
+
+        StartButton.SetActive(OnPanelClosed != null);
     }
 
     public void Pressed()
