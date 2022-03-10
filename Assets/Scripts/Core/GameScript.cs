@@ -21,7 +21,7 @@ public class GameScript : MonoBehaviour
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
-    
+
     [HideInInspector]
     public int MainPlayerIndex = 0;
 
@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     {
         Instance = this;
         Deal = new DealScript();
-        
+
     }
 
     void Start()
@@ -47,6 +47,7 @@ public class GameScript : MonoBehaviour
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
+            Players[i].OnDoubleCard += GameScript_OnDoubleCard;
 
             Players[i].Name = "Player " + (i + 1);
         }
@@ -54,6 +55,11 @@ public class GameScript : MonoBehaviour
         Deal.SetPlayers(Players);
 
         StartGame();
+    }
+
+    private void GameScript_OnDoubleCard(Card card, bool value)
+    {
+        Deal.DoubleCard(card, value);
     }
 
     public virtual void StartNextDeal()
@@ -70,6 +76,9 @@ public class GameScript : MonoBehaviour
                 break;
             case EventType.CardsPassed:
                 SetStartPlaying();
+                CheckDoubleCards();
+                break;
+            case EventType.DoubleCardsFinished:
                 Deal.SetTurn();
                 break;
             case EventType.TrickFinished:
@@ -80,6 +89,14 @@ public class GameScript : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    protected void CheckDoubleCards()
+    {
+        foreach (var item in Players)
+        {
+            item.CheckForDoubleCards();
         }
     }
 
@@ -96,7 +113,7 @@ public class GameScript : MonoBehaviour
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
-        Deal.GameScript_OnPassCardsReady(playerIndex,cards);
+        Deal.GameScript_OnPassCardsReady(playerIndex, cards);
     }
 
     private void Deal_OnDealFinished()
@@ -132,21 +149,24 @@ public class GameScript : MonoBehaviour
 
     public void SetFinalScore()
     {
-        bool isMoonShot = Players.Any(a => a.Score == 26);
+        //bool isMoonShot = Players.Any(a => a.Score == 26);
 
         foreach (var item in Players)
         {
-            if (isMoonShot)
-            {
-                if (item.Score == 26)
-                {
-                    item.Score = 0;
-                }
-                else
-                {
-                    item.Score = 13;
-                }
-            }
+            if (!item.DidLead)
+                item.IncrementScore(-15);
+
+            //if (isMoonShot)
+            //{
+            //    if (item.Score == 26)
+            //    {
+            //        item.Score = 0;
+            //    }
+            //    else
+            //    {
+            //        item.Score = 26;
+            //    }
+            //}
 
             item.SetTotalScore();
         }

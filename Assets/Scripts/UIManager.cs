@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     DealResult DealFinishedPanel;
 
+    public DoublePanelScript DoublePanel;
+
     public GameObject Scores;
 
     public Text PassText;
@@ -26,6 +28,11 @@ public class UIManager : MonoBehaviour
     GameScript game;
 
     public DebugCards[] debugCards;
+
+    internal void SetDoubleCard(Card card, bool value)
+    {
+        mainPlayer.SetDoubleCard(card, value);
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -131,6 +138,7 @@ public class UIManager : MonoBehaviour
         mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
         mainPlayer.OnPlayerTurn += PlayerTurn;
         mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
+        mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
 
 
         if (!once)
@@ -142,6 +150,11 @@ public class UIManager : MonoBehaviour
         SetScore();
 
         cardsUIManager.ShowPlayerCards(mainPlayer, true);
+    }
+
+    private void MainPlayer_OnWaitDoubleCards(Card card)
+    {
+        DoublePanel.ShowPanel(card);
     }
 
     internal void Debug(string v)

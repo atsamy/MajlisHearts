@@ -122,23 +122,16 @@ public class AIPlayer : Player
         if (card.Shape == CardShape.Spade)
         {
             return (int)card.Rank * 150 / totalValue;
-            //if (card.Rank >= CardRank.Queen)
-            //{
-            //    return Mathf.Max(0, (4 - shapeCount[CardShape.Spade]) * 100);
-            //}
-            //else
-            //{
-            //    return 0;
-            //}
         }
-        //else if (card.Shape == CardShape.Heart)
-        //{
-        //    return (int)card.Rank * 150 / totalValue;
-        //}
         else
         {
             return (int)card.Rank * 100 / totalValue;
         }
+    }
+
+    protected override void CheckDoubleCards(Card card)
+    {
+        SetDoubleCard(card, false);
     }
 
     public Card ChooseRiskyCards(DealInfo info)

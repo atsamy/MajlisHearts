@@ -26,6 +26,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     const int passCardsCode = 42;
     const int gameReadyCode = 43;
     const int dealFinishedCode = 44;
+    const int doubleCardCode = 45;
+    const int checkDoubleCode = 46;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +85,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
-
+            Players[i].OnDoubleCard += GameScript_OnDoubleCard;
             //Players[i].Name = "Player " + (i + 1);
         }
 
@@ -97,6 +99,19 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(WaitForOthers());
+    }
+
+    private void GameScript_OnDoubleCard(Card card, bool value)
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
+            PhotonNetwork.RaiseEvent(doubleCardCode, Utils.SerializeCardAndvalue(card, value), eventOptionsCards, SendOptions.SendReliable);
+        }
+        else
+        {
+            Deal.DoubleCard(card, value);
+        }
     }
 
     IEnumerator WaitForOthers()
@@ -146,12 +161,18 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 SetCardsReady();
                 break;
             case EventType.CardsPassed:
+                SetStartPlaying();
+                GetDoubleCards();
                 break;
             case EventType.TrickFinished:
                 SetTrickFinished(Deal.PlayingIndex);
 
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                 PhotonNetwork.RaiseEvent(trickFinishedCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
+                break;
+            case EventType.DoubleCardsFinished:
+                RaiseEventOptions eventReadyOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, eventReadyOptions, SendOptions.SendReliable);
                 break;
             case EventType.DealFinished:
                 passedCardsNo = 0;
@@ -204,8 +225,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case gameReadyCode:
                 beginIndex = (int)photonEvent.CustomData;
 
-                BeginTurn();
-                SetStartPlaying();
+                if(PhotonNetwork.IsMasterClient)
+                    BeginTurn();
+                
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
@@ -220,7 +242,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     SetDealFinished(false);
                 }
                 break;
-            default:
+            case doubleCardCode:
+                KeyValuePair<bool,Card> cardValue = Utils.DeSerializeCardAndvalue((int[])photonEvent.CustomData);
+                Deal.DoubleCard(cardValue.Value, cardValue.Key);
+                break;
+            case checkDoubleCode:
+                SetStartPlaying();
+                myPlayer.CheckForDoubleCards();
                 break;
         }
     }
@@ -234,6 +262,25 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
+    private void GetDoubleCards()
+    {
+        for (int i = 0; i < Players.Length; i++)
+        {
+            if (Players[i].IsPlayer)
+            {
+                //if (Players[i].HasCard(Card.QueenOfSpades) || Players[i].HasCard(Card.QueenOfSpades))
+                //{
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { i + 1 } };
+                PhotonNetwork.RaiseEvent(checkDoubleCode, null, raiseEventOptions, SendOptions.SendReliable);
+                //}
+            }
+            else
+            {
+                Players[i].CheckForDoubleCards();
+            }
+        }
+    }
+
     private void InrementPassedCards()
     {
         passedCardsNo++;
@@ -241,9 +288,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         if (passedCardsNo == 4)
         {
             Deal.PassingCardsDone();
-
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
         }
     }
 
@@ -289,7 +333,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            UIManager.Instance.Debug("begin " + beginIndex + " my " + MainPlayerIndex);
+            //UIManager.Instance.Debug("begin " + beginIndex + " my " + MainPlayerIndex);
 
             if (beginIndex == MainPlayerIndex)
             {

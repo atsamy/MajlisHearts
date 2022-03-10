@@ -12,6 +12,9 @@ public class MainPlayer : Player
     public delegate void WaitPassCards();
     public event WaitPassCards OnWaitPassCards;
 
+    public delegate void WaitDoubleCards(Card card);
+    public event WaitDoubleCards OnWaitDoubleCards;
+
     public List<Card> PassedCards { get; private set; } 
 
     public MainPlayer(int index) : base(index)
@@ -39,6 +42,11 @@ public class MainPlayer : Player
     public void OrderCards()
     {
         OwnedCards = OwnedCards.OrderBy(a => a.Shape).ToList();
+    }
+
+    protected override void CheckDoubleCards(Card card)
+    {
+        OnWaitDoubleCards?.Invoke(card);
     }
 
     //public override void Reset()

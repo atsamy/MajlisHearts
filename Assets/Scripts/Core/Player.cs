@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class Player
 {
@@ -26,9 +27,15 @@ public class Player
     public delegate void CardReady(int playerIndex, Card card);
     public event CardReady OnCardReady;
 
+    public delegate void DoubleCard(Card card, bool value);
+    public DoubleCard OnDoubleCard;
+
     protected bool isPlayer;
 
+    public bool DidLead { get; private set; }
+
     public bool IsPlayer { get => isPlayer; }
+
     public Player(int index)
     {
         shapeCount = new Dictionary<CardShape, int>();
@@ -44,6 +51,19 @@ public class Player
         isPlayer = true;
     }
 
+    public bool HasCard(Card card)
+    {
+        return OwnedCards.Contains(card);
+    }
+
+    public void CheckForDoubleCards()
+    {
+        if (HasCard(Card.QueenOfSpades))
+            CheckDoubleCards(Card.QueenOfSpades);
+        if (HasCard(Card.TenOfDiamonds))
+            CheckDoubleCards(Card.TenOfDiamonds);
+    }
+
     public int GetShapeCount(CardShape shape)
     {
         return shapeCount[shape];
@@ -53,7 +73,7 @@ public class Player
     {
         OwnedCards.Remove(card);
         shapeCount[card.Shape]--;
-        OnCardReady?.Invoke(index,card);
+        ShowCard(card);
     }
 
     public void ShowCard(Card card)
@@ -75,6 +95,16 @@ public class Player
     public virtual void SelectPassCards()
     {
 
+    }
+
+    protected virtual void CheckDoubleCards(Card card)
+    {
+
+    }
+
+    public void SetDoubleCard(Card card, bool value)
+    {
+        OnDoubleCard?.Invoke(card,value);
     }
 
     public virtual void SetTurn(DealInfo info, int hand)
@@ -104,6 +134,7 @@ public class Player
 
     public void IncrementScore(int score)
     {
+        DidLead = true;
         dealScore += score;
     }
 
@@ -115,6 +146,7 @@ public class Player
 
     public virtual void Reset()
     {
+        DidLead = false;
         OwnedCards.Clear();
 
         for (int i = 0; i < 4; i++)
