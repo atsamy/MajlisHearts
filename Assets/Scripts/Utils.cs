@@ -61,19 +61,21 @@ public static class Utils
         return new KeyValuePair<int, Card>(data[2], new Card((CardShape)data[1], (CardRank)data[0]));
     }
 
-    public static int[] SerializeCardAndvalue(Card card, bool value)
+    public static int[] SerializeCardValueAndIndex(Card card, bool value,int index)
     {
-        int[] cardSerialized = new int[3];
+        int[] cardSerialized = new int[4];
 
         cardSerialized[0] = (int)card.Rank;
         cardSerialized[1] = (int)card.Shape;
         cardSerialized[2] = value ? 1 : 0;
+        cardSerialized[3] = index;
 
         return cardSerialized;
     }
 
-    public static KeyValuePair<bool, Card> DeSerializeCardAndvalue(int[] data)
+    public static KeyValuePair<bool, Card> DeSerializeCardvalueAndIndex(int[] data, out int index)
     {
+        index = data[3];
         return new KeyValuePair<bool, Card>((data[2] == 1), new Card((CardShape)data[1], (CardRank)data[0]));
     }
 }

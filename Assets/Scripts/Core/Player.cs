@@ -27,7 +27,7 @@ public class Player
     public delegate void CardReady(int playerIndex, Card card);
     public event CardReady OnCardReady;
 
-    public delegate void DoubleCard(Card card, bool value);
+    public delegate void DoubleCard(Card card, bool value,int playerIndex);
     public DoubleCard OnDoubleCard;
 
     protected bool isPlayer;
@@ -104,7 +104,7 @@ public class Player
 
     public void SetDoubleCard(Card card, bool value)
     {
-        OnDoubleCard?.Invoke(card,value);
+        OnDoubleCard?.Invoke(card,value,index);
     }
 
     public virtual void SetTurn(DealInfo info, int hand)

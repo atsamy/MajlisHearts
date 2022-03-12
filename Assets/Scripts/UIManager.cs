@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     GameObject passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
+    [SerializeField]
+    GameObject waitingPanel;
 
     public DoublePanelScript DoublePanel;
 
@@ -29,8 +31,13 @@ public class UIManager : MonoBehaviour
 
     public DebugCards[] debugCards;
 
+    int doubleCardCount;
+
     internal void SetDoubleCard(Card card, bool value)
     {
+        if (doubleCardCount == 1)
+            waitingPanel.SetActive(true);
+
         mainPlayer.SetDoubleCard(card, value);
     }
 
@@ -38,21 +45,39 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
+        doubleCardCount = 0;
         game = GameScript.Instance;
 
         game.OnCardsReady += Game_OnCardsDealt;
         game.OnTrickFinished += Game_OnTrickFinished;
         game.OnStartPlaying += Game_OnStartPlaying;
+        game.OnCardsPassed += CardsPassed;
         game.OnDealFinished += Game_OnDealFinished;
+        game.OnCardDoubled += Game_OnCardDoubled;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
     }
 
+    private void Game_OnCardDoubled(Card card, int playerIndex)
+    {
+        int index = CorrectIndex(playerIndex);
+        cardsUIManager.AddDoubledCard(card, index);
+    }
+
     private void Game_OnStartPlaying()
     {
-        cardsUIManager.UpdateCards(mainPlayer);
+        waitingPanel.SetActive(false);
         SetScore();
+    }
+
+    private void CardsPassed()
+    {
+        cardsUIManager.UpdateCards(mainPlayer);
+    }
+
+    private void CardDoubled(Card card,int playerIndex)
+    {
+
     }
 
     private void Game_OnDealFinished(bool hostPlayer)
@@ -70,12 +95,12 @@ public class UIManager : MonoBehaviour
         else
         {
             DealFinishedPanel.Show(players, null);
-        }   
-        
+        }
+        doubleCardCount = 0;
         Scores.SetActive(false);
     }
 
-    public void AddDebugWeight(int playerIndex,Card card,int Weight)
+    public void AddDebugWeight(int playerIndex, Card card, int Weight)
     {
         debugCards[playerIndex].ShowWeight(card, Weight);
     }
@@ -154,6 +179,8 @@ public class UIManager : MonoBehaviour
 
     private void MainPlayer_OnWaitDoubleCards(Card card)
     {
+        doubleCardCount++;
+        waitingPanel.SetActive(false);
         DoublePanel.ShowPanel(card);
     }
 
@@ -185,6 +212,7 @@ public class UIManager : MonoBehaviour
         passCardsPanel.SetActive(false);
         cardsUIManager.RemovePassedCards();
 
+        waitingPanel.SetActive(true);
         //for (int i = 1; i < 4; i++)
         //{
         //    debugCards[i - 1].UpdateCards(game.Players[i].OwnedCards);

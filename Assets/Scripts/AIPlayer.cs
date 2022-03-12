@@ -49,6 +49,10 @@ public class AIPlayer : Player
                 {
                     ChooseCard(Card.QueenOfSpades);
                 }
+                else if (OwnedCards.Contains(Card.TenOfDiamonds) && info.roundNumber != 0)
+                {
+                    ChooseCard(Card.TenOfDiamonds);
+                }
                 else if (specificShape.Count > 0 && info.roundNumber != 0)
                 {
                     ChooseCard(specificShape.Last());
@@ -122,6 +126,10 @@ public class AIPlayer : Player
         if (card.Shape == CardShape.Spade)
         {
             return (int)card.Rank * 150 / totalValue;
+        }
+        else if (card.Shape == CardShape.Diamond)
+        {
+            return (int)card.Rank * 120 / totalValue;
         }
         else
         {
@@ -268,11 +276,19 @@ public class AIPlayer : Player
                 {
                     avoidWeight += 100;
                 }
+                else if (item.IsTenOfDiamonds)
+                {
+                    avoidWeight += 100;
+                }
             }
         }
         else
         {
             if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
+            {
+                avoidWeight += 100;
+            }
+            else if (info.TrickShape == CardShape.Diamond && !info.TenOfDiamonds)
             {
                 avoidWeight += 100;
             }

@@ -13,6 +13,7 @@ public class CardsUIManager : MonoBehaviour
     public Transform CardsHolder;
     public Transform DeckCards;
     public Transform passCardsHolder;
+    public Transform DoubleCardHolder;
 
     //Sprite[] cardSprites;
 
@@ -60,6 +61,15 @@ public class CardsUIManager : MonoBehaviour
         {
             playerCardsUI[i].transform.SetSiblingIndex(i);
         }
+    }
+
+    internal void AddDoubledCard(Card card, int index)
+    {
+        GameObject doubleCard = new GameObject();
+        doubleCard.AddComponent<Image>().sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
+        //GameObject newCard = Instantiate(playerCard, DoubleCardHolder.GetChild(index));
+        //newCard.GetComponent<Image>().sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
+        doubleCard.transform.parent = DoubleCardHolder.GetChild(index);
     }
 
     internal void UpdateCards(MainPlayer mainPlayer)

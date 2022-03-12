@@ -9,6 +9,9 @@ public class GameScript : MonoBehaviour
     public delegate void CardsReady();
     public event CardsReady OnCardsReady;
 
+    public delegate void CardsPassed();
+    public event CardsPassed OnCardsPassed;
+
     public delegate void StartPlaying();
     public event StartPlaying OnStartPlaying;
 
@@ -17,6 +20,9 @@ public class GameScript : MonoBehaviour
 
     public delegate void DealFinished(bool hostPlayer);
     public event DealFinished OnDealFinished;
+
+    public delegate void CardDoubled(Card card, int playerIndex);
+    public event CardDoubled OnCardDoubled;
 
     protected DealScript Deal;
     public static GameScript Instance;
@@ -57,9 +63,19 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
-    private void GameScript_OnDoubleCard(Card card, bool value)
+    private void GameScript_OnDoubleCard(Card card, bool value,int playerIndex)
     {
         Deal.DoubleCard(card, value);
+
+        SetCardDoubled(card, value, playerIndex);
+    }
+
+    public void SetCardDoubled(Card card, bool value, int playerIndex)
+    {
+        if (value)
+        {
+            OnCardDoubled?.Invoke(card, playerIndex);
+        }
     }
 
     public virtual void StartNextDeal()
@@ -75,10 +91,11 @@ public class GameScript : MonoBehaviour
                 SetCardsReady();
                 break;
             case EventType.CardsPassed:
-                SetStartPlaying();
+                SetCardsPassed();
                 CheckDoubleCards();
                 break;
             case EventType.DoubleCardsFinished:
+                SetStartGame();
                 Deal.SetTurn();
                 break;
             case EventType.TrickFinished:
@@ -127,7 +144,12 @@ public class GameScript : MonoBehaviour
         OnDealFinished?.Invoke(hostPlayer);
     }
 
-    public void SetStartPlaying()
+    public void SetCardsPassed()
+    {
+        OnCardsPassed?.Invoke();
+    }
+
+    public void SetStartGame()
     {
         OnStartPlaying?.Invoke();
     }

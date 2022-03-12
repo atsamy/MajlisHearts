@@ -101,17 +101,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             StartCoroutine(WaitForOthers());
     }
 
-    private void GameScript_OnDoubleCard(Card card, bool value)
+    private void GameScript_OnDoubleCard(Card card, bool value,int index)
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-            PhotonNetwork.RaiseEvent(doubleCardCode, Utils.SerializeCardAndvalue(card, value), eventOptionsCards, SendOptions.SendReliable);
-        }
-        else
-        {
-            Deal.DoubleCard(card, value);
-        }
+        RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(doubleCardCode, Utils.SerializeCardValueAndIndex(card, value,index), eventOptionsCards, SendOptions.SendReliable);
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    Deal.DoubleCard(card, value);
+        //}
     }
 
     IEnumerator WaitForOthers()
@@ -161,7 +159,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 SetCardsReady();
                 break;
             case EventType.CardsPassed:
-                SetStartPlaying();
+                SetCardsPassed();
                 GetDoubleCards();
                 break;
             case EventType.TrickFinished:
@@ -171,8 +169,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 PhotonNetwork.RaiseEvent(trickFinishedCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
                 break;
             case EventType.DoubleCardsFinished:
-                RaiseEventOptions eventReadyOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, eventReadyOptions, SendOptions.SendReliable);
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    RaiseEventOptions eventReadyOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, eventReadyOptions, SendOptions.SendReliable);
+                }
                 break;
             case EventType.DealFinished:
                 passedCardsNo = 0;
@@ -225,6 +226,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case gameReadyCode:
                 beginIndex = (int)photonEvent.CustomData;
 
+                SetStartGame();
+
                 if(PhotonNetwork.IsMasterClient)
                     BeginTurn();
                 
@@ -243,11 +246,14 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 break;
             case doubleCardCode:
-                KeyValuePair<bool,Card> cardValue = Utils.DeSerializeCardAndvalue((int[])photonEvent.CustomData);
+                int playerIndex;
+                KeyValuePair<bool,Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData,out playerIndex);
                 Deal.DoubleCard(cardValue.Value, cardValue.Key);
+
+                SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
             case checkDoubleCode:
-                SetStartPlaying();
+                SetCardsPassed();
                 myPlayer.CheckForDoubleCards();
                 break;
         }
