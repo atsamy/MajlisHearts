@@ -359,7 +359,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnTurnTimeEnds(int turn)
     {
-
+        if (nextIndex == MainPlayerIndex)
+        {
+            myPlayer.ForcePlay();
+        }
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)

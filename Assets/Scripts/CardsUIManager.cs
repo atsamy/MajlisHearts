@@ -15,6 +15,7 @@ public class CardsUIManager : MonoBehaviour
     public Transform passCardsHolder;
     public Transform DoubleCardHolder;
 
+    List<CardUI> playableCards;
     //Sprite[] cardSprites;
 
     List<CardUI> playerCardsUI;
@@ -22,11 +23,18 @@ public class CardsUIManager : MonoBehaviour
 
     public Text[] Scores;
 
+    public void SetMainPlayer(MainPlayer mainPlayer)
+    {
+        mainPlayer.OnForcePlay += () => { playableCards[Random.Range(0, playableCards.Count)].Pressed(); };
+    }
+
     public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
     {
         playerCardsUI = new List<CardUI>();
         selectedPassCards = new List<Card>();
+        playableCards = new List<CardUI>();
 
+        
         //cardSprites = Resources.LoadAll<Sprite>("Cards/classic-playing-cards");
 
         for (int i = 0; i < 13; i++)
@@ -238,12 +246,24 @@ public class CardsUIManager : MonoBehaviour
 
     public void SetPlayableCards(DealInfo info, Player player)
     {
+        playableCards.Clear();
+
         foreach (var item in playerCardsUI)
         {
             print(item.CardInfo.Rank + " " + item.CardInfo.Shape);
-            item.SetInteractable(checkIfPlayable(item.CardInfo, info, player));
+
+            if (checkIfPlayable(item.CardInfo, info, player))
+            {
+                playableCards.Add(item);
+                item.SetInteractable(true);
+            }
+            else
+            {
+                item.SetInteractable(false);
+            }
         }
     }
+
 
     public void DisableAllCards()
     {

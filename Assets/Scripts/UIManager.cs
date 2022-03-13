@@ -156,18 +156,18 @@ public class UIManager : MonoBehaviour
 
     bool once;
 
+
+
     private void Game_OnCardsDealt()//bool waitPass)
     {
-        Debug("myIndex: " + game.MainPlayerIndex);
-
-        mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
-        mainPlayer.OnPlayerTurn += PlayerTurn;
-        mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
-        mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-
-
         if (!once)
         {
+            mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
+            mainPlayer.OnPlayerTurn += PlayerTurn;
+            mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
+            mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
+            cardsUIManager.SetMainPlayer(mainPlayer);
+
             SetPlayers(game.Players);
             once = true;
         }
