@@ -147,14 +147,14 @@ public class DealScript
             playingIndex %= 4;
 
             //OnNextTurn?.Invoke();
-            players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+            players[playingIndex].SetTurn(DealInfo);
         }
     }
 
     public void SetTurn()
     {
         if (DealInfo.roundNumber < 13)
-            players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+            players[playingIndex].SetTurn(DealInfo);
     }
 
     async void trickFinished()
@@ -311,7 +311,7 @@ public class DealScript
 
         if (CurrentState == GameState.DontPass)
         {
-            players[playingIndex].SetTurn(DealInfo, 0);
+            players[playingIndex].SetTurn(DealInfo);
         }
         else
         {

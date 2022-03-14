@@ -9,19 +9,18 @@ using UnityEngine;
 
 public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback
 {
-    public float TurnDuration = 10;
+    public float TurnDuration = 40;
 
     PunTurnManager turnManager;
     int passedCardsNo;
     int playerNumbers;
-    MainPlayer myPlayer;
 
     int lastIndex;
     int nextIndex;
     int beginIndex;
-    int handIndex = 0;
+    //int handIndex = 0;
 
-    const int cardsdealtCode = 40;
+    const int cardsDealtCode = 40;
     const int trickFinishedCode = 41;
     const int passCardsCode = 42;
     const int gameReadyCode = 43;
@@ -86,8 +85,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             Players[i].OnDoubleCard += GameScript_OnDoubleCard;
+
+             
             //Players[i].Name = "Player " + (i + 1);
         }
+
+        myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         Deal.SetPlayers(Players);
 
@@ -99,6 +102,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(WaitForOthers());
+    }
+
+    private void MainPlayerTurn(DealInfo info)
+    {
+        playerTimer = StartCoroutine(StartTimer());
     }
 
     private void GameScript_OnDoubleCard(Card card, bool value,int index)
@@ -153,7 +161,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 for (int i = 1; i < playerNumbers; i++)
                 {
                     RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { i + 1 } };
-                    PhotonNetwork.RaiseEvent(cardsdealtCode, Utils.SerializeListOfCards(Players[i].OwnedCards), eventOptionsCards, SendOptions.SendReliable);
+                    PhotonNetwork.RaiseEvent(cardsDealtCode, Utils.SerializeListOfCards(Players[i].OwnedCards), eventOptionsCards, SendOptions.SendReliable);
                 }
 
                 SetCardsReady();
@@ -190,7 +198,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         switch (photonEvent.Code)
         {
-            case cardsdealtCode:
+            case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 
                 myPlayer.Reset();
@@ -313,7 +321,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         lastIndex = hand.Key;
         nextIndex = (lastIndex + 1) % 4;
-        handIndex++;
+        //handIndex++;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -330,7 +338,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
-                myPlayer.SetTurn(Deal.DealInfo, handIndex);
+                myPlayer.SetTurn(Deal.DealInfo);
             }
         }
     }
@@ -343,7 +351,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (beginIndex == MainPlayerIndex)
             {
-                myPlayer.SetTurn(Deal.DealInfo, 0);
+                myPlayer.SetTurn(Deal.DealInfo);
             }
         }
         else if (!Players[beginIndex].IsPlayer)
@@ -359,16 +367,19 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnTurnTimeEnds(int turn)
     {
-        if (nextIndex == MainPlayerIndex)
-        {
-            myPlayer.ForcePlay();
-        }
+        //if (nextIndex == MainPlayerIndex)
+        //{
+        //    myPlayer.ForcePlay();
+        //}
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         int finishIndex = beginIndex - 1;
         finishIndex = (finishIndex < 0 ? 3 : finishIndex);
+
+        if (playerIndex == MainPlayerIndex)
+            StopCoroutine(playerTimer);
 
         if (PhotonNetwork.IsMasterClient)
         {

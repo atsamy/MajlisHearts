@@ -12,14 +12,16 @@ public class AIPlayer : Player
         isPlayer = false;
     }
 
-    public override void SetTurn(DealInfo info, int hand)
+    public override void SetTurn(DealInfo info)
     {
-        playCard(info, hand);
+        playCard(info);
     }
 
-    async void playCard(DealInfo info, int hand)
+    async void playCard(DealInfo info)
     {
         await System.Threading.Tasks.Task.Delay(1000);
+
+        int hand = info.CardsOntable.Count;
 
         if (hand == 0 && info.roundNumber == 0)
         {

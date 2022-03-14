@@ -37,10 +37,10 @@ public class MainPlayer : Player
         base.AddPassCards(cards);
     }
 
-    public override void SetTurn(DealInfo info, int hand)
+    public override void SetTurn(DealInfo info)
     {
         OnPlayerTurn?.Invoke(info);
-        base.SetTurn(info, hand);
+        base.SetTurn(info);
     }
 
     public void OrderCards()
@@ -57,7 +57,6 @@ public class MainPlayer : Player
     {
         OnForcePlay?.Invoke();
     }
-
     //public override void Reset()
     //{
     //    base.Reset();

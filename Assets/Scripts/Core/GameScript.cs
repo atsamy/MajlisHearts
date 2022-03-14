@@ -29,6 +29,10 @@ public class GameScript : MonoBehaviour
     public static GameScript Instance;
     public Player[] Players;
 
+    protected MainPlayer myPlayer;
+
+    protected Coroutine playerTimer;
+
     [HideInInspector]
     public int MainPlayerIndex = 0;
 
@@ -58,10 +62,24 @@ public class GameScript : MonoBehaviour
 
             Players[i].Name = "Player " + (i + 1);
         }
+        myPlayer = (MainPlayer)Players[0];
+        myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         Deal.SetPlayers(Players);
 
         StartGame();
+    }
+
+    private void MainPlayerTurn(DealInfo info)
+    {
+        playerTimer = StartCoroutine(StartTimer());
+    }
+
+    protected IEnumerator StartTimer()
+    {
+        yield return new WaitForSeconds(10);
+
+        myPlayer.ForcePlay();
     }
 
     private void GameScript_OnDoubleCard(Card card, bool value,int playerIndex)
@@ -127,6 +145,11 @@ public class GameScript : MonoBehaviour
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         Deal.GameScript_OnCardReady(playerIndex, card);
+
+        if (playerIndex == 0)
+        {
+            StopCoroutine(playerTimer);
+        }
     }
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)

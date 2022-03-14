@@ -107,7 +107,7 @@ public class Player
         OnDoubleCard?.Invoke(card,value,index);
     }
 
-    public virtual void SetTurn(DealInfo info, int hand)
+    public virtual void SetTurn(DealInfo info)
     {
         
     }
