@@ -19,7 +19,7 @@ public class GameScript : MonoBehaviour
     public delegate void TrickFinished(int winningHand);
     public event TrickFinished OnTrickFinished;
 
-    public delegate void DealFinished(bool hostPlayer);
+    public delegate void DealFinished(bool hostPlayer,bool gameFinished);
     public event DealFinished OnDealFinished;
 
     public delegate void CardDoubled(Card card, int playerIndex);
@@ -164,8 +164,8 @@ public class GameScript : MonoBehaviour
 
     public void SetDealFinished(bool hostPlayer)
     {
-        SetFinalScore();
-        OnDealFinished?.Invoke(hostPlayer);
+        bool isFinished = SetFinalScore();
+        OnDealFinished?.Invoke(hostPlayer, isFinished);
     }
 
     public void SetCardsPassed()
@@ -193,8 +193,9 @@ public class GameScript : MonoBehaviour
         Players[index] = player;
     }
 
-    public void SetFinalScore()
+    public bool SetFinalScore()
     {
+        bool isGameOver = false;
         //bool isMoonShot = Players.Any(a => a.Score == 26);
 
         foreach (var item in Players)
@@ -215,7 +216,12 @@ public class GameScript : MonoBehaviour
             //}
 
             item.SetTotalScore();
+
+            if (item.TotalScore >= 100)
+                isGameOver = true;
         }
+
+        return isGameOver;
     }
 
     private void Update()

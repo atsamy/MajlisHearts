@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback
+public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
     public float TurnDuration = 40;
 
@@ -426,4 +426,43 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         InrementPassedCards();
     }
 
+    public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        //throw new NotImplementedException();
+    }
+
+    public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        //throw new NotImplementedException();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            int index = otherPlayer.ActorNumber - 1;
+
+            Player oldPlayer = Players[index];
+
+            AIPlayer aiPlayer = new AIPlayer(index);
+            Players[index] = aiPlayer;
+            aiPlayer.MergeFromPlayer(oldPlayer);
+
+            if (nextIndex == index)
+            {
+                aiPlayer.SetTurn(Deal.DealInfo);
+            }
+        }
+    }
+
+    public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        //throw new NotImplementedException();
+    }
+
+    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        //throw new NotImplementedException();
+    }
+
+    public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
+    {
+        //throw new NotImplementedException();
+    }
 }

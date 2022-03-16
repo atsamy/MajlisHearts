@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class UIManager : MonoBehaviour
     GameObject passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
+    [SerializeField]
+    DealResult GameFinishedPanel;
     [SerializeField]
     GameObject waitingPanel;
 
@@ -80,10 +83,18 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void Game_OnDealFinished(bool hostPlayer)
+    private void Game_OnDealFinished(bool hostPlayer,bool isGameOver)
     {
         Player[] players = game.Players;
         players = players.OrderBy(a => a.TotalScore).ToArray();
+        doubleCardCount = 0;
+        Scores.SetActive(false);
+
+        if (isGameOver)
+        {
+            GameFinishedPanel.Show(players, () => { SceneManager.LoadScene(0); });
+            return;
+        }
 
         if (hostPlayer)
         {
@@ -96,8 +107,7 @@ public class UIManager : MonoBehaviour
         {
             DealFinishedPanel.Show(players, null);
         }
-        doubleCardCount = 0;
-        Scores.SetActive(false);
+
     }
 
     public void AddDebugWeight(int playerIndex, Card card, int Weight)

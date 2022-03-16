@@ -15,24 +15,26 @@ public class Player
     public int Index { get => index; }
 
     public int Score { get => dealScore; set => dealScore = value; }
-    public int TotalScore { get => totalScore; }
+    public int TotalScore { get => totalScore; protected set => totalScore = value; }
 
     protected Dictionary<CardShape, int> shapeCount;
+
+    public Dictionary<CardShape, int> ShapeCount { get => shapeCount; }
 
     public string Name;
 
     public delegate void PassCardsReady(int playerIndex, List<Card> cards);
-    public event PassCardsReady OnPassCardsReady;
+    public PassCardsReady OnPassCardsReady;
 
     public delegate void CardReady(int playerIndex, Card card);
-    public event CardReady OnCardReady;
+    public CardReady OnCardReady;
 
     public delegate void DoubleCard(Card card, bool value,int playerIndex);
     public DoubleCard OnDoubleCard;
 
     protected bool isPlayer;
 
-    public bool DidLead { get; private set; }
+    public bool DidLead { get; protected set; }
 
     public bool IsPlayer { get => isPlayer; }
 
@@ -67,6 +69,17 @@ public class Player
     public int GetShapeCount(CardShape shape)
     {
         return shapeCount[shape];
+    }
+
+    public bool HasOnlyHearts()
+    {
+        foreach (var item in shapeCount)
+        {
+            if (item.Key != CardShape.Heart && item.Value > 0)
+                return false;
+        }
+
+        return true;
     }
 
     public virtual void ChooseCard(Card card)

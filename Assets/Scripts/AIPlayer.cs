@@ -141,7 +141,14 @@ public class AIPlayer : Player
 
     protected override void CheckDoubleCards(Card card)
     {
-        SetDoubleCard(card, false);
+        float value = 0;
+
+        if (shapeCount[card.Shape] > 4)
+        {
+            value = Random.value;
+        }
+
+        SetDoubleCard(card, value > 0.6f);
     }
 
     public Card ChooseRiskyCards(DealInfo info)
@@ -149,6 +156,8 @@ public class AIPlayer : Player
         // revisit this code we need to choose hight cards from a stack with few options 
 
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
+
+        Debug.Log("cards count: " + OwnedCards.Count);
 
         foreach (var item in OwnedCards)
         {
@@ -305,5 +314,19 @@ public class AIPlayer : Player
         }
 
         return avoidWeight;
+    }
+
+    public void MergeFromPlayer(Player player)
+    {
+        OwnedCards = player.OwnedCards;
+        Score = player.Score;
+        TotalScore = player.TotalScore;
+        shapeCount = player.ShapeCount;
+        DidLead = player.DidLead;
+        Name = player.Name;
+
+        OnDoubleCard = player.OnDoubleCard;
+        OnCardReady = player.OnCardReady;
+        OnPassCardsReady = player.OnPassCardsReady;
     }
 }

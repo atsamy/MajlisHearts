@@ -285,10 +285,10 @@ public class CardsUIManager : MonoBehaviour
         {
             if (card.Shape == CardShape.Heart)
                 return false;
-            if (card.Shape == CardShape.Spade && card.Rank == CardRank.Queen)
+            if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
                 return false;
         }
-        if (!trickInfo.heartBroken && card.Shape == CardShape.Heart && firstHand)
+        if (!trickInfo.heartBroken && card.Shape == CardShape.Heart && firstHand && !player.HasOnlyHearts())
             return false;
 
         return true;
