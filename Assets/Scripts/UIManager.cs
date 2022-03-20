@@ -160,8 +160,8 @@ public class UIManager : MonoBehaviour
 
             cardsUIManager.CardsPlayed(index, card);
         }
-        else
-            cardsUIManager.MainPlayerCard(card);
+        //else
+        //    cardsUIManager.MainPlayerCard(card);
     }
 
     bool once;
@@ -218,15 +218,11 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        mainPlayer.PassCards(selectedPassCards);
-        passCardsPanel.SetActive(false);
-        cardsUIManager.RemovePassedCards();
-
         waitingPanel.SetActive(true);
-        //for (int i = 1; i < 4; i++)
-        //{
-        //    debugCards[i - 1].UpdateCards(game.Players[i].OwnedCards);
-        //}
+
+        passCardsPanel.SetActive(false);
+        mainPlayer.PassCards(selectedPassCards);
+        cardsUIManager.RemovePassedCards();
 
         Scores.SetActive(true);
     }

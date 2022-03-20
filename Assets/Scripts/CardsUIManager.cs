@@ -11,9 +11,12 @@ public class CardsUIManager : MonoBehaviour
     public GameObject CardBack;
 
     public Transform CardsHolder;
-    public Transform DeckCards;
     public Transform passCardsHolder;
     public Transform DoubleCardHolder;
+
+    public Transform[] DeckCardsPosition;
+
+    List<Transform> DeckCards;
 
     List<CardUI> playableCards;
     //Sprite[] cardSprites;
@@ -21,11 +24,35 @@ public class CardsUIManager : MonoBehaviour
     List<CardUI> playerCardsUI;
     List<Card> selectedPassCards;
 
+    GameObject TenOfDiamondIcon;
+    GameObject QueenOfSpadeIcon;
+
     public Text[] Scores;
+
+    Dictionary<Card, Sprite> cardSprites;
 
     public void SetMainPlayer(MainPlayer mainPlayer)
     {
         mainPlayer.OnForcePlay += () => { playableCards[Random.Range(0, playableCards.Count)].Pressed(); };
+    }
+
+    private void Awake()
+    {
+        cardSprites = new Dictionary<Card, Sprite>();
+
+
+        for (int i = 0; i < 13; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                CardShape shape = (CardShape)j;
+                CardRank rank = (CardRank)i;
+
+                cardSprites.Add(new Card(shape,rank), Resources.Load<Sprite>("Cards/" + shape + "_" + rank));
+            }
+        }
+
+        DeckCards = new List<Transform>();
     }
 
     public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
@@ -44,9 +71,9 @@ public class CardsUIManager : MonoBehaviour
 
             Card card = mainPlayer.OwnedCards[i];
 
-            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
+            //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
 
-            playerCardsUI.Last().Set(sprite, card, (card) =>
+            playerCardsUI.Last().Set(cardSprites[card], card, (card) =>
              {
                  //if (passCards)
                  AddToPassCards(newCard.GetComponent<CardUI>());
@@ -74,10 +101,15 @@ public class CardsUIManager : MonoBehaviour
     internal void AddDoubledCard(Card card, int index)
     {
         GameObject doubleCard = new GameObject();
-        doubleCard.AddComponent<Image>().sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
+        doubleCard.AddComponent<Image>().sprite = cardSprites[card];
         //GameObject newCard = Instantiate(playerCard, DoubleCardHolder.GetChild(index));
         //newCard.GetComponent<Image>().sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
         doubleCard.transform.parent = DoubleCardHolder.GetChild(index);
+
+        if (card.IsTenOfDiamonds)
+            TenOfDiamondIcon = doubleCard;
+        else if (card.IsQueenOfSpades)
+            QueenOfSpadeIcon = doubleCard;
     }
 
     internal void UpdateCards(MainPlayer mainPlayer)
@@ -87,6 +119,7 @@ public class CardsUIManager : MonoBehaviour
             item.SetOnPressed((card) =>
             {
                 mainPlayer.ChooseCard(card);
+                MainPlayerCard(item);
             });
 
             item.SetInteractable(false);
@@ -96,19 +129,18 @@ public class CardsUIManager : MonoBehaviour
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder.GetChild(0));
             //newCard.transform.localPosition = new Vector3((i - 6) * 100, 0);
-
-            playerCardsUI.Add(newCard.GetComponent<CardUI>());
+            CardUI cardUI = newCard.GetComponent<CardUI>();
+            playerCardsUI.Add(cardUI);
 
             Card card = mainPlayer.PassedCards[i];
 
-            Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
-
-            playerCardsUI.Last().Set(sprite, card, (card) =>
+            cardUI.Set(cardSprites[card], card, (card) =>
             {
                 mainPlayer.ChooseCard(card);
+                MainPlayerCard(cardUI);
             });
 
-            playerCardsUI.Last().SetInteractable(false);
+            cardUI.SetInteractable(false);
         }
 
         OrganizeCards();
@@ -153,13 +185,28 @@ public class CardsUIManager : MonoBehaviour
     {
         Transform playedCard = (CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount)));
 
-        Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
-        playedCard.GetComponent<Image>().sprite = sprite;
+        //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
+        playedCard.GetComponent<Image>().sprite = cardSprites[card];
 
-        playedCard.parent = DeckCards.GetChild(playerIndex);
+        //playedCard.parent = DeckCards.[(playerIndex);
         //playedCard.localPosition = Vector3.zero;
-        playedCard.DOLocalMove(Vector3.zero, 0.5f);
+        playedCard.DOMove(DeckCardsPosition[playerIndex].position, 0.5f);
 
+        DeckCards.Add(playedCard);
+
+        RemoveDoubleIcon(card);
+    }
+
+    private void RemoveDoubleIcon(Card card)
+    {
+        if (card.IsQueenOfSpades && QueenOfSpadeIcon != null)
+        {
+            Destroy(QueenOfSpadeIcon);
+        }
+        else if (card.IsTenOfDiamonds && TenOfDiamondIcon != null)
+        {
+            Destroy(TenOfDiamondIcon);
+        }
     }
 
     public void SetScore(int index, Player player)
@@ -167,27 +214,24 @@ public class CardsUIManager : MonoBehaviour
         Scores[index].text = player.Name + " " + player.Score.ToString();
     }
 
-    //public void ResetScores()
-    //{
-    //    for (int i = 0; i < Scores.Length; i++)
-    //    {
-    //        Scores[i].text = "0";
-    //    }
-    //}
-
-    public void MainPlayerCard(Card card)
+    public void MainPlayerCard(CardUI cardUI)
     {
-        CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
-        cardUI.transform.parent = DeckCards.GetChild(0);
+        //CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
+        cardUI.transform.parent = DeckCardsPosition[0];
+        //cardUI.transform.parent = null;
         cardUI.transform.DOLocalMove(Vector3.zero, 0.5f);
 
         playerCardsUI.Remove(cardUI);
-        Destroy(cardUI.GetComponent<Button>());
+        cardUI.DisableButton();
+
+        DeckCards.Add(cardUI.transform);
 
         foreach (var item in playerCardsUI)
         {
             item.SetInteractable(false);
         }
+
+        RemoveDoubleIcon(cardUI.CardInfo);
     }
 
     public void RemoveCards(int winningHand)
@@ -202,11 +246,13 @@ public class CardsUIManager : MonoBehaviour
 
         foreach (Transform item in DeckCards)
         {
-            item.GetChild(0).DOMove(item.GetChild(0).position + moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
+            item.DOMove(item.position + moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
             {
-                Destroy(item.GetChild(0).gameObject);
+                Destroy(item.gameObject);
             });
         }
+
+        DeckCards.Clear();
     }
 
     public void RemovePassedCards()
@@ -250,7 +296,7 @@ public class CardsUIManager : MonoBehaviour
 
         foreach (var item in playerCardsUI)
         {
-            print(item.CardInfo.Rank + " " + item.CardInfo.Shape);
+            //print(item.CardInfo.Rank + " " + item.CardInfo.Shape);
 
             if (checkIfPlayable(item.CardInfo, info, player))
             {

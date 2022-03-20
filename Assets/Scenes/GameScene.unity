@@ -1209,10 +1209,10 @@ RectTransform:
   m_Father: {fileID: 1316184334}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1080, y: 1920}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &438424133
 MonoBehaviour:
@@ -3482,9 +3482,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67c77f7f9a6f642c1ac4a8fba93bd277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerNames: []
-  PlayerScores: []
-  StartButton: {fileID: 0}
+  PlayerNames:
+  - {fileID: 758214101}
+  - {fileID: 203970605}
+  - {fileID: 1559671378}
+  - {fileID: 473099460}
+  PlayerScores:
+  - {fileID: 1550953134}
+  - {fileID: 257107077}
+  - {fileID: 720861433}
+  - {fileID: 844602635}
+  StartButton: {fileID: 1467839033}
 --- !u!1 &1308014484
 GameObject:
   m_ObjectHideFlags: 0
@@ -3598,9 +3606,13 @@ MonoBehaviour:
   playerCard: {fileID: 517798874301786123, guid: a8d66937038e83846a10e457876d0275, type: 3}
   CardBack: {fileID: 4151564474650706647, guid: af8e60164e5a749368eeee0d6182922d, type: 3}
   CardsHolder: {fileID: 2139656486}
-  DeckCards: {fileID: 382326592}
   passCardsHolder: {fileID: 1707132905}
   DoubleCardHolder: {fileID: 1825404101}
+  DeckCardsPosition:
+  - {fileID: 241766739}
+  - {fileID: 1610726742}
+  - {fileID: 297463181}
+  - {fileID: 280535701}
   Scores:
   - {fileID: 1204098562}
   - {fileID: 1065507045}
@@ -3857,7 +3869,7 @@ GameObject:
   - component: {fileID: 1467839036}
   - component: {fileID: 1467839035}
   m_Layer: 5
-  m_Name: NextRoundButton
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6063,6 +6075,7 @@ MonoBehaviour:
   debugText: {fileID: 2129892383}
   passCardsPanel: {fileID: 1767113989}
   DealFinishedPanel: {fileID: 1607320196}
+  GameFinishedPanel: {fileID: 1253695894}
   waitingPanel: {fileID: 438424131}
   DoublePanel: {fileID: 1308014486}
   Scores: {fileID: 167221101}

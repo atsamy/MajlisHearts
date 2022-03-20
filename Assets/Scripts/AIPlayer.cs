@@ -161,6 +161,9 @@ public class AIPlayer : Player
 
         foreach (var item in OwnedCards)
         {
+            if (item.Shape == CardShape.Heart)
+                continue;
+
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);
         }
@@ -227,6 +230,9 @@ public class AIPlayer : Player
             if (item.Rank < card.Rank)
                 risk--;
         }
+
+        if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
+            risk += 100;
 
         int riskToCut = groundShape.Count + sameShape.Count;
 
