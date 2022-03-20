@@ -12,16 +12,14 @@ public class AIPlayer : Player
         isPlayer = false;
     }
 
-    public override void SetTurn(DealInfo info)
+    public override void SetTurn(DealInfo info, int hand)
     {
-        playCard(info);
+        playCard(info, hand);
     }
 
-    async void playCard(DealInfo info)
+    async void playCard(DealInfo info, int hand)
     {
         await System.Threading.Tasks.Task.Delay(1000);
-
-        int hand = info.CardsOntable.Count;
 
         if (hand == 0 && info.roundNumber == 0)
         {
@@ -50,10 +48,6 @@ public class AIPlayer : Player
                 if (OwnedCards.Contains(Card.QueenOfSpades) && info.roundNumber != 0)
                 {
                     ChooseCard(Card.QueenOfSpades);
-                }
-                else if (OwnedCards.Contains(Card.TenOfDiamonds) && info.roundNumber != 0)
-                {
-                    ChooseCard(Card.TenOfDiamonds);
                 }
                 else if (specificShape.Count > 0 && info.roundNumber != 0)
                 {
@@ -128,27 +122,23 @@ public class AIPlayer : Player
         if (card.Shape == CardShape.Spade)
         {
             return (int)card.Rank * 150 / totalValue;
+            //if (card.Rank >= CardRank.Queen)
+            //{
+            //    return Mathf.Max(0, (4 - shapeCount[CardShape.Spade]) * 100);
+            //}
+            //else
+            //{
+            //    return 0;
+            //}
         }
-        else if (card.Shape == CardShape.Diamond)
-        {
-            return (int)card.Rank * 120 / totalValue;
-        }
+        //else if (card.Shape == CardShape.Heart)
+        //{
+        //    return (int)card.Rank * 150 / totalValue;
+        //}
         else
         {
             return (int)card.Rank * 100 / totalValue;
         }
-    }
-
-    protected override void CheckDoubleCards(Card card)
-    {
-        float value = 0;
-
-        if (shapeCount[card.Shape] > 4)
-        {
-            value = Random.value;
-        }
-
-        SetDoubleCard(card, value > 0.6f);
     }
 
     public Card ChooseRiskyCards(DealInfo info)
@@ -157,13 +147,8 @@ public class AIPlayer : Player
 
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
 
-        Debug.Log("cards count: " + OwnedCards.Count);
-
         foreach (var item in OwnedCards)
         {
-            if (item.Shape == CardShape.Heart)
-                continue;
-
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);
         }
@@ -231,9 +216,6 @@ public class AIPlayer : Player
                 risk--;
         }
 
-        if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
-            risk += 100;
-
         int riskToCut = groundShape.Count + sameShape.Count;
 
         return risk + riskToCut;
@@ -293,19 +275,11 @@ public class AIPlayer : Player
                 {
                     avoidWeight += 100;
                 }
-                else if (item.IsTenOfDiamonds)
-                {
-                    avoidWeight += 100;
-                }
             }
         }
         else
         {
             if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
-            {
-                avoidWeight += 100;
-            }
-            else if (info.TrickShape == CardShape.Diamond && !info.TenOfDiamonds)
             {
                 avoidWeight += 100;
             }
@@ -320,19 +294,5 @@ public class AIPlayer : Player
         }
 
         return avoidWeight;
-    }
-
-    public void MergeFromPlayer(Player player)
-    {
-        OwnedCards = player.OwnedCards;
-        Score = player.Score;
-        TotalScore = player.TotalScore;
-        shapeCount = player.ShapeCount;
-        DidLead = player.DidLead;
-        Name = player.Name;
-
-        OnDoubleCard = player.OnDoubleCard;
-        OnCardReady = player.OnCardReady;
-        OnPassCardsReady = player.OnPassCardsReady;
     }
 }

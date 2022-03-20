@@ -12,8 +12,7 @@ public class DealInfo
     public List<Card> CardsDrawn;
     public List<Card> CardsOntable;
 
-    public bool QueenOfSpade { get => CardsDrawn.Contains(Card.QueenOfSpades); }
-    public bool TenOfDiamonds { get => CardsDrawn.Contains(Card.TenOfDiamonds); }
+    public bool QueenOfSpade { get => CardsDrawn.Contains(new Card(CardShape.Spade, CardRank.Queen)); }
 
     public DealInfo()
     {

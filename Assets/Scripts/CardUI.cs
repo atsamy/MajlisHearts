@@ -39,9 +39,4 @@ public class CardUI : MonoBehaviour
     {
         button.interactable = value;
     }
-
-    public void DisableButton()
-    {
-        button.enabled = false;
-    }
 }

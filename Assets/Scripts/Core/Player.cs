@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
 
 public class Player
 {
@@ -15,29 +14,21 @@ public class Player
     public int Index { get => index; }
 
     public int Score { get => dealScore; set => dealScore = value; }
-    public int TotalScore { get => totalScore; protected set => totalScore = value; }
+    public int TotalScore { get => totalScore; }
 
     protected Dictionary<CardShape, int> shapeCount;
-
-    public Dictionary<CardShape, int> ShapeCount { get => shapeCount; }
 
     public string Name;
 
     public delegate void PassCardsReady(int playerIndex, List<Card> cards);
-    public PassCardsReady OnPassCardsReady;
+    public event PassCardsReady OnPassCardsReady;
 
     public delegate void CardReady(int playerIndex, Card card);
-    public CardReady OnCardReady;
-
-    public delegate void DoubleCard(Card card, bool value,int playerIndex);
-    public DoubleCard OnDoubleCard;
+    public event CardReady OnCardReady;
 
     protected bool isPlayer;
 
-    public bool DidLead { get; protected set; }
-
     public bool IsPlayer { get => isPlayer; }
-
     public Player(int index)
     {
         shapeCount = new Dictionary<CardShape, int>();
@@ -53,40 +44,16 @@ public class Player
         isPlayer = true;
     }
 
-    public bool HasCard(Card card)
-    {
-        return OwnedCards.Contains(card);
-    }
-
-    public void CheckForDoubleCards()
-    {
-        if (HasCard(Card.QueenOfSpades))
-            CheckDoubleCards(Card.QueenOfSpades);
-        if (HasCard(Card.TenOfDiamonds))
-            CheckDoubleCards(Card.TenOfDiamonds);
-    }
-
     public int GetShapeCount(CardShape shape)
     {
         return shapeCount[shape];
-    }
-
-    public bool HasOnlyHearts()
-    {
-        foreach (var item in shapeCount)
-        {
-            if (item.Key != CardShape.Heart && item.Value > 0)
-                return false;
-        }
-
-        return true;
     }
 
     public virtual void ChooseCard(Card card)
     {
         OwnedCards.Remove(card);
         shapeCount[card.Shape]--;
-        ShowCard(card);
+        OnCardReady?.Invoke(index,card);
     }
 
     public void ShowCard(Card card)
@@ -110,17 +77,7 @@ public class Player
 
     }
 
-    protected virtual void CheckDoubleCards(Card card)
-    {
-
-    }
-
-    public void SetDoubleCard(Card card, bool value)
-    {
-        OnDoubleCard?.Invoke(card,value,index);
-    }
-
-    public virtual void SetTurn(DealInfo info)
+    public virtual void SetTurn(DealInfo info, int hand)
     {
         
     }
@@ -147,7 +104,6 @@ public class Player
 
     public void IncrementScore(int score)
     {
-        DidLead = true;
         dealScore += score;
     }
 
@@ -159,7 +115,6 @@ public class Player
 
     public virtual void Reset()
     {
-        DidLead = false;
         OwnedCards.Clear();
 
         for (int i = 0; i < 4; i++)
