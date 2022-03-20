@@ -35,6 +35,11 @@ public class DealScript
     public DealInfo DealInfo;
     int passCardsCount = 0;
 
+    bool isDoubleQueenOfSpades;
+    bool isDoubleTenOfDiamonds;
+
+    int doubleCount;
+
     Player[] players;
 
     public DealScript()
@@ -84,6 +89,21 @@ public class DealScript
         }
     }
 
+    internal void DoubleCard(Card card, bool value)
+    {
+        if (card.IsQueenOfSpades)
+            isDoubleQueenOfSpades = value;
+        if (card.IsTenOfDiamonds)
+            isDoubleTenOfDiamonds = value;
+
+        doubleCount++;
+
+        if (doubleCount == 2)
+        {
+            OnEvent?.Invoke(EventType.DoubleCardsFinished);
+        }
+    }
+
     public void GameScript_OnCardReady(int playerIndex, Card card)
     {
         Debug.Log(playerIndex + " played " + card.ToString());
@@ -127,13 +147,14 @@ public class DealScript
             playingIndex %= 4;
 
             //OnNextTurn?.Invoke();
-            players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+            players[playingIndex].SetTurn(DealInfo);
         }
     }
 
     public void SetTurn()
     {
-        players[playingIndex].SetTurn(DealInfo, cardsOnDeck.Count);
+        if (DealInfo.roundNumber < 13)
+            players[playingIndex].SetTurn(DealInfo);
     }
 
     async void trickFinished()
@@ -182,8 +203,10 @@ public class DealScript
     {
         if (winningCard.Shape == CardShape.Heart)
             return 1;
-        else if (winningCard.Shape == CardShape.Spade && winningCard.Rank == CardRank.Queen)
-            return 13;
+        else if (winningCard.IsQueenOfSpades)
+            return 13 * (isDoubleQueenOfSpades ? 2 : 1);
+        else if (winningCard.IsTenOfDiamonds)
+            return 10 * (isDoubleTenOfDiamonds ? 2 : 1);
         return 0;
     }
 
@@ -226,10 +249,9 @@ public class DealScript
     {
         for (int i = 0; i < players.Length; i++)
         {
-            foreach (var item in players[i].OwnedCards)
+            if (players[i].HasCard(new Card(CardShape.Club, CardRank.Two)))
             {
-                if (item.Shape == CardShape.Club && item.Rank == CardRank.Two)
-                    playingIndex = i;
+                playingIndex = i;
             }
         }
     }
@@ -278,6 +300,7 @@ public class DealScript
     public void StartNewGame()
     {
         passCardsCount = 0;
+        doubleCount = 0;
 
         Deal();
 
@@ -288,7 +311,7 @@ public class DealScript
 
         if (CurrentState == GameState.DontPass)
         {
-            players[playingIndex].SetTurn(DealInfo, 0);
+            players[playingIndex].SetTurn(DealInfo);
         }
         else
         {
@@ -305,7 +328,8 @@ public enum EventType
     CardsDealt,
     CardsPassed,
     TrickFinished,
-    DealFinished
+    DealFinished,
+    DoubleCardsFinished,
 }
 
 public enum GameState
