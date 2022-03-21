@@ -5,9 +5,10 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using ExitGames.Client.Photon;
 //using photon;
 
-public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks
+public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     //public Transform Circle;
     //public Transform OppositeCircle;
@@ -42,7 +43,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     float timer = 0;
 
     string PrivateRoomName;
-
+    const int beginGame = 25;
     //public AudioSource Audio;
 
     bool roomCreated;
@@ -160,7 +161,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         base.Open();
         PhotonNetwork.AddCallbackTarget(this);
-
         //GameManager.Instance.SetEquippedItems();
 
         //SFXManager.Instance.FadeMusic();
@@ -218,7 +218,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     IEnumerator TimeOut()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 15; i++)
         {
             Debug.Log(i);
             yield return new WaitForSeconds(1);
@@ -235,6 +235,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             //if (PhotonNetwork.CurrentRoom != null)
             //    PhotonNetwork.LeaveRoom();
             //Audio.mute = true;
+
             BackButton.SetActive(false);
 
             int time = 3;
@@ -245,7 +246,17 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
                 time -= 1;
             }
 
-            Close();
+            if (PhotonNetwork.CountOfRooms > 1)
+            {
+                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+            }
+            else
+            {
+                GameManager.Instance.IsMultiGame = false;
+                SceneManager.LoadScene(1);
+            }
+            //Close();
             //MenuManager.Instance.StartFakeMultiplayer();
         }
     }
@@ -254,49 +265,21 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         Debug.Log("joined room");
 
-        if (PhotonNetwork.PlayerList.Length == 2)
-        {
-            StartCoroutine(StartGameIn(3));
-
-            //GetOtherPlayerData();
-
-            //GameManager.Instance.RouteIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties["Index"];
-
-            //if (mode == GameMode.JoinRoom)
-            //    InfoText.text = "Starting The Game";
-        }
-        else
-        {
-            //ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
-
-            //GameManager.Instance.RouteIndex = Random.Range(1, 7);
-            //prop.Add("Index", GameManager.Instance.RouteIndex);
-
-
-            //PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
-
-            if (mode == GameMode.Random)
-                StartCoroutine(TimeOut());
-        }
+        //if (PhotonNetwork.PlayerList.Length == 4)
+        //{
+        //    StartCoroutine(StartGameIn(3));
+        //}
+        //else
+        //{
+        //    if (mode == GameMode.Random)
+        //        StartCoroutine(TimeOut());
+        //}
 
         //GreenDot.SetActive(true);
 
-        print("Joined Room");
+        //                 print("Joined Room");
         //Debug.Log(PhotonNetwork.room.Name);
     }
-
-    //private static void GetOtherPlayerData()
-    //{
-    //    string[] playerData = PhotonNetwork.PlayerListOthers[0].NickName.Split(',');
-    //    GameManager.Instance.Opponent.Name = playerData[0];
-
-    //    int trophies;
-
-    //    if (int.TryParse(playerData[0], out trophies))
-    //    {
-    //        GameManager.Instance.Opponent.Trophies = trophies;
-    //    }
-    //}
 
     public void OnConnectedToMaster()
     {
@@ -311,17 +294,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     private void Connected()
     {
-        //TypedLobby sqlLobby = new TypedLobby("myLobby", LobbyType.SqlLobby);
-
-        //string sqlLobbyFilter = "rank = " + GameManager.Instance.Me.RankIndex;
-
-        //PhotonNetwork.JoinOrCreateRoom("", sqlLobby, sqlLobbyFilter);
-        //RoomOptions new ExitGames.Client.Photon.Hashtable() { { "rank", GameManager.Instance.Me.RankIndex } }roomOptions = new RoomOptions();
-        //roomOptions.MaxPlayers = 2;
-        //roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "rank", GameManager.Instance.Me.RankIndex } };
-
-        //PhotonNetwork.JoinRandomRoom(new ExitGames.Client.Photon.Hashtable() { { "rank", GameManager.Instance.Me.RankIndex } }, 2);
-
         PhotonNetwork.NickName = PlayerPrefs.GetString("userName");
 
         if (mode == GameMode.Random)
@@ -388,13 +360,18 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        if (PhotonNetwork.PlayerList.Length == 2)
+        if (PhotonNetwork.PlayerList.Length == 4)
         {
             //if (PhotonNetwork.IsMasterClient)
             //{
             //    StartGameButton.SetActive(true);
             //}
-            StartCoroutine(StartGameIn(3));
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+            }
             //GetOtherPlayerData();
 
             //if (mode == GameMode.CreateRoom)
@@ -436,7 +413,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     /// Match Making 
     /// </summary>
     /// <param name="friendList"></param>
-
     public void OnFriendListUpdate(List<FriendInfo> friendList)
     {
         //throw new NotImplementedException();
@@ -451,6 +427,8 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             InfoText.text = PhotonNetwork.CurrentRoom.Name;
             roomCreated = true;
         }
+
+        StartCoroutine(TimeOut());
         //throw new NotImplementedException();
     }
 
@@ -493,27 +471,28 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnConnected()
     {
-        //throw new NotImplementedException();
+
     }
 
     public void OnDisconnected(DisconnectCause cause)
     {
-        //throw new NotImplementedException();
         IsconnectedToMaster = false;
     }
 
     public void OnRegionListReceived(RegionHandler regionHandler)
-    {
-        //throw new NotImplementedException();
-    }
+    { }
 
     public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
-    {
-        //throw new NotImplementedException();
-    }
+    { }
 
     public void OnCustomAuthenticationFailed(string debugMessage)
+    { }
+
+    public void OnEvent(EventData photonEvent)
     {
-        //throw new NotImplementedException();
+        if (photonEvent.Code == beginGame)
+        {
+            StartCoroutine(StartGameIn(3));
+        }
     }
 }
