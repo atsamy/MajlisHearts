@@ -21,6 +21,9 @@ public class EditorUI : MonoBehaviour
 
     public PurchaseCategory[] purchaseCategories;
     CameraHover cameraHover;
+
+    public Text Currency;
+    public Text Level;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +48,8 @@ public class EditorUI : MonoBehaviour
             index++;
         }
 
+        Currency.text = GameManager.Instance.MyPlayer.Currency.ToString();
+        Level.text = GameManager.Instance.MyPlayer.Level.ToString();
         //for (int i = 0; i < AllItems.Length; i++)
         //{
         //    EditButtons[i] = Instantiate(EditButton, this.transform);

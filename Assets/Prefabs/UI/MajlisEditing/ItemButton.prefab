@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1685253740347187564}
   - component: {fileID: 5495528745906160533}
   - component: {fileID: 3316935384038595076}
+  - component: {fileID: -1119386094939257762}
   m_Layer: 5
   m_Name: ItemButton
   m_TagString: Untagged
@@ -119,4 +120,28 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5495528745906160533}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -1119386094939257762}
+        m_TargetAssemblyTypeName: MajlisItem, Assembly-CSharp
+        m_MethodName: Select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-1119386094939257762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641784420116345256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81f750a06669d8142a4bb1cfda19b0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
