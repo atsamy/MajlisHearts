@@ -48,8 +48,10 @@ public class EditorUI : MonoBehaviour
             index++;
         }
 
-        Currency.text = GameManager.Instance.MyPlayer.Currency.ToString();
+        Currency.text = GameManager.Instance.Currency.ToString();
         Level.text = GameManager.Instance.MyPlayer.Level.ToString();
+
+        GameManager.Instance.OnCurrencyChanged += Instance_OnCurrencyChanged;
         //for (int i = 0; i < AllItems.Length; i++)
         //{
         //    EditButtons[i] = Instantiate(EditButton, this.transform);
@@ -65,6 +67,11 @@ public class EditorUI : MonoBehaviour
         CategoryPanel.OnItemSelected = CategoryPanel_OnItemSelected;
         CategoryPanel.OnCancel = CategoryPanel_OnCancel;
         CategoryPanel.OnConfirm = CategoryPanel_OnConfirm;
+    }
+
+    private void Instance_OnCurrencyChanged(int value)
+    {
+        Currency.text = value.ToString();
     }
 
     private void CategoryPanel_OnConfirm()

@@ -11,7 +11,15 @@ public class CategoryPanel : MonoBehaviour
     public Transform GridPanel;
 
     public Action<GameObject> OnItemSelected;
-    
+
+    PurchasableItem selectedItem;
+    string selectedCategory;
+    int selectedIndex = 0;
+
+    int currentIndex = 0;
+
+    public Button BuyButton;
+
     public Action OnCancel;
     public Action OnConfirm;
 
@@ -20,12 +28,17 @@ public class CategoryPanel : MonoBehaviour
     bool purchasable;
     public void Show(PurchaseCategory category)
     {
-        gameObject.SetActive(true);
+        BuyText.text = "Selected";
+        BuyButton.interactable = false;
 
+        gameObject.SetActive(true);
+        selectedCategory = category.Code;
         foreach (Transform item in GridPanel)
         {
             Destroy(item.gameObject);
         }
+
+        //this.currentIndex = currentIndex;
 
         int index = 0;
 
@@ -44,16 +57,37 @@ public class CategoryPanel : MonoBehaviour
     {
         OnItemSelected?.Invoke(item.Model);
 
-        purchasable = !GameManager.Instance.HasInInventory(category, index);
+        if (item.Level > GameManager.Instance.MyPlayer.Level)
+        {
+            BuyText.text = "Unlock at Level " + item.Level;
+            BuyButton.interactable = false;
+            return;
+        }
+        if (currentIndex == index)
+        {
+            BuyText.text = "Selected";
+            BuyButton.interactable = false;
+            return;
+        }
+
+        if (index == 0)
+            purchasable = false;
+        else
+            purchasable = !GameManager.Instance.HasInInventory(category, index);
 
         if (purchasable)
         {
             BuyText.text = "Buy: " + item.Price;
             purchasable = true;
+            selectedItem = item;
+            selectedIndex = index;
+
+            BuyButton.interactable = (item.Price <= GameManager.Instance.Currency);
         }
         else
         {
             BuyText.text = "Select";
+            BuyButton.interactable = true;
         }
     }
 
@@ -68,9 +102,12 @@ public class CategoryPanel : MonoBehaviour
         gameObject.SetActive(false);
         OnConfirm?.Invoke();
 
+        currentIndex = selectedIndex;
+
         if (purchasable)
         {
-            
+            GameManager.Instance.Inventory.Add(new InventoryItem(selectedCategory, selectedIndex));
+            GameManager.Instance.DeductCurrency(selectedItem.Price);
         }
     }
 }
