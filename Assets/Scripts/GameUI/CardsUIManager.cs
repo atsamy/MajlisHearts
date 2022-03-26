@@ -183,14 +183,16 @@ public class CardsUIManager : MonoBehaviour
 
     public void CardsPlayed(int playerIndex, Card card)
     {
-        Transform playedCard = (CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount)));
+        Transform playedCard = CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount));
 
         //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
         playedCard.GetComponent<Image>().sprite = cardSprites[card];
 
         playedCard.parent = DeckCardsPosition[playerIndex];
         //playedCard.localPosition = Vector3.zero;
-        playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
+        //playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
+        LeanTween.moveLocal(playedCard.gameObject, Vector3.zero, 0.5f).setEaseInOutCirc();
+
 
         DeckCards.Add(playedCard);
 
@@ -219,7 +221,8 @@ public class CardsUIManager : MonoBehaviour
         //CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
         cardUI.transform.parent = DeckCardsPosition[0];
         //cardUI.transform.parent = null;
-        cardUI.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
+        //cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
+        LeanTween.moveLocal(cardUI.gameObject,Vector3.zero,0.5f).setEaseInOutCirc();
 
         playerCardsUI.Remove(cardUI);
         cardUI.DisableButton();
@@ -244,12 +247,13 @@ public class CardsUIManager : MonoBehaviour
             Vector3.left
         };
 
-        foreach (RectTransform item in DeckCards)
+        foreach (Transform item in DeckCards)
         {
-            item.DOAnchorPos(moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
-            {
-                Destroy(item.gameObject);
-            });
+            LeanTween.moveLocal(item.gameObject, moveDirections[winningHand] * 1500, 0.5f).setDestroyOnComplete(true);
+            //item.DOAnchorPos(moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
+            //{
+            //    Destroy(item.gameObject);
+            //});
         }
 
         DeckCards.Clear();

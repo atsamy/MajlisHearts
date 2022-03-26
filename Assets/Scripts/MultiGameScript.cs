@@ -201,7 +201,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                
+
+                Deal.DealInfo = new DealInfo();
+
                 myPlayer.Reset();
 
                 foreach (var item in cards)

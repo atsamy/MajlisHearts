@@ -11,11 +11,14 @@ public class CardUI : MonoBehaviour
     Button button;
 
     public Action<Card> OnPressed;
+    public RectTransform RectTransform;
     // Start is called before the first frame update
     void Awake()
     {
         image = GetComponent<Image>();
         button = GetComponent<Button>();
+
+        RectTransform = GetComponent<RectTransform>();
     }
 
     public void Set(Sprite sprite, Card card, Action<Card> Pressed)
