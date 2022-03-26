@@ -188,9 +188,9 @@ public class CardsUIManager : MonoBehaviour
         //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
         playedCard.GetComponent<Image>().sprite = cardSprites[card];
 
-        //playedCard.parent = DeckCards.[(playerIndex);
+        playedCard.parent = DeckCardsPosition[playerIndex];
         //playedCard.localPosition = Vector3.zero;
-        playedCard.DOMove(DeckCardsPosition[playerIndex].position, 0.5f);
+        playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
 
         DeckCards.Add(playedCard);
 
@@ -219,7 +219,7 @@ public class CardsUIManager : MonoBehaviour
         //CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
         cardUI.transform.parent = DeckCardsPosition[0];
         //cardUI.transform.parent = null;
-        cardUI.transform.DOLocalMove(Vector3.zero, 0.5f);
+        cardUI.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
 
         playerCardsUI.Remove(cardUI);
         cardUI.DisableButton();
@@ -244,9 +244,9 @@ public class CardsUIManager : MonoBehaviour
             Vector3.left
         };
 
-        foreach (Transform item in DeckCards)
+        foreach (RectTransform item in DeckCards)
         {
-            item.DOMove(item.position + moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
+            item.DOAnchorPos(moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
             {
                 Destroy(item.gameObject);
             });

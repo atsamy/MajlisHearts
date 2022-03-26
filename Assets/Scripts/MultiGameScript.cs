@@ -127,6 +127,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         while (waitForPlayers)
         {
             waitForPlayers = false;
+
             foreach (var item in PhotonNetwork.PlayerList)
             {
                 if (!item.CustomProperties.ContainsKey("LoadedGame"))
@@ -406,7 +407,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
         if (!PhotonNetwork.IsMasterClient)
         {
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1, recieverIndex + 1 } };
             PhotonNetwork.RaiseEvent(passCardsCode, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
 
             InrementPassedCards();

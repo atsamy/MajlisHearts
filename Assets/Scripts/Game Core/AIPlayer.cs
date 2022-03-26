@@ -161,8 +161,8 @@ public class AIPlayer : Player
 
         foreach (var item in OwnedCards)
         {
-            if (item.Shape == CardShape.Heart)
-                continue;
+            //if (item.Shape == CardShape.Heart && !HasOnlyHearts())
+            //    continue;
 
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);

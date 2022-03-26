@@ -115,7 +115,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     public void OpenAndCreatePrivateRoom()
     {
         //Searching.SetActive(false);
-        
+
         mode = GameMode.CreateRoom;
 
         //Audio.mute = true;
@@ -227,37 +227,53 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         if (!gameReady)
         {
             gameReady = true;
+            BackButton.SetActive(false);
 
-            PhotonNetwork.Disconnect();
-            PhotonNetwork.RemoveCallbackTarget(this);
+            //print
+
+            if (PhotonNetwork.PlayerList.Length > 1)
+            {
+                Debug.Log("Start game with " + PhotonNetwork.PlayerList.Length + " players");
+
+                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+            }
+            else
+            {
+                PhotonNetwork.Disconnect();
+                PhotonNetwork.RemoveCallbackTarget(this);
+
+                int time = 3;
+                while (time > 0)
+                {
+                    gameInfoTop.text = time.ToString();
+                    yield return new WaitForSeconds(1);
+                    time -= 1;
+                }
+
+                GameManager.Instance.IsMultiGame = false;
+                SceneManager.LoadScene(1);
+            }
 
             //GetComponent<AudioSource>().Stop();
             //if (PhotonNetwork.CurrentRoom != null)
             //    PhotonNetwork.LeaveRoom();
             //Audio.mute = true;
 
-            BackButton.SetActive(false);
 
-            int time = 3;
-            while (time > 0)
-            {
-                gameInfoTop.text = time.ToString();
-                yield return new WaitForSeconds(1);
-                time -= 1;
-            }
 
-            if (PhotonNetwork.CountOfRooms > 1)
-            {
-                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
-            }
-            else
-            {
-                GameManager.Instance.IsMultiGame = false;
-                SceneManager.LoadScene(1);
-            }
-            //Close();
-            //MenuManager.Instance.StartFakeMultiplayer();
+
+
+            //if (PhotonNetwork.CountOfRooms > 1)
+            //{
+            //    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            //    PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+            //}
+            //else
+            //{
+            //    GameManager.Instance.IsMultiGame = false;
+            //    SceneManager.LoadScene(1);
+            //}
         }
     }
 
@@ -378,7 +394,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             //    InfoText.text = "Starting The Game";
         }
 
-        InfoText.text = PhotonNetwork.PlayerList.Length + " Players"; 
+        InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
         //throw new NotImplementedException();
     }
 
@@ -490,6 +506,8 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnEvent(EventData photonEvent)
     {
+        Debug.Log("event: " + photonEvent.Code);
+
         if (photonEvent.Code == beginGame)
         {
             StartCoroutine(StartGameIn(3));
