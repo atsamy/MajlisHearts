@@ -506,7 +506,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnEvent(EventData photonEvent)
     {
-        Debug.Log("event: " + photonEvent.Code);
+        //Debug.Log("event: " + photonEvent.Code);
 
         if (photonEvent.Code == beginGame)
         {

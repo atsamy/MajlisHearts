@@ -111,6 +111,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     private void GameScript_OnDoubleCard(Card card, bool value,int index)
     {
+        //Debug.Log("multi player " + index + " " + card.ToString());
+
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(doubleCardCode, Utils.SerializeCardValueAndIndex(card, value,index), eventOptionsCards, SendOptions.SendReliable);
 
@@ -178,6 +180,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 PhotonNetwork.RaiseEvent(trickFinishedCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
                 break;
             case EventType.DoubleCardsFinished:
+
+                Debug.Log("double card finished");
+
                 if (PhotonNetwork.IsMasterClient)
                 {
                     RaiseEventOptions eventReadyOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
@@ -222,12 +227,16 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     int recieverIndex = photonEvent.Sender % 4;
                     int senderIndex = photonEvent.Sender - 1;
 
+                    print("reciever: " + recieverIndex + " senderIndex " + senderIndex);
+
                     if (Players[senderIndex].IsPlayer)
                     {
                         Players[senderIndex].PassCards(passedCards);
                     }
 
                     Players[recieverIndex].AddPassCards(passedCards);
+
+                    InrementPassedCards();
                 }
                 else
                 {
@@ -404,15 +413,16 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (Players[playerIndex].IsPlayer)
         {
-            InrementPassedCards();
+            //InrementPassedCards();
             return;
         }
+
         if (!PhotonNetwork.IsMasterClient)
         {
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1, recieverIndex + 1 } };
             PhotonNetwork.RaiseEvent(passCardsCode, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
 
-            InrementPassedCards();
+            //InrementPassedCards();
             return;
         }
 

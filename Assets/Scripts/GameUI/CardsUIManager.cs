@@ -190,8 +190,8 @@ public class CardsUIManager : MonoBehaviour
 
         playedCard.parent = DeckCardsPosition[playerIndex];
         //playedCard.localPosition = Vector3.zero;
-        //playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
-        LeanTween.moveLocal(playedCard.gameObject, Vector3.zero, 0.5f).setEaseInOutCirc();
+        playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
+        //LeanTween.moveLocal(playedCard.gameObject, Vector3.zero, 0.5f).setEaseInOutCirc();
 
 
         DeckCards.Add(playedCard);
@@ -221,8 +221,11 @@ public class CardsUIManager : MonoBehaviour
         //CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
         cardUI.transform.parent = DeckCardsPosition[0];
         //cardUI.transform.parent = null;
-        //cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
-        LeanTween.moveLocal(cardUI.gameObject,Vector3.zero,0.5f).setEaseInOutCirc();
+        cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
+
+        cardUI.RectTransform.anchorMin = new Vector2(0.5f,0.5f);
+        cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        //LeanTween.moveLocal(cardUI.gameObject,Vector3.zero,0.5f).setEaseInOutCirc();
 
         playerCardsUI.Remove(cardUI);
         cardUI.DisableButton();
@@ -247,13 +250,13 @@ public class CardsUIManager : MonoBehaviour
             Vector3.left
         };
 
-        foreach (Transform item in DeckCards)
+        foreach (RectTransform item in DeckCards)
         {
-            LeanTween.moveLocal(item.gameObject, moveDirections[winningHand] * 1500, 0.5f).setDestroyOnComplete(true);
-            //item.DOAnchorPos(moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
-            //{
-            //    Destroy(item.gameObject);
-            //});
+            //LeanTween.moveLocal(item.gameObject, moveDirections[winningHand] * 1500, 0.5f).setDestroyOnComplete(true);
+            item.DOAnchorPos(moveDirections[winningHand] * 1500, 0.5f).OnComplete(() =>
+            {
+                Destroy(item.gameObject);
+            });
         }
 
         DeckCards.Clear();

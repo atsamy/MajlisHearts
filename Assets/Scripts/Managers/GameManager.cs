@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
 
         Currency = 1500;
         MyPlayer.Level = 2;
+
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
     // Start is called before the first frame update
     void Start()

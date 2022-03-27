@@ -98,6 +98,8 @@ public class DealScript
 
         doubleCount++;
 
+        Debug.Log("double card " + doubleCount);
+
         if (doubleCount == 2)
         {
             OnEvent?.Invoke(EventType.DoubleCardsFinished);
@@ -106,7 +108,7 @@ public class DealScript
 
     public void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        Debug.Log(playerIndex + " played " + card.ToString());
+        //Debug.Log(playerIndex + " played " + card.ToString());
         cardsOnDeck.Add(playerIndex, card);
 
         DealInfo.CardsOntable.Add(card);

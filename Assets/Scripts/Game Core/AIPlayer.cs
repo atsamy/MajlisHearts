@@ -141,6 +141,8 @@ public class AIPlayer : Player
 
     protected override void CheckDoubleCards(Card card)
     {
+        //Debug.LogError("player " + Index + " card " + card.ToString());
+
         float value = 0;
 
         if (shapeCount[card.Shape] > 4)
@@ -157,7 +159,7 @@ public class AIPlayer : Player
 
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
 
-        Debug.Log("cards count: " + OwnedCards.Count);
+        //Debug.Log("cards count: " + OwnedCards.Count);
 
         foreach (var item in OwnedCards)
         {

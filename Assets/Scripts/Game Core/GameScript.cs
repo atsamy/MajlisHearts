@@ -77,7 +77,7 @@ public class GameScript : MonoBehaviour
 
     protected IEnumerator StartTimer()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
 
         myPlayer.ForcePlay();
     }
