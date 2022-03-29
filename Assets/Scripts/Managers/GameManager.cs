@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public bool IsMultiGame;
+    [HideInInspector]
     public int Currency;
     [HideInInspector]
     public List<InventoryItem> Inventory;
@@ -73,22 +74,22 @@ public class PlayerInfo
 [System.Serializable]
 public class InventoryItem
 {
-    public InventoryItem(string category, int index)
+    public string Category;
+    public string ID;
+
+    public InventoryItem(string category, string id)
     {
         Category = category;
-        Index = index;
+        ID = id;
     }
 
     public override bool Equals(object obj)
     {
-        return (Category == ((InventoryItem)obj).Category) && (Index == ((InventoryItem)obj).Index);
+        return (Category == ((InventoryItem)obj).Category) && (ID == ((InventoryItem)obj).ID);
     }
 
     public override int GetHashCode()
     {
         return base.GetHashCode();
     }
-
-    public string Category;
-    public int Index;
 }
