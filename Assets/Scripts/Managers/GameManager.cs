@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnCurrencyChanged;
 
     [HideInInspector]
+    public List<InventoryItem> Customization;
+    [HideInInspector]
     public bool IsMultiGame;
     [HideInInspector]
     public int Currency;
@@ -32,8 +34,8 @@ public class GameManager : MonoBehaviour
 
         MyPlayer = new PlayerInfo();
 
-        Currency = 1500;
-        MyPlayer.Level = 2;
+        //Currency = 1500;
+        //MyPlayer.Level = 2;
 
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Inventory = new List<InventoryItem>();
+        //Inventory = new List<InventoryItem>();
     }
 
     public void DeductCurrency(int value)
@@ -58,9 +60,26 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public bool HasInInventory(string category, int index)
+    public bool HasInInventory(string category, string id)
     {
-        return Inventory.Contains(new InventoryItem(category, index));
+        return Inventory.Contains(new InventoryItem(category, id));
+    }
+
+    public void SetCustomization(string category, string id)
+    {
+        if (Customization.Any(a => a.Category == category))
+        {
+            Customization.Find(a => a.Category == category).ID = id;
+        }
+        else
+        {
+            Customization.Add(new InventoryItem(category, id));
+        }
+
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+        {
+            { "Customization", JsonUtility.ToJson(Customization) }
+        });
     }
 }
 

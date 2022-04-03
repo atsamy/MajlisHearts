@@ -186,7 +186,7 @@ public class PlayfabManager : MonoBehaviour
             Data = data
         }, (result) =>
         {
-
+            Debug.Log("Update user data sucessfully");
         }, (error) =>
         {
             OnConnectionError?.Invoke(error.ErrorMessage);
@@ -304,11 +304,12 @@ public class PlayfabManager : MonoBehaviour
 
 
 
-    public void AddItemToInventory(string CatalogueItemID)
+    public void AddItemToInventory(CatalogueItem CatalogueItem)
     {
         PurchaseItemRequest request = new PurchaseItemRequest();
-        request.Price = 0;
-        request.ItemId = CatalogueItemID;
+
+        request.Price = CatalogueItem.Price;
+        request.ItemId = CatalogueItem.ID;
         request.VirtualCurrency = "SC";
 
         PlayFabClientAPI.PurchaseItem(request, (result) =>

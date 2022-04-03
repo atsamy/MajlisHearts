@@ -9,12 +9,12 @@ public class MajlisItem : MonoBehaviour
     string category;
     int index;
 
-    PurchasableItem item;
+    CatalogueItem item;
 
-    public delegate void Pressed(PurchasableItem item, string category,int index);
+    public delegate void Pressed(CatalogueItem item,int index);
     public Pressed OnPressed;
 
-    public void Set(string category, int index,PurchasableItem item)
+    public void Set(string category, int index, CatalogueItem item)
     {
         this.category = category;
         this.index = index;
@@ -26,6 +26,6 @@ public class MajlisItem : MonoBehaviour
 
     public void Select()
     {
-        OnPressed?.Invoke(item,category, index);
+        OnPressed?.Invoke(item, index);
     }
 }

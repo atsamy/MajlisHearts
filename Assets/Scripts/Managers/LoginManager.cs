@@ -2,7 +2,7 @@
 //using GooglePlayGames;
 //using GooglePlayGames.BasicApi;
 //using PlayFab;
-//using PlayFab.ClientModels;
+using PlayFab.ClientModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +31,7 @@ public class LoginManager : MonoBehaviour
         playfab.OnUserDataReturned += Playfab_OnUserDataReturned;
         playfab.OnInventoryReturned += Playfab_OnInventoryReturned;
         playfab.OnConnectionError += Playfab_OnConnectionError;
+        //playfab.OnCatalogueReturned += Playfab_OnCatalogueReturned;
 
         LogIn();
     }
@@ -41,12 +42,12 @@ public class LoginManager : MonoBehaviour
         playfab.OnUserDataReturned -= Playfab_OnUserDataReturned;
         playfab.OnInventoryReturned -= Playfab_OnInventoryReturned;
         playfab.OnConnectionError -= Playfab_OnConnectionError;
+        //playfab.OnCatalogueReturned -= Playfab_OnCatalogueReturned;
     }
 
     public void LogIn()
     {
         InitPlayGames();
-
         loginValue = PlayerPrefs.GetInt("login", 0);
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
@@ -73,6 +74,11 @@ public class LoginManager : MonoBehaviour
 #endif
     }
 
+    private void Playfab_OnCatalogueReturned(List<CatalogItem> catalogItems)
+    {
+
+    }
+
     public void AccountLogin()
     {
         Social.localUser.Authenticate((success) =>
@@ -97,7 +103,7 @@ public class LoginManager : MonoBehaviour
         });
     }
 
-    private void Playfab_OnPlayerLoggedIn(PlayFab.ClientModels.UserTitleInfo userInfo)
+    private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo)
     {
         if (string.IsNullOrEmpty(userInfo.DisplayName))
         {
@@ -109,10 +115,9 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-    private void Playfab_OnInventoryReturned(Dictionary<string, int> currency, List<PlayFab.ClientModels.ItemInstance> inventory)
+    private void Playfab_OnInventoryReturned(Dictionary<string, int> currency, List<ItemInstance> inventory)
     {
         GameManager.Instance.Currency = currency["SC"];
-
         GameManager.Instance.Inventory = new List<InventoryItem>();
 
         foreach (var item in inventory)
@@ -123,14 +128,14 @@ public class LoginManager : MonoBehaviour
         playfab.GetUserData();
     }
 
-    private void Playfab_OnUserDataReturned(Dictionary<string, PlayFab.ClientModels.UserDataRecord> userData)
+    private void Playfab_OnUserDataReturned(Dictionary<string, UserDataRecord> userData)
     {
         foreach (var item in userData)
         {
             switch (item.Key)
             {
-                case "":
-
+                case "customization":
+                    GameManager.Instance.Customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(item.Value.Value).array.ToList();
                     break;
                 default:
                     break;
@@ -199,3 +204,9 @@ public class LoginManager : MonoBehaviour
         //LanguageManager.Instance.setLanguage(language);
     }
 }
+
+//[Serializable]
+//public class Wrapper<T>
+//{
+//    public T[] array;
+//}

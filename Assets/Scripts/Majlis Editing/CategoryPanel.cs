@@ -12,9 +12,10 @@ public class CategoryPanel : MonoBehaviour
 
     public Action<GameObject> OnItemSelected;
 
-    PurchasableItem selectedItem;
+    CatalogueItem selectedItem;
     string selectedCategory;
     int selectedIndex = 0;
+    //string selectedID;
 
     int currentIndex = 0;
 
@@ -26,36 +27,37 @@ public class CategoryPanel : MonoBehaviour
     public Text BuyText;
 
     bool purchasable;
-    public void Show(PurchaseCategory category)
+    public void Show(string categoryClass)
     {
         BuyText.text = "Selected";
         BuyButton.interactable = false;
 
         gameObject.SetActive(true);
-        selectedCategory = category.Code;
+        selectedCategory = categoryClass;
+
         foreach (Transform item in GridPanel)
         {
             Destroy(item.gameObject);
         }
 
-        //this.currentIndex = currentIndex;
-
         int index = 0;
 
-        foreach (var item in category.Items)
-        {
-            GameObject purchaseItem = Instantiate(ItemButton, GridPanel);
+        List<CatalogueItem> category = Catalogue.Instance.AllItems[categoryClass];
 
-            purchaseItem.GetComponent<MajlisItem>().Set(category.Code,index, item);
-            purchaseItem.GetComponent<MajlisItem>().OnPressed += MajlisItem_Pressed;
+        foreach (var item in category)
+        {
+            MajlisItem purchaseItem = Instantiate(ItemButton, GridPanel).GetComponent<MajlisItem>();
+
+            purchaseItem.Set(categoryClass, index, item);
+            purchaseItem.OnPressed += MajlisItem_Pressed;
 
             index++;
         }
     }
 
-    public void MajlisItem_Pressed(PurchasableItem item, string category, int index)
+    public void MajlisItem_Pressed(CatalogueItem item, int index)
     {
-        OnItemSelected?.Invoke(item.model);
+        OnItemSelected?.Invoke(item.GetModel());
 
         if (item.Level > GameManager.Instance.MyPlayer.Level)
         {
@@ -73,14 +75,15 @@ public class CategoryPanel : MonoBehaviour
         if (index == 0)
             purchasable = false;
         else
-            purchasable = !GameManager.Instance.HasInInventory(category, index);
+            purchasable = !GameManager.Instance.HasInInventory(item.ItemClass, item.ID);
+
+        selectedIndex = index;
 
         if (purchasable)
         {
             BuyText.text = "Buy: " + item.Price;
             purchasable = true;
             selectedItem = item;
-            selectedIndex = index;
 
             BuyButton.interactable = (item.Price <= GameManager.Instance.Currency);
         }
@@ -106,8 +109,10 @@ public class CategoryPanel : MonoBehaviour
 
         if (purchasable)
         {
-            GameManager.Instance.Inventory.Add(new InventoryItem(selectedCategory, selectedIndex));
+            GameManager.Instance.Inventory.Add(new InventoryItem(selectedCategory, selectedItem.ID));
             GameManager.Instance.DeductCurrency(selectedItem.Price);
+
+            PlayfabManager.instance.AddItemToInventory(selectedItem);
         }
     }
 }

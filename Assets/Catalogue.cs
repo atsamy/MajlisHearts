@@ -4,35 +4,36 @@ using UnityEngine;
 
 public class Catalogue : MonoBehaviour
 {
-    Dictionary<string,List<CatalogueItem>> allItems;
+    public static Catalogue Instance;
 
+    internal Dictionary<string,List<CatalogueItem>> AllItems;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
+        AllItems = new Dictionary<string, List<CatalogueItem>>();
+
         PlayfabManager.instance.GetCatalogueData((data) =>
         {
             foreach (var item in data)
             {
-                if (allItems.ContainsKey(item.ItemClass))
+                if (AllItems.ContainsKey(item.ItemClass))
                 {
-                    allItems[item.ItemClass].Add(new CatalogueItem(item));
+                    AllItems[item.ItemClass].Add(new CatalogueItem(item));
                 }
                 else
                 {
-                    allItems.Add(item.ItemClass, new List<CatalogueItem>());
-                    allItems[item.ItemClass].Add(new CatalogueItem(item));
+                    AllItems.Add(item.ItemClass, new List<CatalogueItem>());
+                    AllItems[item.ItemClass].Add(new CatalogueItem(item));
                 }
             }
         });
+        PlayfabManager.instance.GetUserData();
     }
 }
-
-//[System.Serializable]
-//public class PurchaseCategory
-//{
-//    public string Code;
-//    public PurchasableItem[] Items;
-//}
 
 [System.Serializable]
 public class CatalogueItem
@@ -40,6 +41,7 @@ public class CatalogueItem
     public string ID;
     public int Price;
     public int Level;
+    public string ItemClass;
 
     public Sprite Sprite;
     GameObject model;
@@ -49,6 +51,7 @@ public class CatalogueItem
         ID = item.ItemId;
         Price = (int)item.VirtualCurrencyPrices["SC"];
         Level = int.Parse(item.CustomData);
+        ItemClass = item.ItemClass;
 
         Sprite = Resources.Load<Sprite>("Sprites/" + ID);
     }
