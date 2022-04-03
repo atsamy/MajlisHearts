@@ -30,6 +30,8 @@ public class Catalogue : MonoBehaviour
                     AllItems[item.ItemClass].Add(new CatalogueItem(item));
                 }
             }
+
+            MajlisScript.Instance.SetItems(GameManager.Instance.Customization, AllItems);
         });
         PlayfabManager.instance.GetUserData();
     }

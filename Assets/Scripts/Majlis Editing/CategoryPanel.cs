@@ -78,13 +78,13 @@ public class CategoryPanel : MonoBehaviour
             purchasable = !GameManager.Instance.HasInInventory(item.ItemClass, item.ID);
 
         selectedIndex = index;
+        selectedItem = item;
 
         if (purchasable)
         {
             BuyText.text = "Buy: " + item.Price;
             purchasable = true;
-            selectedItem = item;
-
+            
             BuyButton.interactable = (item.Price <= GameManager.Instance.Currency);
         }
         else
@@ -106,6 +106,8 @@ public class CategoryPanel : MonoBehaviour
         OnConfirm?.Invoke();
 
         currentIndex = selectedIndex;
+
+        GameManager.Instance.SetCustomization(selectedCategory, selectedItem.ID);
 
         if (purchasable)
         {

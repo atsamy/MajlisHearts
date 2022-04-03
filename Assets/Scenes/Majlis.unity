@@ -877,6 +877,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 365636132}
+  - component: {fileID: 365636133}
   m_Layer: 0
   m_Name: Majlis
   m_TagString: Untagged
@@ -903,6 +904,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &365636133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365636131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f383d0aa0c1ba3e4a89a13be83a678b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EditableItems:
+  - {fileID: 123699632}
 --- !u!1 &367913330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,6 +1422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb2908974c75e44e80d43e784a3abde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Customization: []
   IsMultiGame: 0
   Currency: 0
   Inventory: []
@@ -3899,6 +3915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb2908974c75e44e80d43e784a3abde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Customization: []
   IsMultiGame: 0
   Currency: 0
   Inventory: []

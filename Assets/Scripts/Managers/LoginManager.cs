@@ -6,6 +6,7 @@ using PlayFab.ClientModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -130,6 +131,8 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnUserDataReturned(Dictionary<string, UserDataRecord> userData)
     {
+        GameManager.Instance.Customization = new List<InventoryItem>();
+
         foreach (var item in userData)
         {
             switch (item.Key)
