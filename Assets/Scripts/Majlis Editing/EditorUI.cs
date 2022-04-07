@@ -12,7 +12,7 @@ public class EditorUI : MonoBehaviour
     GameObject[] EditButtons;
     Camera myCamera;
 
-    //GameObject selectedItem;
+    string selectedID;
     GameObject initItem;
 
     EditableItem selectedItem;
@@ -33,7 +33,7 @@ public class EditorUI : MonoBehaviour
 
             EditButtons[index].GetComponent<Button>().onClick.AddListener(() =>
             {
-                ShowItems(item.Code);
+                ShowItems(item);
                 selectedItem = item;
                 EditButtonsParent.gameObject.SetActive(false);
 
@@ -54,6 +54,7 @@ public class EditorUI : MonoBehaviour
     private void CategoryPanel_OnConfirm()
     {
         //Destroy(selectedItem);
+        selectedItem.SelectedID = selectedID;
         selectedItem.Model = initItem;
         initItem = null;
 
@@ -70,9 +71,10 @@ public class EditorUI : MonoBehaviour
         cameraHover.GoBack();
     }
 
-    private void CategoryPanel_OnItemSelected(GameObject obj)
+    private void CategoryPanel_OnItemSelected(string ID,GameObject obj)
     {
         selectedItem.Model.SetActive(false);
+        selectedID = ID;
 
         if (initItem != null)
         {
@@ -91,9 +93,9 @@ public class EditorUI : MonoBehaviour
         }
     }
 
-    public void ShowItems(string code)
+    public void ShowItems(EditableItem item)
     {
         //List<CatalogueItem> current = Catalogue.Instance.AllItems[code];
-        CategoryPanel.Show(code);
+        CategoryPanel.Show(item);
     }
 }

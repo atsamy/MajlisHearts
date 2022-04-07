@@ -11,7 +11,7 @@ public class MajlisItem : MonoBehaviour
 
     CatalogueItem item;
 
-    public delegate void Pressed(CatalogueItem item,int index);
+    public delegate void Pressed(CatalogueItem item);
     public Pressed OnPressed;
 
     public void Set(string category, int index, CatalogueItem item)
@@ -26,6 +26,6 @@ public class MajlisItem : MonoBehaviour
 
     public void Select()
     {
-        OnPressed?.Invoke(item, index);
+        OnPressed?.Invoke(item);
     }
 }

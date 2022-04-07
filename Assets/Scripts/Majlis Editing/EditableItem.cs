@@ -9,6 +9,8 @@ public class EditableItem : MonoBehaviour
     public GameObject Model;
     public Transform CameraLocation;
 
+    [HideInInspector]
+    public string SelectedID;
     //[HideInInspector]
     //public int SelectedIndex = 0;
     // Start is called before the first frame update

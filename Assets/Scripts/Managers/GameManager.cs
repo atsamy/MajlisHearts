@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     public List<InventoryItem> Inventory;
     [HideInInspector]
     public PlayerInfo MyPlayer;
-
+    [HideInInspector]
+    public Dictionary<string, List<CatalogueItem>> Catalog;
     void Awake()
     {
         if (!Instance)
@@ -62,6 +63,9 @@ public class GameManager : MonoBehaviour
 
     public bool HasInInventory(string category, string id)
     {
+        if (Catalog[category].First().ID == id)
+            return true;
+
         return Inventory.Contains(new InventoryItem(category, id));
     }
 
@@ -76,9 +80,12 @@ public class GameManager : MonoBehaviour
             Customization.Add(new InventoryItem(category, id));
         }
 
+        Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
+        wrappedCustomization.array = Customization.ToArray();
+
         PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
         {
-            { "Customization", JsonUtility.ToJson(Customization) }
+            { "Customization", JsonUtility.ToJson( wrappedCustomization) }
         });
     }
 }

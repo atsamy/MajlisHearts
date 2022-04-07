@@ -22,6 +22,9 @@ public class PlayfabManager : MonoBehaviour
     public delegate void UserDataReturned(Dictionary<string, UserDataRecord> userData);
     public event UserDataReturned OnUserDataReturned;
 
+    public delegate void CatalogReturned(List<CatalogItem> catalog);
+    public event CatalogReturned OnCatalogReturned;
+
     public delegate void TitleDataReturned(Dictionary<string, string> titleData);
     public event TitleDataReturned OnTitleDataReturned;
 
@@ -194,13 +197,13 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    public void GetCatalogueData(Action<List<CatalogItem>> onData)
+    public void GetCatalog()
     {
         PlayFabClientAPI.GetCatalogItems(
             new GetCatalogItemsRequest { },
             (res) =>
             {
-                onData?.Invoke(res.Catalog);
+                OnCatalogReturned?.Invoke(res.Catalog);
             },
             (error) =>
             {
@@ -284,7 +287,6 @@ public class PlayfabManager : MonoBehaviour
         }
     }
 
-
     public void SetDisplayName(string UserName, Action<bool> result)
     {
         PlayFabClientAPI.UpdateUserTitleDisplayName(
@@ -301,8 +303,6 @@ public class PlayfabManager : MonoBehaviour
             }
         );
     }
-
-
 
     public void AddItemToInventory(CatalogueItem CatalogueItem)
     {
@@ -321,194 +321,6 @@ public class PlayfabManager : MonoBehaviour
             Debug.Log("Add Item Error: " + error.ErrorMessage);
         });
     }
-
-    #region ContainerFunctions
-
-    //public void StartContainerCountdown(string _ContainerInstanceId, Action<DateTime?> Callback)
-    //{
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "activateContainerCountdown",
-    //            FunctionParameter = new { ContainerInstanceId = _ContainerInstanceId }
-    //        },
-    //        (res) =>
-    //        {
-    //            Debug.Log("Countdown Started" + res.FunctionResult);
-    //            int epochSeconds;
-    //            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0); // epoch start
-    //            if (int.TryParse(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult), out epochSeconds))
-    //            {
-    //                DateTime serverStartTime = date.AddSeconds(epochSeconds);
-    //                Callback(serverStartTime);
-    //            }
-    //            else
-    //                Callback(null);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("Start Container Countdown Error: " + error.ErrorMessage);
-    //            Callback(null);
-    //        }
-    //    );
-    //}
-
-    //public void UpdateContainerCountdown(string _ContainerInstanceId, DateTime newDate)
-    //{
-    //    DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-    //    double seconds = (newDate - date).TotalSeconds;
-
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "updateContainerCountdown",
-    //            FunctionParameter = new { ContainerInstanceId = _ContainerInstanceId, TimeStamp = seconds }
-    //        },
-    //        (res) =>
-    //        {
-    //            Debug.Log("Countdown updated" + res.FunctionResult);
-    //            //int epochSeconds;
-    //            //DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0); // epoch start
-    //            //if (int.TryParse(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult), out epochSeconds))
-    //            //{
-    //            //    DateTime serverStartTime = date.AddSeconds(epochSeconds);
-    //            //    Callback(serverStartTime);
-    //            //}
-    //            //else
-    //            //    Callback(null);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("Start Container Countdown Error: " + error.ErrorMessage);
-    //            //Callback(null);
-    //        }
-    //    );
-    //}
-
-    //public void OpenContainer(string _ContainerInstanceId, bool useHardCurrency, Action<ReturnedItems> Callback)
-    //{
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "openContainer",
-    //            FunctionParameter = new { ContainerInstanceId = _ContainerInstanceId, OpenWIthHC = useHardCurrency }
-    //        },
-    //        (res) =>
-    //        {
-    //            UnlockContainerItemResult result = PlayFab.Json.PlayFabSimpleJson.DeserializeObject<UnlockContainerItemResult>(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult));
-    //            Debug.Log("PLAYFAB JSON DATA: " + ReturnedItems.VirtualCurrency["SC"]);
-    //            Callback(new ReturnedItems(result.GrantedItems, result.VirtualCurrency));
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("Open Container Error: " + error.ErrorMessage);
-    //            Callback(null);
-    //        }
-    //    );
-    //}
-
-    //public void BuyContainer(string _ContainerId, int amount, Action<ReturnedItems> Callback)
-    //{
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "buyContainer",
-    //            FunctionParameter = new { ContainerId = _ContainerId, Amount = amount }
-    //        },
-    //        (res) =>
-    //        {
-    //            print(res.Error.Error);
-    //            UnlockContainerItemResult result = PlayFab.Json.PlayFabSimpleJson.DeserializeObject<UnlockContainerItemResult>(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult));
-    //            Debug.Log("PLAYFAB JSON DATA: " + ReturnedItems.VirtualCurrency["SC"]);
-    //            print(result);
-    //            Callback(new ReturnedItems(result.GrantedItems, result.VirtualCurrency));
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("Open Container Error: " + error.ErrorMessage);
-    //            Callback(null);
-    //        }
-    //    );
-    //}
-
-    //public void ActivateContainerCountdown(string _ContainerInstanceId, Action<bool> Callback) //Callback should return the items gained too
-    //{
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "activateContainerCountdown",
-    //            FunctionParameter = new { ContainerInstanceId = _ContainerInstanceId }
-    //        },
-    //        (res) =>
-    //        {
-    //            Debug.Log("Activate Container Success");
-    //            Callback(true);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("Activate Container Error: " + error.ErrorMessage);
-    //            Callback(false);
-    //        }
-    //    );
-    //}
-    #endregion
-
-    //internal void GameFinished(bool _AIGame, bool _PlayerWon, int _PlayerSR, int _OpponentSR, Action<bool, PlayerRewards> Callback)
-    //{
-    //    PlayerRewards rewards = new PlayerRewards();
-
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "gameFinished",
-    //            FunctionParameter = new { AIGame = _AIGame, PlayerWon = _PlayerWon, PlayerSR = _PlayerSR, OpponentSR = _OpponentSR }
-    //        },
-    //        (res) =>
-    //        {
-    //            Debug.Log("Game Calculated Successfully");
-    //            Debug.Log(res.FunctionResult);
-    //            rewards = PlayFab.Json.PlayFabSimpleJson.DeserializeObject<PlayerRewards>(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult));
-    //            Debug.Log(rewards.Experience);
-    //            Callback(_PlayerWon, rewards);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("GameFinished Error: " + error.ErrorMessage);
-    //            Callback(_PlayerWon, rewards);
-    //        }
-    //    );
-    //}
-
-    //internal void GameStarted(int _PlayerSR, int _OpponentSR, Action<bool> Callback)
-    //{
-    //    PlayerRewards rewards = new PlayerRewards();
-
-    //    PlayFabClientAPI.ExecuteCloudScript(
-    //        new ExecuteCloudScriptRequest()
-    //        {
-    //            FunctionName = "gameStarted",
-    //            FunctionParameter = new { PlayerSR = _PlayerSR, OpponentSR = _OpponentSR }
-    //        },
-    //        (res) =>
-    //        {
-    //            Debug.Log("Points Deducted");
-    //            Debug.Log(res.FunctionResult);
-    //            //rewards = PlayFab.Json.PlayFabSimpleJson.DeserializeObject<PlayerRewards>(PlayFab.Json.PlayFabSimpleJson.SerializeObject(res.FunctionResult));
-    //            //Debug.Log(rewards.Experience);
-    //            //Callback(_PlayerWon, rewards);
-    //            if (Callback != null)
-    //                Callback.Invoke(true);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("GameFinished Error: " + error.ErrorMessage);
-
-    //            if (Callback != null)
-    //                Callback.Invoke(false);
-    //            //Callback(_PlayerWon, rewards);
-    //        }
-    //    );
-    //}
 
     public void AddCurrency(string code, int value, Action<bool> result)
     {

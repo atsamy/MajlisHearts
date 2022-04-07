@@ -32,7 +32,7 @@ public class LoginManager : MonoBehaviour
         playfab.OnUserDataReturned += Playfab_OnUserDataReturned;
         playfab.OnInventoryReturned += Playfab_OnInventoryReturned;
         playfab.OnConnectionError += Playfab_OnConnectionError;
-        //playfab.OnCatalogueReturned += Playfab_OnCatalogueReturned;
+        playfab.OnCatalogReturned += Playfab_OnCatalogReturned;
 
         LogIn();
     }
@@ -43,7 +43,7 @@ public class LoginManager : MonoBehaviour
         playfab.OnUserDataReturned -= Playfab_OnUserDataReturned;
         playfab.OnInventoryReturned -= Playfab_OnInventoryReturned;
         playfab.OnConnectionError -= Playfab_OnConnectionError;
-        //playfab.OnCatalogueReturned -= Playfab_OnCatalogueReturned;
+        playfab.OnCatalogReturned -= Playfab_OnCatalogReturned;
     }
 
     public void LogIn()
@@ -75,9 +75,25 @@ public class LoginManager : MonoBehaviour
 #endif
     }
 
-    private void Playfab_OnCatalogueReturned(List<CatalogItem> catalogItems)
+    private void Playfab_OnCatalogReturned(List<CatalogItem> catalogItems)
     {
+        Dictionary<string, List<CatalogueItem>> AllItems = new Dictionary<string, List<CatalogueItem>>();
 
+        foreach (var item in catalogItems)
+        {
+            if (AllItems.ContainsKey(item.ItemClass))
+            {
+                AllItems[item.ItemClass].Add(new CatalogueItem(item));
+            }
+            else
+            {
+                AllItems.Add(item.ItemClass, new List<CatalogueItem>());
+                AllItems[item.ItemClass].Add(new CatalogueItem(item));
+            }
+        }
+
+        GameManager.Instance.Catalog = AllItems;
+        StartCoroutine(LoadYourAsyncScene());
     }
 
     public void AccountLogin()
@@ -137,7 +153,7 @@ public class LoginManager : MonoBehaviour
         {
             switch (item.Key)
             {
-                case "customization":
+                case "Customization":
                     GameManager.Instance.Customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(item.Value.Value).array.ToList();
                     break;
                 default:
@@ -145,7 +161,7 @@ public class LoginManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(LoadYourAsyncScene());
+        playfab.GetCatalog();
     }
 
     private void Playfab_OnConnectionError(string message)
