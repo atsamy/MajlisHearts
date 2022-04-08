@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     MainPlayer mainPlayer;
@@ -35,15 +35,13 @@ public class UIManager : MonoBehaviour
     public DebugCards[] debugCards;
 
     int doubleCardCount;
-
-    internal void SetDoubleCard(Card card, bool value)
-    {
-        if (doubleCardCount == 1)
-            waitingPanel.SetActive(true);
-
-        mainPlayer.SetDoubleCard(card, value);
-    }
-
+    [Space]
+    [Header("Emojis Elements")]
+    [Space]
+    public Image[] EmojiImages;
+    public Sprite[] Emojes;
+    public GameObject EmojiButton;
+    public GameObject EmojiPanel;
     // Start is called before the first frame update
     void Awake()
     {
@@ -59,6 +57,16 @@ public class UIManager : MonoBehaviour
         game.OnCardDoubled += Game_OnCardDoubled;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
+
+        MultiGameScript.OnMessageRecieved += MessageRecieved;
+    }
+
+    internal void SetDoubleCard(Card card, bool value)
+    {
+        if (doubleCardCount == 1)
+            waitingPanel.SetActive(true);
+
+        mainPlayer.SetDoubleCard(card, value);
     }
 
     private void Game_OnCardDoubled(Card card, int playerIndex)
@@ -67,10 +75,12 @@ public class UIManager : MonoBehaviour
         cardsUIManager.AddDoubledCard(card, index);
     }
 
-    private void Game_OnStartPlaying()
+    private void Game_OnStartPlaying(bool isMulti)
     {
         waitingPanel.SetActive(false);
         SetScore();
+
+        EmojiButton.SetActive(isMulti);
     }
 
     private void CardsPassed()
@@ -78,10 +88,10 @@ public class UIManager : MonoBehaviour
         cardsUIManager.UpdateCards(mainPlayer);
     }
 
-    private void CardDoubled(Card card,int playerIndex)
-    {
+    //private void CardDoubled(Card card,int playerIndex)
+    //{
 
-    }
+    //}
 
     private void Game_OnDealFinished(bool hostPlayer,bool isGameOver)
     {
@@ -89,6 +99,7 @@ public class UIManager : MonoBehaviour
         players = players.OrderBy(a => a.TotalScore).ToArray();
         doubleCardCount = 0;
         Scores.SetActive(false);
+        EmojiButton.SetActive(false);
 
         if (isGameOver)
         {
@@ -166,7 +177,43 @@ public class UIManager : MonoBehaviour
 
     bool once;
 
+    void MessageRecieved(int playerIndex, object message)
+    {
+        int index = CorrectIndex(playerIndex);
+        ShowEmoji(index, (int)message);
+    }
 
+    public void OpenEmojiPanel()
+    {
+        EmojiPanel.SetActive(true);
+    }
+
+    public void SendEmoji(int index)
+    {
+        ((MultiGameScript)game).SendMessageToOthers(index);
+
+        ShowEmoji(0, index);
+
+        EmojiPanel.SetActive(false);
+    }
+
+    public void ShowEmoji(int playerIndex, int index)
+    {
+        EmojiImages[playerIndex].sprite = Emojes[index];
+
+        EmojiImages[playerIndex].gameObject.SetActive(true);
+        EmojiImages[playerIndex].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() =>
+        {
+            StartCoroutine(ShowEmoAnimation(playerIndex));
+        });
+    }
+
+    IEnumerator ShowEmoAnimation(int playerIndex)
+    {
+        yield return new WaitForSeconds(3);
+        EmojiImages[playerIndex].transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Flash);
+        EmojiImages[playerIndex].gameObject.SetActive(false);
+    }
 
     private void Game_OnCardsDealt()//bool waitPass)
     {

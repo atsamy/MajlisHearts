@@ -53,7 +53,7 @@ public class LoginManager : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            AccountLogin();
+            playfab.DeviceLogin();//AccountLogin();
         }
         else
         {

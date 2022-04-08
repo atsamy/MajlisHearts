@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
     public void StartSingleGame()
     {
         GameManager.Instance.IsMultiGame = false;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void ShowEditorPanel()
@@ -35,6 +35,8 @@ public class MenuManager : MonoBehaviour
 
     public void BackToMainUI()
     {
+        EditorPanel.GetComponent<EditorUI>().CategoryPanel_OnCancel();
+
         EditorPanel.SetActive(false);
         MainUI.SetActive(true);
     }

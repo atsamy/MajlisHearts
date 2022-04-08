@@ -96,7 +96,6 @@ public class CategoryPanel : MonoBehaviour
 
     public void CancelPressed()
     {
-        gameObject.SetActive(false);
         OnCancel?.Invoke();
     }
 

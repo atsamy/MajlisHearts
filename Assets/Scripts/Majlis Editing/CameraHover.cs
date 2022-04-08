@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
+
 public class CameraHover : MonoBehaviour
 {
     Vector3 startPosition;
@@ -21,13 +23,16 @@ public class CameraHover : MonoBehaviour
         if (locked)
             return;
 
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             startPosition = Input.mousePosition;
         }
         else if (Input.GetMouseButton(0))
         {
-            
+
 
             Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, 0, Input.mousePosition.y - startPosition.y);
 
@@ -42,7 +47,7 @@ public class CameraHover : MonoBehaviour
 
         locked = true;
         transform.DOMove(Location.position, 0.5f).SetEase(Ease.InOutCubic);
-        transform.DORotateQuaternion(Location.rotation,0.5f);
+        transform.DORotateQuaternion(Location.rotation, 0.5f);
     }
 
     public void GoBack()

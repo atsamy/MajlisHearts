@@ -27,6 +27,8 @@ public class CardsUIManager : MonoBehaviour
     GameObject TenOfDiamondIcon;
     GameObject QueenOfSpadeIcon;
 
+    public GameObject EmojiPanel;
+
     public Text[] Scores;
 
     Dictionary<Card, Sprite> cardSprites;
@@ -316,7 +318,6 @@ public class CardsUIManager : MonoBehaviour
             }
         }
     }
-
 
     public void DisableAllCards()
     {

@@ -27,6 +27,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     const int dealFinishedCode = 44;
     const int doubleCardCode = 45;
     const int checkDoubleCode = 46;
+    const int messageCode = 47;
+
+    public delegate void messageRecieved(int playerIndex, object message);
+    public static messageRecieved OnMessageRecieved;
     // Start is called before the first frame update
     void Start()
     {
@@ -155,9 +159,14 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
+    internal void SendMessageToOthers(object message)
+    {
+        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others};
+        PhotonNetwork.RaiseEvent(messageCode, message, eventOptions, SendOptions.SendReliable);
+    }
+
     private void Deal_OnEvent(EventType eventType)
     {
-
         switch (eventType)
         {
             case EventType.CardsDealt:
@@ -246,7 +255,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case gameReadyCode:
                 beginIndex = (int)photonEvent.CustomData;
 
-                SetStartGame();
+                SetStartGame(true);
 
                 if(PhotonNetwork.IsMasterClient)
                     BeginTurn();
@@ -275,6 +284,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case checkDoubleCode:
                 SetCardsPassed();
                 myPlayer.CheckForDoubleCards();
+                break;
+            case messageCode:
+                OnMessageRecieved?.Invoke(photonEvent.Sender -1,photonEvent.CustomData);
                 break;
         }
     }

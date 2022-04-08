@@ -13,7 +13,7 @@ public class GameScript : MonoBehaviour
     public delegate void CardsPassed();
     public event CardsPassed OnCardsPassed;
 
-    public delegate void StartPlaying();
+    public delegate void StartPlaying(bool isMulti);
     public event StartPlaying OnStartPlaying;
 
     public delegate void TrickFinished(int winningHand);
@@ -114,7 +114,7 @@ public class GameScript : MonoBehaviour
                 CheckDoubleCards();
                 break;
             case EventType.DoubleCardsFinished:
-                SetStartGame();
+                SetStartGame(false);
                 Deal.SetTurn();
                 break;
             case EventType.TrickFinished:
@@ -173,9 +173,9 @@ public class GameScript : MonoBehaviour
         OnCardsPassed?.Invoke();
     }
 
-    public void SetStartGame()
+    public void SetStartGame(bool isMulti)
     {
-        OnStartPlaying?.Invoke();
+        OnStartPlaying?.Invoke(isMulti);
     }
 
     public void SetTrickFinished(int winningHand)

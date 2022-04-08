@@ -62,8 +62,9 @@ public class EditorUI : MonoBehaviour
         cameraHover.GoBack();
     }
 
-    private void CategoryPanel_OnCancel()
+    public void CategoryPanel_OnCancel()
     {
+        CategoryPanel.gameObject.SetActive(false);
         selectedItem.Model.SetActive(true);
         Destroy(initItem);
 

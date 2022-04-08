@@ -252,7 +252,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
                 }
 
                 GameManager.Instance.IsMultiGame = false;
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(2);
             }
 
             //GetComponent<AudioSource>().Stop();
@@ -371,7 +371,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             time -= 1;
         }
         GameManager.Instance.IsMultiGame = true;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
@@ -402,7 +402,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         PhotonNetwork.RemoveCallbackTarget(this);
         GameManager.Instance.IsMultiGame = true;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
