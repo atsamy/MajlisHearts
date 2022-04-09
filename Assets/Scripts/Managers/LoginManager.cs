@@ -128,6 +128,7 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.MyPlayer.Name = userInfo.DisplayName;
             playfab.GetUserInventory();
         }
     }

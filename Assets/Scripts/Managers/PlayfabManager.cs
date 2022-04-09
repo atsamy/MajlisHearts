@@ -16,7 +16,7 @@ public class PlayfabManager : MonoBehaviour
     public delegate void PlayerLogedIn(UserTitleInfo userInfo);
     public event PlayerLogedIn OnPlayerLoggedIn;
 
-    public delegate void InventoryReturned(Dictionary<string,int> currency, List<ItemInstance> userInfo);
+    public delegate void InventoryReturned(Dictionary<string, int> currency, List<ItemInstance> userInfo);
     public event InventoryReturned OnInventoryReturned;
 
     public delegate void UserDataReturned(Dictionary<string, UserDataRecord> userData);
@@ -126,7 +126,37 @@ public class PlayfabManager : MonoBehaviour
     //    });
     //}
 
+    public void AddFriend(string name, Action<bool> success)
+    {
+        PlayFabClientAPI.AddFriend(new AddFriendRequest() { FriendTitleDisplayName = name },
+            (result) =>
+            {
+                if (result.Created)
+                {
+                    success?.Invoke(true);
+                }
+                else
+                {
+                    success?.Invoke(false);
+                }
+            }, (error) =>
+            {
+                success?.Invoke(false);
+            });
+    }
 
+    public void GetFriends(Action<List<FriendInfo>> onFriendsReturned)
+    {
+        //GetFriendsListRequest request = new GetFriendsListRequest();
+        PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest(),(result)=> 
+        {
+            onFriendsReturned?.Invoke(result.Friends);
+        },
+        (error)=> 
+        {
+            onFriendsReturned?.Invoke(null);
+        });
+    }
     internal void LoginWithGoogle(string authCode)
     {
         PlayFabClientAPI.LoginWithGoogleAccount(new LoginWithGoogleAccountRequest()
@@ -224,7 +254,7 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.GetUserInventory(new GetUserInventoryRequest(),
             (response) =>
             {
-                OnInventoryReturned?.Invoke(response.VirtualCurrency,response.Inventory);
+                OnInventoryReturned?.Invoke(response.VirtualCurrency, response.Inventory);
             },
             (error) =>
             {

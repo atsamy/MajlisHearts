@@ -310,7 +310,8 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     private void Connected()
     {
-        PhotonNetwork.NickName = PlayerPrefs.GetString("userName");
+        PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
+        PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
         if (mode == GameMode.Random)
         {
