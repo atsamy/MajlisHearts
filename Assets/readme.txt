@@ -1,2 +1,4 @@
 Photon ID 
 e7314be4-3489-4c62-a8b6-cf3440f78405
+Chat ID
+c420bfe7-dffe-4788-8893-a030cb935260

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using Photon.Chat;
+using AuthenticationValues = Photon.Realtime.AuthenticationValues;
+using Photon.Chat.Demo;
 
 public class FriendListPanel : MonoBehaviourPunCallbacks
 {
@@ -26,13 +29,23 @@ public class FriendListPanel : MonoBehaviourPunCallbacks
     [SerializeField]
     Text friendName;
 
+    string[] ids;
+
+    ChatClient chatClient;
+
     private void Start()
     {
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             print("not connected");
 
+            PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
+
+            AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
+            //auth.UserId = GameManager.Instance.MyPlayer.Name;
+            PhotonNetwork.AuthValues = auth;
             PhotonNetwork.ConnectUsingSettings();
+            //chatClient.ConnectUsingSettings(PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings());
         }
         else
         {
@@ -44,7 +57,6 @@ public class FriendListPanel : MonoBehaviourPunCallbacks
     public void Show()
     {
         friendListPanel.gameObject.SetActive(true);
-
         //PhotonNetwork.Friends
     }
     
@@ -52,18 +64,23 @@ public class FriendListPanel : MonoBehaviourPunCallbacks
     {
         foreach (Transform item in content)
         {
-            Text friend = item.GetComponent<Text>();
+            Destroy(item.gameObject);
+        }
 
-            if (friendList.Find(a => a.UserId == friend.text).IsOnline)
-            {
-                friend.color = Color.green;
-            }
+        foreach (FriendInfo item in friendList)
+        {
+            Text text = Instantiate(friendItem, content).GetComponent<Text>();
+            text.text = item.UserId;
+
+            text.color = item.IsOnline ? Color.green : Color.black;
         }
     }
-    private void Update()
+
+    public void RefreshFriends()
     {
-        //PhotonNetwork.Friends
+        PhotonNetwork.FindFriends(ids);
     }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected To Matser");
@@ -102,22 +119,23 @@ public class FriendListPanel : MonoBehaviourPunCallbacks
 
     void Connected()
     {
-        PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
-        PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
+        //PhotonNetwork.AuthValues.AuthType = CustomAuthenticationType.None;
 
         PlayfabManager.instance.GetFriends((friends) =>
         {
-            string[] ids = new string[friends.Count];
+            ids = new string[friends.Count];
 
             for (int i = 0; i < friends.Count; i++)
             {
-                Text text = Instantiate(friendItem, content).GetComponent<Text>();
-                text.text = friends[i].TitleDisplayName;
-
                 ids[i] = friends[i].TitleDisplayName;
             }
 
             PhotonNetwork.FindFriends(ids);
         });
+    }
+
+    public void Invite()
+    {
+        //PhotonNetwork.PlayerList[1].se
     }
 }

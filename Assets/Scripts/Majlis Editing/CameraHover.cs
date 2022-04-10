@@ -23,7 +23,7 @@ public class CameraHover : MonoBehaviour
         if (locked)
             return;
 
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject(-1))
             return;
 
         if (Input.GetMouseButtonDown(0))
