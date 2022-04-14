@@ -18,17 +18,17 @@ public class MajlisScript : MonoBehaviour
     {
 
         gameManager = GameManager.Instance;
-        SetItems();
+        SetItems(gameManager.Customization);
         //PlayfabManager.instance.GetUserData();
     }
 
-    public void SetItems()
+    public void SetItems(List<InventoryItem> customization)
     {
         foreach (var item in EditableItems)
         {
-            if (gameManager.Customization.Any(a => a.Category == item.Code))
+            if (customization.Any(a => a.Category == item.Code))
             {
-                string id = gameManager.Customization.Find(a => a.Category == item.Code).ID;
+                string id = customization.Find(a => a.Category == item.Code).ID;
                 CatalogueItem catalogueItem = gameManager.Catalog[item.Code].Find(a => a.ID == id);
 
                 GameObject obj = Instantiate(catalogueItem.GetModel(), item.transform);
