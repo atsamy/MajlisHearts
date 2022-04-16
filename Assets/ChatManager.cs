@@ -14,10 +14,16 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public delegate void PlayerStatusUpdate(string user, int status);
     public static event PlayerStatusUpdate OnPlayerStatusUpdate;
 
+    string[] friendIDs;
     private void Awake()
     {
         Instance = this;
     }
+
+    //public void Connect()
+    //{
+    //    chatClient.ConnectUsingSettings();
+    //}
 
     void Update()
     {
@@ -41,7 +47,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
         chatClient.ConnectUsingSettings(chatSettings);
 
-        chatClient.AddFriends(IDs);
+        friendIDs = IDs;
     }
 
     public void SendPrivateMessage(string player,string message)
@@ -56,7 +62,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnConnected()
     {
+        Debug.Log("chat client connected");
+
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
+        chatClient.AddFriends(friendIDs);
     }
 
     public void OnDisconnected()
