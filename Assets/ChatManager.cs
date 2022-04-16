@@ -11,10 +11,18 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public static ChatManager Instance;
     ChatClient chatClient;
 
+    string currentChannel;
+
     public delegate void PlayerStatusUpdate(string user, int status);
     public static event PlayerStatusUpdate OnPlayerStatusUpdate;
 
+
     string[] friendIDs;
+
+    public delegate void GotMessage(string sender, string message);
+    public static event GotMessage OnGotMessage;
+
+
     private void Awake()
     {
         Instance = this;
@@ -55,6 +63,21 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         chatClient.SendPrivateMessage(player, message);
     }
 
+    //public void SendMessage()
+    //{
+        
+    //}
+
+    public void SubscribeToChannel(string channel)
+    {
+        chatClient.Subscribe(new string[] { channel});
+    }
+
+    public void SendPublicMessage(string message)
+    {
+        chatClient.PublishMessage(currentChannel,message);
+    }
+
     public void OnChatStateChange(ChatState state)
     {
 
@@ -75,12 +98,12 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-
+        OnGotMessage?.Invoke(senders[0], messages[0].ToString());
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-
+        MenuManager.Instance.ShowInvitePopup(sender, message.ToString());
     }
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)

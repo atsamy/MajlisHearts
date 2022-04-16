@@ -1,13 +1,18 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, IMatchmakingCallbacks
+public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, IMatchmakingCallbacks, IOnEventCallback
 {
     string roomName;
     bool isHost;
+
+    public GameObject StartGameButton;
 
     void Start()
     {
@@ -38,11 +43,15 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     void Connected()
     {
+
         if (isHost)
         {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 4;
             roomOptions.IsVisible = false;
+
+            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
+            roomOptions.CustomRoomProperties.Add("Customization", GameManager.Instance.Customization);
 
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
@@ -52,6 +61,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         }
     }
 
+    public void StartGame()
+    {
+        RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(1, null, eventOptionsCards, SendOptions.SendReliable);
+    }
+
     public void OnConnected()
     {
         
@@ -59,6 +74,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnConnectedToMaster()
     {
+        PhotonNetwork.AuthValues = new AuthenticationValues() { UserId = GameManager.Instance.MyPlayer.Name };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "player", 1 } });
+        PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
+
         Connected();
     }
 
@@ -84,7 +103,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        
+        if (isHost && PhotonNetwork.PlayerList.Length > 1)
+            StartGameButton.SetActive(true);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
@@ -124,7 +144,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnJoinedRoom()
     {
-        
+        List<InventoryItem> customization = (List<InventoryItem>)PhotonNetwork.CurrentRoom.CustomProperties["Customization"];
+        MajlisScript.Instance.SetItems(customization);
     }
 
     public void OnJoinRoomFailed(short returnCode, string message)
@@ -140,5 +161,14 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     public void OnLeftRoom()
     {
         
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == 1)
+        {
+            GameManager.Instance.IsMultiGame = true;
+            SceneManager.LoadScene(2);
+        }
     }
 }

@@ -116,6 +116,10 @@ public class FriendListPanel : MonoBehaviour
         }
 
         friendListPanel.gameObject.SetActive(false);
+        MenuManager.Instance.OpenMeeting(roomName,true);
+
+        ChatManager.Instance.SubscribeToChannel(roomName);
+
         ChatManager.OnPlayerStatusUpdate -= ChatManager_OnPlayerStatusUpdate;
     }
 
