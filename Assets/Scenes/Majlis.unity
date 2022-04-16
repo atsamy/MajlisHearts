@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -361,8 +361,9 @@ GameObject:
   - component: {fileID: 105248363}
   - component: {fileID: 105248365}
   - component: {fileID: 105248364}
+  - component: {fileID: 105248366}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: ChatPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,6 +429,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 105248362}
   m_CullTransparentMesh: 1
+--- !u!114 &105248366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105248362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505f7f664d3264774a277e9f43e3dfa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 1062407441}
+  TextPrefab: {fileID: 8135980172245097081, guid: 38c02489fd442421fab76bac1c9efce2, type: 3}
+  Content: {fileID: 1272063222}
 --- !u!1 &123699631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,9 +2046,9 @@ RectTransform:
   m_Father: {fileID: 105248363}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 195.9, y: -479.4}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 195.9, y: 60.600006}
   m_SizeDelta: {x: 77.1517, y: 62.599}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &557530747
@@ -2078,7 +2094,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 557530748}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 105248366}
+        m_TargetAssemblyTypeName: ChatPanel, Assembly-CSharp
+        m_MethodName: SendMessage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &557530748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5527,6 +5555,7 @@ GameObject:
   - component: {fileID: 1272063222}
   - component: {fileID: 1272063224}
   - component: {fileID: 1272063223}
+  - component: {fileID: 1272063225}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -5591,6 +5620,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272063221}
   m_CullTransparentMesh: 1
+--- !u!114 &1272063225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272063221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1329163911
 GameObject:
   m_ObjectHideFlags: 0
@@ -5795,7 +5850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1369391497
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6608,7 +6663,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 743508829}
         m_TargetAssemblyTypeName: FriendListPanel, Assembly-CSharp
-        m_MethodName: Invite
+        m_MethodName: SendInvite
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

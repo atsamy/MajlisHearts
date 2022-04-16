@@ -58,24 +58,24 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         friendIDs = IDs;
     }
 
-    public void SendPrivateMessage(string player,string message)
+    public void SendPrivateMessage(string player, string message)
     {
         chatClient.SendPrivateMessage(player, message);
     }
 
     //public void SendMessage()
     //{
-        
+
     //}
 
     public void SubscribeToChannel(string channel)
     {
-        chatClient.Subscribe(new string[] { channel});
+        chatClient.Subscribe(new string[] { channel });
     }
 
     public void SendPublicMessage(string message)
     {
-        chatClient.PublishMessage(currentChannel,message);
+        chatClient.PublishMessage(currentChannel, message);
     }
 
     public void OnChatStateChange(ChatState state)
@@ -103,17 +103,19 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-        MenuManager.Instance.ShowInvitePopup(sender, message.ToString());
+        if (sender != GameManager.Instance.MyPlayer.Name)
+            MenuManager.Instance.ShowInvitePopup(sender, message.ToString());
     }
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
-        OnPlayerStatusUpdate?.Invoke(user,status);
+        OnPlayerStatusUpdate?.Invoke(user, status);
     }
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
-
+        Debug.Log("Subscribed to " + channels[0]);
+        currentChannel = channels[0];
     }
 
     public void OnUnsubscribed(string[] channels)

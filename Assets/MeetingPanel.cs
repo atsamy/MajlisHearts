@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,19 +15,28 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public GameObject StartGameButton;
 
+    private void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
     void Start()
     {
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             print("not connected");
-
-            PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
-
             AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
-            //auth.UserId = GameManager.Instance.MyPlayer.Name;
+            
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "player", 1 } });
+            PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
+
             PhotonNetwork.AuthValues = auth;
             PhotonNetwork.ConnectUsingSettings();
-            //chatClient.ConnectUsingSettings(PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings());
         }
         else
         {
@@ -37,13 +47,14 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void Open(string roomName,bool isHost)
     {
+        gameObject.SetActive(true);
+
         this.roomName = roomName;
         this.isHost = isHost;
     }
 
     void Connected()
     {
-
         if (isHost)
         {
             RoomOptions roomOptions = new RoomOptions();
@@ -51,7 +62,11 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.IsVisible = false;
 
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
-            roomOptions.CustomRoomProperties.Add("Customization", GameManager.Instance.Customization);
+
+            Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
+            wrappedCustomization.array = GameManager.Instance.Customization.ToArray();
+
+            roomOptions.CustomRoomProperties.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
 
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
@@ -74,10 +89,6 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnConnectedToMaster()
     {
-        PhotonNetwork.AuthValues = new AuthenticationValues() { UserId = GameManager.Instance.MyPlayer.Name };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "player", 1 } });
-        PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
-
         Connected();
     }
 
@@ -144,12 +155,15 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnJoinedRoom()
     {
-        List<InventoryItem> customization = (List<InventoryItem>)PhotonNetwork.CurrentRoom.CustomProperties["Customization"];
+        Debug.Log("Joined private room successfully");
+
+        List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
         MajlisScript.Instance.SetItems(customization);
     }
 
     public void OnJoinRoomFailed(short returnCode, string message)
     {
+        Debug.Log("Failed joining private room");
         PhotonNetwork.JoinRoom(roomName);
     }
 
