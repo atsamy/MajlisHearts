@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using ArabicSupport;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
@@ -15,10 +15,12 @@ public class MenuManager : MonoBehaviour
 
     public GameObject EditorPanel;
     public GameObject MainUI;
+    public AvatarPanel AvatarPanel;
+    public SettingsPanel SettingsPanel;
 
     public MeetingPanel meetingPanel;
-
     public Popup InvitePopup;
+    public Image Avatar;
 
     private void Awake()
     {
@@ -29,9 +31,18 @@ public class MenuManager : MonoBehaviour
     {
         Currency.text = GameManager.Instance.Currency.ToString();
         Level.text = GameManager.Instance.MyPlayer.Level.ToString();
-        UserName.text = GameManager.Instance.MyPlayer.Name;
+        UserName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
 
         GameManager.Instance.OnCurrencyChanged += Instance_OnCurrencyChanged;
+
+        if (string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
+        {
+            OpenAvatarPanel();
+        }
+        else
+        {
+            Avatar.sprite = Resources.Load<Sprite>("Avatar/Face/" + GameManager.Instance.MyPlayer.Avatar);
+        }
     }
 
     public void StartSingleGame()
@@ -44,6 +55,15 @@ public class MenuManager : MonoBehaviour
     {
         EditorPanel.SetActive(true);
         MainUI.SetActive(false);
+    }
+
+    public void OpenAvatarPanel()
+    {
+        AvatarPanel.Open((index) =>
+        {
+            GameManager.Instance.MyPlayer.Avatar = "Avatar" + index;
+            Avatar.sprite = Resources.Load<Sprite>("Avatar/Face/Avatar" + index);
+        });
     }
 
     public void BackToMainUI()
@@ -59,19 +79,24 @@ public class MenuManager : MonoBehaviour
         Currency.text = value.ToString();
     }
 
-    public void OpenMeeting(string roomName,bool isHost)
+    public void OpenSettings()
     {
-        meetingPanel.Open(roomName,isHost);
+        SettingsPanel.Open();
+    }
+
+    public void OpenMeeting(string roomName, bool isHost)
+    {
+        meetingPanel.Open(roomName, isHost);
     }
 
     internal void ShowInvitePopup(string sender, string message)
     {
-        InvitePopup.ShowWithMessage(sender + " Invited You To Join in His Majlis",()=>
-        {
-            string roomName = message.Split(':')[1];
+        InvitePopup.ShowWithMessage(sender + " Invited You To Join in His Majlis", () =>
+         {
+             string roomName = message.Split(':')[1];
 
-            ChatManager.Instance.SubscribeToChannel(roomName);
-            OpenMeeting(roomName,false);
-        });
+             ChatManager.Instance.SubscribeToChannel(roomName);
+             OpenMeeting(roomName, false);
+         });
     }
 }

@@ -31,9 +31,8 @@ public class PlayfabManager : MonoBehaviour
     public delegate void ConnectionError(string message);
     public event ConnectionError OnConnectionError;
 
-    //public delegate void LeaderboardDelegate(bool success, List<LeaderBoardData> leaderboardData, bool isWorld);
-
     bool emptyLoadOut;
+
     void Awake()
     {
         if (instance == null) // check to see if the instance has a reference
@@ -411,122 +410,6 @@ public class PlayfabManager : MonoBehaviour
             }
         );
     }
-
-    //internal void GetMyWorldLeaderBoard(LeaderboardDelegate LeaderboardCallback)
-    //{
-    //    List<LeaderBoardData> leaderboardData = new List<LeaderBoardData>();
-
-    //    PlayFabClientAPI.GetLeaderboardAroundPlayer(
-    //        new GetLeaderboardAroundPlayerRequest()
-    //        {
-    //            StatisticName = "Points",
-    //            MaxResultsCount = 10
-    //        },
-    //        (response) =>
-    //        {
-    //            foreach (var entry in response.Leaderboard)
-    //            {
-    //                LeaderBoardData newData = new LeaderBoardData()
-    //                {
-    //                    PlayerID = entry.PlayFabId,
-    //                    Rank = (int)entry.Position,
-    //                    playerName = entry.DisplayName,
-    //                    Points = entry.StatValue
-    //                };
-
-    //                leaderboardData.Add(newData);
-    //            }
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(true, leaderboardData, false);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("GetWorldLeaderBoard Error: " + error.ErrorMessage);
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(false, leaderboardData, true);
-    //        }
-    //    );
-    //}
-
-    //internal void GetDefaultWorldLeaderBoard(LeaderboardDelegate LeaderboardCallback)
-    //{
-    //    List<LeaderBoardData> leaderboardData = new List<LeaderBoardData>();
-
-    //    PlayFabClientAPI.GetLeaderboard(
-    //        new GetLeaderboardRequest()
-    //        {
-    //            StartPosition = 0,
-    //            StatisticName = "Points",
-    //            MaxResultsCount = 10
-    //        },
-    //        (response) =>
-    //        {
-    //            foreach (var entry in response.Leaderboard)
-    //            {
-    //                LeaderBoardData newData = new LeaderBoardData()
-    //                {
-    //                    PlayerID = entry.PlayFabId,
-    //                    Rank = (int)entry.Position,
-    //                    playerName = entry.DisplayName,
-    //                    Points = entry.StatValue
-    //                };
-
-    //                leaderboardData.Add(newData);
-    //            }
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(true, leaderboardData, true);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("GetDefaultWorldLeaderBoard Error: " + error.ErrorMessage);
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(false, leaderboardData, true);
-    //        }
-    //    );
-    //}
-
-    //internal void GetFriendLeaderBoard(LeaderboardDelegate LeaderboardCallback)
-    //{
-    //    List<LeaderBoardData> leaderboardData = new List<LeaderBoardData>();
-
-    //    PlayFabClientAPI.GetFriendLeaderboard(
-    //        new GetFriendLeaderboardRequest()
-    //        {
-    //            StartPosition = 0,
-    //            StatisticName = "Points",
-    //            MaxResultsCount = 10
-    //        },
-    //        (response) =>
-    //        {
-    //            foreach (var entry in response.Leaderboard)
-    //            {
-    //                LeaderBoardData newData = new LeaderBoardData()
-    //                {
-    //                    PlayerID = entry.PlayFabId,
-    //                    Rank = (int)entry.Position,
-    //                    playerName = entry.DisplayName,
-    //                    Points = entry.StatValue
-    //                };
-
-    //                leaderboardData.Add(newData);
-    //            }
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(true, leaderboardData, false);
-    //        },
-    //        (error) =>
-    //        {
-    //            Debug.Log("GetFriendLeaderBoard Error: " + error.ErrorMessage);
-
-    //            if (LeaderboardCallback != null)
-    //                LeaderboardCallback(false, leaderboardData, false);
-    //        }
-    //    );
-    //}
 
 }
 

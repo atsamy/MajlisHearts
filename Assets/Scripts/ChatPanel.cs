@@ -1,3 +1,4 @@
+using ArabicSupport;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,7 @@ public class ChatPanel : MonoBehaviour
     private void ChatManager_OnGotMessage(string sender, string message)
     {
         Text text = Instantiate(TextPrefab, Content).GetComponent<Text>();
-        text.text = "<color=green>" + sender + "</color>" + " " + message;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        text.text = ArabicFixer.Fix("<color=green>" + sender + "</color>" + " " + message);
     }
 
     public void SendMessage()

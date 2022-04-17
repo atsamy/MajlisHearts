@@ -190,7 +190,7 @@ public class CardsUIManager : MonoBehaviour
         //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
         playedCard.GetComponent<Image>().sprite = cardSprites[card];
 
-        playedCard.parent = DeckCardsPosition[playerIndex];
+        playedCard.SetParent(DeckCardsPosition[playerIndex]);
         //playedCard.localPosition = Vector3.zero;
         playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
         //LeanTween.moveLocal(playedCard.gameObject, Vector3.zero, 0.5f).setEaseInOutCirc();

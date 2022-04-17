@@ -54,31 +54,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         timer = 0;
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    //if (GameManager.Instance.IsRankingGame)
-    //    //{
-    //    //    Circle.Rotate(0, 0, -Time.deltaTime * 25);
-    //    //    OppositeCircle.Rotate(0, 0, Time.deltaTime * 25);
-
-    //    //    Color color = gameInfoTop.color;
-    //    //    color.a = Mathf.Abs(Mathf.Cos(Time.time * 2));
-    //    //    gameInfoTop.color = color;
-
-    //    //    timer += Time.deltaTime;
-    //    //}
-
-    //    //print(roomCreated);
-    //}
-
-    //IEnumerable startAIGame()
-    //{
-    //    yield return new WaitForSeconds(12);
-
-    //    GameManager.Instance.StartAIGame();
-    //}
-
     public override void Close()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
@@ -87,45 +62,19 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             PhotonNetwork.Disconnect();
 
         IsconnectedToMaster = false;
-        //UserInput.SetActive(false);
         joinRoom = false;
-
-        //gameInfoTop.text = "looking for other player";
-
-        //Circle.GetComponent<Image>().color = Color.white;
-
-        //RoomNumberPanel.SetActive(false);
 
         mode = GameMode.Random;
         BackButton.SetActive(false);
 
-        //GreenDot.SetActive(false);
-        //gameInfoTop.text = "";
-        //Audio.mute = false;
-
-        //SFXManager.Instance.FadeInMusic();
-
         roomCreated = false;
-
-        //BackButton.SetActive(true);
-
         base.Close();
     }
 
     public void OpenAndCreatePrivateRoom()
     {
-        //Searching.SetActive(false);
-
         mode = GameMode.CreateRoom;
-
-        //Audio.mute = true;
-
         gameInfoTop.text = "Waiting for the other player";
-        //RoomNumberPanel.SetActive(true);
-
-
-        //Circle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.16f);
-        //InfoText.text = "Creating Room";
 
         Open();
 
@@ -143,16 +92,7 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OpenAndJoinPrivateRoom()
     {
-        //Searching.SetActive(false);
-
         mode = GameMode.JoinRoom;
-        //BackButton.SetActive(true);
-        //UserInput.SetActive(true);
-
-        //Circle.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.16f);
-
-        //Audio.mute = true;
-
         gameInfoTop.text = "";
 
         Open();
@@ -161,9 +101,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         base.Open();
         PhotonNetwork.AddCallbackTarget(this);
-        //GameManager.Instance.SetEquippedItems();
-
-        //SFXManager.Instance.FadeMusic();
         BackButton.SetActive(true);
 
         if (!PhotonNetwork.IsConnectedAndReady)
@@ -197,25 +134,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         PhotonNetwork.CreateRoom(RoomName);
     }
 
-    //internal void HostReady(string roomName, int raceIndex)
-    //{
-    //    this.roomName = roomName;
-    //    this.RaceIndex = raceIndex;
-
-    //    if (IsconnectedToMaster)
-    //    {
-    //        print("connected");
-    //        print(roomName);
-    //        PhotonNetwork.JoinRoom(roomName);
-    //    }
-    //    else
-    //    {
-    //        print("not connected");
-    //    }
-
-    //    StartCoroutine(TimeOut());
-    //}
-
     IEnumerator TimeOut()
     {
         for (int i = 0; i < 15; i++)
@@ -228,8 +146,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         {
             gameReady = true;
             BackButton.SetActive(false);
-
-            //print
 
             if (PhotonNetwork.PlayerList.Length > 1)
             {

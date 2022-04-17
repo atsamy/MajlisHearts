@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviour
         OnCurrencyChanged?.Invoke(Currency);
     }
 
-
     public bool HasInInventory(string category, string id)
     {
         if (Catalog[category].First().ID == id)
@@ -94,6 +93,7 @@ public class GameManager : MonoBehaviour
 public class PlayerInfo
 {
     public string Name;
+    public string Avatar;
     public int Level;
 }
 

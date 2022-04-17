@@ -18,6 +18,8 @@ public class LoginManager : MonoBehaviour
     public GameObject ConnectionError;
     public UsernamePanel UserNamePanel;
 
+    public LanguagePanel LanguagePanel;
+
     PlayfabManager playfab;
     int loginValue;
 
@@ -124,7 +126,7 @@ public class LoginManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(userInfo.DisplayName))
         {
-            ShowUserNamePanel();
+            SetLanguageAndUserName();
         }
         else
         {
@@ -157,7 +159,8 @@ public class LoginManager : MonoBehaviour
                 case "Customization":
                     GameManager.Instance.Customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(item.Value.Value).array.ToList();
                     break;
-                default:
+                case "Avatar":
+                    GameManager.Instance.MyPlayer.Avatar = item.Value.Value;
                     break;
             }
         }
@@ -170,7 +173,15 @@ public class LoginManager : MonoBehaviour
         ConnectionError.SetActive(true);
     }
 
-    private void ShowUserNamePanel()
+    private void SetLanguageAndUserName()
+    {
+        LanguagePanel.Open(() =>
+        {
+            ShowUserNamePanel();
+        });
+    }
+
+    void ShowUserNamePanel()
     {
         UserNamePanel.Show((name) =>
         {
@@ -187,7 +198,6 @@ public class LoginManager : MonoBehaviour
             });
         });
     }
-   
 
     IEnumerator LoadYourAsyncScene()
     {
