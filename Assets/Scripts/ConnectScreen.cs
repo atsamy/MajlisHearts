@@ -163,27 +163,27 @@ public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         if (PhotonNetwork.PlayerList.Length == 2)
             StartCoroutine(StartGameIn(3));
-        //throw new NotImplementedException();
+        
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-        //throw new NotImplementedException();
+        
     }
 
     /// <summary>
@@ -193,30 +193,30 @@ public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnFriendListUpdate(List<FriendInfo> friendList)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnCreatedRoom()
     {
         gameInfo.text = "Created Room";
-        //throw new NotImplementedException();
+        
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
+        
         Debug.Log("Create Room Failed " + message);
     }
 
     public void OnJoinRoomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
+        
         Debug.Log("Join Room Failed " + message);
     }
 
     public void OnJoinRandomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
+        
         Debug.Log("Join Random Failed " + message);
 
         CreateRoom();
@@ -224,7 +224,7 @@ public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnLeftRoom()
     {
-        //throw new NotImplementedException();
+        
     }
 
     /// <summary>
@@ -233,27 +233,27 @@ public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnConnected()
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnDisconnected(DisconnectCause cause)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnRegionListReceived(RegionHandler regionHandler)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnCustomAuthenticationFailed(string debugMessage)
     {
-        //throw new NotImplementedException();
+        
     }
 
 }

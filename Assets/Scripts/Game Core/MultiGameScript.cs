@@ -453,12 +453,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        //throw new NotImplementedException();
+        
         if (PhotonNetwork.IsMasterClient)
         {
             int index = otherPlayer.ActorNumber - 1;
@@ -478,16 +478,16 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        //throw new NotImplementedException();
+        
     }
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-        //throw new NotImplementedException();
+        
     }
 }

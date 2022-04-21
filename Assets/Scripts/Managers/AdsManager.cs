@@ -197,23 +197,23 @@
 
 //    public void OnUnityAdsReady(string placementId)
 //    {
-//        //throw new NotImplementedException();
+//        
 //        //VideoReady = true;
 //    }
 
 //    public void OnUnityAdsDidError(string message)
 //    {
-//        //throw new NotImplementedException();
+//        
 //    }
 
 //    public void OnUnityAdsDidStart(string placementId)
 //    {
-//        //throw new NotImplementedException();
+//        
 //    }
 
 //    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
 //    {
-//        //throw new NotImplementedException();
+//        
 
 //        switch (showResult)
 //        {

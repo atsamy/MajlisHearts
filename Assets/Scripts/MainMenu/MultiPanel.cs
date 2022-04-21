@@ -8,51 +8,34 @@ using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon;
 //using photon;
 
-public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
+public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
-    //public Transform Circle;
-    //public Transform OppositeCircle;
-
     public Text gameInfoTop;
 
     public GameObject StartGameButton;
-    //public GameObject UserInput;
-    //public Text RoomCode;
-    bool joinRoom = false;
-    //public Text gameInfoBottom;
 
-    enum GameMode { Random, CreateRoom, JoinRoom }
+    public Button JoinRoomButton;
 
-    GameMode mode = GameMode.Random;
+    [SerializeField]
+    SelectGroup betSelection;
+    [SerializeField]
+    SelectGroup typeSelection;
+    [SerializeField]
+    GameObject LoginPanel;
+    //enum GameMode { Random, CreateRoom, JoinRoom }
+
+    //GameMode mode = GameMode.Random;
 
     bool IsconnectedToMaster;
     bool gameReady;
 
-    string roomName;
-    //int RaceIndex = 0;
     bool createRoomWhenReady;
-
-    //public GameObject Searching;
-    //public GameObject GreenDot;
-
     public GameObject BackButton;
-    //public GameObject RoomNumberPanel;
-
     public Text InfoText;
-
-    float timer = 0;
 
     string PrivateRoomName;
     const int beginGame = 25;
-    //public AudioSource Audio;
-
     bool roomCreated;
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Invoke("ResetText", 2);
-        timer = 0;
-    }
 
     public override void Close()
     {
@@ -62,23 +45,10 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             PhotonNetwork.Disconnect();
 
         IsconnectedToMaster = false;
-        joinRoom = false;
-
-        mode = GameMode.Random;
         BackButton.SetActive(false);
 
         roomCreated = false;
         base.Close();
-    }
-
-    public void OpenAndCreatePrivateRoom()
-    {
-        mode = GameMode.CreateRoom;
-        gameInfoTop.text = "Waiting for the other player";
-
-        Open();
-
-        StartCoroutine(Shuffle());
     }
 
     IEnumerator Shuffle()
@@ -90,13 +60,6 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         }
     }
 
-    public void OpenAndJoinPrivateRoom()
-    {
-        mode = GameMode.JoinRoom;
-        gameInfoTop.text = "";
-
-        Open();
-    }
     public override void Open()
     {
         base.Open();
@@ -112,27 +75,23 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
         else
         {
             print("is connected");
-            Connected();
+            IsconnectedToMaster = true;
+            JoinRoomButton.interactable = true;
         }
     }
 
-    public void OpenRoom()
-    {
+    //public void CreateRoom()
+    //{
 
-    }
+    //    RoomOptions roomOptions = new RoomOptions();
+    //    roomOptions.MaxPlayers = 4;
+    //    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "bet", BetSelection.GroupIndex }, { "type", typeSelection.GroupIndex } };
+    //    roomOptions.IsVisible = true;
 
-    public void CreateRoom()
-    {
+    //    string RoomName = Random.Range(0, 10000).ToString("0000");
 
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
-        //roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "rank", GameManager.Instance.Me.RankIndex } };
-        roomOptions.IsVisible = mode == GameMode.Random;
-
-        string RoomName = Random.Range(0, 10000).ToString("0000");
-
-        PhotonNetwork.CreateRoom(RoomName);
-    }
+    //    PhotonNetwork.CreateRoom(RoomName);
+    //}
 
     IEnumerator TimeOut()
     {
@@ -170,47 +129,12 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
                 GameManager.Instance.IsMultiGame = false;
                 SceneManager.LoadScene(2);
             }
-
-            //GetComponent<AudioSource>().Stop();
-            //if (PhotonNetwork.CurrentRoom != null)
-            //    PhotonNetwork.LeaveRoom();
-            //Audio.mute = true;
-
-
-
-
-
-            //if (PhotonNetwork.CountOfRooms > 1)
-            //{
-            //    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            //    PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
-            //}
-            //else
-            //{
-            //    GameManager.Instance.IsMultiGame = false;
-            //    SceneManager.LoadScene(1);
-            //}
         }
     }
 
     public void OnJoinedRoom()
     {
         Debug.Log("joined room");
-
-        //if (PhotonNetwork.PlayerList.Length == 4)
-        //{
-        //    StartCoroutine(StartGameIn(3));
-        //}
-        //else
-        //{
-        //    if (mode == GameMode.Random)
-        //        StartCoroutine(TimeOut());
-        //}
-
-        //GreenDot.SetActive(true);
-
-        //                 print("Joined Room");
-        //Debug.Log(PhotonNetwork.room.Name);
     }
 
     public void OnConnectedToMaster()
@@ -220,67 +144,31 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
             Debug.Log("OnConnectedToMaster() was called by PUN");
             print("Connected to Master");
 
-            Connected();
+            IsconnectedToMaster = true;
+            JoinRoomButton.interactable = true;
+            //Connected();
         }
     }
 
-    private void Connected()
+    public void JoinOrCreateRoom()
     {
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
-        if (mode == GameMode.Random)
-        {
-            PhotonNetwork.JoinRandomRoom();
-        }
-        else if (mode == GameMode.CreateRoom)
-        {
-            CreateRoom();
-        }
-        else
-        {
-            if (joinRoom)
-            {
-                JoinPrivateRoom();
-            }
-        }
+        ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable();
+        roomOptions = new ExitGames.Client.Photon.Hashtable() { { "bet", betSelection.GroupIndex }, { "type", typeSelection.GroupIndex } };
 
-        IsconnectedToMaster = true;
+        PhotonNetwork.JoinRandomOrCreateRoom(roomOptions,4);
+        LoginPanel.SetActive(false);
     }
-
-    public void JoinRoom()
-    {
-        if (IsconnectedToMaster)
-        {
-            JoinPrivateRoom();
-        }
-        else
-        {
-            joinRoom = true;
-        }
-
-        BackButton.SetActive(false);
-        //UserInput.SetActive(false);
-    }
-
-    void JoinPrivateRoom()
-    {
-        //PhotonNetwork.JoinRoom(RoomCode.text);
-    }
-
-    //void OnPhotonRandomJoinFailed()
-    //{
-    //    PhotonNetwork.CreateRoom(null);
-    //}
 
     IEnumerator StartGameIn(int time)
     {
         BackButton.SetActive(false);
 
-        //Audio.mute = true;
         gameReady = true;
         PhotonNetwork.RemoveCallbackTarget(this);
-        //GetComponent<AudioSource>().Stop();
+
         while (time > 0)
         {
             gameInfoTop.text = time.ToString();//LanguageManager.Instance.getString("startafter") + " " + time;
@@ -295,24 +183,14 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         if (PhotonNetwork.PlayerList.Length == 4)
         {
-            //if (PhotonNetwork.IsMasterClient)
-            //{
-            //    StartGameButton.SetActive(true);
-            //}
-
             if (PhotonNetwork.IsMasterClient)
             {
                 RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                 PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
             }
-            //GetOtherPlayerData();
-
-            //if (mode == GameMode.CreateRoom)
-            //    InfoText.text = "Starting The Game";
         }
 
         InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
-        //throw new NotImplementedException();
     }
 
     public void StartGame()
@@ -324,22 +202,22 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        //throw new NotImplementedException();
+
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        //throw new NotImplementedException();
+
     }
 
     public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        //throw new NotImplementedException();
+
     }
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-        //throw new NotImplementedException();
+
     }
 
     /// <summary>
@@ -348,32 +226,31 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
     /// <param name="friendList"></param>
     public void OnFriendListUpdate(List<FriendInfo> friendList)
     {
-        //throw new NotImplementedException();
+
     }
 
     public void OnCreatedRoom()
     {
-        InfoText.text = ("Created Room");
+        Debug.Log("room created");
+        //InfoText.text = ("Created Room");
 
-        if (mode == GameMode.CreateRoom)
-        {
-            InfoText.text = PhotonNetwork.CurrentRoom.Name;
-            roomCreated = true;
-        }
+        //if (mode == GameMode.CreateRoom)
+        //{
+        //    InfoText.text = PhotonNetwork.CurrentRoom.Name;
+        //    roomCreated = true;
+        //}
 
-        StartCoroutine(TimeOut());
-        //throw new NotImplementedException();
+        //StartCoroutine(TimeOut());
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
         Debug.Log("Create Room Failed " + message);
     }
 
     public void OnJoinRoomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
+
         BackButton.SetActive(true);
         gameInfoTop.text = message;
 
@@ -382,18 +259,13 @@ public class WaitingScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks,
 
     public void OnJoinRandomFailed(short returnCode, string message)
     {
-        //throw new NotImplementedException();
         Debug.Log("Join Random Failed " + message);
-
-        CreateRoom();
+        //CreateRoom();
     }
 
     public void OnLeftRoom()
     {
-        //throw new NotImplementedException();
-        //PhotonNetwork.LeaveLobby();
-        Connected();
-
+        //Connected();
     }
 
     void ResetText()
