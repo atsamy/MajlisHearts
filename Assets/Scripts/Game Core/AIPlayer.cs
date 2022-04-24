@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 public class AIPlayer : Player
 {
-    //List<Card> passCards;
     public AIPlayer(int index) : base(index)
     {
         isPlayer = false;
@@ -155,17 +154,11 @@ public class AIPlayer : Player
 
     public Card ChooseRiskyCards(DealInfo info)
     {
-        // revisit this code we need to choose hight cards from a stack with few options 
-
+        // revisit this code we need to choose hight cards from a stack with few options
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
-
-        //Debug.Log("cards count: " + OwnedCards.Count);
 
         foreach (var item in OwnedCards)
         {
-            //if (item.Shape == CardShape.Heart && !HasOnlyHearts())
-            //    continue;
-
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);
         }
@@ -190,11 +183,18 @@ public class AIPlayer : Player
 
         AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
+        if (AllCards.Count == 0)
+        {
+            foreach (var item in OwnedCards)
+            {
+                Debug.Log(item);
+            }
+
+            return null;
+        }
+
         return AllCards.First().Key;
         //bug here
-        //Card selectedCard = OwnedCards.First(a => a.Shape == selectedShape);
-
-        //ChooseCard(selectedCard);
     }
 
     public Card ChooseSpecificShape(List<Card> specificShape, DealInfo info)

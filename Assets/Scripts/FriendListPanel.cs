@@ -25,6 +25,9 @@ public class FriendListPanel : MonoBehaviour
     [SerializeField]
     Text friendName;
 
+    [SerializeField]
+    ChoosePopup selectTypePopup;
+
     string[] ids;
 
     Dictionary<string, Toggle> friendsList;
@@ -32,7 +35,6 @@ public class FriendListPanel : MonoBehaviour
     private void Start()
     {
         ChatManager.OnPlayerStatusUpdate += ChatManager_OnPlayerStatusUpdate;
-
         friendsList = new Dictionary<string, Toggle>();
 
         PlayfabManager.instance.GetFriends((friends) =>
@@ -61,7 +63,6 @@ public class FriendListPanel : MonoBehaviour
     public void Show()
     {
         friendListPanel.gameObject.SetActive(true);
-        //PhotonNetwork.Friends
     }
 
     public void OpenAddPanel()
@@ -94,34 +95,35 @@ public class FriendListPanel : MonoBehaviour
         friendListPanel.gameObject.SetActive(false);
     }
 
-    public void Invite()
-    {
-
-    }
-
     public void OnDisconnected()
     {
         
     }
     public void SendInvite()
     {
-        string roomName = Random.Range(0, 10000).ToString("0000");
-
-        foreach (var item in friendsList)
+        selectTypePopup.Show((type) =>
         {
-            if (item.Value.isOn)
+            string roomName = Random.Range(0, 10000).ToString("0000");
+            string gameType = type == 0 ? "single" : "team";
+
+            foreach (var item in friendsList)
             {
-                ChatManager.Instance.SendPrivateMessage(item.Key, "RoomNumber:" + roomName);
+                if (item.Value.isOn)
+                {
+                    ChatManager.Instance.SendPrivateMessage(item.Key, "invite:" + roomName + ":" + gameType);
+                }
             }
-        }
 
-        friendListPanel.gameObject.SetActive(false);
-        gameObject.SetActive(false);
+            GameManager.Instance.IsTeam = (type == 1);
 
-        MenuManager.Instance.OpenMeeting(roomName,true);
+            friendListPanel.gameObject.SetActive(false);
+            gameObject.SetActive(false);
 
-        ChatManager.Instance.SubscribeToChannel(roomName);
-        ChatManager.OnPlayerStatusUpdate -= ChatManager_OnPlayerStatusUpdate;
+            MenuManager.Instance.OpenMeeting(roomName, true);
+
+            ChatManager.Instance.SubscribeToChannel(roomName);
+            ChatManager.OnPlayerStatusUpdate -= ChatManager_OnPlayerStatusUpdate;
+        });
     }
 
 }

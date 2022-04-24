@@ -11,9 +11,7 @@ using ExitGames.Client.Photon;
 public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
-
     public GameObject StartGameButton;
-
     public Button JoinRoomButton;
 
     [SerializeField]
@@ -123,7 +121,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
                     time -= 1;
                 }
 
-                GameManager.Instance.IsMultiGame = false;
+                GameManager.Instance.GameType = GameType.Fake;
                 SceneManager.LoadScene(2);
             }
         }
@@ -152,7 +150,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
-        //ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable();
         ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable() 
         { 
             { "bet", betSelection.GroupIndex }, 
@@ -214,7 +211,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     private void StartGame()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
-        GameManager.Instance.IsMultiGame = true;
+        GameManager.Instance.GameType = GameType.Online;
         SceneManager.LoadScene(2);
     }
 
@@ -319,8 +316,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnEvent(EventData photonEvent)
     {
-        //Debug.Log("event: " + photonEvent.Code);
-
         if (photonEvent.Code == beginGame)
         {
             StartCoroutine(StartGameIn(3));

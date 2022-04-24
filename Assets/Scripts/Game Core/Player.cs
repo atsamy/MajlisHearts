@@ -73,13 +73,7 @@ public class Player
 
     public bool HasOnlyHearts()
     {
-        foreach (var item in shapeCount)
-        {
-            if (item.Key != CardShape.Heart && item.Value > 0)
-                return false;
-        }
-
-        return true;
+        return shapeCount[CardShape.Heart] == OwnedCards.Count;
     }
 
     public virtual void ChooseCard(Card card)

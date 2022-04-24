@@ -47,7 +47,7 @@ public class MenuManager : MonoBehaviour
 
     public void StartSingleGame()
     {
-        GameManager.Instance.IsMultiGame = false;
+        GameManager.Instance.GameType = GameType.Single;
         SceneManager.LoadScene(2);
     }
 
@@ -93,10 +93,11 @@ public class MenuManager : MonoBehaviour
     {
         InvitePopup.ShowWithMessage(sender + " Invited You To Join in His Majlis", () =>
          {
-             string roomName = message.Split(':')[1];
+             string[] inviteOptions = message.Split(':');
 
-             ChatManager.Instance.SubscribeToChannel(roomName);
-             OpenMeeting(roomName, false);
+             GameManager.Instance.IsTeam = (inviteOptions[1] == "team");
+             ChatManager.Instance.SubscribeToChannel(inviteOptions[1]);
+             OpenMeeting(inviteOptions[1], false);
          });
     }
 }

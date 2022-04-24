@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResultScreen : DealResult
+public class TeamResultScreen : DealResult
 {
     public Text Reward;
     void Start()

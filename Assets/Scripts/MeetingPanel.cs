@@ -13,8 +13,19 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     string roomName;
     bool isHost;
 
-    public GameObject StartGameButton;
-    public SpriteRenderer[] Avatars;
+    [SerializeField]
+    GameObject startGameButton;
+    [SerializeField]
+    GameObject shuffleSeatsButton;
+    [SerializeField]
+    SpriteRenderer[] avatars;
+
+    const int startGameCode = 1;
+    const int shuffleCode = 2;
+
+    string[] playersOrder;
+
+    Dictionary<string, Sprite> lookUpAvatars;
 
     private void OnEnable()
     {
@@ -39,7 +50,6 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             });
 
             PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
-
             PhotonNetwork.AuthValues = auth;
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -56,6 +66,22 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         this.roomName = roomName;
         this.isHost = isHost;
+
+        playersOrder = new string[4];
+
+        lookUpAvatars = new Dictionary<string, Sprite>();
+
+        if (isHost)
+        {
+            playersOrder[0] = GameManager.Instance.MyPlayer.Name;
+
+            for (int i = 1; i < playersOrder.Length; i++)
+            {
+                playersOrder[i] = "empty";
+            }
+
+            return;
+        }
     }
 
     void Connected()
@@ -65,13 +91,13 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 4;
             roomOptions.IsVisible = false;
-
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
 
             Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
-            wrappedCustomization.array = GameManager.Instance.Customization.ToArray();
 
+            wrappedCustomization.array = GameManager.Instance.Customization.ToArray();
             roomOptions.CustomRoomProperties.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
+            roomOptions.CustomRoomProperties.Add("players", playersOrder);
 
             PhotonNetwork.CreateRoom(roomName, roomOptions);
 
@@ -86,7 +112,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     public void StartGame()
     {
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(1, null, eventOptionsCards, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(startGameCode, null, eventOptionsCards, SendOptions.SendReliable);
     }
 
     public void OnConnected()
@@ -122,9 +148,48 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         if (isHost && PhotonNetwork.PlayerList.Length > 1)
-            StartGameButton.SetActive(true);
+        {
+            startGameButton.SetActive(true);
+            shuffleSeatsButton.SetActive(true);
+
+            playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
+            PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
+        }
 
         CreateAvatar(newPlayer);
+    }
+
+    public void Shuffle()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        string temp = playersOrder[1];
+        playersOrder[1] = playersOrder[3];
+        playersOrder[3] = playersOrder[2];
+        playersOrder[2] = temp;
+
+        PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
+
+        RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(shuffleCode, playersOrder, eventOptionsCards, SendOptions.SendReliable);
+    }
+
+    void RearragePlayers(string[] players)
+    {
+        //string[] players = (string[])PhotonNetwork.CurrentRoom.CustomProperties["players"];
+
+        for (int i = 1; i < players.Length; i++)
+        {
+            if (players[i] != "empty")
+            {
+                avatars[i].sprite = lookUpAvatars[players[i]];
+                avatars[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                avatars[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
@@ -193,34 +258,43 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnEvent(EventData photonEvent)
     {
-        if (photonEvent.Code == 1)
+        switch (photonEvent.Code)
         {
-            StartCoroutine(StartGameRoutine());
+            case startGameCode:
+                StartCoroutine(StartGameRoutine());
+                break;
+            case shuffleCode:
+                RearragePlayers((string[])photonEvent.CustomData);
+                break;
         }
     }
-
     IEnumerator StartGameRoutine()
     {
         AddBots();
 
         yield return new WaitForSeconds(3);
 
-        GameManager.Instance.IsMultiGame = true;
+        GameManager.Instance.GameType = GameType.Online;
         SceneManager.LoadScene(2);
     }
 
     private void CreateAvatar(Photon.Realtime.Player newPlayer)
     {
-        Avatars[newPlayer.ActorNumber - 1].gameObject.SetActive(true);
         string path = "Avatar/Body/" + newPlayer.CustomProperties["avatar"];
-        Avatars[newPlayer.ActorNumber - 1].sprite = Resources.Load<Sprite>(path);
+        Sprite avatar = Resources.Load<Sprite>(path);
+
+        avatars[newPlayer.ActorNumber - 1].gameObject.SetActive(true);
+        avatars[newPlayer.ActorNumber - 1].sprite = avatar;
+
+        lookUpAvatars.Add(newPlayer.NickName, avatar);
     }
+
 
     private void AddBots()
     {
         for (int i = PhotonNetwork.PlayerList.Length - 1; i < 4; i++)
         {
-            Avatars[i].gameObject.SetActive(true);
+            avatars[i].gameObject.SetActive(true);
         }
     }
 }

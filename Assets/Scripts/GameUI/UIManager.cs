@@ -13,13 +13,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Text debugText;
-    //Player[] players;
     [SerializeField]
     GameObject passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
     [SerializeField]
     DealResult GameFinishedPanel;
+    [SerializeField]
+    DealResult TeamResultPanel;
     [SerializeField]
     GameObject waitingPanel;
 
@@ -42,7 +43,8 @@ public class UIManager : MonoBehaviour
     public Sprite[] Emojes;
     public GameObject EmojiButton;
     public GameObject EmojiPanel;
-    // Start is called before the first frame update
+    bool init;
+
     void Awake()
     {
         Instance = this;
@@ -57,7 +59,6 @@ public class UIManager : MonoBehaviour
         game.OnCardDoubled += Game_OnCardDoubled;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
-
         MultiGameScript.OnMessageRecieved += MessageRecieved;
     }
 
@@ -88,11 +89,6 @@ public class UIManager : MonoBehaviour
         cardsUIManager.UpdateCards(mainPlayer);
     }
 
-    //private void CardDoubled(Card card,int playerIndex)
-    //{
-
-    //}
-
     private void Game_OnDealFinished(bool hostPlayer,bool isGameOver)
     {
         Player[] players = game.Players;
@@ -118,7 +114,6 @@ public class UIManager : MonoBehaviour
         {
             DealFinishedPanel.Show(players, null);
         }
-
     }
 
     public void AddDebugWeight(int playerIndex, Card card, int Weight)
@@ -171,11 +166,7 @@ public class UIManager : MonoBehaviour
 
             cardsUIManager.CardsPlayed(index, card);
         }
-        //else
-        //    cardsUIManager.MainPlayerCard(card);
     }
-
-    bool once;
 
     void MessageRecieved(int playerIndex, object message)
     {
@@ -215,9 +206,9 @@ public class UIManager : MonoBehaviour
         EmojiImages[playerIndex].gameObject.SetActive(false);
     }
 
-    private void Game_OnCardsDealt()//bool waitPass)
+    private void Game_OnCardsDealt()
     {
-        if (!once)
+        if (!init)
         {
             mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
             mainPlayer.OnPlayerTurn += PlayerTurn;
@@ -226,11 +217,9 @@ public class UIManager : MonoBehaviour
             cardsUIManager.SetMainPlayer(mainPlayer);
 
             SetPlayers(game.Players);
-            once = true;
+            init = true;
         }
-        //cardsUIManager.ResetScores();
         SetScore();
-
         cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 

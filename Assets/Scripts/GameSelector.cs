@@ -8,7 +8,7 @@ public class GameSelector : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (GameManager.Instance.IsMultiGame)
+        if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
         {
             gameObject.AddComponent<MultiGameScript>().enabled = true;
         }

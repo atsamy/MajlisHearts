@@ -8,13 +8,16 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public event Action<int> OnCurrencyChanged;
 
     [HideInInspector]
     public List<InventoryItem> Customization;
     [HideInInspector]
-    public bool IsMultiGame;
+    public GameType GameType;
+    [HideInInspector]
+    public int Bet;
+    [HideInInspector]
+    public bool IsTeam;
     [HideInInspector]
     public int Currency;
     [HideInInspector]
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
     public PlayerInfo MyPlayer;
     [HideInInspector]
     public Dictionary<string, List<CatalogueItem>> Catalog;
+
     void Awake()
     {
         if (!Instance)
@@ -35,17 +39,9 @@ public class GameManager : MonoBehaviour
 
         MyPlayer = new PlayerInfo();
 
-        //Currency = 1500;
-        //MyPlayer.Level = 2;
-
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Inventory = new List<InventoryItem>();
     }
 
     public void DeductCurrency(int value)
@@ -118,4 +114,12 @@ public class InventoryItem
     {
         return base.GetHashCode();
     }
+}
+
+public enum GameType
+{
+    Single,
+    Fake,
+    Online,
+    Friends
 }
