@@ -8,11 +8,10 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
-    MainPlayer mainPlayer;
     public static UIManager Instance;
 
     [SerializeField]
-    private Text debugText;
+    Text debugText;
     [SerializeField]
     GameObject passCardsPanel;
     [SerializeField]
@@ -24,15 +23,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject waitingPanel;
 
+    MainPlayer mainPlayer;
+
     public DoublePanelScript DoublePanel;
-
     public GameObject Scores;
-
     public Text PassText;
 
     CardsUIManager cardsUIManager;
     GameScript game;
-
     public DebugCards[] debugCards;
 
     int doubleCardCount;
@@ -41,8 +39,10 @@ public class UIManager : MonoBehaviour
     [Space]
     public Image[] EmojiImages;
     public Sprite[] Emojes;
-    public GameObject EmojiButton;
-    public GameObject EmojiPanel;
+    [SerializeField]
+    GameObject emojiButton;
+    [SerializeField]
+    GameObject emojiPanel;
     bool init;
 
     void Awake()
@@ -62,6 +62,14 @@ public class UIManager : MonoBehaviour
         MultiGameScript.OnMessageRecieved += MessageRecieved;
     }
 
+    private void Game_OnStartPlaying(bool isMulti)
+    {
+        waitingPanel.SetActive(false);
+        SetPlayer();
+
+        emojiButton.SetActive(isMulti);
+    }
+
     internal void SetDoubleCard(Card card, bool value)
     {
         if (doubleCardCount == 1)
@@ -76,14 +84,6 @@ public class UIManager : MonoBehaviour
         cardsUIManager.AddDoubledCard(card, index);
     }
 
-    private void Game_OnStartPlaying(bool isMulti)
-    {
-        waitingPanel.SetActive(false);
-        SetScore();
-
-        EmojiButton.SetActive(isMulti);
-    }
-
     private void CardsPassed()
     {
         cardsUIManager.UpdateCards(mainPlayer);
@@ -95,11 +95,15 @@ public class UIManager : MonoBehaviour
         players = players.OrderBy(a => a.TotalScore).ToArray();
         doubleCardCount = 0;
         Scores.SetActive(false);
-        EmojiButton.SetActive(false);
+        emojiButton.SetActive(false);
 
         if (isGameOver)
         {
-            GameFinishedPanel.Show(players, () => { SceneManager.LoadScene(0); });
+            GameFinishedPanel.Show(players, () => 
+            { 
+                SceneManager.LoadScene(0); 
+            });
+
             return;
         }
 
@@ -137,7 +141,18 @@ public class UIManager : MonoBehaviour
             int correctIndex = i + game.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetScore(i, game.Players[correctIndex]);
+            cardsUIManager.SetScore(i, game.Players[correctIndex].Score);
+        }
+    }
+
+    public void SetPlayer()
+    {
+        for (int i = 1; i < game.Players.Length; i++)
+        {
+            int correctIndex = i + game.MainPlayerIndex;
+            correctIndex %= 4;
+
+            cardsUIManager.SetPlayers(i, game.Players[correctIndex],"Avatar1");
         }
     }
 
@@ -150,8 +165,6 @@ public class UIManager : MonoBehaviour
 
     public void SetPlayers(Player[] players)
     {
-        //this.players = players;
-
         foreach (var player in players)
         {
             player.OnCardReady += Player_OnCardReady;
@@ -176,7 +189,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenEmojiPanel()
     {
-        EmojiPanel.SetActive(true);
+        emojiPanel.SetActive(true);
     }
 
     public void SendEmoji(int index)
@@ -185,7 +198,7 @@ public class UIManager : MonoBehaviour
 
         ShowEmoji(0, index);
 
-        EmojiPanel.SetActive(false);
+        emojiPanel.SetActive(false);
     }
 
     public void ShowEmoji(int playerIndex, int index)

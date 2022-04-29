@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class CardsUIManager : MonoBehaviour
 {
+    public int Spacing = 40;
     public GameObject playerCard;
     public GameObject CardBack;
 
@@ -19,17 +20,14 @@ public class CardsUIManager : MonoBehaviour
     List<Transform> DeckCards;
 
     List<CardUI> playableCards;
-    //Sprite[] cardSprites;
 
     List<CardUI> playerCardsUI;
     List<Card> selectedPassCards;
 
-    GameObject TenOfDiamondIcon;
-    GameObject QueenOfSpadeIcon;
-
-    public GameObject EmojiPanel;
-
-    public Text[] Scores;
+    [SerializeField]
+    GameObject emojiPanel;
+    [SerializeField]
+    PlayerDetails[] playersDetails;
 
     Dictionary<Card, Sprite> cardSprites;
 
@@ -63,24 +61,15 @@ public class CardsUIManager : MonoBehaviour
         selectedPassCards = new List<Card>();
         playableCards = new List<CardUI>();
 
-        
-        //cardSprites = Resources.LoadAll<Sprite>("Cards/classic-playing-cards");
-
         for (int i = 0; i < 13; i++)
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder.GetChild(0));
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
-
-            //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
-
             playerCardsUI.Last().Set(cardSprites[card], card, (card) =>
              {
-                 //if (passCards)
                  AddToPassCards(newCard.GetComponent<CardUI>());
-                 //else
-                 //    mainPlayer.ChooseCard(card);
              });
 
             playerCardsUI.Last().SetInteractable(passCards);
@@ -102,16 +91,10 @@ public class CardsUIManager : MonoBehaviour
 
     internal void AddDoubledCard(Card card, int index)
     {
-        GameObject doubleCard = new GameObject();
-        doubleCard.AddComponent<Image>().sprite = cardSprites[card];
-        //GameObject newCard = Instantiate(playerCard, DoubleCardHolder.GetChild(index));
-        //newCard.GetComponent<Image>().sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
-        doubleCard.transform.parent = DoubleCardHolder.GetChild(index);
-
         if (card.IsTenOfDiamonds)
-            TenOfDiamondIcon = doubleCard;
+            playersDetails[index].ShowDouble(0);
         else if (card.IsQueenOfSpades)
-            QueenOfSpadeIcon = doubleCard;
+            playersDetails[index].ShowDouble(1);
     }
 
     internal void UpdateCards(MainPlayer mainPlayer)
@@ -187,47 +170,51 @@ public class CardsUIManager : MonoBehaviour
     {
         Transform playedCard = CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount));
 
-        //Sprite sprite = Resources.Load<Sprite>("Cards/" + card.Shape + "_" + card.Rank);
-        playedCard.GetComponent<Image>().sprite = cardSprites[card];
-
+        
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
-        //playedCard.localPosition = Vector3.zero;
         playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
-        //LeanTween.moveLocal(playedCard.gameObject, Vector3.zero, 0.5f).setEaseInOutCirc();
 
+        playedCard.DOScaleX(0, 0.1f).OnComplete(()=> 
+        {
+            playedCard.DOScaleX(1, 0.15f);
+            playedCard.GetComponent<Image>().sprite = cardSprites[card];
+
+            if (playerIndex == 1 || playerIndex == 3)
+            {
+                playedCard.rotation = Quaternion.identity;
+            }
+        });
 
         DeckCards.Add(playedCard);
 
-        RemoveDoubleIcon(card);
+        RemoveDoubleIcon(card,playerIndex);
     }
 
-    private void RemoveDoubleIcon(Card card)
+    private void RemoveDoubleIcon(Card card,int index)
     {
-        if (card.IsQueenOfSpades && QueenOfSpadeIcon != null)
-        {
-            Destroy(QueenOfSpadeIcon);
-        }
-        else if (card.IsTenOfDiamonds && TenOfDiamondIcon != null)
-        {
-            Destroy(TenOfDiamondIcon);
-        }
+        if (card.IsTenOfDiamonds)
+            playersDetails[index].HideDouble(0);
+        else if (card.IsQueenOfSpades)
+            playersDetails[index].HideDouble(1);
     }
 
-    public void SetScore(int index, Player player)
+    public void SetPlayers(int index, Player player,string avatar)
     {
-        Scores[index].text = player.Name + " " + player.Score.ToString();
+        playersDetails[index].SetPlayer(avatar, player.Name,0);
+    }
+
+    public void SetScore(int index, int score)
+    {
+        playersDetails[index].SetScore(score);
     }
 
     public void MainPlayerCard(CardUI cardUI)
     {
-        //CardUI cardUI = playerCardsUI.Find(a => a.CardInfo == card);
         cardUI.transform.parent = DeckCardsPosition[0];
-        //cardUI.transform.parent = null;
         cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
 
         cardUI.RectTransform.anchorMin = new Vector2(0.5f,0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-        //LeanTween.moveLocal(cardUI.gameObject,Vector3.zero,0.5f).setEaseInOutCirc();
 
         playerCardsUI.Remove(cardUI);
         cardUI.DisableButton();
@@ -239,7 +226,7 @@ public class CardsUIManager : MonoBehaviour
             item.SetInteractable(false);
         }
 
-        RemoveDoubleIcon(cardUI.CardInfo);
+        RemoveDoubleIcon(cardUI.CardInfo,0);
     }
 
     public void RemoveCards(int winningHand)
@@ -285,7 +272,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < 13; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent);
-            newCard.transform.localPosition = new Vector3(0, (i - 6) * 60);
+            newCard.transform.localPosition = new Vector3(0, (i - 6) * Spacing);
             newCard.transform.eulerAngles = new Vector3(0, 0, 90);
         }
     }
@@ -295,7 +282,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < 13; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent);
-            newCard.transform.localPosition = new Vector3((i - 6) * 60, 0);
+            newCard.transform.localPosition = new Vector3((i - 6) * Spacing, 0);
         }
     }
 

@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 145254824}
   - component: {fileID: 145254823}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TenOfDiamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1050,7 +1050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -160}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &167221101
@@ -1357,7 +1357,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -180}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &257107075
@@ -1471,7 +1471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -180, y: 0}
+  m_AnchoredPosition: {x: -102, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &297463180
@@ -1506,7 +1506,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 180}
+  m_AnchoredPosition: {x: 0, y: 102}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &300994774
@@ -1636,6 +1636,7 @@ GameObject:
   - component: {fileID: 350751855}
   - component: {fileID: 350751857}
   - component: {fileID: 350751856}
+  - component: {fileID: 350751858}
   m_Layer: 5
   m_Name: Player2
   m_TagString: Untagged
@@ -1704,6 +1705,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350751854}
   m_CullTransparentMesh: 1
+--- !u!114 &350751858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350751854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28561529edbb278459b03968bb03ce67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarImage: {fileID: 747923931}
+  scoreText: {fileID: 815107130}
+  nameText: {fileID: 1480562250}
+  levelText: {fileID: 881461354}
+  DoubleCards:
+  - {fileID: 2104614461}
+  - {fileID: 735821557}
 --- !u!1 &382326591
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,7 +3541,7 @@ GameObject:
   - component: {fileID: 683512797}
   - component: {fileID: 683512796}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: QueenOfSpade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3601,7 +3621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &699901718
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3946,7 +3966,7 @@ GameObject:
   - component: {fileID: 735821560}
   - component: {fileID: 735821559}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: QueenOfSpade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4461,7 +4481,7 @@ GameObject:
   - component: {fileID: 759352124}
   - component: {fileID: 759352123}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: QueenOfSpade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4666,6 +4686,7 @@ GameObject:
   - component: {fileID: 810919680}
   - component: {fileID: 810919682}
   - component: {fileID: 810919681}
+  - component: {fileID: 810919683}
   m_Layer: 5
   m_Name: MainPlayer
   m_TagString: Untagged
@@ -4731,6 +4752,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810919679}
   m_CullTransparentMesh: 1
+--- !u!114 &810919683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810919679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28561529edbb278459b03968bb03ce67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarImage: {fileID: 0}
+  scoreText: {fileID: 1204098562}
+  nameText: {fileID: 0}
+  levelText: {fileID: 0}
+  DoubleCards:
+  - {fileID: 145254821}
+  - {fileID: 1849826071}
 --- !u!1 &815107128
 GameObject:
   m_ObjectHideFlags: 0
@@ -5800,11 +5840,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28561529edbb278459b03968bb03ce67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarImage: {fileID: 0}
-  scoreText: {fileID: 0}
-  nameText: {fileID: 0}
-  levelText: {fileID: 0}
-  DoubleCards: []
+  avatarImage: {fileID: 559894807}
+  scoreText: {fileID: 14697917}
+  nameText: {fileID: 1355980925}
+  levelText: {fileID: 408486227}
+  DoubleCards:
+  - {fileID: 1440754281}
+  - {fileID: 759352121}
 --- !u!1 &1002909160
 GameObject:
   m_ObjectHideFlags: 0
@@ -6693,6 +6735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff72b77e3ee2b4a62a9a07824377ed8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Spacing: 40
   playerCard: {fileID: 517798874301786123, guid: a8d66937038e83846a10e457876d0275, type: 3}
   CardBack: {fileID: 4151564474650706647, guid: af8e60164e5a749368eeee0d6182922d, type: 3}
   CardsHolder: {fileID: 2139656486}
@@ -6703,12 +6746,12 @@ MonoBehaviour:
   - {fileID: 1610726742}
   - {fileID: 297463181}
   - {fileID: 280535701}
-  EmojiPanel: {fileID: 1486157403}
-  Scores:
-  - {fileID: 1204098562}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  emojiPanel: {fileID: 647670839}
+  playersDetails:
+  - {fileID: 810919683}
+  - {fileID: 984235460}
+  - {fileID: 350751858}
+  - {fileID: 1688422520}
 --- !u!1 &1316552570
 GameObject:
   m_ObjectHideFlags: 0
@@ -7110,7 +7153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 160, y: 0}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1426226435
@@ -7130,7 +7173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1426226436
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7343,7 +7386,7 @@ GameObject:
   - component: {fileID: 1440754284}
   - component: {fileID: 1440754283}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TenOfDiamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7768,7 +7811,7 @@ GameObject:
   - component: {fileID: 1486157406}
   - component: {fileID: 1486157405}
   m_Layer: 5
-  m_Name: EmoticonPanel
+  m_Name: EmojiPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9122,7 +9165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9398,7 +9441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 180, y: 0}
+  m_AnchoredPosition: {x: 102, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1618845411
@@ -9660,6 +9703,7 @@ GameObject:
   - component: {fileID: 1688422517}
   - component: {fileID: 1688422519}
   - component: {fileID: 1688422518}
+  - component: {fileID: 1688422520}
   m_Layer: 5
   m_Name: Player3
   m_TagString: Untagged
@@ -9728,6 +9772,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688422516}
   m_CullTransparentMesh: 1
+--- !u!114 &1688422520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688422516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28561529edbb278459b03968bb03ce67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarImage: {fileID: 1485233580}
+  scoreText: {fileID: 637764597}
+  nameText: {fileID: 1545384747}
+  levelText: {fileID: 2004613176}
+  DoubleCards:
+  - {fileID: 2030309580}
+  - {fileID: 683512794}
 --- !u!1 &1696960257
 GameObject:
   m_ObjectHideFlags: 0
@@ -9839,7 +9902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -62.9, y: 0}
+  m_AnchoredPosition: {x: -50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1707132904
@@ -10397,7 +10460,7 @@ GameObject:
   - component: {fileID: 1849826074}
   - component: {fileID: 1849826073}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: QueenOfSpade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10969,7 +11032,7 @@ MonoBehaviour:
   passCardsPanel: {fileID: 1767113989}
   DealFinishedPanel: {fileID: 1607320196}
   GameFinishedPanel: {fileID: 1253695894}
-  TeamResultPanel: {fileID: 0}
+  TeamResultPanel: {fileID: 908927176}
   waitingPanel: {fileID: 438424131}
   DoublePanel: {fileID: 1308014486}
   Scores: {fileID: 167221101}
@@ -10992,8 +11055,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 01f52d05d8a391c46b2ef128f1a7c0fc, type: 3}
   - {fileID: 21300000, guid: 335f3c8b3a7f29443acc48bd1ab524f1, type: 3}
   - {fileID: 21300000, guid: c019933d4600e2e419bfc9261e91758f, type: 3}
-  EmojiButton: {fileID: 753735929}
-  EmojiPanel: {fileID: 1486157403}
+  emojiButton: {fileID: 753735929}
+  emojiPanel: {fileID: 1486157403}
 --- !u!114 &2028200687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11106,7 +11169,7 @@ GameObject:
   - component: {fileID: 2030309583}
   - component: {fileID: 2030309582}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TenOfDiamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11943,7 +12006,7 @@ GameObject:
   - component: {fileID: 2104614464}
   - component: {fileID: 2104614463}
   m_Layer: 5
-  m_Name: Image
+  m_Name: TenOfDiamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
