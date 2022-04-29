@@ -28,6 +28,8 @@ public class CardsUIManager : MonoBehaviour
     GameObject emojiPanel;
     [SerializeField]
     PlayerDetails[] playersDetails;
+    [SerializeField]
+    PlayerCardsLayout playerCards;
 
     Dictionary<Card, Sprite> cardSprites;
 
@@ -74,7 +76,6 @@ public class CardsUIManager : MonoBehaviour
 
             playerCardsUI.Last().SetInteractable(passCards);
         }
-
         AddCards();
         OrganizeCards();
     }
@@ -87,6 +88,8 @@ public class CardsUIManager : MonoBehaviour
         {
             playerCardsUI[i].transform.SetSiblingIndex(i);
         }
+
+        playerCards.SetLocations();
     }
 
     internal void AddDoubledCard(Card card, int index)
@@ -142,6 +145,9 @@ public class CardsUIManager : MonoBehaviour
             {
                 ReturnToStack(cardUI);
             });
+            cardUI.transform.rotation = Quaternion.identity;
+
+            playerCards.SetLocations();
         }
     }
 
@@ -172,6 +178,8 @@ public class CardsUIManager : MonoBehaviour
 
         
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
+        DeckCardsPosition[playerIndex].SetAsLastSibling();
+
         playedCard.GetComponent<RectTransform>().DOAnchorPos(Vector3.zero, 0.5f);
 
         playedCard.DOScaleX(0, 0.1f).OnComplete(()=> 
@@ -211,7 +219,10 @@ public class CardsUIManager : MonoBehaviour
     public void MainPlayerCard(CardUI cardUI)
     {
         cardUI.transform.parent = DeckCardsPosition[0];
+        DeckCardsPosition[0].SetAsLastSibling();
+
         cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
+        cardUI.RectTransform.DORotate(Vector3.zero, 0.5f);
 
         cardUI.RectTransform.anchorMin = new Vector2(0.5f,0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -227,6 +238,8 @@ public class CardsUIManager : MonoBehaviour
         }
 
         RemoveDoubleIcon(cardUI.CardInfo,0);
+
+        playerCards.SetLocations();
     }
 
     public void RemoveCards(int winningHand)
