@@ -193,7 +193,6 @@ public class CardsUIManager : MonoBehaviour
     {
         Transform playedCard = CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount));
 
-        
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
         DeckCardsPosition[playerIndex].SetAsLastSibling();
 
@@ -308,7 +307,6 @@ public class CardsUIManager : MonoBehaviour
     {
         AddVerticalCards(CardsHolder.GetChild(1));
         AddVerticalCards(CardsHolder.GetChild(3));
-
         AddHorizontalCards(CardsHolder.GetChild(2));
     }
 

@@ -45,16 +45,18 @@ public class AIPlayer : Player
             else
             {
                 specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).OrderBy(a => a.Rank).ToList();
+                bool isTeamPlayer = checkIfTeamPlayer(info,hand);
 
-                if (OwnedCards.Contains(Card.QueenOfSpades) && info.roundNumber != 0)
+
+                if (OwnedCards.Contains(Card.QueenOfSpades) && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(Card.QueenOfSpades);
                 }
-                else if (OwnedCards.Contains(Card.TenOfDiamonds) && info.roundNumber != 0)
+                else if (OwnedCards.Contains(Card.TenOfDiamonds) && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(Card.TenOfDiamonds);
                 }
-                else if (specificShape.Count > 0 && info.roundNumber != 0)
+                else if (specificShape.Count > 0 && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(specificShape.Last());
                 }
@@ -72,10 +74,39 @@ public class AIPlayer : Player
 
     }
 
+    bool checkIfTeamPlayer(DealInfo info,int hand)
+    {
+        if (GameManager.Instance.IsTeam)
+        {
+            if (hand > 1)
+            {
+                int hightestCard = 0;
+
+                CardShape shape = info.CardsOntable.First().Shape;
+                CardRank heighestRank = info.CardsOntable.First().Rank;
+
+                for (int i = 1; i < info.CardsOntable.Count; i++)
+                {
+                    if (info.CardsOntable[i].Shape == shape && info.CardsOntable[i].Rank > heighestRank)
+                    {
+                        hightestCard = i;
+                        heighestRank = info.CardsOntable[i].Rank;
+                    }
+                }
+
+                return hightestCard == (hand - 2);
+            }
+            else return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public override void SelectPassCards()
     {
         Dictionary<Card, int> weightedCards = new Dictionary<Card, int>();
-
         Dictionary<CardShape, int> ShapesValue = new Dictionary<CardShape, int>();
 
         for (int i = 0; i < 4; i++)
@@ -98,7 +129,6 @@ public class AIPlayer : Player
         foreach (var item in OwnedCards)
         {
             weightedCards.Add(item, CalculatePassCardsRisk(item, ShapesValue[item.Shape]));
-            //UIManager.Instance.AddDebugWeight(Index - 1, item, weightedCards.Last().Value);
         }
 
         weightedCards = weightedCards.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -140,8 +170,6 @@ public class AIPlayer : Player
 
     protected override void CheckDoubleCards(Card card)
     {
-        //Debug.LogError("player " + Index + " card " + card.ToString());
-
         float value = 0;
 
         if (shapeCount[card.Shape] > 4)
