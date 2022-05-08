@@ -217,7 +217,7 @@ public class GameScript : MonoBehaviour
 
             item.SetTotalScore();
 
-            if (item.TotalScore >= 100)
+            if (item.TotalScore >= 50)
                 isGameOver = true;
         }
 

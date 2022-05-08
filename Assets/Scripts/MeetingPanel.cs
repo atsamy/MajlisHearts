@@ -274,7 +274,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         yield return new WaitForSeconds(3);
 
-        GameManager.Instance.GameType = GameType.Online;
+        GameManager.Instance.GameType = GameType.Friends;
         SceneManager.LoadScene(2);
     }
 

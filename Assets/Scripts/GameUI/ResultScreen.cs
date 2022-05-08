@@ -8,7 +8,9 @@ public class ResultScreen : DealResult
     public Text Reward;
     void Start()
     {
-        Reward.text = GetReward().ToString();
+        int reawrd = GetReward();
+        Reward.text = reawrd.ToString();
+        GameManager.Instance.AddCurrency(reawrd);
     }
 
     int GetReward() => rank switch

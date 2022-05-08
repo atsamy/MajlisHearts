@@ -229,9 +229,9 @@ public class CardsUIManager : MonoBehaviour
             playersDetails[index].HideDouble(1);
     }
 
-    public void SetPlayers(int index, Player player,string avatar)
+    public void SetPlayers(int index, Player player)
     {
-        playersDetails[index].SetPlayer(avatar, player.Name,0);
+        playersDetails[index].SetPlayer(player.Avatar,player.Name,0);
     }
 
     public void SetScore(int index, int score)

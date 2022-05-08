@@ -43,6 +43,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         playerNumbers = PhotonNetwork.PlayerList.Length;
 
         lookUpActors = new Dictionary<int, int>();
+        Dictionary<int, string> lookUpAvatar = new Dictionary<int, string>();
 
         string[] playersOrder;
 
@@ -57,6 +58,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     if (playersOrder[i] == PhotonNetwork.PlayerList[j].NickName)
                     {
                         lookUpActors.Add(i, PhotonNetwork.PlayerList[j].ActorNumber);
+                        lookUpAvatar.Add(i, PhotonNetwork.PlayerList[j].CustomProperties["avatar"].ToString());
                         break;
                     }
                 }
@@ -72,6 +74,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     playersOrder[i] = PhotonNetwork.PlayerList[i].NickName;
                     lookUpActors.Add(i, PhotonNetwork.PlayerList[i].ActorNumber);
+                    lookUpAvatar.Add(i, PhotonNetwork.PlayerList[i].CustomProperties["avatar"].ToString());
                 }
                 else
                 {
@@ -90,11 +93,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     myPlayer = new MainPlayer(i);
                     Players[i] = myPlayer;
                     Players[i].Name = playersOrder[i];
+                    Players[i].Avatar = lookUpAvatar[i];
                 }
-                else if (playerNumbers > i)
+                else if (lookUpAvatar.ContainsKey(i))
                 {
                     Players[i] = new Player(i);
                     Players[i].Name = playersOrder[i];
+                    Players[i].Avatar = lookUpAvatar[i];
                 }
                 else
                 {
@@ -109,34 +114,28 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     myPlayer = new MainPlayer(i);
                     Players[i] = myPlayer;
                     MainPlayerIndex = i;
+                    Players[i].Avatar = lookUpAvatar[i];
                 }
                 else
                 {
                     Players[i] = new Player(i);
                 }
 
-                if (i < playersOrder.Length)
+                if (lookUpAvatar.ContainsKey(i))
                 {
                     Players[i].Name = playersOrder[i];
+                    Players[i].Avatar = lookUpAvatar[i];
                 }
-                //else
-                //{
-                //    Players[i].Name = "AI " + i;
-                //}
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             Players[i].OnDoubleCard += GameScript_OnDoubleCard;
-
-
-            //Players[i].Name = "Player " + (i + 1);
         }
 
         myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         Deal.SetPlayers(Players);
-
         Deal.OnEvent += Deal_OnEvent;
 
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
@@ -145,8 +144,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(WaitForOthers());
-
-
     }
 
     private void MainPlayerTurn(DealInfo info)

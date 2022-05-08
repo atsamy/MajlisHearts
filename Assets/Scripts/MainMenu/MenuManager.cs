@@ -87,6 +87,7 @@ public class MenuManager : MonoBehaviour
     public void OpenMeeting(string roomName, bool isHost)
     {
         meetingPanel.Open(roomName, isHost);
+        MainUI.SetActive(false);
     }
 
     internal void ShowInvitePopup(string sender, string message)
