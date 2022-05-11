@@ -54,11 +54,6 @@ public class PassCardsPanel : MonoBehaviour
 
     public void SwapPressed()
     {
-        //foreach (var item in cardHolder)
-        //{
-        //    Destroy(item.GetChild(0));
-        //}
-
         gameObject.SetActive(false);
         passAction?.Invoke(selectedPassCards);
     }

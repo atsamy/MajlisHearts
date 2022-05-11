@@ -60,7 +60,6 @@ public class CardsUIManager : MonoBehaviour
     public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
     {
         playerCardsUI = new List<CardUI>();
-        //selectedPassCards = new List<Card>();
         playableCards = new List<CardUI>();
 
         for (int i = 0; i < 13; i++)
@@ -76,6 +75,7 @@ public class CardsUIManager : MonoBehaviour
 
             playerCardsUI.Last().SetInteractable(passCards);
         }
+
         AddCards();
         OrganizeCards();
     }
@@ -166,6 +166,8 @@ public class CardsUIManager : MonoBehaviour
             if(i != winningIndex)
                 deckCards[i].Image.DOColor(Color.gray,0.1f);
         }
+
+        deckCards[winningIndex].Transform.SetAsLastSibling();
     }
 
     public void ReturnToStack(CardUI cardUI)
@@ -182,14 +184,6 @@ public class CardsUIManager : MonoBehaviour
 
         OrganizeCards();
     }
-
-    //public void SelectPassCard()
-    //{
-    //    if (selectedPassCards.Count == 3)
-    //    {
-    //        UIManager.Instance.PassCards(selectedPassCards);
-    //    }
-    //}
 
     public void CardsPlayed(int playerIndex, Card card)
     {
@@ -296,14 +290,6 @@ public class CardsUIManager : MonoBehaviour
 
         deckCards.Clear();
     }
-
-    //public void RemovePassedCards()
-    //{
-    //    foreach (Transform item in passCardsHolder)
-    //    {
-    //        Destroy(item.gameObject);
-    //    }
-    //}
 
     public void AddCards()
     {
