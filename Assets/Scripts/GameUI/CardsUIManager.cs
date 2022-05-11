@@ -11,8 +11,10 @@ public class CardsUIManager : MonoBehaviour
     public GameObject playerCard;
     public GameObject CardBack;
 
-    public Transform CardsHolder;
-    public Transform passCardsHolder;
+    public Transform[] CardsHolder;
+    //[SerializeField]
+    //PassCardsPanel passCardsPanel;
+
     public Transform DoubleCardHolder;
 
     public Transform[] DeckCardsPosition;
@@ -20,7 +22,7 @@ public class CardsUIManager : MonoBehaviour
     List<DeckCard> deckCards;
     List<CardUI> playableCards;
     List<CardUI> playerCardsUI;
-    List<Card> selectedPassCards;
+    //List<Card> selectedPassCards;
 
     [SerializeField]
     GameObject emojiPanel;
@@ -58,12 +60,12 @@ public class CardsUIManager : MonoBehaviour
     public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
     {
         playerCardsUI = new List<CardUI>();
-        selectedPassCards = new List<Card>();
+        //selectedPassCards = new List<Card>();
         playableCards = new List<CardUI>();
 
         for (int i = 0; i < 13; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder.GetChild(0));
+            GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
@@ -113,7 +115,7 @@ public class CardsUIManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder.GetChild(0));
+            GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
             //newCard.transform.localPosition = new Vector3((i - 6) * 100, 0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
@@ -134,11 +136,10 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddToPassCards(CardUI cardUI)
     {
-        if (passCardsHolder.childCount < 3)
+        if (UIManager.Instance.AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
-            cardUI.transform.SetParent(passCardsHolder);
-            selectedPassCards.Add(cardUI.CardInfo);
+            //selectedPassCards.Add(cardUI.CardInfo);
 
             cardUI.SetOnPressed((card) =>
             {
@@ -170,8 +171,9 @@ public class CardsUIManager : MonoBehaviour
     public void ReturnToStack(CardUI cardUI)
     {
         playerCardsUI.Add(cardUI);
-        cardUI.transform.SetParent(CardsHolder.GetChild(0));
-        selectedPassCards.Remove(cardUI.CardInfo);
+        cardUI.transform.SetParent(CardsHolder[0]);
+        //selectedPassCards.Remove(cardUI.CardInfo);
+        UIManager.Instance.RemoveCard(cardUI);
 
         cardUI.SetOnPressed((card) =>
         {
@@ -181,17 +183,17 @@ public class CardsUIManager : MonoBehaviour
         OrganizeCards();
     }
 
-    public void SelectPassCard()
-    {
-        if (selectedPassCards.Count == 3)
-        {
-            UIManager.Instance.PassCards(selectedPassCards);
-        }
-    }
+    //public void SelectPassCard()
+    //{
+    //    if (selectedPassCards.Count == 3)
+    //    {
+    //        UIManager.Instance.PassCards(selectedPassCards);
+    //    }
+    //}
 
     public void CardsPlayed(int playerIndex, Card card)
     {
-        Transform playedCard = CardsHolder.GetChild(playerIndex).GetChild(Random.Range(0, CardsHolder.GetChild(playerIndex).childCount));
+        Transform playedCard = CardsHolder[playerIndex].GetChild(Random.Range(0, CardsHolder[playerIndex].childCount));
 
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
         DeckCardsPosition[playerIndex].SetAsLastSibling();
@@ -295,19 +297,19 @@ public class CardsUIManager : MonoBehaviour
         deckCards.Clear();
     }
 
-    public void RemovePassedCards()
-    {
-        foreach (Transform item in passCardsHolder)
-        {
-            Destroy(item.gameObject);
-        }
-    }
+    //public void RemovePassedCards()
+    //{
+    //    foreach (Transform item in passCardsHolder)
+    //    {
+    //        Destroy(item.gameObject);
+    //    }
+    //}
 
     public void AddCards()
     {
-        AddVerticalCards(CardsHolder.GetChild(1));
-        AddVerticalCards(CardsHolder.GetChild(3));
-        AddHorizontalCards(CardsHolder.GetChild(2));
+        AddVerticalCards(CardsHolder[1]);
+        AddVerticalCards(CardsHolder[3]);
+        AddHorizontalCards(CardsHolder[2]);
     }
 
     void AddVerticalCards(Transform parent)

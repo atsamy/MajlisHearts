@@ -25,6 +25,7 @@ public class GameScript : MonoBehaviour
     public delegate void CardDoubled(Card card, int playerIndex);
     public event CardDoubled OnCardDoubled;
 
+    private const int Seconds = 1;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -40,7 +41,6 @@ public class GameScript : MonoBehaviour
     {
         Instance = this;
         Deal = new DealScript();
-
     }
 
     void Start()
@@ -59,9 +59,9 @@ public class GameScript : MonoBehaviour
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             Players[i].OnDoubleCard += GameScript_OnDoubleCard;
-
             Players[i].Name = "Player " + (i + 1);
         }
+
         myPlayer = (MainPlayer)Players[0];
         myPlayer.OnPlayerTurn += MainPlayerTurn;
 
@@ -77,8 +77,7 @@ public class GameScript : MonoBehaviour
 
     protected IEnumerator StartTimer()
     {
-        yield return new WaitForSeconds(1);
-
+        yield return new WaitForSeconds(Seconds);
         myPlayer.ForcePlay();
     }
 

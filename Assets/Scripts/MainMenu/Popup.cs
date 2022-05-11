@@ -23,9 +23,7 @@ public class Popup : MonoBehaviour
 
     public void ShowWithCode(string Code, Action OnOKPressed = null)
     {
-
         gameObject.SetActive(true);
-
         Message.text = Messages.Where(a => a.Code == Code).First().MessageText;
 
         OKPressed = OnOKPressed;
@@ -34,14 +32,7 @@ public class Popup : MonoBehaviour
 
     public void ShowWithMessage(string message, Action OnOKPressed = null)
     {
-
         gameObject.SetActive(true);
-
-        //if (!InGame)
-        //    SFXManager.Instance.PlayClip("OpenPopup");
-        //else
-        //    GameSFXManager.Instance.PlayClip("OpenPopup");
-
         Message.text = message;
 
         OKPressed = OnOKPressed;
@@ -50,9 +41,7 @@ public class Popup : MonoBehaviour
 
     public void ShowWithMessage(string message, Action OnOKPressed, Action OnClosePressed)
     {
-
         ShowWithMessage(message, OnOKPressed);
-
         ClosePressed = OnClosePressed;
     }
 
@@ -62,7 +51,6 @@ public class Popup : MonoBehaviour
             ClosePressed.Invoke();
 
         gameObject.SetActive(false);
-        //SFXManager.Instance.PlayClip("ClosePopup");
     }
 
     public void OK()
@@ -71,11 +59,6 @@ public class Popup : MonoBehaviour
             OKPressed.Invoke();
 
         gameObject.SetActive(false);
-
-        //if (!InGame)
-        //    SFXManager.Instance.PlayClip("OkPopup");
-        //else
-        //    GameSFXManager.Instance.PlayClip("OkPopup");
     }
 
 }

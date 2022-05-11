@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -202,10 +203,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         switch (eventType)
         {
             case EventType.CardsDealt:
-                for (int i = 1; i < playerNumbers; i++)
+
+                foreach (var item in lookUpActors)
                 {
-                    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { lookUpActors[i] } };
-                    PhotonNetwork.RaiseEvent(cardsDealtCode, Utils.SerializeListOfCards(Players[i].OwnedCards), eventOptionsCards, SendOptions.SendReliable);
+                    if (item.Key == 0)
+                        continue;
+
+                    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { item.Value } };
+                    PhotonNetwork.RaiseEvent(cardsDealtCode, Utils.SerializeListOfCards(Players[item.Key].OwnedCards),
+                        eventOptionsCards, SendOptions.SendReliable);
                 }
 
                 SetCardsReady();
@@ -262,8 +268,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    int recieverIndex = photonEvent.Sender % 4;
-                    int senderIndex = photonEvent.Sender - 1;
+                    int senderIndex = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
+
+                    int recieverIndex = (senderIndex + 1) % 4;
 
                     print("reciever: " + recieverIndex + " senderIndex " + senderIndex);
 
@@ -292,7 +299,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
-
                 BeginTurn();
                 SetTrickFinished(beginIndex);
                 break;
@@ -335,11 +341,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             if (Players[i].IsPlayer)
             {
-                //if (Players[i].HasCard(Card.QueenOfSpades) || Players[i].HasCard(Card.QueenOfSpades))
-                //{
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { lookUpActors[i] } };
                 PhotonNetwork.RaiseEvent(checkDoubleCode, null, raiseEventOptions, SendOptions.SendReliable);
-                //}
             }
             else
             {
@@ -374,7 +377,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         lastIndex = hand.Key;
         nextIndex = (lastIndex + 1) % 4;
-        //handIndex++;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -384,10 +386,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         else if (lastIndex != MainPlayerIndex)
         {
             Deal.UpdateDealInfo(lastIndex, hand.Value);
-
             Players[hand.Key].ShowCard(hand.Value);
-
-            //UIManager.Instance.Debug(nextIndex + " " + MainPlayerIndex);
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
@@ -400,8 +399,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            //UIManager.Instance.Debug("begin " + beginIndex + " my " + MainPlayerIndex);
-
             if (beginIndex == MainPlayerIndex)
             {
                 myPlayer.SetTurn(Deal.DealInfo);
@@ -420,10 +417,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnTurnTimeEnds(int turn)
     {
-        //if (nextIndex == MainPlayerIndex)
-        //{
-        //    myPlayer.ForcePlay();
-        //}
+
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
@@ -454,19 +448,18 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (Players[playerIndex].IsPlayer)
         {
-            //InrementPassedCards();
             return;
         }
 
         if (!PhotonNetwork.IsMasterClient)
         {
-            //int[] actors;
-            //if (lookUpActors.ContainsKey(recieverIndex))
-            //    actors = new int[] { 1, lookUpActors[recieverIndex] };
-            //else
-            //    actors = new int[] { 1, lookUpActors[recieverIndex] };
+            List<int> targetActors = new List<int>();
+            targetActors.Add(1);
 
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1, lookUpActors[recieverIndex] } };
+            if (lookUpActors.ContainsKey(recieverIndex))
+                targetActors.Add(lookUpActors[recieverIndex]);
+
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = targetActors.ToArray() };
             PhotonNetwork.RaiseEvent(passCardsCode, Utils.SerializeListOfCards(cards), raiseEventOptions, SendOptions.SendReliable);
 
             return;

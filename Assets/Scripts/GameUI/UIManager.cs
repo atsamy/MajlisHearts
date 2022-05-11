@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text debugText;
     [SerializeField]
-    GameObject passCardsPanel;
+    PassCardsPanel passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
     [SerializeField]
@@ -161,6 +161,11 @@ public class UIManager : MonoBehaviour
         return orderedPlayers;
     }
 
+    internal bool AddCard(CardUI card)
+    {
+        return passCardsPanel.AddCard(card);
+    }
+
     public void AddDebugWeight(int playerIndex, Card card, int Weight)
     {
         debugCards[playerIndex].ShowWeight(card, Weight);
@@ -194,6 +199,12 @@ public class UIManager : MonoBehaviour
 
             cardsUIManager.SetPlayers(i, game.Players[correctIndex]);
         }
+    }
+
+    internal void RemoveCard(CardUI cardUI)
+    {
+        passCardsPanel.RemoveCard(cardUI);
+        //throw new NotImplementedException();
     }
 
     private int CorrectIndex(int index)
@@ -291,7 +302,12 @@ public class UIManager : MonoBehaviour
     private void MainPlayer_OnWaitPassCards()
     {
         DealFinishedPanel.gameObject.SetActive(false);
-        passCardsPanel.SetActive(true);
+        
+        passCardsPanel.Show((cards)=> 
+        {
+            PassCards(cards);
+        });
+
         PassText.text = "Pass Right";
     }
 
@@ -308,11 +324,7 @@ public class UIManager : MonoBehaviour
     internal void PassCards(List<Card> selectedPassCards)
     {
         waitingPanel.SetActive(true);
-
-        passCardsPanel.SetActive(false);
         mainPlayer.PassCards(selectedPassCards);
-        cardsUIManager.RemovePassedCards();
-
         Scores.SetActive(true);
     }
 }

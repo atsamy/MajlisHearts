@@ -96,7 +96,7 @@ public class MenuManager : MonoBehaviour
          {
              string[] inviteOptions = message.Split(':');
 
-             GameManager.Instance.IsTeam = (inviteOptions[1] == "team");
+             GameManager.Instance.IsTeam = (inviteOptions[2] == "team");
              ChatManager.Instance.SubscribeToChannel(inviteOptions[1]);
              OpenMeeting(inviteOptions[1], false);
          });

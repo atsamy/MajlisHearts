@@ -18,6 +18,8 @@ public class AIPlayer : Player
 
     async void playCard(DealInfo info)
     {
+        Debug.Log(Name + " " + OwnedCards.Count);
+
         await System.Threading.Tasks.Task.Delay(1000);
 
         int hand = info.CardsOntable.Count;
@@ -191,6 +193,8 @@ public class AIPlayer : Player
             AllCards.Add(item, risk);
         }
 
+        //Debug.Log("AI Cards:"+ OwnedCards.Count + " " + AllCards.Count);
+
         AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
         return AllCards.Last().Key;
@@ -298,9 +302,6 @@ public class AIPlayer : Player
 
         if (!canAvoid && info.CardsOntable.Count == 3)
         {
-            //if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
-            //    return chosenOne;
-
             chosenOne = specificShape.Last();
         }
 
