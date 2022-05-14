@@ -12,12 +12,15 @@ public class PassCardsPanel : MonoBehaviour
     Button passButton;
 
     Action<List<Card>> passAction;
-
     List<Card> selectedPassCards;
+
+    List<GameObject> cardsObject;
     public bool AddCard(CardUI card)
     {
         bool ready = true;
         bool cardAdded = false;
+
+        cardsObject.Add(card.gameObject);
 
         foreach (var item in cardHolder)
         {
@@ -40,6 +43,8 @@ public class PassCardsPanel : MonoBehaviour
 
     public void Show(Action<List<Card>> OnPass)
     {
+        cardsObject = new List<GameObject>();
+
         selectedPassCards = new List<Card>();
 
         passAction = OnPass;
@@ -48,6 +53,7 @@ public class PassCardsPanel : MonoBehaviour
 
     public void RemoveCard(CardUI card)
     {
+        cardsObject.Remove(card.gameObject);
         selectedPassCards.Remove(card.CardInfo);
         passButton.interactable = false;
     }
@@ -56,5 +62,12 @@ public class PassCardsPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         passAction?.Invoke(selectedPassCards);
+
+        foreach (var item in cardsObject)
+        {
+            Destroy(item);
+        }
+
+        cardsObject.Clear();
     }
 }

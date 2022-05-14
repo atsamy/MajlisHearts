@@ -103,6 +103,7 @@ public class UIManager : MonoBehaviour
             {
                 GameFinishedPanel.Show(players, () =>
                 {
+                    LeaveRoom();
                     SceneManager.LoadScene(0);
                 });
             }
@@ -110,6 +111,7 @@ public class UIManager : MonoBehaviour
             {
                 TeamResultPanel.Show(players, () => 
                 {
+                    LeaveRoom();
                     SceneManager.LoadScene(0);
                 });
             }
@@ -126,6 +128,14 @@ public class UIManager : MonoBehaviour
         else
         {
             DealFinishedPanel.Show(players, null);
+        }
+    }
+
+    private void LeaveRoom()
+    {
+        if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
+        {
+            ((MultiGameScript)game).LeaveRoom();
         }
     }
 

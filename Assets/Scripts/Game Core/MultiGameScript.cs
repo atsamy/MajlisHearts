@@ -127,6 +127,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = lookUpAvatar[i];
                 }
+                else
+                {
+                    Players[i].Name = "AI" + i;
+                }
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
@@ -321,7 +325,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 myPlayer.CheckForDoubleCards();
                 break;
             case messageCode:
-                OnMessageRecieved?.Invoke(photonEvent.Sender - 1, photonEvent.CustomData);
+                int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
+                OnMessageRecieved?.Invoke(index, photonEvent.CustomData);
                 break;
         }
     }
@@ -481,6 +486,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
 
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)

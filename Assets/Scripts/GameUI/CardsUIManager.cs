@@ -167,7 +167,7 @@ public class CardsUIManager : MonoBehaviour
                 deckCards[i].Image.DOColor(Color.gray,0.1f);
         }
 
-        deckCards[winningIndex].Transform.SetAsLastSibling();
+        //deckCards[winningIndex].Transform.SetAsLastSibling();
     }
 
     public void ReturnToStack(CardUI cardUI)
