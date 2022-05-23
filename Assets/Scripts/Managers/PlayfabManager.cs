@@ -91,7 +91,6 @@ public class PlayfabManager : MonoBehaviour
         {
             TitleId = PlayFabSettings.TitleId,
             CreateAccount = true,
-            //EncryptedRequest = "",
             PlayerId = Social.localUser.id
         }, (successLoginResult) =>
         {
@@ -103,7 +102,6 @@ public class PlayfabManager : MonoBehaviour
         }, (errorResult) =>
         {
             Debug.Log(errorResult.GenerateErrorReport());
-            //});
         });
     }
 
@@ -146,7 +144,6 @@ public class PlayfabManager : MonoBehaviour
 
     public void GetFriends(Action<List<FriendInfo>> onFriendsReturned)
     {
-        //GetFriendsListRequest request = new GetFriendsListRequest();
         PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest(),(result)=> 
         {
             onFriendsReturned?.Invoke(result.Friends);
@@ -166,11 +163,9 @@ public class PlayfabManager : MonoBehaviour
         }, (successLoginResult) =>
         {
             Debug.LogFormat("Login With Google Success: ", successLoginResult.PlayFabId);
-            //SetupSessionData();
         }, (errorResult) =>
         {
             Debug.Log(errorResult.GenerateErrorReport());
-            //});
         });
     }
 

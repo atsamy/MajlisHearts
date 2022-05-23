@@ -7,18 +7,27 @@ using UnityEngine.UI;
 public class StoreItem : MonoBehaviour
 {
     public Text Cost;
-    public Text Quantity;
+    public MaskableGraphic ItemValue;
 
     public Button purchaseBtn;
 
     Action<int> purchaseAction;
-
     int index;
 
     public void Set(string cost, int quantity, int index, Action<int> action)
     {
         this.Cost.text = cost.ToString();
-        this.Quantity.text = quantity.ToString();
+        ((Text)ItemValue).text = quantity.ToString();
+
+        this.index = index;
+
+        purchaseAction = action;
+    }
+
+    public void Set(string cost, Sprite itemSprite, int index, Action<int> action)
+    {
+        this.Cost.text = cost.ToString();
+        ((Image)ItemValue).sprite = itemSprite;
 
         this.index = index;
 

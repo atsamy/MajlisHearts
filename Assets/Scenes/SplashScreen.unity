@@ -956,6 +956,7 @@ GameObject:
   - component: {fileID: 1140238099}
   - component: {fileID: 1140238098}
   - component: {fileID: 1140238101}
+  - component: {fileID: 1140238102}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -988,7 +989,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Customization: []
-  IsMultiGame: 0
+  GameType: 0
+  Bet: 0
+  IsTeam: 0
   Currency: 0
   Inventory: []
   MyPlayer:
@@ -1029,6 +1032,26 @@ MonoBehaviour:
     font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     TMP_font: {fileID: 0}
   LanguageFile: {fileID: 4900000, guid: 3d41a0c19c72fc44ab7d08b422b61c77, type: 3}
+--- !u!114 &1140238102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140238097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc3a5abb8ae1704b8195aebf5960fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HCProductID:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  HCAmount: 0a0000000a0000000a0000000a0000000a0000000a000000
 --- !u!1 &1238977186
 GameObject:
   m_ObjectHideFlags: 0

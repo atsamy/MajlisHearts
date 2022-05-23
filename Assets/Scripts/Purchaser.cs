@@ -9,7 +9,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 {
 
     private static IStoreController m_StoreController;
-    private static IExtensionProvider m_StoreExtensionProvider; 
+    private static IExtensionProvider m_StoreExtensionProvider;
 
     public string[] HCProductID;
 
@@ -48,7 +48,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
         {
             builder.AddProduct(item, ProductType.Consumable);
         }
-        
+
         UnityPurchasing.Initialize(this, builder);
 
 
@@ -104,7 +104,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
     }
 
 
-    public void BuyHC(int Index,Action onComplete)
+    public void BuyCurrency(int Index, Action onComplete)
     {
         // Buy the consumable product using its general identifier. Expect a response either 
         // through ProcessPurchase or OnPurchaseFailed asynchronously.
@@ -218,12 +218,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
             {
                 Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
                 // The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
-                GameManager.Instance.AddHardcurrency(HCAmount[i]);
-
-                if (purchaseComplete != null)
-                    purchaseComplete.Invoke();
-                //GameManager.Instance.IsPremium = true;
-                //GameSparkManager.instance.Premium();
+                purchaseComplete?.Invoke();
             }
         }
 
