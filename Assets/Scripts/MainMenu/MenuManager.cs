@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
 
-    public Text Currency;
+    public ChangeNumber Currency;
     public Text Level;
     public Text UserName;
 
@@ -29,7 +29,7 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        Currency.text = GameManager.Instance.Currency.ToString();
+        Currency.setNumber(GameManager.Instance.Currency);
         Level.text = GameManager.Instance.MyPlayer.Level.ToString();
         UserName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
 
@@ -76,7 +76,7 @@ public class MenuManager : MonoBehaviour
 
     private void Instance_OnCurrencyChanged(int value)
     {
-        Currency.text = value.ToString();
+        Currency.Change(value);
     }
 
     public void OpenSettings()

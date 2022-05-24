@@ -346,13 +346,12 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    public void AddCurrency(string code, int value, Action<bool> result)
+    public void AddCurrency(int value, Action<bool> result)
     {
-        PlayFabClientAPI.ExecuteCloudScript(
-            new ExecuteCloudScriptRequest()
+        PlayFabClientAPI.AddUserVirtualCurrency(
+            new AddUserVirtualCurrencyRequest()
             {
-                FunctionName = "addCurrency",
-                FunctionParameter = new { CurrencyType = code, Amount = value }
+                VirtualCurrency = "SC", Amount = value 
             },
             (res) =>
             {
