@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     public PlayerInfo MyPlayer;
     [HideInInspector]
     public Dictionary<string, List<CatalogueItem>> Catalog;
-
+    [HideInInspector]
+    public Dictionary<string, string> EquippedItem;
     void Awake()
     {
         if (!Instance)
@@ -42,6 +43,8 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        EquippedItem = new Dictionary<string, string>();
     }
 
     public void DeductCurrency(int value)
@@ -62,6 +65,23 @@ public class GameManager : MonoBehaviour
             return true;
 
         return Inventory.Contains(new InventoryItem(category, id));
+    }
+
+    public void EquipItem(string itemName, string itemID)
+    {
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+        {
+            { itemName, itemID }
+        });
+
+        if (EquippedItem.ContainsKey(itemName))
+        {
+            EquippedItem[itemName] = itemID;
+        }
+        else
+        {
+            EquippedItem.Add(itemName, itemID);
+        }
     }
 
     public void SetCustomization(string category, string id)

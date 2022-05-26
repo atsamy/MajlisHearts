@@ -162,6 +162,12 @@ public class LoginManager : MonoBehaviour
                 case "Avatar":
                     GameManager.Instance.MyPlayer.Avatar = item.Value.Value;
                     break;
+                case "CardBack":
+                    GameManager.Instance.EquippedItem.Add("CardBack", item.Value.Value);
+                        break;
+                case "TableTop":
+                    GameManager.Instance.EquippedItem.Add("TableTop", item.Value.Value);
+                    break;
             }
         }
 

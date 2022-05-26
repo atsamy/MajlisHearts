@@ -8,11 +8,10 @@ public class StoreItem : MonoBehaviour
 {
     public Text Cost;
     public MaskableGraphic ItemValue;
-    public int Price;
     public Button purchaseBtn;
 
-    Action<int> purchaseAction;
-    int index;
+    protected Action<int> purchaseAction;
+    protected int index;
 
     public void Set(string cost, int quantity, int index, Action<int> action)
     {
@@ -20,16 +19,6 @@ public class StoreItem : MonoBehaviour
         ((Text)ItemValue).text = quantity.ToString();
 
         this.index = index;
-        purchaseAction = action;
-    }
-
-    public void Set(int cost, Sprite itemSprite, int index, Action<int> action)
-    {
-        this.Cost.text = cost.ToString();
-        ((Image)ItemValue).sprite = itemSprite;
-
-        this.index = index;
-        Price = cost;
         purchaseAction = action;
     }
 
@@ -41,6 +30,6 @@ public class StoreItem : MonoBehaviour
 
     public void Purchase()
     {
-        purchaseAction.Invoke(index);
+        purchaseAction?.Invoke(index);
     }
 }

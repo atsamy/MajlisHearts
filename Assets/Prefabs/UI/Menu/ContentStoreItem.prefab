@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 8945931422816993764}
   - component: {fileID: 8945931422816993765}
   - component: {fileID: 8945931422816993766}
-  - component: {fileID: 8529738224904571229}
+  - component: {fileID: 6893376215380016577}
   m_Layer: 5
   m_Name: ContentStoreItem
   m_TagString: Untagged
@@ -274,7 +274,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8529738224904571229}
+      - m_Target: {fileID: 6893376215380016577}
         m_TargetAssemblyTypeName: StoreItem, Assembly-CSharp
         m_MethodName: Purchase
         m_Mode: 1
@@ -286,7 +286,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8529738224904571229
+--- !u!114 &6893376215380016577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,12 +295,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8945931422816993760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afbbe02dc6d7bcd46a9432f70715ef3c, type: 3}
+  m_Script: {fileID: 11500000, guid: b178677a70385114e8b070996c9e236f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Cost: {fileID: 8945931423787844205}
   ItemValue: {fileID: 7841720593212521071}
   purchaseBtn: {fileID: 8945931422816993766}
+  Price: 0
 --- !u!1 &8945931423787844207
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,4 +380,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Video
+  m_Text: 
