@@ -6,9 +6,14 @@ public class DoublePanelScript : MonoBehaviour
 {
     public GameObject QueenPanel;
     public GameObject TenPanel;
+
+    Card selectedCard;
     // Start is called before the first frame update
     public void ShowPanel(Card card)
     {
+        gameObject.SetActive(true);
+        selectedCard = card;
+
         if (card.IsQueenOfSpades)
         {
             QueenPanel.SetActive(true);
@@ -19,17 +24,9 @@ public class DoublePanelScript : MonoBehaviour
         }
     }
 
-    public void SetQueenDouble(bool value)
+    public void SetDouble(bool value)
     {
-        QueenPanel.SetActive(false);
-
-        UIManager.Instance.SetDoubleCard(Card.QueenOfSpades, value);
-    }
-
-    public void SetTenPanel(bool value)
-    {
-        TenPanel.SetActive(false);
-
-        UIManager.Instance.SetDoubleCard(Card.TenOfDiamonds, value);
+        gameObject.SetActive(false);
+        UIManager.Instance.SetDoubleCard(selectedCard, value);
     }
 }

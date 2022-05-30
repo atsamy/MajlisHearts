@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     DealResult TeamResultPanel;
     [SerializeField]
     GameObject waitingPanel;
+    [SerializeField]
+    Image tableTop;
 
     MainPlayer mainPlayer;
 
@@ -60,6 +62,9 @@ public class UIManager : MonoBehaviour
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
+
+        if (GameManager.Instance.EquippedItem.ContainsKey("TableTop"))
+            tableTop.sprite = Resources.Load<Sprite>("TableTop/" + GameManager.Instance.EquippedItem["TableTop"]);
     }
 
     private void Game_OnStartPlaying(bool isMulti)
@@ -89,9 +94,9 @@ public class UIManager : MonoBehaviour
         cardsUIManager.UpdateCards(mainPlayer);
     }
 
-    private void Game_OnDealFinished(bool hostPlayer,bool isGameOver)
+    private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
-        Player[] players = OrderTeamPlayers(); 
+        Player[] players = OrderTeamPlayers();
 
         doubleCardCount = 0;
         Scores.SetActive(false);
@@ -109,7 +114,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                TeamResultPanel.Show(players, () => 
+                TeamResultPanel.Show(players, () =>
                 {
                     LeaveRoom();
                     SceneManager.LoadScene(0);
@@ -312,8 +317,8 @@ public class UIManager : MonoBehaviour
     private void MainPlayer_OnWaitPassCards()
     {
         DealFinishedPanel.gameObject.SetActive(false);
-        
-        passCardsPanel.Show((cards)=> 
+
+        passCardsPanel.Show((cards) =>
         {
             PassCards(cards);
         });
