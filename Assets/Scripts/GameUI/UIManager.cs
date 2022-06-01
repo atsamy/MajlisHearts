@@ -96,8 +96,6 @@ public class UIManager : MonoBehaviour
 
     private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
-        //Player[] players = OrderTeamPlayers();
-
         doubleCardCount = 0;
         Scores.SetActive(false);
         emojiButton.SetActive(false);
@@ -106,6 +104,7 @@ public class UIManager : MonoBehaviour
         {
             GameFinishedPanel.Show(game.Players, () =>
             {
+                //Scores.SetActive(false);
                 LeaveRoom();
                 SceneManager.LoadScene(0);
             });
@@ -209,7 +208,6 @@ public class UIManager : MonoBehaviour
     internal void RemoveCard(CardUI cardUI)
     {
         passCardsPanel.RemoveCard(cardUI);
-        //throw new NotImplementedException();
     }
 
     private int CorrectIndex(int index)

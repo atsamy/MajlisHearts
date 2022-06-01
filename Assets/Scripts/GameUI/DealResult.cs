@@ -37,7 +37,7 @@ public class DealResult : MonoBehaviour
 
         for (int i = 0; i < players.Length; i++)
         {
-            currentPlayers[i].Set(players[i].Name,"");
+            currentPlayers[i].Set(players[i].Name,players[i].Avatar);
             currentPlayers[i].SetScore(players[i].TotalScore);
 
             if (players[i].TotalScore < leastScore)

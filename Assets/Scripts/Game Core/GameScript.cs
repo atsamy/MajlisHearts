@@ -52,9 +52,15 @@ public class GameScript : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             if (i == 0)
+            {
                 Players[i] = new MainPlayer(i);
+                Players[i].Avatar = GameManager.Instance.MyPlayer.Avatar;
+            }
             else
+            {
                 Players[i] = new AIPlayer(i);
+                Players[i].Avatar = "robot";
+            }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;

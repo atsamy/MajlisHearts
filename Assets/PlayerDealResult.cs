@@ -26,6 +26,8 @@ public class PlayerDealResult : MonoBehaviour
 
     public void Set(string name,string avatar)
     {
+        print("avatar: " + avatar);
+
         playerName.text = name;
         playerAvatar.sprite = Resources.Load<Sprite>("Avatar/Face/" + avatar);
     }
@@ -44,5 +46,6 @@ public class PlayerDealResult : MonoBehaviour
     {
         scoreFrame.sprite = scoreFrames[value ? 1 : 0];
         playerFrame.sprite = avatarFrames[value ? 1 : 0];
+        winFrame.SetActive(value);
     }
 }
