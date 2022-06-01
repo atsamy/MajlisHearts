@@ -96,7 +96,7 @@ public class UIManager : MonoBehaviour
 
     private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
-        Player[] players = OrderTeamPlayers();
+        //Player[] players = OrderTeamPlayers();
 
         doubleCardCount = 0;
         Scores.SetActive(false);
@@ -104,35 +104,25 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            if (!GameManager.Instance.IsTeam)
+            GameFinishedPanel.Show(game.Players, () =>
             {
-                GameFinishedPanel.Show(players, () =>
-                {
-                    LeaveRoom();
-                    SceneManager.LoadScene(0);
-                });
-            }
-            else
-            {
-                TeamResultPanel.Show(players, () =>
-                {
-                    LeaveRoom();
-                    SceneManager.LoadScene(0);
-                });
-            }
+                LeaveRoom();
+                SceneManager.LoadScene(0);
+            });
+
             return;
         }
 
         if (hostPlayer)
         {
-            DealFinishedPanel.Show(players, () =>
+            DealFinishedPanel.Show(game.Players, () =>
              {
                  game.StartNextDeal();
              });
         }
         else
         {
-            DealFinishedPanel.Show(players, null);
+            DealFinishedPanel.Show(game.Players, null);
         }
     }
 

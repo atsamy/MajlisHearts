@@ -7,30 +7,48 @@ using System;
 
 public class DealResult : MonoBehaviour
 {
-    public Text[] PlayerNames;
-    public Text[] PlayerScores;
-    public GameObject StartButton;
-
+    [SerializeField]
+    GameObject singlePlayersParent;
+    [SerializeField]
+    GameObject teamPlayersParent;
+    [SerializeField]
+    PlayerDealResult[] singlePlayers;
+    [SerializeField]
+    PlayerDealResult[] teamPlayers;
+    [SerializeField]
+    GameObject StartButton;
 
     protected int rank;
     Action PanelClosed;
 
     public void Show(Player[] players, Action OnPanelClosed)
     {
+        bool isTeam = GameManager.Instance.IsTeam;
+
         gameObject.SetActive(true);
+
+        singlePlayersParent.SetActive(!isTeam);
+        teamPlayersParent.SetActive(isTeam);
+
+        PlayerDealResult[] currentPlayers = isTeam ? teamPlayers : singlePlayers;
+
+        float leastScore = Mathf.Infinity;
+        int winnerIndex = 0;
 
         for (int i = 0; i < players.Length; i++)
         {
-            PlayerNames[i].text = players[i].Name;
-            PlayerScores[i].text = players[i].TotalScore.ToString();
+            currentPlayers[i].Set(players[i].Name,"");
+            currentPlayers[i].SetScore(players[i].TotalScore);
 
-            if (players[i].Name == GameManager.Instance.MyPlayer.Name)
-                rank = i;
+            if (players[i].TotalScore < leastScore)
+                winnerIndex = i;
+
+            currentPlayers[winnerIndex].SetWinner(false);
         }
 
+        currentPlayers[winnerIndex].SetWinner(true);
 
         this.PanelClosed = OnPanelClosed;
-
         StartButton.SetActive(OnPanelClosed != null);
     }
 
