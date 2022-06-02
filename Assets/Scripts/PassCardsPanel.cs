@@ -44,7 +44,7 @@ public class PassCardsPanel : MonoBehaviour
     public void Show(Action<List<Card>> OnPass)
     {
         cardsObject = new List<GameObject>();
-
+        passButton.interactable = false;
         selectedPassCards = new List<Card>();
 
         passAction = OnPass;

@@ -81,6 +81,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     playersOrder[i] = "AI " + i;
                     lookUpActors.Add(i, i + 1);
+                    //lookUpAvatar.Add(i, "default");
                 }
             }
         }
@@ -106,6 +107,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     Players[i] = new AIPlayer(i);
                     Players[i].Name = "AI " + i;
+                    Players[i].Avatar = "robot";
                 }
             }
             else
@@ -158,6 +160,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     private void GameScript_OnDoubleCard(Card card, bool value, int index)
     {
+        //print("double card index:" + index);
+
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(doubleCardCode, Utils.SerializeCardValueAndIndex(card, value, index),
             eventOptionsCards, SendOptions.SendReliable);
@@ -314,10 +318,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 break;
             case doubleCardCode:
-                int playerIndex;
+                //look into double card index
+                int playerIndex;// = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 KeyValuePair<bool, Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData, out playerIndex);
                 Deal.DoubleCard(cardValue.Value, cardValue.Key);
-
+                print("double card index:" + playerIndex);
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
             case checkDoubleCode:

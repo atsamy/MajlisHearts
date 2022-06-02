@@ -14,12 +14,10 @@ public class EditorUI : MonoBehaviour
 
     string selectedID;
     GameObject initItem;
-
     EditableItem selectedItem;
-
     public CategoryPanel CategoryPanel;
     CameraHover cameraHover;
-    // Start is called before the first frame update
+
     void Start()
     {
         AllItems = FindObjectsOfType<EditableItem>();
@@ -53,7 +51,6 @@ public class EditorUI : MonoBehaviour
 
     private void CategoryPanel_OnConfirm()
     {
-        //Destroy(selectedItem);
         selectedItem.SelectedID = selectedID;
         selectedItem.Model = initItem;
         initItem = null;
@@ -64,6 +61,9 @@ public class EditorUI : MonoBehaviour
 
     public void CategoryPanel_OnCancel()
     {
+        if (selectedItem == null)
+            return;
+
         CategoryPanel.gameObject.SetActive(false);
         selectedItem.Model.SetActive(true);
         Destroy(initItem);

@@ -15,14 +15,13 @@ public class CardsUIManager : MonoBehaviour
     //[SerializeField]
     //PassCardsPanel passCardsPanel;
 
-    public Transform DoubleCardHolder;
+    //public Transform DoubleCardHolder;
 
     public Transform[] DeckCardsPosition;
 
     List<DeckCard> deckCards;
     List<CardUI> playableCards;
     List<CardUI> playerCardsUI;
-    //List<Card> selectedPassCards;
 
     [SerializeField]
     GameObject emojiPanel;
@@ -151,24 +150,24 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    void ShowWinningCard()
-    {
-        int winningIndex = 0;
+    //void ShowWinningCard()
+    //{
+    //    int winningIndex = 0;
 
-        for (int i = 1; i < deckCards.Count; i++)
-        {
-            if (deckCards[i].Card.Shape == deckCards[0].Card.Shape && deckCards[i].Card.Rank > deckCards[winningIndex].Card.Rank)
-                winningIndex = i;
-        }
+    //    for (int i = 1; i < deckCards.Count; i++)
+    //    {
+    //        if (deckCards[i].Card.Shape == deckCards[0].Card.Shape && deckCards[i].Card.Rank > deckCards[winningIndex].Card.Rank)
+    //            winningIndex = i;
+    //    }
 
-        for (int i = 0; i < deckCards.Count; i++)
-        {
-            if(i != winningIndex)
-                deckCards[i].Image.DOColor(Color.gray,0.1f);
-        }
+    //    for (int i = 0; i < deckCards.Count; i++)
+    //    {
+    //        if(i != winningIndex)
+    //            deckCards[i].Image.DOColor(Color.gray,0.1f);
+    //    }
 
-        //deckCards[winningIndex].Transform.SetAsLastSibling();
-    }
+    //    //deckCards[winningIndex].Transform.SetAsLastSibling();
+    //}
 
     public void ReturnToStack(CardUI cardUI)
     {
@@ -187,6 +186,7 @@ public class CardsUIManager : MonoBehaviour
 
     public void CardsPlayed(int playerIndex, Card card)
     {
+        //bug here
         Transform playedCard = CardsHolder[playerIndex].GetChild(Random.Range(0, CardsHolder[playerIndex].childCount));
 
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
@@ -194,13 +194,14 @@ public class CardsUIManager : MonoBehaviour
 
         DeckCard deckCard = new DeckCard(playedCard.gameObject, card);
 
-        playedCard.DOLocalMove(Vector3.zero, 0.5f).OnComplete(()=>
-        {
-            if (deckCards.Count > 1)
-            {
-                ShowWinningCard();
-            }
-        });
+        playedCard.DOLocalMove(Vector3.zero, 0.5f);
+        //.OnComplete(()=>
+        //{
+        //    if (deckCards.Count > 1)
+        //    {
+        //        ShowWinningCard();
+        //    }
+        //});
 
         playedCard.DOScaleX(0, 0.1f).OnComplete(()=> 
         {
@@ -240,24 +241,23 @@ public class CardsUIManager : MonoBehaviour
         cardUI.transform.parent = DeckCardsPosition[0];
         DeckCardsPosition[0].SetAsLastSibling();
 
-        cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f).OnComplete(() =>
-        {
-            if (deckCards.Count > 1)
-            {
-                ShowWinningCard();
-            }
-        });
+        cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
+        //    .OnComplete(() =>
+        //{
+        //    if (deckCards.Count > 1)
+        //    {
+        //        ShowWinningCard();
+        //    }
+        //});
 
         cardUI.RectTransform.DORotate(Vector3.zero, 0.5f);
-
         cardUI.RectTransform.anchorMin = new Vector2(0.5f,0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-
-        playerCardsUI.Remove(cardUI);
         cardUI.DisableButton();
 
+        playerCardsUI.Remove(cardUI);
+        
         DeckCard card = new DeckCard(cardUI.gameObject,cardUI.CardInfo);
-
         deckCards.Add(card);
 
         foreach (var item in playerCardsUI)
@@ -266,7 +266,6 @@ public class CardsUIManager : MonoBehaviour
         }
 
         RemoveDoubleIcon(cardUI.CardInfo,0);
-
         playerCards.SetLocations();
     }
 

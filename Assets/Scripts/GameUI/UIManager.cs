@@ -102,9 +102,8 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            GameFinishedPanel.Show(game.Players, () =>
+            GameFinishedPanel.ShowRound(game.Players,false, () =>
             {
-                //Scores.SetActive(false);
                 LeaveRoom();
                 SceneManager.LoadScene(0);
             });
@@ -114,15 +113,20 @@ public class UIManager : MonoBehaviour
 
         if (hostPlayer)
         {
-            DealFinishedPanel.Show(game.Players, () =>
+            DealFinishedPanel.ShowRound(game.Players,false, () =>
              {
                  game.StartNextDeal();
              });
         }
         else
         {
-            DealFinishedPanel.Show(game.Players, null);
+            DealFinishedPanel.ShowRound(game.Players,false, null);
         }
+    }
+
+    public void ShowScores()
+    {
+        DealFinishedPanel.ShowInGame(game.Players);
     }
 
     private void LeaveRoom()
@@ -212,8 +216,11 @@ public class UIManager : MonoBehaviour
 
     private int CorrectIndex(int index)
     {
-        int correctedIndex = index - game.MainPlayerIndex;
-        correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
+        int correctedIndex = index + game.MainPlayerIndex;
+        correctedIndex %= 4;
+
+        //int correctedIndex = index - game.MainPlayerIndex;
+        //correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
         return correctedIndex;
     }
 

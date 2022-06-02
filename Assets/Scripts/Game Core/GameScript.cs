@@ -19,7 +19,7 @@ public class GameScript : MonoBehaviour
     public delegate void TrickFinished(int winningHand);
     public event TrickFinished OnTrickFinished;
 
-    public delegate void DealFinished(bool hostPlayer,bool gameFinished);
+    public delegate void DealFinished(bool hostPlayer, bool gameFinished);
     public event DealFinished OnDealFinished;
 
     public delegate void CardDoubled(Card card, int playerIndex);
@@ -76,6 +76,19 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
+    private void OnDisable()
+    {
+        //myPlayer.OnPlayerTurn -= MainPlayerTurn;
+        //Deal.OnEvent -= Deal_OnEvent;
+
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    Players[i].OnPassCardsReady -= GameScript_OnPassCardsReady;
+        //    Players[i].OnCardReady -= GameScript_OnCardReady;
+        //    Players[i].OnDoubleCard -= GameScript_OnDoubleCard;
+        //}
+    }
+
     private void MainPlayerTurn(DealInfo info)
     {
         playerTimer = StartCoroutine(StartTimer());
@@ -87,7 +100,7 @@ public class GameScript : MonoBehaviour
         myPlayer.ForcePlay();
     }
 
-    private void GameScript_OnDoubleCard(Card card, bool value,int playerIndex)
+    private void GameScript_OnDoubleCard(Card card, bool value, int playerIndex)
     {
         Deal.DoubleCard(card, value);
 

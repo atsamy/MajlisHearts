@@ -16,13 +16,17 @@ public class DealResult : MonoBehaviour
     [SerializeField]
     PlayerDealResult[] teamPlayers;
     [SerializeField]
-    GameObject StartButton;
+    GameObject Footer;
+    [SerializeField]
+    Text buttonText;
 
     protected int rank;
     Action PanelClosed;
 
-    public void Show(Player[] players, Action OnPanelClosed)
+    public void ShowRound(Player[] players, bool inGame, Action OnPanelClosed)
     {
+        buttonText.text = inGame ? "CLOSE" : "NEXT ROUND";
+
         bool isTeam = GameManager.Instance.IsTeam;
 
         gameObject.SetActive(true);
@@ -33,23 +37,49 @@ public class DealResult : MonoBehaviour
         PlayerDealResult[] currentPlayers = isTeam ? teamPlayers : singlePlayers;
 
         float leastScore = Mathf.Infinity;
+        int highestScore = 0;
         int winnerIndex = 0;
+        int loserIndex = 0;
 
         for (int i = 0; i < players.Length; i++)
         {
-            currentPlayers[i].Set(players[i].Name,players[i].Avatar);
-            currentPlayers[i].SetScore(players[i].TotalScore);
+            currentPlayers[i].Set(players[i].Name, players[i].Avatar);
+            currentPlayers[i].SetScore(inGame ? players[i].Score : players[i].TotalScore);
+            currentPlayers[i].SetWinner(false);
 
             if (players[i].TotalScore < leastScore)
+            {
+                leastScore = players[i].TotalScore;
                 winnerIndex = i;
+            }
 
-            currentPlayers[winnerIndex].SetWinner(false);
+            if (highestScore < players[i].TotalScore)
+            {
+                highestScore = players[i].TotalScore;
+                loserIndex = i;
+            }
         }
 
-        currentPlayers[winnerIndex].SetWinner(true);
+        if (!isTeam)
+        {
+            currentPlayers[winnerIndex].SetWinner(true);
+        }
+        else
+        {
+            currentPlayers[(loserIndex + 1) % 4].SetWinner(true);
+            currentPlayers[(loserIndex + 3) % 4].SetWinner(true);
+        }
 
         this.PanelClosed = OnPanelClosed;
-        StartButton.SetActive(OnPanelClosed != null);
+        Footer.SetActive(OnPanelClosed != null);
+    }
+
+    public void ShowInGame(Player[] players)
+    {
+        ShowRound(players, true, () =>
+          {
+              gameObject.SetActive(false);
+          });
     }
 
     public void Pressed()
