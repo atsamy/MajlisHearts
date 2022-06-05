@@ -31,7 +31,7 @@ public class DoublePanelScript : MonoBehaviour
             UIManager.Instance.SetDoubleCard(Card.TenOfDiamonds, value);
             TenPanel.SetActive(false);
         }
-        if (QueenPanel.activeSelf)
+        else if (QueenPanel.activeSelf)
         {
             UIManager.Instance.SetDoubleCard(Card.QueenOfSpades, value);
             QueenPanel.SetActive(false);

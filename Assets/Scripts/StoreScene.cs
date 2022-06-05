@@ -99,19 +99,18 @@ public class StoreScene : MenuScene
 
             storeItem.Set(catalogueItems[i].Price, Resources.Load<Sprite>(category + "/" + catalogueItems[i].ID), i, owned, equipped, (index) =>
             {
-                PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
-                GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
-                SetContentButtons();
-                GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
-
-                EquibNewItem(category, storeItem);
-
-                storeItem.Equiped();
+                MenuManager.Instance.Popup.ShowWithMessage("are you sure you want to buy this item",()=> 
+                {
+                    PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
+                    GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
+                    SetContentButtons();
+                    GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
+                    EquibNewItem(category, storeItem);
+                });
 
             }, (index) =>
             {
                 GameManager.Instance.EquipItem(category, catalogueItems[index].ID);
-
                 EquibNewItem(category, storeItem);
             });
 
@@ -133,6 +132,8 @@ public class StoreScene : MenuScene
         {
             equippedCatalogueItem.Add(category, storeItem);
         }
+
+        storeItem.Equiped();
     }
 
     private void SetContentButtons()

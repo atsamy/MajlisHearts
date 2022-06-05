@@ -25,6 +25,9 @@ public class GameScript : MonoBehaviour
     public delegate void CardDoubled(Card card, int playerIndex);
     public event CardDoubled OnCardDoubled;
 
+    public delegate void SetPlayEnvironment(Sprite tableTop, Sprite cardBack);
+    public event SetPlayEnvironment OnSetPlayEnvironment;
+
     private const int Seconds = 1;
     protected DealScript Deal;
     public static GameScript Instance;
@@ -73,7 +76,16 @@ public class GameScript : MonoBehaviour
 
         Deal.SetPlayers(Players);
 
+        SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
+             GameManager.Instance.EquippedItem["CardBack"]);
+
         StartGame();
+    }
+
+    public void SetEnvironment(string tableTop, string cardBack)
+    {
+        OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/" + tableTop),
+            Resources.Load<Sprite>("CardBack/" + cardBack));
     }
 
     private void OnDisable()

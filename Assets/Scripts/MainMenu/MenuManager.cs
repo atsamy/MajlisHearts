@@ -20,6 +20,8 @@ public class MenuManager : MonoBehaviour
     public Popup InvitePopup;
     public Image Avatar;
 
+    public Popup Popup;
+
     private void Awake()
     {
         Instance = this;

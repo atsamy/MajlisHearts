@@ -262,7 +262,6 @@ public class DealScript
     {
         List<Card> AllCards = GetAllCards();
 
-
         for (int i = 0; i < players.Length; i++)
         {
             players[i].Reset();
@@ -275,8 +274,6 @@ public class DealScript
                 AllCards.RemoveAt(getRandom);
             }
         }
-
-        Debug.Log("start Player: " + playingIndex);
     }
 
     private List<Card> GetAllCards()
@@ -306,7 +303,6 @@ public class DealScript
 
         Deal();
 
-        //OnCardsDealt?.Invoke(CurrentState != GameState.DontPass);
         OnEvent?.Invoke(EventType.CardsDealt);
 
         DealInfo = new DealInfo();

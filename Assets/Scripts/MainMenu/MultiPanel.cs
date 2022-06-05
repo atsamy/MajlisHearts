@@ -65,6 +65,16 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         {
             print("not connected");
 
+            AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            {
+                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
+            });
+
+            PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
+            PhotonNetwork.AuthValues = auth;
+
             PhotonNetwork.ConnectUsingSettings();
         }
         else
@@ -74,19 +84,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             JoinRoomButton.interactable = true;
         }
     }
-
-    //public void CreateRoom()
-    //{
-
-    //    RoomOptions roomOptions = new RoomOptions();
-    //    roomOptions.MaxPlayers = 4;
-    //    roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "bet", BetSelection.GroupIndex }, { "type", typeSelection.GroupIndex } };
-    //    roomOptions.IsVisible = true;
-
-    //    string RoomName = Random.Range(0, 10000).ToString("0000");
-
-    //    PhotonNetwork.CreateRoom(RoomName);
-    //}
 
     IEnumerator TimeOut()
     {
@@ -141,7 +138,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
             IsconnectedToMaster = true;
             JoinRoomButton.interactable = true;
-            //Connected();
         }
     }
 
@@ -150,10 +146,10 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
-        ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable() 
-        { 
-            { "bet", betSelection.GroupIndex }, 
-            { "type", typeSelection.GroupIndex } 
+        ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable()
+        {
+            { "bet", betSelection.GroupIndex },
+            { "type", typeSelection.GroupIndex }
         };
 
         print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
@@ -172,7 +168,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
              "type"
          };
 
-        PhotonNetwork.JoinRandomOrCreateRoom(roomOptions,4,MatchmakingMode.FillRoom,null,null,null, roomOptions1,null);
+        PhotonNetwork.JoinRandomOrCreateRoom(roomOptions, 4, MatchmakingMode.FillRoom, null, null, null, roomOptions1, null);
         LoginPanel.SetActive(false);
     }
 
@@ -181,7 +177,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         BackButton.SetActive(false);
 
         gameReady = true;
-        
+
 
         while (time > 0)
         {
@@ -195,15 +191,10 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        //if (PhotonNetwork.PlayerList.Length >= 4)
-        //{
         if (PhotonNetwork.IsMasterClient)
         {
             StartGameButton.SetActive(true);
-            //RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            //PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
         }
-        //}
 
         InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
     }
@@ -253,6 +244,12 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     public void OnCreatedRoom()
     {
         Debug.Log("room created");
+
+        PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] =
+            GameManager.Instance.EquippedItem["TableTop"];
+
+        PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
+            GameManager.Instance.EquippedItem["CardBack"];
         //InfoText.text = ("Created Room");
 
         //if (mode == GameMode.CreateRoom)

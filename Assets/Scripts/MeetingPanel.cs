@@ -156,6 +156,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
             playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
             PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
+
+            PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] = 
+                GameManager.Instance.EquippedItem["TableTop"];
+
+            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
+                GameManager.Instance.EquippedItem["CardBack"];
         }
 
         CreateAvatar(newPlayer);

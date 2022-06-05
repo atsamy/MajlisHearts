@@ -9,7 +9,8 @@ public class CardsUIManager : MonoBehaviour
 {
     public int Spacing = 40;
     public GameObject playerCard;
-    public GameObject CardBack;
+    
+    GameObject cardBack;
 
     public Transform[] CardsHolder;
     //[SerializeField]
@@ -79,6 +80,12 @@ public class CardsUIManager : MonoBehaviour
         OrganizeCards();
     }
 
+    internal void SetCardBack(Sprite cardBack)
+    {
+        this.cardBack = new GameObject();
+        this.cardBack.AddComponent<Image>().sprite = cardBack;
+    }
+
     void OrganizeCards()
     {
         playerCardsUI = playerCardsUI.OrderBy(a => a.CardInfo.Shape).ThenByDescending(a => a.CardInfo.Rank).ToList();
@@ -126,7 +133,7 @@ public class CardsUIManager : MonoBehaviour
                 mainPlayer.ChooseCard(card);
                 MainPlayerCard(cardUI);
             });
-
+            //bug here
             cardUI.SetInteractable(false);
         }
 
@@ -238,7 +245,7 @@ public class CardsUIManager : MonoBehaviour
 
     public void MainPlayerCard(CardUI cardUI)
     {
-        cardUI.transform.parent = DeckCardsPosition[0];
+        cardUI.transform.SetParent(DeckCardsPosition[0]);
         DeckCardsPosition[0].SetAsLastSibling();
 
         cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
@@ -292,12 +299,12 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddCards()
     {
-        AddVerticalCards(CardsHolder[1]);
-        AddVerticalCards(CardsHolder[3]);
-        AddHorizontalCards(CardsHolder[2]);
+        AddVerticalCards(CardsHolder[1], cardBack);
+        AddVerticalCards(CardsHolder[3], cardBack);
+        AddHorizontalCards(CardsHolder[2], cardBack);
     }
 
-    void AddVerticalCards(Transform parent)
+    void AddVerticalCards(Transform parent, GameObject CardBack)
     {
         for (int i = 0; i < 13; i++)
         {
@@ -307,7 +314,7 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    void AddHorizontalCards(Transform parent)
+    void AddHorizontalCards(Transform parent,GameObject CardBack)
     {
         for (int i = 0; i < 13; i++)
         {

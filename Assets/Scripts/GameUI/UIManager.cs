@@ -59,12 +59,17 @@ public class UIManager : MonoBehaviour
         game.OnCardsPassed += CardsPassed;
         game.OnDealFinished += Game_OnDealFinished;
         game.OnCardDoubled += Game_OnCardDoubled;
+        game.OnSetPlayEnvironment += Game_OnSetPlayEnvironment;
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
+    }
 
-        if (GameManager.Instance.EquippedItem.ContainsKey("TableTop"))
-            tableTop.sprite = Resources.Load<Sprite>("TableTop/" + GameManager.Instance.EquippedItem["TableTop"]);
+    private void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
+    {
+        //if (GameManager.Instance.EquippedItem.ContainsKey("TableTop"))
+        this.tableTop.sprite = tableTop;// Resources.Load<Sprite>("TableTop/" + GameManager.Instance.EquippedItem["TableTop"]);
+        cardsUIManager.SetCardBack(cardBack);
     }
 
     private void Game_OnStartPlaying(bool isMulti)
@@ -102,25 +107,25 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            GameFinishedPanel.ShowRound(game.Players,false, () =>
-            {
-                LeaveRoom();
-                SceneManager.LoadScene(0);
-            });
+            GameFinishedPanel.ShowRound(game.Players, false, () =>
+             {
+                 LeaveRoom();
+                 SceneManager.LoadScene(0);
+             });
 
             return;
         }
 
         if (hostPlayer)
         {
-            DealFinishedPanel.ShowRound(game.Players,false, () =>
-             {
-                 game.StartNextDeal();
-             });
+            DealFinishedPanel.ShowRound(game.Players, false, () =>
+              {
+                  game.StartNextDeal();
+              });
         }
         else
         {
-            DealFinishedPanel.ShowRound(game.Players,false, null);
+            DealFinishedPanel.ShowRound(game.Players, false, null);
         }
     }
 
@@ -216,11 +221,12 @@ public class UIManager : MonoBehaviour
 
     private int CorrectIndex(int index)
     {
-        int correctedIndex = index + game.MainPlayerIndex;
-        correctedIndex %= 4;
+        //int correctedIndex = index + game.MainPlayerIndex;
+        //correctedIndex %= 4;
 
-        //int correctedIndex = index - game.MainPlayerIndex;
-        //correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
+        int correctedIndex = index - game.MainPlayerIndex;
+        correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
+
         return correctedIndex;
     }
 

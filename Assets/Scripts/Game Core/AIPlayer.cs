@@ -18,8 +18,6 @@ public class AIPlayer : Player
 
     async void playCard(DealInfo info)
     {
-        Debug.Log(Name + " " + OwnedCards.Count);
-
         await System.Threading.Tasks.Task.Delay(1000);
 
         int hand = info.CardsOntable.Count;

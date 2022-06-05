@@ -14,13 +14,6 @@ public class Popup : MonoBehaviour
 
     public Message[] Messages;
 
-    public bool InGame;
-
-    void Start()
-    {
-
-    }
-
     public void ShowWithCode(string Code, Action OnOKPressed = null)
     {
         gameObject.SetActive(true);
