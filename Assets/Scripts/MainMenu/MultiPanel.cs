@@ -146,7 +146,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
-        ExitGames.Client.Photon.Hashtable roomOptions = new ExitGames.Client.Photon.Hashtable()
+        ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable()
         {
             { "bet", betSelection.GroupIndex },
             { "type", typeSelection.GroupIndex }
@@ -154,21 +154,27 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
         print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
 
-        RoomOptions roomOptions1 = new RoomOptions()
+        RoomOptions roomOptions = new RoomOptions()
         {
             IsOpen = true,
             IsVisible = true,
-            CustomRoomProperties = roomOptions,
+            CustomRoomProperties = roomProperties,
             MaxPlayers = 4,
         };
 
-        roomOptions1.CustomRoomPropertiesForLobby = new string[]
+        roomOptions.CustomRoomPropertiesForLobby = new string[]
          {
              "bet",
              "type"
          };
 
-        PhotonNetwork.JoinRandomOrCreateRoom(roomOptions, 4, MatchmakingMode.FillRoom, null, null, null, roomOptions1, null);
+        //RoomOptions roomOptions = new RoomOptions();
+        roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
+        roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
+
+        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom, 
+            null, null, null, roomOptions, null);
+
         LoginPanel.SetActive(false);
     }
 

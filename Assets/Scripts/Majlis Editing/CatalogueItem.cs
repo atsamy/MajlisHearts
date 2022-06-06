@@ -12,6 +12,9 @@ public class CatalogueItem
     public Sprite Sprite;
     GameObject model;
 
+    public bool IsDefault { get => (Price == 0); }
+    public bool IsCustomization { get; private set; }
+
     public CatalogueItem(PlayFab.ClientModels.CatalogItem item)
     {
         ID = item.ItemId;
@@ -20,6 +23,7 @@ public class CatalogueItem
         ItemClass = item.ItemClass;
 
         Sprite = Resources.Load<Sprite>("Sprites/" + ID);
+        IsCustomization = (item.Description == "customization");
     }
 
     public GameObject GetModel()

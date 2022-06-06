@@ -101,8 +101,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.CustomRoomProperties.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
             roomOptions.CustomRoomProperties.Add("players", playersOrder);
 
-            PhotonNetwork.CreateRoom(roomName, roomOptions);
+            roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
+            roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
 
+            PhotonNetwork.CreateRoom(roomName, roomOptions);
             CreateAvatar(PhotonNetwork.LocalPlayer);
         }
         else
@@ -156,12 +158,6 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
             playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
             PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
-
-            PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] = 
-                GameManager.Instance.EquippedItem["TableTop"];
-
-            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
-                GameManager.Instance.EquippedItem["CardBack"];
         }
 
         CreateAvatar(newPlayer);

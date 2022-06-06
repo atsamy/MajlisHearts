@@ -34,7 +34,6 @@ public class GameScript : MonoBehaviour
     public Player[] Players;
 
     protected MainPlayer myPlayer;
-
     protected Coroutine playerTimer;
 
     [HideInInspector]

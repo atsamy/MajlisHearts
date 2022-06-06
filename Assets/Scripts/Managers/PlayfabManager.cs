@@ -13,7 +13,7 @@ public class PlayfabManager : MonoBehaviour
     //GameManager gameManager;
 
 
-    public delegate void PlayerLogedIn(UserTitleInfo userInfo);
+    public delegate void PlayerLogedIn(UserTitleInfo userInfo,bool newUser);
     public event PlayerLogedIn OnPlayerLoggedIn;
 
     public delegate void InventoryReturned(Dictionary<string, int> currency, List<ItemInstance> userInfo);
@@ -60,7 +60,7 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.LoginWithAndroidDeviceID(request,
             (result) => SetupSessionData((titleData) =>
             {
-                OnPlayerLoggedIn?.Invoke(titleData);
+                OnPlayerLoggedIn?.Invoke(titleData,result.NewlyCreated);
             }),
             (error) =>
             {
@@ -97,7 +97,7 @@ public class PlayfabManager : MonoBehaviour
             Debug.LogFormat("Login With Game Center Success: ", successLoginResult.PlayFabId);
             SetupSessionData((titleData) =>
             {
-                OnPlayerLoggedIn?.Invoke(titleData);
+                OnPlayerLoggedIn?.Invoke(titleData, successLoginResult.NewlyCreated);
             });
         }, (errorResult) =>
         {
@@ -179,7 +179,6 @@ public class PlayfabManager : MonoBehaviour
             (res) =>
             {
                 accountInfo = res.AccountInfo;
-
                 if (accountInfo != null)
                 {
                     onData?.Invoke(res.AccountInfo.TitleInfo);

@@ -23,6 +23,7 @@ public class LoginManager : MonoBehaviour
     PlayfabManager playfab;
     int loginValue;
 
+    bool newUser;
     //public SplashLoading splashLoading;
     public Text Debug;
 
@@ -94,6 +95,9 @@ public class LoginManager : MonoBehaviour
             }
         }
 
+        if (newUser)
+            SetDefaultItems(AllItems);
+
         GameManager.Instance.Catalog = AllItems;
         StartCoroutine(LoadYourAsyncScene());
     }
@@ -122,10 +126,11 @@ public class LoginManager : MonoBehaviour
         });
     }
 
-    private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo)
+    private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo,bool newUser)
     {
-        if (string.IsNullOrEmpty(userInfo.DisplayName))
+        if (newUser)
         {
+            this.newUser = true;
             SetLanguageAndUserName();
         }
         else
@@ -142,7 +147,7 @@ public class LoginManager : MonoBehaviour
 
         foreach (var item in inventory)
         {
-            GameManager.Instance.Inventory.Add(new InventoryItem(item.ItemClass,item.ItemId));
+            GameManager.Instance.Inventory.Add(new InventoryItem(item.ItemClass, item.ItemId));
         }
 
         playfab.GetUserData();
@@ -164,7 +169,7 @@ public class LoginManager : MonoBehaviour
                     break;
                 case "CardBack":
                     GameManager.Instance.EquippedItem.Add("CardBack", item.Value.Value);
-                        break;
+                    break;
                 case "TableTop":
                     GameManager.Instance.EquippedItem.Add("TableTop", item.Value.Value);
                     break;
@@ -172,6 +177,41 @@ public class LoginManager : MonoBehaviour
         }
 
         playfab.GetCatalog();
+    }
+
+    public void SetDefaultItems(Dictionary<string, List<CatalogueItem>> AllItems)
+    {
+        List<InventoryItem> customization = new List<InventoryItem>();
+
+        foreach (var classItem in AllItems)
+        {
+            foreach (var item in classItem.Value)
+            {
+                if (item.IsDefault)
+                {
+                    if (item.IsCustomization)
+                    {
+                        customization.Add(new InventoryItem(item.ItemClass, item.ID));
+                    }
+                    else
+                    {
+                        GameManager.Instance.EquippedItem.Add(item.ItemClass, item.ID);
+                    }
+
+                    playfab.AddItemToInventory(item);
+                }
+            }
+        }
+
+        playfab.SetPlayerData(GameManager.Instance.EquippedItem);
+
+        Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
+        wrappedCustomization.array = customization.ToArray();
+
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+        {
+            { "Customization", JsonUtility.ToJson(wrappedCustomization) }
+        });
     }
 
     private void Playfab_OnConnectionError(string message)
@@ -195,7 +235,9 @@ public class LoginManager : MonoBehaviour
             {
                 if (result)
                 {
-                    StartCoroutine(LoadYourAsyncScene());
+                    GameManager.Instance.MyPlayer.Name = name;
+                    playfab.GetCatalog();
+                    //StartCoroutine(LoadYourAsyncScene());
                 }
                 else
                 {
