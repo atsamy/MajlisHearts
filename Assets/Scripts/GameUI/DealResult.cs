@@ -8,20 +8,18 @@ using System;
 public class DealResult : MonoBehaviour
 {
     [SerializeField]
-    GameObject singlePlayersParent;
+    protected GameObject singlePlayersParent;
     [SerializeField]
-    GameObject teamPlayersParent;
+    protected GameObject teamPlayersParent;
     [SerializeField]
-    PlayerDealResult[] singlePlayers;
+    protected PlayerDealResult[] singlePlayers;
     [SerializeField]
-    PlayerDealResult[] teamPlayers;
+    protected PlayerDealResult[] teamPlayers;
     [SerializeField]
     GameObject Footer;
     [SerializeField]
     Text buttonText;
-
-    protected int rank;
-    Action PanelClosed;
+    protected Action PanelClosed;
 
     public void ShowRound(Player[] players, bool inGame, Action OnPanelClosed)
     {

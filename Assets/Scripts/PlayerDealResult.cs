@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerDealResult : MonoBehaviour
 {
     [SerializeField]
-    Image playerAvatar;
+    protected Image playerAvatar;
     [SerializeField]
-    Text playerName;
+    protected TextMeshProUGUI playerName;
     [SerializeField]
-    Text score;
+    protected TextMeshProUGUI score;
     [SerializeField]
-    Image scoreFrame;
+    protected Image scoreFrame;
     [SerializeField]
-    Image playerFrame;
+    protected Image playerFrame;
     [SerializeField]
     GameObject winFrame;
     [SerializeField]

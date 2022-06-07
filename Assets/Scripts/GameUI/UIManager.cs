@@ -17,9 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     DealResult DealFinishedPanel;
     [SerializeField]
-    DealResult GameFinishedPanel;
-    [SerializeField]
-    DealResult TeamResultPanel;
+    DealResult ResultPanel;
     [SerializeField]
     GameObject waitingPanel;
     [SerializeField]
@@ -107,7 +105,7 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            GameFinishedPanel.ShowRound(game.Players, false, () =>
+            ResultPanel.ShowRound(game.Players, false, () =>
              {
                  LeaveRoom();
                  SceneManager.LoadScene(0);
