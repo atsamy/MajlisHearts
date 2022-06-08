@@ -17,9 +17,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     DealResult DealFinishedPanel;
     [SerializeField]
-    DealResult ResultPanel;
+    ResultPanel ResultPanel;
     [SerializeField]
-    GameObject waitingPanel;
+    WaitingScript waitingPanel;
     [SerializeField]
     Image tableTop;
 
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
 
     public DoublePanelScript DoublePanel;
     public GameObject Scores;
-    public Text PassText;
+    //public Text PassText;
 
     CardsUIManager cardsUIManager;
     GameScript game;
@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
 
     private void Game_OnStartPlaying(bool isMulti)
     {
-        waitingPanel.SetActive(false);
+        waitingPanel.Hide();
         SetPlayer();
 
         emojiButton.SetActive(isMulti);
@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
     internal void SetDoubleCard(Card card, bool value)
     {
         if (doubleCardCount == 1)
-            waitingPanel.SetActive(true);
+            waitingPanel.gameObject.SetActive(true);
 
         mainPlayer.SetDoubleCard(card, value);
     }
@@ -105,10 +105,10 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            ResultPanel.ShowRound(game.Players, false, () =>
+            ResultPanel.ShowResult(game.Players, () =>
              {
                  LeaveRoom();
-                 SceneManager.LoadScene(0);
+                 SceneManager.LoadScene(1);
              });
 
             return;
@@ -304,7 +304,7 @@ public class UIManager : MonoBehaviour
     private void MainPlayer_OnWaitDoubleCards(Card card)
     {
         doubleCardCount++;
-        waitingPanel.SetActive(false);
+        waitingPanel.Hide();
         DoublePanel.ShowPanel(card);
     }
 
@@ -322,7 +322,7 @@ public class UIManager : MonoBehaviour
             PassCards(cards);
         });
 
-        PassText.text = "Pass Right";
+        //PassText.text = "Pass Right";
     }
 
     public void PlayerTurn(DealInfo info)
@@ -337,7 +337,7 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        waitingPanel.SetActive(true);
+        waitingPanel.Show();
         mainPlayer.PassCards(selectedPassCards);
         Scores.SetActive(true);
     }

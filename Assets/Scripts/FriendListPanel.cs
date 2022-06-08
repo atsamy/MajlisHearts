@@ -9,24 +9,20 @@ public class FriendListPanel : MonoBehaviour
 {
     [SerializeField]
     GameObject friendListPanel;
-
     [SerializeField]
     GameObject friendItem;
-
     [SerializeField]
     Transform content;
-
     [SerializeField]
     GameObject addFriendPanel;
-
     [SerializeField]
     GameObject error;
-
     [SerializeField]
     Text friendName;
-
     [SerializeField]
     ChoosePopup selectTypePopup;
+    //[SerializeField]
+    //Button inviteButton;
 
     string[] ids;
 
@@ -101,6 +97,24 @@ public class FriendListPanel : MonoBehaviour
     }
     public void SendInvite()
     {
+        bool isPlayersSelected = false;
+
+
+        foreach (var item in friendsList)
+        {
+            if (item.Value.isOn)
+            {
+                isPlayersSelected = true;
+                break;
+            }
+        }
+
+        if (!isPlayersSelected)
+        {
+            MenuManager.Instance.Popup.ShowWithMessage("Please Choose Friends To Invite", null);
+            return;
+        }
+
         selectTypePopup.Show((type) =>
         {
             string roomName = Random.Range(0, 10000).ToString("0000");
@@ -110,6 +124,7 @@ public class FriendListPanel : MonoBehaviour
             {
                 if (item.Value.isOn)
                 {
+                    isPlayersSelected = true;
                     ChatManager.Instance.SendPrivateMessage(item.Key, "invite:" + roomName + ":" + gameType);
                 }
             }

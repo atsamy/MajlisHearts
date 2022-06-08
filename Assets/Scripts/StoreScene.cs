@@ -105,13 +105,12 @@ public class StoreScene : MenuScene
                     GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
                     SetContentButtons();
                     GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
-                    EquibNewItem(category, storeItem);
+                    EquibNewItem(category, storeItem, catalogueItems[index].ID);
                 });
 
             }, (index) =>
             {
-                GameManager.Instance.EquipItem(category, catalogueItems[index].ID);
-                EquibNewItem(category, storeItem);
+                EquibNewItem(category, storeItem, catalogueItems[index].ID);
             });
 
             if (!equipped && !owned)
@@ -121,8 +120,10 @@ public class StoreScene : MenuScene
         }
     }
 
-    private void EquibNewItem(string category, ContentStoreItem storeItem)
+    private void EquibNewItem(string category, ContentStoreItem storeItem,string ID)
     {
+        GameManager.Instance.EquipItem(category, ID);
+
         if (equippedCatalogueItem.ContainsKey(category))
         {
             equippedCatalogueItem[category].Owned();

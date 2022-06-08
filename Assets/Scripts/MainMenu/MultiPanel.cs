@@ -102,8 +102,10 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             {
                 Debug.Log("Start game with " + PhotonNetwork.PlayerList.Length + " players");
 
+                string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
+
                 RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
             }
             else
             {
@@ -169,8 +171,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
          };
 
         //RoomOptions roomOptions = new RoomOptions();
-        roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
-        roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
+        //roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
+        //roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
 
         PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom, 
             null, null, null, roomOptions, null);
@@ -214,8 +216,10 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void SendGameStartEvent()
     {
+        string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
+
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(beginGame, null, eventOptionsCards, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
@@ -321,6 +325,11 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     {
         if (photonEvent.Code == beginGame)
         {
+            string[] data = photonEvent.CustomData.ToString().Split(':');
+
+            PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] = data[0];
+            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] = data[1];
+
             StartCoroutine(StartGameIn(3));
         }
     }

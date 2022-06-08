@@ -40,17 +40,13 @@ public class Popup : MonoBehaviour
 
     public void Close()
     {
-        if (ClosePressed != null)
-            ClosePressed.Invoke();
-
+        ClosePressed?.Invoke();
         gameObject.SetActive(false);
     }
 
     public void OK()
     {
-        if (OKPressed != null)
-            OKPressed.Invoke();
-
+        OKPressed?.Invoke();
         gameObject.SetActive(false);
     }
 
