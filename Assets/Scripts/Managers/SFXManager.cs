@@ -142,7 +142,7 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void ToggleSFX()
+    public bool ToggleSFX()
     {
         int value = Mathf.Abs(SFXState - 1);
         PlayerPrefs.SetInt("SFX", value);
@@ -150,6 +150,8 @@ public class SFXManager : MonoBehaviour
 
         if (OnSFXToggled != null)
             OnSFXToggled(value == 1);
+
+        return value == 1;
     }
 
     public void MuteMusic(bool value)
@@ -157,11 +159,13 @@ public class SFXManager : MonoBehaviour
         Music.mute = !value;
     }
 
-    public void ToggleMusic()
+    public bool ToggleMusic()
     {
         int value = Mathf.Abs(MusicState - 1);
         PlayerPrefs.SetInt("Music", value);
         Music.mute = (value == 0);
+
+        return value == 1;
     }
 }
 

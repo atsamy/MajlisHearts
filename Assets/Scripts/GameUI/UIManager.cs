@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text debugText;
     [SerializeField]
+    PausePanel pausePanel;
+    [SerializeField]
     PassCardsPanel passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
@@ -76,6 +78,11 @@ public class UIManager : MonoBehaviour
         SetPlayer();
 
         emojiButton.SetActive(isMulti);
+    }
+
+    public void PauseGame()
+    {
+        pausePanel.Show();
     }
 
     internal void SetDoubleCard(Card card, bool value)
