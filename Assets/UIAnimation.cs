@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 public class UIAnimation : MonoBehaviour
 {
     [HideInInspector]
-    public List<TransformAnimationBase> MoveAnimations;
+    public List<MoveAnimation> MoveAnimations;
     [HideInInspector]
-    public List<TransformAnimationBase> ScaleAnimation;
+    public List<ScaleAnimation> ScaleAnimation;
     [HideInInspector]
     public List<ColorAnimation> ColorAnimation;
 
@@ -61,7 +61,7 @@ public class AnimationBase
     public bool Reverse;
     public float StartAfter;
 
-    public async void Play() 
+    public async void Play()
     {
         await Task.Delay((int)(StartAfter * 100));
 
@@ -74,7 +74,7 @@ public class AnimationBase
     protected virtual void PlayReverse() { }
 }
 [System.Serializable]
-public class TransformAnimationBase:AnimationBase
+public abstract class TransformAnimationBase : AnimationBase
 {
     public void Set(Transform transform)
     {
@@ -106,7 +106,7 @@ public class MoveAnimation : TransformAnimationBase
 [System.Serializable]
 public class ColorAnimation : AnimationBase
 {
-    public Color Target;
+    public Color Start;
     Image image;
 
     public void Set(Image image)
@@ -115,14 +115,18 @@ public class ColorAnimation : AnimationBase
     }
     protected override void PlaySingle()
     {
+        Color Target = image.color;
+        image.color = Start;
         image.DOColor(Target, Duration);
     }
     protected override void PlayReverse()
     {
+        Color Target = image.color;
+        image.color = Start;
         image.DOColor(Target, Duration).SetLoops(1, LoopType.Yoyo);
     }
 }
-
+[System.Serializable]
 public class ScaleAnimation : TransformAnimationBase
 {
     protected override void PlaySingle()

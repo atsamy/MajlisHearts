@@ -116,19 +116,17 @@ public class CardsUIManager : MonoBehaviour
                 mainPlayer.ChooseCard(card);
                 MainPlayerCard(item);
             });
-
+            //bug here
             item.SetInteractable(false);
         }
 
         for (int i = 0; i < 3; i++)
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
-            //newCard.transform.localPosition = new Vector3((i - 6) * 100, 0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
 
             Card card = mainPlayer.PassedCards[i];
-
             cardUI.Set(cardSprites[card], card, (card) =>
             {
                 mainPlayer.ChooseCard(card);
@@ -146,8 +144,6 @@ public class CardsUIManager : MonoBehaviour
         if (UIManager.Instance.AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
-            //selectedPassCards.Add(cardUI.CardInfo);
-
             cardUI.SetOnPressed((card) =>
             {
                 ReturnToStack(cardUI);
