@@ -15,14 +15,14 @@ public class TabScript : MonoBehaviour
     void Awake()
     {
         //image = GetComponent<Image>();
-        text = GetComponentInChildren<Text>();
+        //text = GetComponentInChildren<Text>();
         button = GetComponent<Button>();
     }
 
     public void Pressed(bool value)
     {
         //image.sprite = BtnSprites[index];
-        text.color = TxtColors[value ? 1 : 0];
+        //text.color = TxtColors[value ? 1 : 0];
         button.interactable = !value;
 
         //SFXManager.Instance.PlayClip("Tab");

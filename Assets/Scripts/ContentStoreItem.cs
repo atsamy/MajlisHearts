@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ContentStoreItem : StoreItem
 {
     [HideInInspector]
     public int Price;
 
+    [SerializeField]
+    TextMeshProUGUI itemName;
+
     Action<int> equipAction;
-    public void Set(int cost, Sprite itemSprite, int index,bool owned,bool equipped, Action<int> buyAction, Action<int> equipAction)
+    public void Set(int cost,string itemName, Sprite itemSprite, int index,bool owned,bool equipped, Action<int> buyAction, Action<int> equipAction)
     {
         ((Image)ItemValue).sprite = itemSprite;
         this.index = index;
+        this.itemName.text = itemName;
 
         if (equipped)
         {

@@ -9,7 +9,7 @@ public class CardsUIManager : MonoBehaviour
 {
     public int Spacing = 40;
     public GameObject playerCard;
-    
+
     GameObject cardBack;
 
     public Transform[] CardsHolder;
@@ -50,7 +50,7 @@ public class CardsUIManager : MonoBehaviour
                 CardShape shape = (CardShape)j;
                 CardRank rank = (CardRank)i;
 
-                cardSprites.Add(new Card(shape,rank), Resources.Load<Sprite>("Cards/" + shape + "_" + rank));
+                cardSprites.Add(new Card(shape, rank), Resources.Load<Sprite>("Cards/" + shape + "_" + rank));
             }
         }
 
@@ -68,10 +68,11 @@ public class CardsUIManager : MonoBehaviour
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
+
             playerCardsUI.Last().Set(cardSprites[card], card, (card) =>
-             {
+            {
                  AddToPassCards(newCard.GetComponent<CardUI>());
-             });
+            });
 
             playerCardsUI.Last().SetInteractable(passCards);
         }
@@ -116,6 +117,9 @@ public class CardsUIManager : MonoBehaviour
                 mainPlayer.ChooseCard(card);
                 MainPlayerCard(item);
             });
+
+            Debug.Log(item.CardInfo);
+
             //bug here
             item.SetInteractable(false);
         }
@@ -132,6 +136,8 @@ public class CardsUIManager : MonoBehaviour
                 mainPlayer.ChooseCard(card);
                 MainPlayerCard(cardUI);
             });
+
+            Debug.Log(card);
             //bug here
             cardUI.SetInteractable(false);
         }
@@ -207,7 +213,7 @@ public class CardsUIManager : MonoBehaviour
         //    }
         //});
 
-        playedCard.DOScaleX(0, 0.1f).OnComplete(()=> 
+        playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
             deckCard.Image.sprite = cardSprites[card];
@@ -219,10 +225,10 @@ public class CardsUIManager : MonoBehaviour
         });
 
         deckCards.Add(deckCard);
-        RemoveDoubleIcon(card,playerIndex);
+        RemoveDoubleIcon(card, playerIndex);
     }
 
-    private void RemoveDoubleIcon(Card card,int index)
+    private void RemoveDoubleIcon(Card card, int index)
     {
         if (card.IsTenOfDiamonds)
             playersDetails[index].HideDouble(0);
@@ -232,7 +238,7 @@ public class CardsUIManager : MonoBehaviour
 
     public void SetPlayers(int index, Player player)
     {
-        playersDetails[index].SetPlayer(player.Avatar,player.Name,0);
+        playersDetails[index].SetPlayer(player.Avatar, player.Name, 0);
     }
 
     public void SetScore(int index, int score)
@@ -255,13 +261,13 @@ public class CardsUIManager : MonoBehaviour
         //});
 
         cardUI.RectTransform.DORotate(Vector3.zero, 0.5f);
-        cardUI.RectTransform.anchorMin = new Vector2(0.5f,0.5f);
+        cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         cardUI.DisableButton();
 
         playerCardsUI.Remove(cardUI);
-        
-        DeckCard card = new DeckCard(cardUI.gameObject,cardUI.CardInfo);
+
+        DeckCard card = new DeckCard(cardUI.gameObject, cardUI.CardInfo);
         deckCards.Add(card);
 
         foreach (var item in playerCardsUI)
@@ -269,7 +275,7 @@ public class CardsUIManager : MonoBehaviour
             item.SetInteractable(false);
         }
 
-        RemoveDoubleIcon(cardUI.CardInfo,0);
+        RemoveDoubleIcon(cardUI.CardInfo, 0);
         playerCards.SetLocations();
     }
 
@@ -311,7 +317,7 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    void AddHorizontalCards(Transform parent,GameObject CardBack)
+    void AddHorizontalCards(Transform parent, GameObject CardBack)
     {
         for (int i = 0; i < 13; i++)
         {
@@ -374,7 +380,7 @@ public class DeckCard
     public Transform Transform;
     public Card Card;
 
-    public DeckCard(GameObject gameObject,Card card)
+    public DeckCard(GameObject gameObject, Card card)
     {
         Card = card;
         Transform = gameObject.transform;

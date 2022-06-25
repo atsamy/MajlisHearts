@@ -331,6 +331,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
             case checkDoubleCode:
+                //make sure people recieved passed cards first
                 SetCardsPassed();
                 myPlayer.CheckForDoubleCards();
                 break;

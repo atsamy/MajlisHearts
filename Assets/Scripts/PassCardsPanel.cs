@@ -20,12 +20,12 @@ public class PassCardsPanel : MonoBehaviour
         bool ready = true;
         bool cardAdded = false;
 
-        cardsObject.Add(card.gameObject);
-
         foreach (var item in cardHolder)
         {
             if (item.childCount == 0 && !cardAdded)
             {
+                cardsObject.Add(card.gameObject);
+
                 selectedPassCards.Add(card.CardInfo);
                 card.transform.SetParent(item);
                 card.transform.DOLocalMove(Vector3.zero, 0.25f);
@@ -61,7 +61,7 @@ public class PassCardsPanel : MonoBehaviour
     public void SwapPressed()
     {
         gameObject.SetActive(false);
-        passAction?.Invoke(selectedPassCards);
+
 
         foreach (var item in cardsObject)
         {
@@ -69,5 +69,7 @@ public class PassCardsPanel : MonoBehaviour
         }
 
         cardsObject.Clear();
+
+        passAction?.Invoke(selectedPassCards);
     }
 }

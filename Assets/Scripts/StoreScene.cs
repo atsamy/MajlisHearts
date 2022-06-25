@@ -1,30 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
 
 public class StoreScene : MenuScene
 {
-    public TabScript CoinsTab;
-    public TabScript ContentTab;
+    public TabScript[] Tabs;
+    public GameObject[] ContentPanels;
 
-    public GameObject CoinsContent;
-    public GameObject ContentContent;
-    public Transform CardsContent;
     public StoreItem[] CurrencyStoreItems;
     public int[] SCValues;
-    public GameObject ContentStoreItem;
-
-    bool contentLoaded;
-
+    
     public GameObject Loading;
-    Dictionary<string, ContentStoreItem> equippedCatalogueItem;
-    List<ContentStoreItem> initContent;
+    
     void Start()
     {
-        CoinsTab.Pressed(true);
-        ContentTab.Pressed(false);
+        for (int i = 0; i < Tabs.Length; i++)
+        {
+            Tabs[i].Pressed(i == 0);
+        }
     }
 
     public override void Open()
@@ -37,6 +29,7 @@ public class StoreScene : MenuScene
             {
                 CurrencyStoreItems[i].Set(prices[i], SCValues[i], i, (index) =>
                 {
+                    SFXManager.Instance.PlayClip("Coins");
                     PlayfabManager.instance.AddCurrency(SCValues[index], (result) =>
                      {
                          print("add currency: " + result);
@@ -49,99 +42,15 @@ public class StoreScene : MenuScene
         });
     }
 
-    public void CoinsPressed()
+    public void TabPressed(int index)
     {
-        CoinsTab.Pressed(true);
-        ContentTab.Pressed(false);
-
-        CoinsContent.SetActive(true);
-        ContentContent.SetActive(false);
-    }
-
-    public void ContentPressed()
-    {
-        CoinsTab.Pressed(false);
-        ContentTab.Pressed(true);
-
-        CoinsContent.SetActive(false);
-        ContentContent.SetActive(true);
-
-        if (!contentLoaded)
+        for (int i = 0; i < Tabs.Length; i++)
         {
-            equippedCatalogueItem = new Dictionary<string, ContentStoreItem>();
-            LoadCategory("CardBack");
-            LoadCategory("TableTop");
-            contentLoaded = true;
+            Tabs[i].Pressed(index == i);
         }
-        else
+        for (int i = 0; i < ContentPanels.Length; i++)
         {
-            SetContentButtons();
-        }
-    }
-
-    private void LoadCategory(string category)
-    {
-        List<CatalogueItem> catalogueItems = GameManager.Instance.Catalog.First(a => a.Key == category).Value;
-        initContent = new List<ContentStoreItem>();
-
-        for (int i = 0; i < catalogueItems.Count; i++)
-        {
-            ContentStoreItem storeItem = Instantiate(ContentStoreItem, CardsContent).GetComponent<ContentStoreItem>();
-            bool equipped = false;
-
-            if (GameManager.Instance.EquippedItem.ContainsKey(category))
-                equipped = (GameManager.Instance.EquippedItem[category] == catalogueItems[i].ID);
-
-            bool owned = GameManager.Instance.Inventory.Any(a => a.ID == catalogueItems[i].ID);
-
-            if (equipped)
-                equippedCatalogueItem.Add(category, storeItem);
-
-            storeItem.Set(catalogueItems[i].Price, Resources.Load<Sprite>(category + "/" + catalogueItems[i].ID), i, owned, equipped, (index) =>
-            {
-                MenuManager.Instance.Popup.ShowWithMessage("are you sure you want to buy this item",()=> 
-                {
-                    PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
-                    GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
-                    SetContentButtons();
-                    GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
-                    EquibNewItem(category, storeItem, catalogueItems[index].ID);
-                });
-
-            }, (index) =>
-            {
-                EquibNewItem(category, storeItem, catalogueItems[index].ID);
-            });
-
-            if (!equipped && !owned)
-                storeItem.SetButton(GameManager.Instance.Currency >= catalogueItems[i].Price);
-
-            initContent.Add(storeItem);
-        }
-    }
-
-    private void EquibNewItem(string category, ContentStoreItem storeItem,string ID)
-    {
-        GameManager.Instance.EquipItem(category, ID);
-
-        if (equippedCatalogueItem.ContainsKey(category))
-        {
-            equippedCatalogueItem[category].Owned();
-            equippedCatalogueItem[category] = storeItem;
-        }
-        else
-        {
-            equippedCatalogueItem.Add(category, storeItem);
-        }
-
-        storeItem.Equiped();
-    }
-
-    private void SetContentButtons()
-    {
-        foreach (var item in initContent)
-        {
-            item.SetButton(GameManager.Instance.Currency >= item.Price);
+            ContentPanels[i].SetActive(index == i);
         }
     }
 }

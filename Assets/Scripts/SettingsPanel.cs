@@ -20,10 +20,18 @@ public class SettingsPanel : MenuScene
         {
             item.SetText();
         }
+
+        SFXManager.Instance.PlayClip("Select");
     }
 
     public void ToggleNotification()
     {
-        notification.color = SFXManager.Instance.ToggleSFX() ? offColor : Color.white;
+        SFXManager.Instance.PlayClip("Toggle");
+
+        bool isOn = (PlayerPrefs.GetInt("Notification", 1) != 1);
+
+        PlayerPrefs.SetInt("Notification", isOn ? 1 : 0);
+
+        notification.color = isOn ? Color.white : offColor;
     }
 }

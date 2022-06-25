@@ -32,10 +32,7 @@ public class CameraHover : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-
-
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, 0, Input.mousePosition.y - startPosition.y);
-
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, Input.mousePosition.y - startPosition.y, 0);
             transform.position += mousePosition.normalized * Time.deltaTime * 5;
         }
     }

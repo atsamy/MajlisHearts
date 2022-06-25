@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-
+using TMPro;
 public class CategoryPanel : MonoBehaviour
 {
     public GameObject ItemButton;
@@ -25,17 +25,19 @@ public class CategoryPanel : MonoBehaviour
     public Action OnCancel;
     public Action OnConfirm;
 
-    public Text BuyText;
+    public TextMeshProUGUI BuyText;
 
     bool purchasable;
-    public void Show(EditableItem editableItem)
+    public void Show(string categoryName)
     {
+        List<CatalogueItem> category = GameManager.Instance.Catalog[categoryName];
+
         BuyText.text = "Selected";
         BuyButton.interactable = false;
 
         gameObject.SetActive(true);
-        selectedCategory = editableItem.Code;
-        selectedID = editableItem.SelectedID;
+        selectedCategory = categoryName;
+        //selectedID = editableItem.SelectedID;
 
         foreach (Transform item in GridPanel)
         {
@@ -43,8 +45,6 @@ public class CategoryPanel : MonoBehaviour
         }
 
         int index = 0;
-
-        List<CatalogueItem> category = GameManager.Instance.Catalog[selectedCategory];
 
         foreach (var item in category)
         {

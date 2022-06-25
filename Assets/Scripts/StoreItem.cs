@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class StoreItem : MonoBehaviour
 {
-    public Text Cost;
+    public TextMeshProUGUI Cost;
     public MaskableGraphic ItemValue;
     public Button purchaseBtn;
 
@@ -16,7 +17,7 @@ public class StoreItem : MonoBehaviour
     public void Set(string cost, int quantity, int index, Action<int> action)
     {
         this.Cost.text = cost;
-        ((Text)ItemValue).text = quantity.ToString();
+        ((TextMeshProUGUI)ItemValue).text = quantity.ToString();
 
         this.index = index;
         purchaseAction = action;

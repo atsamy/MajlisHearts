@@ -11,17 +11,8 @@ public class EditableItem : MonoBehaviour
 
     [HideInInspector]
     public string SelectedID;
-    //[HideInInspector]
-    //public int SelectedIndex = 0;
-    // Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    // Update is called once per frame
-    //void Update()
-    //{
-
-    //}
+    private void OnMouseDown()
+    {
+        EditorUI.Instance.ShowItems(Code);
+    }
 }

@@ -8,6 +8,7 @@ public class CatalogueItem
     public int Price;
     public int Level;
     public string ItemClass;
+    public string Name;
 
     public Sprite Sprite;
     GameObject model;
@@ -21,6 +22,8 @@ public class CatalogueItem
         Price = (int)item.VirtualCurrencyPrices["SC"];
         Level = int.Parse(item.CustomData);
         ItemClass = item.ItemClass;
+
+        Name = item.Description;
 
         Sprite = Resources.Load<Sprite>("Sprites/" + ID);
         IsCustomization = (item.Description == "customization");

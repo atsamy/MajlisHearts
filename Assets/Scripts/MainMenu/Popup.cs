@@ -14,26 +14,29 @@ public class Popup : MonoBehaviour
 
     public Message[] Messages;
 
-    public void ShowWithCode(string Code, Action OnOKPressed = null)
+    void Show(Action OnOKPressed)
     {
+        SFXManager.Instance.PlayClip("Popup");
         gameObject.SetActive(true);
-        Message.text = Messages.Where(a => a.Code == Code).First().MessageText;
-
         OKPressed = OnOKPressed;
         ClosePressed = null;
+    }
+
+    public void ShowWithCode(string Code, Action OnOKPressed = null)
+    {
+        Show(OnOKPressed);
+        Message.text = Messages.Where(a => a.Code == Code).First().MessageText;
     }
 
     public void ShowWithMessage(string message, Action OnOKPressed = null)
     {
-        gameObject.SetActive(true);
+        Show(OnOKPressed);
         Message.text = message;
-
-        OKPressed = OnOKPressed;
-        ClosePressed = null;
     }
 
     public void ShowWithMessage(string message, Action OnOKPressed, Action OnClosePressed)
     {
+        Show(OnOKPressed);
         ShowWithMessage(message, OnOKPressed);
         ClosePressed = OnClosePressed;
     }
@@ -42,12 +45,16 @@ public class Popup : MonoBehaviour
     {
         ClosePressed?.Invoke();
         gameObject.SetActive(false);
+
+        SFXManager.Instance.PlayClip("Close");
     }
 
     public void OK()
     {
         OKPressed?.Invoke();
         gameObject.SetActive(false);
+
+        SFXManager.Instance.PlayClip("OK");
     }
 
 }

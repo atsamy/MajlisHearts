@@ -11,6 +11,15 @@ public class MajlisItem : MonoBehaviour
 
     CatalogueItem item;
 
+    [SerializeField]
+    GameObject locked;
+
+    [SerializeField]
+    GameObject equipped;
+
+    [SerializeField]
+    Image itemImage;
+
     public delegate void Pressed(CatalogueItem item);
     public Pressed OnPressed;
 
@@ -19,7 +28,7 @@ public class MajlisItem : MonoBehaviour
         this.category = category;
         this.index = index;
 
-        GetComponent<Image>().sprite = item.Sprite;
+        itemImage.sprite = item.Sprite;
 
         this.item = item;
     }
