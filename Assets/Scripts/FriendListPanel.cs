@@ -26,12 +26,12 @@ public class FriendListPanel : MonoBehaviour
 
     string[] ids;
 
-    Dictionary<string, Toggle> friendsList;
+    Dictionary<string, FriendListItem> friendsList;
 
     private void Start()
     {
         ChatManager.OnPlayerStatusUpdate += ChatManager_OnPlayerStatusUpdate;
-        friendsList = new Dictionary<string, Toggle>();
+        friendsList = new Dictionary<string, FriendListItem>();
 
         PlayfabManager.instance.GetFriends((friends) =>
         {
@@ -39,8 +39,8 @@ public class FriendListPanel : MonoBehaviour
 
             for (int i = 0; i < friends.Count; i++)
             {
-                Toggle friend = Instantiate(friendItem, content).GetComponent<Toggle>();
-                friend.GetComponentInChildren<Text>().text = friends[i].TitleDisplayName;
+                FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
+                friend.Set(friends[i].TitleDisplayName);
                 ids[i] = friends[i].TitleDisplayName;
 
                 friendsList.Add(friends[i].TitleDisplayName, friend);
@@ -52,8 +52,15 @@ public class FriendListPanel : MonoBehaviour
 
     private void ChatManager_OnPlayerStatusUpdate(string user, int status)
     {
-        friendsList[user].interactable = status == 2;
-        friendsList[user].GetComponentInChildren<Text>().color = status == 2 ? Color.green : Color.black;
+        if (status == 2)
+        {
+
+            friendsList[user].SetOnline();
+        }
+        else
+        {
+            friendsList[user].SetOffline();
+        }
     }
 
     public void Show()
@@ -102,7 +109,7 @@ public class FriendListPanel : MonoBehaviour
 
         foreach (var item in friendsList)
         {
-            if (item.Value.isOn)
+            if (item.Value.InviteToggle.isOn)
             {
                 isPlayersSelected = true;
                 break;
@@ -122,7 +129,7 @@ public class FriendListPanel : MonoBehaviour
 
             foreach (var item in friendsList)
             {
-                if (item.Value.isOn)
+                if (item.Value.InviteToggle.isOn)
                 {
                     isPlayersSelected = true;
                     ChatManager.Instance.SendPrivateMessage(item.Key, "invite:" + roomName + ":" + gameType);
