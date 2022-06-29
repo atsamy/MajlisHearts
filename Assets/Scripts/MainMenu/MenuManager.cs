@@ -2,15 +2,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ArabicSupport;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
 
-    public ChangeNumber Currency;
+    public TextMeshProUGUI Currency;
     public Text Level;
-    public Text UserName;
+    public TextMeshProUGUI UserName;
 
+    public GameObject GameModePanel;
     public GameObject EditorPanel;
     public GameObject MainUI;
     public AvatarPanel AvatarPanel;
@@ -29,7 +31,7 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        Currency.setNumber(GameManager.Instance.Currency);
+        Currency.text = (GameManager.Instance.Currency.ToString());
         Level.text = GameManager.Instance.MyPlayer.Level.ToString();
         UserName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
 
@@ -76,7 +78,7 @@ public class MenuManager : MonoBehaviour
 
     private void Instance_OnCurrencyChanged(int value)
     {
-        Currency.Change(value);
+        Currency.text = (value.ToString());
     }
 
     public void OpenSettings()
@@ -101,4 +103,15 @@ public class MenuManager : MonoBehaviour
              OpenMeeting(inviteOptions[1], false);
          });
     }
+
+    public void OpenGameMode()
+    {
+        SFXManager.Instance.PlayClip("Open");
+        GameModePanel.SetActive(true);
+    }
+
+    //public void OpenMultiPanel()
+    //{ 
+
+    //}
 }
