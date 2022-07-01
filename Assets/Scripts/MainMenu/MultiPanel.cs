@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon;
 //using photon;
 
-public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
+public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
     public GameObject StartGameButton;
@@ -20,6 +20,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     SelectGroup typeSelection;
     [SerializeField]
     GameObject LoginPanel;
+    [SerializeField]
+    GameObject WaitPanel;
 
     bool IsconnectedToMaster;
     bool gameReady;
@@ -32,18 +34,22 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     const int beginGame = 25;
     bool roomCreated;
 
-    public override void Close()
+    public void Close()
     {
+        SFXManager.Instance.PlayClip("Close");
         PhotonNetwork.RemoveCallbackTarget(this);
 
         if (PhotonNetwork.IsConnected)
             PhotonNetwork.Disconnect();
 
         IsconnectedToMaster = false;
-        BackButton.SetActive(false);
+
+        WaitPanel.SetActive(false);
+        LoginPanel.SetActive(false);
+
+        MenuManager.Instance.OpenMain();
 
         roomCreated = false;
-        base.Close();
     }
 
     IEnumerator Shuffle()
@@ -55,9 +61,12 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         }
     }
 
-    public override void Open()
+    public void Open()
     {
-        base.Open();
+        MenuManager.Instance.CloseMain();
+        SFXManager.Instance.PlayClip("Select");
+        LoginPanel.SetActive(true);
+
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
 
@@ -145,6 +154,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void JoinOrCreateRoom()
     {
+        SFXManager.Instance.PlayClip("Select");
+
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
 
@@ -178,6 +189,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             null, null, null, roomOptions, null);
 
         LoginPanel.SetActive(false);
+        WaitPanel.SetActive(true);
     }
 
     IEnumerator StartGameIn(int time)

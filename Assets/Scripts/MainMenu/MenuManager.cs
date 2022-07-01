@@ -49,8 +49,13 @@ public class MenuManager : MonoBehaviour
 
     public void StartSingleGame()
     {
-        GameManager.Instance.GameType = GameType.Single;
-        SceneManager.LoadScene(2);
+        SFXManager.Instance.PlayClip("Select");
+
+        FadeScreen.Instance.FadeIn(2, () => 
+        {
+            GameManager.Instance.GameType = GameType.Single;
+            SceneManager.LoadScene(2);
+        });
     }
 
     public void ShowEditorPanel()
@@ -83,6 +88,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenSettings()
     {
+        MainUI.SetActive(false);
         SettingsPanel.Open();
     }
 
@@ -106,12 +112,25 @@ public class MenuManager : MonoBehaviour
 
     public void OpenGameMode()
     {
+        MainUI.SetActive(false);
         SFXManager.Instance.PlayClip("Open");
         GameModePanel.SetActive(true);
     }
 
-    //public void OpenMultiPanel()
-    //{ 
+    public void CloseGameMode()
+    {
+        MainUI.SetActive(true);
+        SFXManager.Instance.PlayClip("Close");
+        GameModePanel.SetActive(false);
+    }
 
-    //}
+    public void OpenMain()
+    {
+        MainUI.SetActive(true);
+    }
+
+    public void CloseMain()
+    {
+        MainUI.SetActive(false);
+    }
 }

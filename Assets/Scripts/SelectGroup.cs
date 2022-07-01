@@ -25,6 +25,8 @@ public class SelectGroup : MonoBehaviour
 
     public void Select(int index)
     {
+        SFXManager.Instance.PlayClip("Tab");
+
         if (saveSelection)
             PlayerPrefs.SetInt(GroupID, index);
 

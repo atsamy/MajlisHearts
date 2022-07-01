@@ -6,9 +6,12 @@ using UnityEngine.UI;
 
 public class ChatPanel : MonoBehaviour
 {
-    public InputField inputField;
-    public GameObject TextPrefab;
-    public Transform Content;
+    [SerializeField]
+    InputField inputField;
+    [SerializeField]
+    GameObject messagePrefab;
+    [SerializeField]
+    Transform Content;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +20,11 @@ public class ChatPanel : MonoBehaviour
 
     private void ChatManager_OnGotMessage(string sender, string message)
     {
-        Text text = Instantiate(TextPrefab, Content).GetComponent<Text>();
+        if (Content.childCount == 5)
+        {
+            Destroy(Content.GetChild(0));
+        }
+        Text text = Instantiate(messagePrefab, Content).GetComponent<Text>();
         text.text = ArabicFixer.Fix("<color=green>" + sender + "</color>" + " " + message);
     }
 

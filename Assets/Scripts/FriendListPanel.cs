@@ -65,6 +65,7 @@ public class FriendListPanel : MonoBehaviour
 
     public void Show()
     {
+        SFXManager.Instance.PlayClip("Select");
         friendListPanel.gameObject.SetActive(true);
     }
 

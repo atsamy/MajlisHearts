@@ -311,4 +311,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             }
         }
     }
+
+    public override void Close()
+    {
+        base.Close();
+        PhotonNetwork.LeaveRoom();
+    }
 }

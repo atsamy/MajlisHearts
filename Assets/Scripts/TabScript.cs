@@ -25,6 +25,6 @@ public class TabScript : MonoBehaviour
         //text.color = TxtColors[value ? 1 : 0];
         button.interactable = !value;
 
-        //SFXManager.Instance.PlayClip("Tab");
+        SFXManager.Instance.PlayClip("Tab");
     }
 }

@@ -76,7 +76,7 @@ public class GameScript : MonoBehaviour
         Deal.SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
-             GameManager.Instance.EquippedItem["CardBack"]);
+             GameManager.Instance.EquippedItem["CardBack"] + "_Icon");
 
         StartGame();
     }
@@ -209,6 +209,7 @@ public class GameScript : MonoBehaviour
 
     public void SetTrickFinished(int winningHand)
     {
+        GameSFXManager.Instance.PlayClipRandom("CardDraw");
         OnTrickFinished?.Invoke(winningHand);
     }
 

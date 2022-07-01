@@ -195,6 +195,7 @@ public class UIManager : MonoBehaviour
 
         int index = CorrectIndex(winningHand);
         cardsUIManager.RemoveCards(index);
+        GameSFXManager.Instance.PlayClipRandom("CardDraw");
     }
 
     public void SetScore()
@@ -245,6 +246,8 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnCardReady(int playerIndex, Card card)
     {
+        GameSFXManager.Instance.PlayClipRandom("Card");
+
         if (playerIndex != game.MainPlayerIndex)
         {
             int index = CorrectIndex(playerIndex);

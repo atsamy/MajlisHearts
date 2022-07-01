@@ -155,7 +155,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             StartCoroutine(WaitForOthers());
 
         SetEnvironment(PhotonNetwork.CurrentRoom.CustomProperties["TableTop"].ToString(),
-            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"].ToString());
+            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"].ToString() + "_Icon");
     }
 
     private void MainPlayerTurn(DealInfo info)
