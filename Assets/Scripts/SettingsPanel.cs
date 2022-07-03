@@ -7,9 +7,9 @@ public class SettingsPanel : MenuScene
 {
     [SerializeField]
     Image notification;
-    [SerializeField]
-    Color offColor;
 
+    [SerializeField]
+    Sprite[] notificationSprites;
     public void SetLanguage(string language)
     {
         LanguageManager.Instance.SetLanguage(language);
@@ -28,10 +28,11 @@ public class SettingsPanel : MenuScene
     {
         SFXManager.Instance.PlayClip("Toggle");
 
-        bool isOn = (PlayerPrefs.GetInt("Notification", 1) != 1);
+        int isOn = PlayerPrefs.GetInt("Notification", 1);
+        isOn = Mathf.Abs(isOn - 1);
 
-        PlayerPrefs.SetInt("Notification", isOn ? 1 : 0);
+        PlayerPrefs.SetInt("Notification", isOn);
 
-        notification.color = isOn ? Color.white : offColor;
+        notification.sprite = notificationSprites[isOn];
     }
 }

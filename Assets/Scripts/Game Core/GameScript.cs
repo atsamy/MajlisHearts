@@ -38,6 +38,7 @@ public class GameScript : MonoBehaviour
 
     [HideInInspector]
     public int MainPlayerIndex = 0;
+    public Player MyPlayer => Players[MainPlayerIndex]; 
 
     private void Awake()
     {
@@ -87,17 +88,14 @@ public class GameScript : MonoBehaviour
             Resources.Load<Sprite>("CardBack/" + cardBack));
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     private void OnDisable()
     {
-        //myPlayer.OnPlayerTurn -= MainPlayerTurn;
-        //Deal.OnEvent -= Deal_OnEvent;
 
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    Players[i].OnPassCardsReady -= GameScript_OnPassCardsReady;
-        //    Players[i].OnCardReady -= GameScript_OnCardReady;
-        //    Players[i].OnDoubleCard -= GameScript_OnDoubleCard;
-        //}
     }
 
     private void MainPlayerTurn(DealInfo info)
@@ -279,6 +277,4 @@ public class GameScript : MonoBehaviour
     {
         Deal.StartDeal();
     }
-
-    GameState GameState;
 }

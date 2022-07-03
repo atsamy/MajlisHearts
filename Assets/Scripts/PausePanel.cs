@@ -14,11 +14,17 @@ public class PausePanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         Time.timeScale = 1;
+        GameSFXManager.Instance.PlayClip("Click");
     }
 
     public void BackToMajlis()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(1);
+        FadeScreen.Instance.FadeIn(2, () => 
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(1);
+        });
+        
+        GameSFXManager.Instance.PlayClip("Click");
     }
 }

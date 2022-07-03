@@ -84,5 +84,6 @@ public class DealResult : MonoBehaviour
     {
         PanelClosed?.Invoke();
         gameObject.SetActive(false);
+        GameSFXManager.Instance.PlayClip("Click");
     }
 }

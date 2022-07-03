@@ -10,24 +10,37 @@ public class SoundToggles : MonoBehaviour
     [SerializeField]
     Image musicButton;
 
-    [SerializeField]
-    Color offColor;
+    SFXManager manager;
 
-    private void Awake()
+    [SerializeField]
+    Sprite[] sfxSprites;
+    [SerializeField]
+    Sprite[] musicSprites;
+
+    private void Start()
     {
-        sfxButton.color = SFXManager.Instance.SFXState == 0 ? offColor : Color.white;
-        musicButton.color = SFXManager.Instance.SFXState == 0 ? offColor : Color.white;
+        if (SFXManager.Instance == null)
+        {
+            manager = GameSFXManager.Instance;
+        }
+        else
+        {
+            manager = SFXManager.Instance;
+        }
+
+        sfxButton.sprite = sfxSprites[manager.SFXState];
+        musicButton.sprite = musicSprites[manager.MusicState];
     }
 
     public void ToggleSfx()
     {
-        sfxButton.color = SFXManager.Instance.ToggleSFX() ? offColor : Color.white;
-        SFXManager.Instance.PlayClip("Toggle");
+        sfxButton.sprite = sfxSprites[manager.ToggleSFX()];
+        manager.PlayClip("Toggle");
     }
 
     public void ToggleMusic()
     {
-        SFXManager.Instance.PlayClip("Toggle");
-        musicButton.color = SFXManager.Instance.ToggleMusic() ? offColor : Color.white;
+        manager.PlayClip("Toggle");
+        musicButton.sprite = musicSprites[manager.ToggleMusic()];
     }
 }

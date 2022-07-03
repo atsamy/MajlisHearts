@@ -13,7 +13,6 @@ public class EditorUI : MonoBehaviour
     Camera myCamera;
 
     string selectedID;
-    GameObject initItem;
     EditableItem selectedItem;
     public CategoryPanel CategoryPanel;
     CameraHover cameraHover;
@@ -55,10 +54,6 @@ public class EditorUI : MonoBehaviour
     private void CategoryPanel_OnConfirm()
     {
         selectedItem.SelectedID = selectedID;
-        selectedItem.Model = initItem;
-        initItem = null;
-
-        //EditButtonsParent.gameObject.SetActive(true);
         cameraHover.GoBack();
     }
 
@@ -68,24 +63,14 @@ public class EditorUI : MonoBehaviour
             return;
 
         CategoryPanel.gameObject.SetActive(false);
-        selectedItem.Model.SetActive(true);
-        Destroy(initItem);
-
-        //EditButtonsParent.gameObject.SetActive(true);
+        selectedItem.ResetToOriginal();
         cameraHover.GoBack();
     }
 
     private void CategoryPanel_OnItemSelected(string ID,GameObject obj)
     {
-        selectedItem.Model.SetActive(false);
+        selectedItem.ChangeItem(ID);
         selectedID = ID;
-
-        if (initItem != null)
-        {
-            Destroy(initItem);
-        }
-
-        initItem = Instantiate(obj, selectedItem.Model.transform.position, selectedItem.Model.transform.rotation);
     }
 
     // Update is called once per frame
@@ -97,8 +82,9 @@ public class EditorUI : MonoBehaviour
     //    //}
     //}
 
-    public void ShowItems(string item)
+    public void ShowItems(string item,float itemPosition)
     {
-        CategoryPanel.Show(item);
+        MenuManager.Instance.CloseMain();
+        CategoryPanel.Show(item, itemPosition);
     }
 }

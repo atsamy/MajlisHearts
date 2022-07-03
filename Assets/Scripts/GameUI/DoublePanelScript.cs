@@ -36,5 +36,7 @@ public class DoublePanelScript : MonoBehaviour
 
         if (!TenPanel.activeSelf && !QueenPanel.activeSelf)
             gameObject.SetActive(false);
+
+        GameSFXManager.Instance.PlayClip(value ? "Double" : "No");
     }
 }

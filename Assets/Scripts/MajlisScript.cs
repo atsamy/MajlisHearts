@@ -33,10 +33,10 @@ public class MajlisScript : MonoBehaviour
 
                 GameObject obj = Instantiate(catalogueItem.GetModel(), item.transform);
 
-                Destroy(item.Model);
+                //Destroy(item.Model);
 
                 item.SelectedID = id;
-                item.Model = obj;
+                //item.Model = obj;
                 obj.transform.localPosition = Vector3.zero;
             }
             else

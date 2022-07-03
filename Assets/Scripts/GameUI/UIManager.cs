@@ -63,6 +63,8 @@ public class UIManager : MonoBehaviour
 
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
+
+        FadeScreen.Instance.FadeOut(2);
     }
 
     private void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
@@ -83,6 +85,7 @@ public class UIManager : MonoBehaviour
     public void PauseGame()
     {
         pausePanel.Show();
+        GameSFXManager.Instance.PlayClip("Click");
     }
 
     internal void SetDoubleCard(Card card, bool value)
@@ -120,6 +123,8 @@ public class UIManager : MonoBehaviour
 
             return;
         }
+        if (game.MyPlayer.Score < 6)
+            GameSFXManager.Instance.PlayClip("Win");
 
         if (hostPlayer)
         {
@@ -181,6 +186,7 @@ public class UIManager : MonoBehaviour
 
     internal bool AddCard(CardUI card)
     {
+        GameSFXManager.Instance.PlayClipRandom("Card");
         return passCardsPanel.AddCard(card);
     }
 
@@ -222,6 +228,7 @@ public class UIManager : MonoBehaviour
 
     internal void RemoveCard(CardUI cardUI)
     {
+        GameSFXManager.Instance.PlayClipRandom("Card");
         passCardsPanel.RemoveCard(cardUI);
     }
 

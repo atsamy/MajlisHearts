@@ -61,7 +61,7 @@ public class PassCardsPanel : MonoBehaviour
     public void SwapPressed()
     {
         gameObject.SetActive(false);
-
+        GameSFXManager.Instance.PlayClip("Swap");
 
         foreach (var item in cardsObject)
         {

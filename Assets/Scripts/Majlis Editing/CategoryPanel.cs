@@ -10,7 +10,7 @@ public class CategoryPanel : MonoBehaviour
 
     public Transform GridPanel;
 
-    public delegate void ItemSelected(string ID,GameObject Model);
+    public delegate void ItemSelected(string ID, GameObject Model);
     public ItemSelected OnItemSelected;
 
     CatalogueItem selectedItem;
@@ -18,6 +18,8 @@ public class CategoryPanel : MonoBehaviour
     //int selectedIndex = 0;
     string selectedID;
 
+    [SerializeField]
+    RectTransform panel;
     //int currentIndex = 0;
 
     public Button BuyButton;
@@ -28,7 +30,7 @@ public class CategoryPanel : MonoBehaviour
     public TextMeshProUGUI BuyText;
 
     bool purchasable;
-    public void Show(string categoryName)
+    public void Show(string categoryName, float itemPosition)
     {
         List<CatalogueItem> category = GameManager.Instance.Catalog[categoryName];
 
@@ -38,6 +40,7 @@ public class CategoryPanel : MonoBehaviour
         gameObject.SetActive(true);
         selectedCategory = categoryName;
         //selectedID = editableItem.SelectedID;
+        panel.anchoredPosition = new Vector2(Mathf.Abs(panel.anchoredPosition.x) * (itemPosition > 0.5 ? -1 : 1), panel.anchoredPosition.y);
 
         foreach (Transform item in GridPanel)
         {
@@ -59,7 +62,7 @@ public class CategoryPanel : MonoBehaviour
 
     public void MajlisItem_Pressed(CatalogueItem item)
     {
-        OnItemSelected?.Invoke(item.ID,item.GetModel());
+        OnItemSelected?.Invoke(item.ID, item.GetModel());
 
         if (item.Level > GameManager.Instance.MyPlayer.Level)
         {
