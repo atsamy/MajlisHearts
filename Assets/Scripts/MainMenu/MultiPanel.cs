@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon;
 //using photon;
 
-public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
+public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
     public GameObject StartGameButton;
@@ -22,6 +22,10 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
     GameObject LoginPanel;
     [SerializeField]
     GameObject WaitPanel;
+    [SerializeField]
+    Transform playersContent;
+    [SerializeField]
+    GameObject playerEntry;
 
     bool IsconnectedToMaster;
     bool gameReady;
@@ -176,16 +180,11 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
         };
 
         roomOptions.CustomRoomPropertiesForLobby = new string[]
-         {
-             "bet",
-             "type"
-         };
+        {
+             "bet","type"
+        };
 
-        //RoomOptions roomOptions = new RoomOptions();
-        //roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
-        //roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
-
-        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom, 
+        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom,
             null, null, null, roomOptions, null);
 
         LoginPanel.SetActive(false);
