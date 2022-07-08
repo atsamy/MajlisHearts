@@ -28,7 +28,7 @@ public class GameScript : MonoBehaviour
     public delegate void SetPlayEnvironment(Sprite tableTop, Sprite cardBack);
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
-    private const int Seconds = 1;
+    private const int Seconds = 10;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;

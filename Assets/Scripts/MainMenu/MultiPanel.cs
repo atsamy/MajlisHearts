@@ -11,8 +11,8 @@ using ExitGames.Client.Photon;
 public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
-    public GameObject StartGameButton;
-    public Button JoinRoomButton;
+    //public GameObject StartGameButton;
+    //public Button JoinRoomButton;
 
     [SerializeField]
     SelectGroup betSelection;
@@ -26,6 +26,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     Transform playersContent;
     [SerializeField]
     GameObject playerEntry;
+    [SerializeField]
+    GameObject footer;
 
     bool IsconnectedToMaster;
     bool gameReady;
@@ -54,6 +56,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         MenuManager.Instance.OpenMain();
 
         roomCreated = false;
+        readyToJoin = false;
     }
 
     IEnumerator Shuffle()
@@ -94,7 +97,12 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         {
             print("is connected");
             IsconnectedToMaster = true;
-            JoinRoomButton.interactable = true;
+
+            if (readyToJoin)
+            {
+                JoinOrCreateRoom();
+            }
+            //JoinRoomButton.interactable = true;
         }
     }
 
@@ -142,6 +150,13 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     public void OnJoinedRoom()
     {
         Debug.Log("joined room");
+
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+            entry.Set(PhotonNetwork.PlayerList[i].NickName, PhotonNetwork.PlayerList[i].NickName, PhotonNetwork.PlayerList[i].IsLocal, PhotonNetwork.PlayerList[i].IsMasterClient);
+        }
     }
 
     public void OnConnectedToMaster()
@@ -152,8 +167,29 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             print("Connected to Master");
 
             IsconnectedToMaster = true;
-            JoinRoomButton.interactable = true;
+
+            if (readyToJoin)
+            {
+                JoinOrCreateRoom();
+            }
+            //JoinRoomButton.interactable = true;
         }
+    }
+
+    bool readyToJoin;
+
+    public void ReadyToJoin()
+    {
+        if (IsconnectedToMaster)
+        {
+            JoinOrCreateRoom();
+            return;
+        }
+
+        LoginPanel.SetActive(false);
+        WaitPanel.SetActive(true);
+
+        readyToJoin = true;
     }
 
     public void JoinOrCreateRoom()
@@ -186,9 +222,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom,
             null, null, null, roomOptions, null);
-
-        LoginPanel.SetActive(false);
-        WaitPanel.SetActive(true);
     }
 
     IEnumerator StartGameIn(int time)
@@ -212,10 +245,13 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            StartGameButton.SetActive(true);
+            footer.SetActive(true);
         }
 
         InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
+
+        Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        entry.Set("",newPlayer.NickName,false,false);
     }
 
     private void StartGame()
@@ -235,7 +271,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-
+        //remove player
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
@@ -271,15 +307,9 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
             GameManager.Instance.EquippedItem["CardBack"];
-        //InfoText.text = ("Created Room");
 
-        //if (mode == GameMode.CreateRoom)
-        //{
-        //    InfoText.text = PhotonNetwork.CurrentRoom.Name;
-        //    roomCreated = true;
-        //}
-
-        //StartCoroutine(TimeOut());
+        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        //entry.Set(GameManager.Instance.MyPlayer.Avatar, GameManager.Instance.MyPlayer.Name, true, true);
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
