@@ -267,6 +267,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
+
+        FadeScreen.Instance.FadeIn(2,null);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
