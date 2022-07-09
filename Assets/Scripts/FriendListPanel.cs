@@ -21,8 +21,6 @@ public class FriendListPanel : MonoBehaviour
     Text friendName;
     [SerializeField]
     ChoosePopup selectTypePopup;
-    //[SerializeField]
-    //Button inviteButton;
 
     string[] ids;
 
@@ -33,6 +31,11 @@ public class FriendListPanel : MonoBehaviour
         ChatManager.OnPlayerStatusUpdate += ChatManager_OnPlayerStatusUpdate;
         friendsList = new Dictionary<string, FriendListItem>();
 
+        AddAllFriends();
+    }
+
+    private void AddAllFriends()
+    {
         PlayfabManager.instance.GetFriends((friends) =>
         {
             ids = new string[friends.Count];
@@ -48,6 +51,15 @@ public class FriendListPanel : MonoBehaviour
 
             ChatManager.Instance.AddFriends(ids);
         });
+    }
+
+    public void RemoveAllFriends()
+    {
+        friendsList.Clear();
+        for (int i = 0; i < content.childCount; i++)
+        {
+            Destroy(content.GetChild(i).gameObject);
+        }
     }
 
     private void ChatManager_OnPlayerStatusUpdate(string user, int status)
@@ -85,7 +97,11 @@ public class FriendListPanel : MonoBehaviour
         {
             if (success)
             {
+                friendName.text = "";
                 CloseAddPanel();
+                //add friend
+                RemoveAllFriends();
+                AddAllFriends();
             }
             else
             {

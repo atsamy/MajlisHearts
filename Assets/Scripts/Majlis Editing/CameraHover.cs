@@ -11,13 +11,10 @@ public class CameraHover : MonoBehaviour
 
     Vector3 originalPosition;
     Quaternion originalRotation;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
+    [SerializeField]
+    float hoverSpeed = 5;
 
-    // Update is called once per frame
     void Update()
     {
         if (locked)
@@ -33,7 +30,7 @@ public class CameraHover : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, Input.mousePosition.y - startPosition.y, 0);
-            transform.position += mousePosition.normalized * Time.deltaTime * 5;
+            transform.position += mousePosition.normalized * Time.deltaTime * hoverSpeed;
         }
     }
 

@@ -100,7 +100,7 @@ public class MenuManager : MonoBehaviour
 
     internal void ShowInvitePopup(string sender, string message)
     {
-        InvitePopup.ShowWithMessage(sender + " Invited You To Join in His Majlis", () =>
+        InvitePopup.ShowWithMessage( "<color=green>" + sender + "</color> Invited You To Join in His Majlis", () =>
          {
              string[] inviteOptions = message.Split(':');
 

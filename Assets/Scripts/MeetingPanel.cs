@@ -234,8 +234,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         Debug.Log("Joined private room successfully");
 
-        List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
-        MajlisScript.Instance.SetItems(customization);
+        //apply new customization
+        //List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
+        //MajlisScript.Instance.SetItems(customization);
 
         foreach (var item in PhotonNetwork.PlayerList)
         {
