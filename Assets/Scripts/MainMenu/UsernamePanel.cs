@@ -8,6 +8,8 @@ public class UsernamePanel : MonoBehaviour
 {
     public InputField NameInput;
     Action<string> onSubmit;
+    [SerializeField]
+    GameObject error;
     // Start is called before the first frame update
     public void Show(Action<string> OnSubmit)
     {
@@ -20,9 +22,24 @@ public class UsernamePanel : MonoBehaviour
         if (string.IsNullOrEmpty(NameInput.text))
             return;
 
-        onSubmit?.Invoke(NameInput.text);
-        PlayerPrefs.SetString("userName", NameInput.text);
 
-        gameObject.SetActive(false);
+        PlayfabManager.instance.SetDisplayName(NameInput.text, (result) =>
+         {
+             if (result)
+             {
+                 onSubmit?.Invoke(NameInput.text);
+                 gameObject.SetActive(false);
+             }
+             else
+             {
+                 error.SetActive(false);
+             }
+         });
+    }
+
+    public void Close()
+    {
+        SFXManager.Instance.PlayClip("Close");
+        error.SetActive(false);
     }
 }

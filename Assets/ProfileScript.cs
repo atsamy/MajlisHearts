@@ -12,6 +12,12 @@ public class ProfileScript : MenuScene
     TextMeshProUGUI score;
     [SerializeField]
     Image levelFill;
+    [SerializeField]
+    UsernamePanel changeUserName;
+    [SerializeField]
+    TextMeshProUGUI headerUserName;
+
+
 
     private void Start()
     {
@@ -27,6 +33,11 @@ public class ProfileScript : MenuScene
 
     public void EditName()
     {
-        
+        changeUserName.Show((name)=>
+        {
+            headerUserName.text = name;
+            playerName.text = name;
+            GameManager.Instance.MyPlayer.Name = name;
+        });
     }
 }

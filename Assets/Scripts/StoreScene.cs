@@ -13,10 +13,10 @@ public class StoreScene : MenuScene
     
     void Start()
     {
-        for (int i = 0; i < Tabs.Length; i++)
-        {
-            Tabs[i].Pressed(i == 0);
-        }
+        //for (int i = 0; i < Tabs.Length; i++)
+        //{
+        //    Tabs[i].Pressed(i == 0);
+        //}
     }
 
     public void Open(int index)
