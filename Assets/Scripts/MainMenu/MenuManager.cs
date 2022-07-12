@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ArabicSupport;
 using TMPro;
+using System;
 
 public class MenuManager : MonoBehaviour
 {
@@ -17,9 +18,16 @@ public class MenuManager : MonoBehaviour
     public GameObject MainUI;
     public AvatarPanel AvatarPanel;
     public SettingsPanel SettingsPanel;
+    public StoreScene StoreScene;
 
     public MeetingPanel meetingPanel;
     public Popup InvitePopup;
+
+    internal void OpenStore(int index)
+    {
+        StoreScene.Open(index);
+    }
+
     public Image Avatar;
 
     public Popup Popup;

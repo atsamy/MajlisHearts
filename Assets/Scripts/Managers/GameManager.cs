@@ -111,6 +111,7 @@ public class PlayerInfo
     public string Name;
     public string Avatar;
     public int Level;
+    public int Score;
 }
 
 [System.Serializable]

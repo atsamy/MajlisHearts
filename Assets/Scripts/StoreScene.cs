@@ -19,6 +19,12 @@ public class StoreScene : MenuScene
         }
     }
 
+    public void Open(int index)
+    {
+        Open();
+        TabPressed(index);
+    }
+
     public override void Open()
     {
         base.Open();
