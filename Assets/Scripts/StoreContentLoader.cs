@@ -15,6 +15,11 @@ public class StoreContentLoader : MonoBehaviour
     List<ContentStoreItem> initContent;
     Dictionary<string, ContentStoreItem> equippedCatalogueItem;
 
+    [SerializeField]
+    bool isIcon;
+    [SerializeField]
+    string path;
+
     void Start()
     {
         equippedCatalogueItem = new Dictionary<string, ContentStoreItem>();
@@ -39,34 +44,34 @@ public class StoreContentLoader : MonoBehaviour
             if (equipped)
                 equippedCatalogueItem.Add(category, storeItem);
 
-            storeItem.Set(catalogueItems[i].Price, catalogueItems[i].Name, Resources.Load<Sprite>(category + "/" + catalogueItems[i].ID + "_Icon"), i, owned, equipped, (index) =>
-            {
-                print(catalogueItems[index].Price);
+            storeItem.Set(catalogueItems[i].Price, catalogueItems[i].Name, Resources.Load<Sprite>(path + "/" + catalogueItems[i].ID + (isIcon ? "_Icon" : "")), i, owned, equipped, (index) =>
+               {
+                   print(catalogueItems[index].Price);
 
-                if (catalogueItems[index].Price > GameManager.Instance.Currency)
-                {
-                    MenuManager.Instance.Popup.ShowWithMessage("you dont have enough money, buy more coins?", () =>
-                    {
-                        transform.GetComponentInParent<StoreScene>().TabPressed(0);
-                    });
-                    return;
-                }
-                MenuManager.Instance.Popup.ShowWithMessage("are you sure you want to buy this item", () =>
-                {
-                    SFXManager.Instance.PlayClip("Buy");
+                   if (catalogueItems[index].Price > GameManager.Instance.Currency)
+                   {
+                       MenuManager.Instance.Popup.ShowWithMessage("you dont have enough money, buy more coins?", () =>
+                       {
+                           transform.GetComponentInParent<StoreScene>().TabPressed(0);
+                       });
+                       return;
+                   }
+                   MenuManager.Instance.Popup.ShowWithMessage("are you sure you want to buy this item", () =>
+                   {
+                       SFXManager.Instance.PlayClip("Buy");
 
-                    PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
-                    GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
+                       PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
+                       GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
                     //SetContentButtons();
                     GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
-                    EquibNewItem(category, storeItem, catalogueItems[index].ID);
-                });
+                       EquibNewItem(category, storeItem, catalogueItems[index].ID);
+                   });
 
-            }, (index) =>
-            {
-                SFXManager.Instance.PlayClip("Equip");
-                EquibNewItem(category, storeItem, catalogueItems[index].ID);
-            });
+               }, (index) =>
+               {
+                   SFXManager.Instance.PlayClip("Equip");
+                   EquibNewItem(category, storeItem, catalogueItems[index].ID);
+               });
 
             //if (!equipped && !owned)
             //    storeItem.SetButton(GameManager.Instance.Currency >= catalogueItems[i].Price);

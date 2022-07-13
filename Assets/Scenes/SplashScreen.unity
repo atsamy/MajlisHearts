@@ -1354,6 +1354,7 @@ GameObject:
   - component: {fileID: 1140238098}
   - component: {fileID: 1140238101}
   - component: {fileID: 1140238102}
+  - component: {fileID: 1140238103}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1394,7 +1395,7 @@ MonoBehaviour:
   MyPlayer:
     Name: 
     Avatar: 0
-    Level: 0
+    Score: 0
 --- !u!4 &1140238100
 Transform:
   m_ObjectHideFlags: 0
@@ -1450,6 +1451,19 @@ MonoBehaviour:
   - 5
   - 6
   HCAmount: 0a0000000a0000000a0000000a0000000a0000000a000000
+--- !u!114 &1140238103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140238097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 400629fc319dac247bc41d4cb6c2eb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAvatar: {fileID: 0}
 --- !u!1 &1238977186
 GameObject:
   m_ObjectHideFlags: 0
@@ -2226,6 +2240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameInput: {fileID: 189129690}
+  error: {fileID: 0}
 --- !u!224 &2008667464
 RectTransform:
   m_ObjectHideFlags: 0

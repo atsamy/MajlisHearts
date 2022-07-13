@@ -64,7 +64,7 @@ public class CategoryPanel : MonoBehaviour
     {
         OnItemSelected?.Invoke(item.ID, item.GetModel());
 
-        if (item.Level > GameManager.Instance.MyPlayer.Level)
+        if (item.Level > GameManager.Instance.MyPlayer.GetLevel())
         {
             BuyText.text = "Unlock at Level " + item.Level;
             BuyButton.interactable = false;

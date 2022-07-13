@@ -20,7 +20,7 @@ public class CatalogueItem
     {
         ID = item.ItemId;
         Price = (int)item.VirtualCurrencyPrices["SC"];
-        Level = int.Parse(item.CustomData);
+        int.TryParse(item.CustomData,out Level);
         ItemClass = item.ItemClass;
 
         Name = item.Description;

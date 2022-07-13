@@ -40,7 +40,7 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         Currency.text = (GameManager.Instance.Currency.ToString());
-        Level.text = GameManager.Instance.MyPlayer.Level.ToString();
+        Level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
         UserName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
 
         GameManager.Instance.OnCurrencyChanged += Instance_OnCurrencyChanged;
@@ -51,7 +51,8 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            Avatar.sprite = Resources.Load<Sprite>("Avatar/Face/" + GameManager.Instance.MyPlayer.Avatar);
+            AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
+            Avatar.sprite = AvatarManager.Instance.playerAvatar;
         }
     }
 

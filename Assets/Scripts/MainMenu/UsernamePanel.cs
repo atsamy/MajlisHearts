@@ -22,6 +22,7 @@ public class UsernamePanel : MonoBehaviour
         if (string.IsNullOrEmpty(NameInput.text))
             return;
 
+        SFXManager.Instance.PlayClip("OK");
 
         PlayfabManager.instance.SetDisplayName(NameInput.text, (result) =>
          {
@@ -41,5 +42,6 @@ public class UsernamePanel : MonoBehaviour
     {
         SFXManager.Instance.PlayClip("Close");
         error.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

@@ -13,6 +13,8 @@ public class ProfileScript : MenuScene
     [SerializeField]
     Image levelFill;
     [SerializeField]
+    TextMeshProUGUI level;
+    [SerializeField]
     UsernamePanel changeUserName;
     [SerializeField]
     TextMeshProUGUI headerUserName;
@@ -23,16 +25,21 @@ public class ProfileScript : MenuScene
     {
         playerName.text = GameManager.Instance.MyPlayer.Name;
         score.text = GameManager.Instance.MyPlayer.Score.ToString();
+        levelFill.fillAmount = GameManager.Instance.MyPlayer.LevelProgress();
+        level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
     }
 
     public void OpenStore(int index)
     {
         Close();
         MenuManager.Instance.OpenStore(index);
+        //SFXManager.Instance.PlayClip("Click");
     }
 
     public void EditName()
     {
+        SFXManager.Instance.PlayClip("Click");
+
         changeUserName.Show((name)=>
         {
             headerUserName.text = name;

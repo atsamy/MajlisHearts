@@ -77,7 +77,7 @@ public class GameScript : MonoBehaviour
         Deal.SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
-             GameManager.Instance.EquippedItem["CardBack"] + "_Icon");
+             GameManager.Instance.EquippedItem["CardBack"]);
 
         StartGame();
     }
