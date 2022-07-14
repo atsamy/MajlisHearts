@@ -51,9 +51,14 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
-            Avatar.sprite = AvatarManager.Instance.playerAvatar;
+            SetAvatar();
         }
+    }
+
+    public void SetAvatar()
+    {
+        AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
+        Avatar.sprite = AvatarManager.Instance.playerAvatar;
     }
 
     public void StartSingleGame()
@@ -77,8 +82,8 @@ public class MenuManager : MonoBehaviour
     {
         AvatarPanel.Open((index) =>
         {
-            GameManager.Instance.MyPlayer.Avatar = "Avatar" + index;
-            Avatar.sprite = Resources.Load<Sprite>("Avatar/Face/Avatar" + index);
+            GameManager.Instance.SaveAvatar("Avatar" + index);
+            SetAvatar();
         });
     }
 

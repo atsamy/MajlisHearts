@@ -7,16 +7,16 @@ using UnityEngine.UI;
 public class MessageScript : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI name;
+    TextMeshProUGUI playerName;
     [SerializeField]
     Text message;
     [SerializeField]
     Image avatar;
 
-    public void Set(string name,string message,string avatar)
+    public void Set(string name,string message)
     {
-        this.name.text = name;
+        playerName.text = name;
         this.message.text = message;
-        //implement avatar manager
+        this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
     }
 }

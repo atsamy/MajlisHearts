@@ -7,26 +7,40 @@ public class AvatarManager : MonoBehaviour
     [HideInInspector]
     public Sprite playerAvatar;
 
-    public static AvatarManager Instance;
+    public Sprite RobotAvatar;
 
+    public static AvatarManager Instance;
+    Dictionary<string, Sprite> savedPlayers;
     private void Awake()
     {
         Instance = this;
+        savedPlayers = new Dictionary<string, Sprite>();
     }
 
     public void SetPlayerAvatar(string name)
     {
-        playerAvatar = Resources.Load<Sprite>("Avatar/Face/" + name);
+        playerAvatar = Resources.Load<Sprite>("Avatar/" + name);
     }
 
     public Sprite GetAvatarSprite(string name)
     {
-        return Resources.Load<Sprite>("Avatar/Face" + name);
+        return Resources.Load<Sprite>("Avatar/" + name);
     }
 
-    public Sprite GetAvatarBodySprite(string name)
+    public void SetPlayerAvatar(string name,string avatar)
     {
-        return Resources.Load<Sprite>("Avatar/Body" + name);
+        if (savedPlayers.ContainsKey(name))
+            return;
+
+        Sprite sprite = Resources.Load<Sprite>("Avatar/" + avatar);
+        savedPlayers.Add(name, sprite);
     }
 
+    public Sprite GetPlayerAvatar(string name)
+    {
+        if (name == GameManager.Instance.MyPlayer.Name)
+            return playerAvatar;
+
+        return savedPlayers[name];
+    }
 }

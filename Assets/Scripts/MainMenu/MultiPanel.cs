@@ -77,16 +77,18 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
 
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            {
+                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
+            });
+
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             print("not connected");
 
             AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
-            {
-                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
-            });
+
 
             PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
             PhotonNetwork.AuthValues = auth;
@@ -154,9 +156,16 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
         {
-            Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-            entry.Set(PhotonNetwork.PlayerList[i].NickName, PhotonNetwork.PlayerList[i].NickName, PhotonNetwork.PlayerList[i].IsLocal, PhotonNetwork.PlayerList[i].IsMasterClient);
+            CreateNewPlayer(PhotonNetwork.PlayerList[i]);
         }
+    }
+
+    private void CreateNewPlayer(Photon.Realtime.Player player)
+    {
+        if (!player.IsLocal)
+            AvatarManager.Instance.SetPlayerAvatar(player.NickName, player.CustomProperties["avatar"].ToString());
+        Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        entry.Set(player.NickName, player.IsLocal, player.IsMasterClient);
     }
 
     public void OnConnectedToMaster()
@@ -180,16 +189,17 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void ReadyToJoin()
     {
-        if (IsconnectedToMaster)
-        {
-            JoinOrCreateRoom();
-            return;
-        }
-
         LoginPanel.SetActive(false);
         WaitPanel.SetActive(true);
 
-        readyToJoin = true;
+        if (IsconnectedToMaster)
+        {
+            JoinOrCreateRoom();
+        }
+        else
+        {
+            readyToJoin = true;
+        }
     }
 
     public void JoinOrCreateRoom()
@@ -250,8 +260,9 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
 
-        Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-        entry.Set("",newPlayer.NickName,false,false);
+        CreateNewPlayer(newPlayer);
+        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        //entry.Set(newPlayer.NickName, false, false);
     }
 
     private void StartGame()
@@ -268,7 +279,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
 
-        FadeScreen.Instance.FadeIn(2,null);
+        FadeScreen.Instance.FadeIn(2, null);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)

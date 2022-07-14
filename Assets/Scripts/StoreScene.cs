@@ -10,13 +10,22 @@ public class StoreScene : MenuScene
     public int[] SCValues;
     
     public GameObject Loading;
-    
+
+    [SerializeField]
+    StoreContentLoader avatarContent;
+
     void Start()
     {
         //for (int i = 0; i < Tabs.Length; i++)
         //{
         //    Tabs[i].Pressed(i == 0);
         //}
+
+        avatarContent.itemEquipped += (item) =>
+        {
+            GameManager.Instance.SaveAvatar(item);
+            MenuManager.Instance.SetAvatar();
+        };
     }
 
     public void Open(int index)

@@ -27,6 +27,7 @@ public class FriendListItem : MonoBehaviour
     public void Set(string name)
     {
         playerName.text = name;
+        this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
     }
 
     public void SetOnline()

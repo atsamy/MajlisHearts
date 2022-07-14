@@ -15,10 +15,10 @@ public class PlayerDetails : MonoBehaviour
     Text levelText;
     [SerializeField]
     GameObject[] DoubleCards;
-    public void SetPlayer(string avatar, string name, int level)
+    public void SetPlayer(Sprite avatar, string name, int level)
     {
-        if (!string.IsNullOrEmpty(avatar))
-            avatarImage.sprite = Resources.Load<Sprite>("Avatar/Face/" + avatar);
+        if (avatar != null)
+            avatarImage.sprite = avatar;
 
         nameText.text = name;
         levelText.text = level.ToString();

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public int Currency;
     [HideInInspector]
     public List<InventoryItem> Inventory;
+
     [HideInInspector]
     public PlayerInfo MyPlayer;
     [HideInInspector]
@@ -82,6 +83,12 @@ public class GameManager : MonoBehaviour
         {
             EquippedItem.Add(itemName, itemID);
         }
+    }
+
+    internal void SaveAvatar(string avatar)
+    {
+        PlayfabManager.instance.SetAvatar(avatar);
+        MyPlayer.Avatar = avatar;
     }
 
     public void SetCustomization(string category, string id)

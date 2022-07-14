@@ -24,7 +24,7 @@ public class ContentStoreItem : StoreItem
         {
             Equiped();
         }
-        else if (owned)
+        else if (owned || cost == 0)
         {
             Owned();
             purchaseAction = equipAction;

@@ -18,6 +18,8 @@ public class ProfileScript : MenuScene
     UsernamePanel changeUserName;
     [SerializeField]
     TextMeshProUGUI headerUserName;
+    [SerializeField]
+    Image avatar;
 
 
 
@@ -27,6 +29,11 @@ public class ProfileScript : MenuScene
         score.text = GameManager.Instance.MyPlayer.Score.ToString();
         levelFill.fillAmount = GameManager.Instance.MyPlayer.LevelProgress();
         level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
+    }
+
+    private void OnEnable()
+    {
+        avatar.sprite = AvatarManager.Instance.playerAvatar;
     }
 
     public void OpenStore(int index)

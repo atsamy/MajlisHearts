@@ -42,6 +42,7 @@ public class FriendListPanel : MonoBehaviour
 
             for (int i = 0; i < friends.Count; i++)
             {
+                AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
                 FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
                 friend.Set(friends[i].TitleDisplayName);
                 ids[i] = friends[i].TitleDisplayName;
@@ -117,7 +118,7 @@ public class FriendListPanel : MonoBehaviour
 
     public void OnDisconnected()
     {
-        
+
     }
     public void SendInvite()
     {

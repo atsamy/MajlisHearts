@@ -25,12 +25,10 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     Sprite[] avatarFrames;
 
-    public void Set(string name,string avatar)
+    public void Set(string name,Sprite avatar)
     {
-        print("avatar: " + avatar);
-
         playerName.text = name;
-        playerAvatar.sprite = Resources.Load<Sprite>("Avatar/Face/" + avatar);
+        playerAvatar.sprite = avatar;
     }
 
     public void SetScore(int score)
