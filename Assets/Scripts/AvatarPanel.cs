@@ -8,14 +8,14 @@ public class AvatarPanel : MonoBehaviour
     Action<int> selected;
     public void SelectAvatar(int index)
     {
-        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
-        {
-            { "Avatar", "Avatar" + index.ToString() }
-        });
+        //PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+        //{
+        //    { "Avatar", "Avatar" + index.ToString() }
+        //});
 
         selected?.Invoke(index);
 
-        GameManager.Instance.MyPlayer.Avatar = "Avatar" + index;
+        //GameManager.Instance.MyPlayer.Avatar = "Avatar" + index;
         gameObject.SetActive(false);
     }
 
