@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
+using TMPro;
 
 public class DealResult : MonoBehaviour
 {
@@ -18,12 +19,12 @@ public class DealResult : MonoBehaviour
     [SerializeField]
     GameObject Footer;
     [SerializeField]
-    Text buttonText;
+    TextMeshProUGUI buttonText;
     protected Action PanelClosed;
 
     public void ShowRound(Player[] players, bool inGame, Action OnPanelClosed)
     {
-        buttonText.text = inGame ? "CLOSE" : "NEXT ROUND";
+        buttonText.text = inGame ? LanguageManager.Instance.GetString("close") : LanguageManager.Instance.GetString("nextround");
 
         bool isTeam = GameManager.Instance.IsTeam;
 

@@ -850,7 +850,7 @@ GameObject:
   - component: {fileID: 702829633}
   - component: {fileID: 702829632}
   m_Layer: 5
-  m_Name: Submit
+  m_Name: submit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1424,12 +1424,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fonts:
-  - name: English
-    font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    TMP_font: {fileID: 0}
-  - name: Arabic
-    font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    TMP_font: {fileID: 0}
+  - language: 0
+    font: {fileID: 12800000, guid: 82586484298cb2e44afe89fc3e6f46a9, type: 3}
+    TMP_font: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  - language: 1
+    font: {fileID: 12800000, guid: 82586484298cb2e44afe89fc3e6f46a9, type: 3}
+    TMP_font: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
   LanguageFile: {fileID: 4900000, guid: 3d41a0c19c72fc44ab7d08b422b61c77, type: 3}
 --- !u!114 &1140238102
 MonoBehaviour:
@@ -1835,7 +1835,7 @@ GameObject:
   - component: {fileID: 1625097549}
   - component: {fileID: 1625097548}
   m_Layer: 5
-  m_Name: Text
+  m_Name: enterusername
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

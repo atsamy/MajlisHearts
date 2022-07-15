@@ -8,10 +8,11 @@ public class LanguageSetter : MonoBehaviour
 {
 
     // Use this for initialization
-    string prevLanguage;
+    Language prevLanguage;
     bool started;
 
     public bool FixLines;
+    public bool TextMeshPro;
 
     void Start()
     {
@@ -21,10 +22,10 @@ public class LanguageSetter : MonoBehaviour
 
     public void SetText()
     {
-        if (GetComponent<Text>())
+        if (!TextMeshPro)
         {
             Text text = GetComponent<Text>();
-            if (FixLines && LanguageManager.Instance.CurrentLanguage == "Arabic")
+            if (FixLines && LanguageManager.Instance.CurrentLanguage == Language.Arabic)
             {
                 ArabicLineFixer.Instance.FixLines(text, LanguageManager.Instance.GetRawString(name));
             }
@@ -34,7 +35,7 @@ public class LanguageSetter : MonoBehaviour
             }
             text.font = LanguageManager.Instance.GetFont();
         }
-        else if (GetComponent<TextMeshProUGUI>())
+        else
         {
             TextMeshProUGUI text = GetComponent<TextMeshProUGUI>();
             text.text = LanguageManager.Instance.GetString(name);
@@ -44,10 +45,6 @@ public class LanguageSetter : MonoBehaviour
         prevLanguage = LanguageManager.Instance.CurrentLanguage;
     }
     // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void OnEnable()
     {

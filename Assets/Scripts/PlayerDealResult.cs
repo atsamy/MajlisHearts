@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using ArabicSupport;
 public class PlayerDealResult : MonoBehaviour
 {
     [SerializeField]
@@ -27,7 +27,7 @@ public class PlayerDealResult : MonoBehaviour
 
     public void Set(string name,Sprite avatar)
     {
-        playerName.text = name;
+        playerName.text = ArabicFixer.Fix(name);
         playerAvatar.sprite = avatar;
     }
 

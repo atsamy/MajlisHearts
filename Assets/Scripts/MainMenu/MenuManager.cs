@@ -9,17 +9,13 @@ public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
 
-    public TextMeshProUGUI Currency;
-    public Text Level;
-    public TextMeshProUGUI UserName;
-
     public GameObject GameModePanel;
     public GameObject EditorPanel;
     public GameObject MainUI;
     public AvatarPanel AvatarPanel;
     public SettingsPanel SettingsPanel;
     public StoreScene StoreScene;
-
+    public HeaderScript Header;
     public MeetingPanel meetingPanel;
     public Popup InvitePopup;
 
@@ -27,8 +23,6 @@ public class MenuManager : MonoBehaviour
     {
         StoreScene.Open(index);
     }
-
-    public Image Avatar;
 
     public Popup Popup;
 
@@ -39,26 +33,23 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        Currency.text = (GameManager.Instance.Currency.ToString());
-        Level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
-        UserName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
-
-        GameManager.Instance.OnCurrencyChanged += Instance_OnCurrencyChanged;
-
         if (string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
         {
             OpenAvatarPanel();
         }
         else
         {
-            SetAvatar();
+            Header.SetAvatar();
         }
     }
 
-    public void SetAvatar()
+    public void OpenAvatarPanel()
     {
-        AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
-        Avatar.sprite = AvatarManager.Instance.playerAvatar;
+        AvatarPanel.Open((index) =>
+        {
+            GameManager.Instance.SaveAvatar("Avatar" + index);
+            Header.SetAvatar();
+        });
     }
 
     public void StartSingleGame()
@@ -78,26 +69,12 @@ public class MenuManager : MonoBehaviour
         MainUI.SetActive(false);
     }
 
-    public void OpenAvatarPanel()
-    {
-        AvatarPanel.Open((index) =>
-        {
-            GameManager.Instance.SaveAvatar("Avatar" + index);
-            SetAvatar();
-        });
-    }
-
     public void BackToMainUI()
     {
         EditorPanel.GetComponent<EditorUI>().CategoryPanel_OnCancel();
 
         EditorPanel.SetActive(false);
         MainUI.SetActive(true);
-    }
-
-    private void Instance_OnCurrencyChanged(int value)
-    {
-        Currency.text = (value.ToString());
     }
 
     public void OpenSettings()
@@ -114,7 +91,7 @@ public class MenuManager : MonoBehaviour
 
     internal void ShowInvitePopup(string sender, string message)
     {
-        InvitePopup.ShowWithMessage( "<color=green>" + sender + "</color> Invited You To Join in His Majlis", () =>
+        InvitePopup.ShowWithMessage( "<color=green>" + ArabicFixer.Fix(sender) + "</color> " + LanguageManager.Instance.GetString("invitationmessage"), () =>
          {
              string[] inviteOptions = message.Split(':');
 
