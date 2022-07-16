@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ArabicSupport;
-using TMPro;
 using System;
 
 public class MenuManager : MonoBehaviour

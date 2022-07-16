@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 using UnityEngine.UI;
 
 public class FriendListItem : MonoBehaviour
@@ -9,11 +9,11 @@ public class FriendListItem : MonoBehaviour
     public Toggle InviteToggle;
 
     [SerializeField]
-    TextMeshProUGUI playerName;
+    Text playerName;
     [SerializeField]
     Image avatar;
     [SerializeField]
-    TextMeshProUGUI statusText;
+    Text statusText;
     [SerializeField]
     Image statusImage;
     [SerializeField]

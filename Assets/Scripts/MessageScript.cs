@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 using UnityEngine.UI;
 using ArabicSupport;
 
 public class MessageScript : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI playerName;
+    Text playerName;
     [SerializeField]
     Text message;
     [SerializeField]

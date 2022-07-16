@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using TMPro;
+
 public class CategoryPanel : MonoBehaviour
 {
     public GameObject ItemButton;
@@ -27,7 +27,7 @@ public class CategoryPanel : MonoBehaviour
     public Action OnCancel;
     public Action OnConfirm;
 
-    public TextMeshProUGUI BuyText;
+    public Text BuyText;
 
     bool purchasable;
     public void Show(string categoryName, float itemPosition)

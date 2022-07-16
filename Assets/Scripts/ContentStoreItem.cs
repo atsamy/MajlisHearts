@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+
 
 public class ContentStoreItem : StoreItem
 {
@@ -11,7 +11,7 @@ public class ContentStoreItem : StoreItem
     public int Price;
 
     [SerializeField]
-    TextMeshProUGUI itemName;
+    Text itemName;
 
     Action<int> equipAction;
     public void Set(int cost,string itemName, Sprite itemSprite, int index,bool owned,bool equipped, Action<int> buyAction, Action<int> equipAction)

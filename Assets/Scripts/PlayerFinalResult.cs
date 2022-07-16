@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 public class PlayerFinalResult : PlayerDealResult
 {
     [SerializeField]
-    TextMeshProUGUI Reward;
+    Text Reward;
 
     public void Set(Player player,int reward)
     {
