@@ -8,8 +8,8 @@ public class ProfileScript : MenuScene
 {
     [SerializeField]
     Text playerName;
-    [SerializeField]
-    TextMeshProUGUI score;
+    //[SerializeField]
+    //TextMeshProUGUI score;
     [SerializeField]
     Image levelFill;
     [SerializeField]
@@ -26,7 +26,7 @@ public class ProfileScript : MenuScene
     private void Start()
     {
         playerName.text = GameManager.Instance.MyPlayer.Name;
-        score.text = GameManager.Instance.MyPlayer.Score.ToString();
+        //score.text = GameManager.Instance.MyPlayer.Score.ToString();
         levelFill.fillAmount = GameManager.Instance.MyPlayer.LevelProgress();
         level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
     }

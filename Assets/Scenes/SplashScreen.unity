@@ -1425,11 +1425,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fonts:
   - language: 0
-    font: {fileID: 12800000, guid: 82586484298cb2e44afe89fc3e6f46a9, type: 3}
-    TMP_font: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+    font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   - language: 1
-    font: {fileID: 12800000, guid: 82586484298cb2e44afe89fc3e6f46a9, type: 3}
-    TMP_font: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+    font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   LanguageFile: {fileID: 4900000, guid: 3d41a0c19c72fc44ab7d08b422b61c77, type: 3}
 --- !u!114 &1140238102
 MonoBehaviour:
@@ -2333,6 +2331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

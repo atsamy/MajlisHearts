@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 using ArabicSupport;
 public class PlayerDealResult : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     protected Text playerName;
     [SerializeField]
-    protected Text score;
+    protected TextMeshProUGUI score;
     [SerializeField]
     protected Image scoreFrame;
     [SerializeField]
