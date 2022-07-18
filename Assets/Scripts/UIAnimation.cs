@@ -17,11 +17,13 @@ public class UIAnimation : MonoBehaviour
     public List<ColorAnimation> ColorAnimation;
 
     public bool PlayOnEnable;
-    Image image;
+    MaskableGraphic image;
+    RectTransform rectTransform;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
+        rectTransform = GetComponent<RectTransform>();
+        image = GetComponent<MaskableGraphic>();
     }
 
     private void OnEnable()
@@ -36,7 +38,7 @@ public class UIAnimation : MonoBehaviour
     {
         foreach (var item in MoveAnimations)
         {
-            item.Set(transform);
+            item.Set(rectTransform);
             item.Play();
         }
 
@@ -85,21 +87,32 @@ public abstract class TransformAnimationBase : AnimationBase
     protected Transform transform;
 }
 
+public abstract class RectTransformAnimationBase : AnimationBase
+{
+    public void Set(RectTransform transform)
+    {
+        this.transform = transform;
+    }
+
+    public Vector3 Start;
+    protected RectTransform transform;
+}
+
 [System.Serializable]
-public class MoveAnimation : TransformAnimationBase
+public class MoveAnimation : RectTransformAnimationBase
 {
     protected override void PlaySingle()
     {
-        Vector3 Target = transform.position;
-        transform.position = Start;
-        transform.DOMove(Target, Duration);
+        Vector3 Target = transform.anchoredPosition;
+        transform.anchoredPosition = Start;
+        transform.DOAnchorPos(Target, Duration);
     }
 
     protected override void PlayReverse()
     {
-        Vector3 Target = transform.position;
-        transform.position = Start;
-        transform.DOMove(Target, Duration).SetLoops(1, LoopType.Yoyo);
+        Vector3 Target = transform.anchoredPosition;
+        transform.anchoredPosition = Start;
+        transform.DOAnchorPos(Target, Duration).SetLoops(1, LoopType.Yoyo);
     }
 }
 
@@ -107,14 +120,15 @@ public class MoveAnimation : TransformAnimationBase
 public class ColorAnimation : AnimationBase
 {
     public Color Start;
-    Image image;
+    MaskableGraphic image;
 
-    public void Set(Image image)
+    public void Set(MaskableGraphic image)
     {
         this.image = image;
     }
     protected override void PlaySingle()
     {
+        Debug.Log(image.name);
         Color Target = image.color;
         image.color = Start;
         image.DOColor(Target, Duration);

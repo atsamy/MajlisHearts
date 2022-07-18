@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ArabicSupport;
-using TMPro;
+
 public class ArabicFix : MonoBehaviour 
 {
 	void Awake () 
@@ -15,7 +15,7 @@ public class ArabicFix : MonoBehaviour
 		}
 		else
 		{
-			TextMeshProUGUI text = GetComponent<TextMeshProUGUI>();
+			Text text = GetComponent<Text>();
 			text.text = ArabicFixer.Fix(text.text);
 		}
 	}

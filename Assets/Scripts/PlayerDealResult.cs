@@ -9,7 +9,7 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     protected Image playerAvatar;
     [SerializeField]
-    protected TextMeshProUGUI playerName;
+    protected Text playerName;
     [SerializeField]
     protected TextMeshProUGUI score;
     [SerializeField]

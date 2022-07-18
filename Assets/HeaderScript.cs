@@ -1,18 +1,18 @@
 using ArabicSupport;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HeaderScript : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI currencyText;
+    Text currencyText;
     [SerializeField]
-    TextMeshProUGUI levelText;
+    Text levelText;
     [SerializeField]
-    TextMeshProUGUI userNameText;
+    Text userNameText;
     [SerializeField]
     Image avatar;
     void Start()

@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 
 public class ProfileScript : MenuScene
 {
     [SerializeField]
-    TextMeshProUGUI playerName;
-    [SerializeField]
-    TextMeshProUGUI score;
+    Text playerName;
+    //[SerializeField]
+    //TextMeshProUGUI score;
     [SerializeField]
     Image levelFill;
     [SerializeField]
@@ -17,7 +17,7 @@ public class ProfileScript : MenuScene
     [SerializeField]
     UsernamePanel changeUserName;
     [SerializeField]
-    TextMeshProUGUI headerUserName;
+    Text headerUserName;
     [SerializeField]
     Image avatar;
 
@@ -26,7 +26,7 @@ public class ProfileScript : MenuScene
     private void Start()
     {
         playerName.text = GameManager.Instance.MyPlayer.Name;
-        score.text = GameManager.Instance.MyPlayer.Score.ToString();
+        //score.text = GameManager.Instance.MyPlayer.Score.ToString();
         levelFill.fillAmount = GameManager.Instance.MyPlayer.LevelProgress();
         level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
     }

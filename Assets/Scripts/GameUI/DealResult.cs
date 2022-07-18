@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-using TMPro;
+
 
 public class DealResult : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class DealResult : MonoBehaviour
     [SerializeField]
     GameObject Footer;
     [SerializeField]
-    TextMeshProUGUI buttonText;
+    Text buttonText;
     protected Action PanelClosed;
 
     public void ShowRound(Player[] players, bool inGame, Action OnPanelClosed)

@@ -39,6 +39,9 @@ public class UIAnimationEditor : Editor
 
     void ShowMoveAnimation(List<MoveAnimation> moveList)
     {
+        if (moveList == null)
+            return;
+
         for (int i = 0; i < moveList.Count; i++)
         {
             EditorGUILayout.LabelField("Move Animation:" + i);
@@ -61,6 +64,9 @@ public class UIAnimationEditor : Editor
 
     void ShowScaleAnimation(List<ScaleAnimation> scaleList)
     {
+        if (scaleList == null)
+            return;
+
         for (int i = 0; i < scaleList.Count; i++)
         {
             EditorGUILayout.LabelField("Scale Animation:" + i);

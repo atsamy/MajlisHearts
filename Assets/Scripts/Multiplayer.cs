@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+
 using ArabicSupport;
 
 public class Multiplayer : MonoBehaviour
@@ -12,7 +12,7 @@ public class Multiplayer : MonoBehaviour
     [SerializeField]
     Image playerFrame;
     [SerializeField]
-    TextMeshProUGUI playerName;
+    Text playerName;
     [SerializeField]
     GameObject[] label;
     [SerializeField]
