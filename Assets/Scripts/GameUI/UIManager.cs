@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     WaitingScript waitingPanel;
     [SerializeField]
     Image tableTop;
+    [SerializeField]
+    GameObject scoresHolder;
 
     MainPlayer mainPlayer;
 
@@ -217,6 +219,8 @@ public class UIManager : MonoBehaviour
 
     public void SetPlayer()
     {
+        scoresHolder.SetActive(true);
+
         for (int i = 1; i < game.Players.Length; i++)
         {
             int correctIndex = i + game.MainPlayerIndex;
