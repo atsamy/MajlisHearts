@@ -10,10 +10,9 @@ public class SettingsPanel : MenuScene
 
     [SerializeField]
     Sprite[] notificationSprites;
-    public void SetLanguage(string language)
+    public void SetLanguage(int languageIndex)
     {
-        LanguageManager.Instance.SetLanguage(language);
-
+        LanguageManager.Instance.SetLanguage((Language)languageIndex);
         LanguageSetter[] languageSetters = GameObject.FindObjectsOfType<LanguageSetter>();
 
         foreach (var item in languageSetters)

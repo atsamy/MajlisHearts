@@ -135,6 +135,7 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.MyPlayer.Avatar = userInfo.AvatarUrl;
             GameManager.Instance.MyPlayer.Name = userInfo.DisplayName;
             playfab.GetUserInventory();
         }
@@ -164,9 +165,9 @@ public class LoginManager : MonoBehaviour
                 case "Customization":
                     GameManager.Instance.Customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(item.Value.Value).array.ToList();
                     break;
-                case "Avatar":
-                    GameManager.Instance.MyPlayer.Avatar = item.Value.Value;
-                    break;
+                //case "Avatar":
+                //    GameManager.Instance.MyPlayer.Avatar = item.Value.Value;
+                //    break;
                 case "CardBack":
                     GameManager.Instance.EquippedItem.Add("CardBack", item.Value.Value);
                     break;

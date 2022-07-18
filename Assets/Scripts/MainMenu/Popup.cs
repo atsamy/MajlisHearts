@@ -4,13 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using TMPro;
 
 public class Popup : MonoBehaviour
 {
     public Action OKPressed;
     public Action ClosePressed;
 
-    public Text Message;
+    public TextMeshProUGUI Message;
 
     public Message[] Messages;
 

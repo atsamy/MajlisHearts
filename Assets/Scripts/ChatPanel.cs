@@ -24,8 +24,8 @@ public class ChatPanel : MonoBehaviour
         {
             Destroy(Content.GetChild(0));
         }
-        Text text = Instantiate(messagePrefab, Content).GetComponent<Text>();
-        text.text = ArabicFixer.Fix("<color=green>" + sender + "</color>" + " " + message);
+        MessageScript messageObj = Instantiate(messagePrefab, Content).GetComponent<MessageScript>();
+        messageObj.Set(sender , ArabicFixer.Fix(message));
     }
 
     public void SendMessage()

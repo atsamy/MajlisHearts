@@ -24,7 +24,7 @@ public class ContentStoreItem : StoreItem
         {
             Equiped();
         }
-        else if (owned)
+        else if (owned || cost == 0)
         {
             Owned();
             purchaseAction = equipAction;
@@ -43,12 +43,12 @@ public class ContentStoreItem : StoreItem
     {
         purchaseAction = equipAction;
         purchaseBtn.interactable = true;
-        Cost.text = "Owned";
+        Cost.text = LanguageManager.Instance.GetString("owned");
     }
 
     public void Equiped()
     {
-        Cost.text = "Equipped";
+        Cost.text = LanguageManager.Instance.GetString("equipped");
         purchaseBtn.interactable = false;
     }
 }

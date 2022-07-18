@@ -10,13 +10,28 @@ public class StoreScene : MenuScene
     public int[] SCValues;
     
     public GameObject Loading;
-    
+
+    [SerializeField]
+    StoreContentLoader avatarContent;
+
     void Start()
     {
-        for (int i = 0; i < Tabs.Length; i++)
+        //for (int i = 0; i < Tabs.Length; i++)
+        //{
+        //    Tabs[i].Pressed(i == 0);
+        //}
+
+        avatarContent.itemEquipped += (item) =>
         {
-            Tabs[i].Pressed(i == 0);
-        }
+            GameManager.Instance.SaveAvatar(item);
+            MenuManager.Instance.Header.SetAvatar();
+        };
+    }
+
+    public void Open(int index)
+    {
+        Open();
+        TabPressed(index);
     }
 
     public override void Open()

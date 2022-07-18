@@ -14,7 +14,7 @@ public class LanguagePanel : MonoBehaviour
 
     public void SetEnglish()
     {
-        LanguageManager.Instance.SetLanguage("English");
+        LanguageManager.Instance.SetLanguage(Language.English);
 
         onDone?.Invoke();
         gameObject.SetActive(false);
@@ -22,7 +22,7 @@ public class LanguagePanel : MonoBehaviour
 
     public void SetArabic()
     {
-        LanguageManager.Instance.SetLanguage("Arabic");
+        LanguageManager.Instance.SetLanguage(Language.Arabic);
 
         onDone?.Invoke();
         gameObject.SetActive(false);

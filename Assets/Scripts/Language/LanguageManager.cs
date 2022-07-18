@@ -7,6 +7,12 @@ using ArabicSupport;
 using System;
 using TMPro;
 
+public enum Language
+{
+    English = 0,
+    Arabic = 1
+}
+
 public class LanguageManager : MonoBehaviour
 {
     public LanguageFont[] fonts;
@@ -16,20 +22,25 @@ public class LanguageManager : MonoBehaviour
 
     public static LanguageManager Instance;
 
-    public string CurrentLanguage
+    Language currentLanguage;
+
+    public Language CurrentLanguage
     {
         get
         {
-            string language = "English";
+            return currentLanguage;
+            //if (Application.systemLanguage == SystemLanguage.Arabic)
+            //{
+            //    return Language.Arabic;
+            //}
 
-            if (Application.systemLanguage == SystemLanguage.Arabic)
-            {
-                language = "Arabic";
-            }
-
-            return PlayerPrefs.GetString("Language", language);
+            //return (Language)PlayerPrefs.GetInt("Language", (int)Language.English);
         }
-        set { PlayerPrefs.SetString("Language", value); }
+        set
+        {
+            currentLanguage = value;
+            PlayerPrefs.SetInt("Language", (int)value);
+        }
     }
 
     void Awake()
@@ -42,10 +53,11 @@ public class LanguageManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        SetLanguage(CurrentLanguage);
+        currentLanguage = (Language)PlayerPrefs.GetInt("Language", 0);
+        SetLanguage(currentLanguage);
     }
 
-    public void SetLanguage(string language)
+    public void SetLanguage(Language language)
     {
         CurrentLanguage = language;
 
@@ -53,7 +65,7 @@ public class LanguageManager : MonoBehaviour
         xml.LoadXml(LanguageFile.text);
 
         Strings = new Hashtable();
-        var element = xml.DocumentElement[language];
+        var element = xml.DocumentElement[language.ToString()];
         if (element != null)
         {
             var elemEnum = element.GetEnumerator();
@@ -77,7 +89,7 @@ public class LanguageManager : MonoBehaviour
         XmlDocument xml = new XmlDocument();
         xml.LoadXml(file.text);
 
-        var element = xml.DocumentElement[CurrentLanguage];
+        var element = xml.DocumentElement[CurrentLanguage.ToString()];
         if (element != null)
         {
             var elemEnum = element.GetEnumerator();
@@ -107,7 +119,7 @@ public class LanguageManager : MonoBehaviour
 
         string text = (string)Strings[name];
 
-        if (CurrentLanguage == "Arabic")
+        if (CurrentLanguage == Language.Arabic)
             text = ArabicFixer.Fix(text, false, false);
 
         return text;
@@ -129,7 +141,7 @@ public class LanguageManager : MonoBehaviour
     {
         for (int i = 0; i < fonts.Length; i++)
         {
-            if (fonts[i].name == CurrentLanguage)
+            if (fonts[i].language == CurrentLanguage)
                 return fonts[i].font;
         }
 
@@ -140,7 +152,7 @@ public class LanguageManager : MonoBehaviour
     {
         for (int i = 0; i < fonts.Length; i++)
         {
-            if (fonts[i].name == CurrentLanguage)
+            if (fonts[i].language == CurrentLanguage)
                 return fonts[i].TMP_font;
         }
 
@@ -151,7 +163,7 @@ public class LanguageManager : MonoBehaviour
 [Serializable]
 public struct LanguageFont
 {
-    public string name;
+    public Language language;
     public Font font;
     public TMP_FontAsset TMP_font;
 }

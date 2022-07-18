@@ -11,7 +11,7 @@ public class Player
     int index;
     int dealScore;
     int totalScore;
-    public string Avatar;
+    public Sprite Avatar;
 
     public int Index { get => index; }
 

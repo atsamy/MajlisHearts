@@ -21,8 +21,6 @@ public class FriendListPanel : MonoBehaviour
     Text friendName;
     [SerializeField]
     ChoosePopup selectTypePopup;
-    //[SerializeField]
-    //Button inviteButton;
 
     string[] ids;
 
@@ -33,12 +31,18 @@ public class FriendListPanel : MonoBehaviour
         ChatManager.OnPlayerStatusUpdate += ChatManager_OnPlayerStatusUpdate;
         friendsList = new Dictionary<string, FriendListItem>();
 
+        AddAllFriends();
+    }
+
+    private void AddAllFriends()
+    {
         PlayfabManager.instance.GetFriends((friends) =>
         {
             ids = new string[friends.Count];
 
             for (int i = 0; i < friends.Count; i++)
             {
+                AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
                 FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
                 friend.Set(friends[i].TitleDisplayName);
                 ids[i] = friends[i].TitleDisplayName;
@@ -48,6 +52,15 @@ public class FriendListPanel : MonoBehaviour
 
             ChatManager.Instance.AddFriends(ids);
         });
+    }
+
+    public void RemoveAllFriends()
+    {
+        friendsList.Clear();
+        for (int i = 0; i < content.childCount; i++)
+        {
+            Destroy(content.GetChild(i).gameObject);
+        }
     }
 
     private void ChatManager_OnPlayerStatusUpdate(string user, int status)
@@ -85,7 +98,11 @@ public class FriendListPanel : MonoBehaviour
         {
             if (success)
             {
+                friendName.text = "";
                 CloseAddPanel();
+                //add friend
+                RemoveAllFriends();
+                AddAllFriends();
             }
             else
             {
@@ -101,7 +118,7 @@ public class FriendListPanel : MonoBehaviour
 
     public void OnDisconnected()
     {
-        
+
     }
     public void SendInvite()
     {

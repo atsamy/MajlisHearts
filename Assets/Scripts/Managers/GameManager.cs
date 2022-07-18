@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public int Currency;
     [HideInInspector]
     public List<InventoryItem> Inventory;
+
     [HideInInspector]
     public PlayerInfo MyPlayer;
     [HideInInspector]
@@ -84,6 +85,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    internal void SaveAvatar(string avatar)
+    {
+        PlayfabManager.instance.SetAvatar(avatar);
+        MyPlayer.Avatar = avatar;
+    }
+
     public void SetCustomization(string category, string id)
     {
         if (Customization.Any(a => a.Category == category))
@@ -103,6 +110,8 @@ public class GameManager : MonoBehaviour
             { "Customization", JsonUtility.ToJson( wrappedCustomization) }
         });
     }
+
+
 }
 
 [System.Serializable]
@@ -110,7 +119,34 @@ public class PlayerInfo
 {
     public string Name;
     public string Avatar;
-    public int Level;
+    public int Score;
+
+    public int GetXP(int currentLevel)
+    {
+        float XP = 0;
+
+        if (currentLevel < 21)
+            XP = currentLevel * currentLevel * 100;
+        else
+            XP = 40000 + ((currentLevel - 20) * 5000);
+
+        return (int)XP;
+    }
+
+    public float LevelProgress()
+    {
+        int Level = GetLevel();
+        float total = GetXP(Level + 1) - GetXP(Level);
+        return (Score - GetXP(Level)) / total;
+    }
+    public int GetLevel()
+    {
+        int Level = 0;
+        while (Score > GetXP(Level + 1))
+            Level++;
+
+        return Level;
+    }
 }
 
 [System.Serializable]

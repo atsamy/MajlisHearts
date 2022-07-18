@@ -105,6 +105,22 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
+
+    internal void SetAvatar(string avatar)
+    {
+        UpdateAvatarUrlRequest request = new UpdateAvatarUrlRequest()
+        {
+            ImageUrl = avatar
+        };
+
+        PlayFabClientAPI.UpdateAvatarUrl(request,(result)=> 
+        {
+            Debug.Log("avatar update success");
+        },(error)=> 
+        {
+            Debug.Log(error.ErrorMessage);
+        });
+    }
     //internal void UpdateQuests(Quest[] quests)
     //{
     //    Dictionary<string, string> data = new Dictionary<string, string>();
@@ -144,14 +160,21 @@ public class PlayfabManager : MonoBehaviour
 
     public void GetFriends(Action<List<FriendInfo>> onFriendsReturned)
     {
-        PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest(),(result)=> 
+        PlayerProfileViewConstraints Profile = new PlayerProfileViewConstraints()
         {
-            onFriendsReturned?.Invoke(result.Friends);
-        },
-        (error)=> 
+            ShowAvatarUrl = true,
+            ShowDisplayName = true
+        };
+
+
+        PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest() { ProfileConstraints = Profile }, (result) =>
+          {
+              onFriendsReturned?.Invoke(result.Friends);
+          },
+        (error) =>
         {
             onFriendsReturned?.Invoke(null);
-        });
+        }); ;
     }
     internal void LoginWithGoogle(string authCode)
     {

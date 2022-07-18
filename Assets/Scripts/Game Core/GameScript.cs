@@ -28,7 +28,7 @@ public class GameScript : MonoBehaviour
     public delegate void SetPlayEnvironment(Sprite tableTop, Sprite cardBack);
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
-    private const int Seconds = 1;
+    private const int Seconds = 10;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -57,12 +57,12 @@ public class GameScript : MonoBehaviour
             if (i == 0)
             {
                 Players[i] = new MainPlayer(i);
-                Players[i].Avatar = GameManager.Instance.MyPlayer.Avatar;
+                Players[i].Avatar = AvatarManager.Instance.playerAvatar;//GameManager.Instance.MyPlayer.Avatar;
             }
             else
             {
                 Players[i] = new AIPlayer(i);
-                Players[i].Avatar = "robot";
+                Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
@@ -77,7 +77,7 @@ public class GameScript : MonoBehaviour
         Deal.SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
-             GameManager.Instance.EquippedItem["CardBack"] + "_Icon");
+             GameManager.Instance.EquippedItem["CardBack"]);
 
         StartGame();
     }

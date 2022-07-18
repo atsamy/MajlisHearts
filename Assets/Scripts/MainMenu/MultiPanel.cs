@@ -8,11 +8,11 @@ using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon;
 //using photon;
 
-public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
+public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
-    public GameObject StartGameButton;
-    public Button JoinRoomButton;
+    //public GameObject StartGameButton;
+    //public Button JoinRoomButton;
 
     [SerializeField]
     SelectGroup betSelection;
@@ -22,6 +22,12 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
     GameObject LoginPanel;
     [SerializeField]
     GameObject WaitPanel;
+    [SerializeField]
+    Transform playersContent;
+    [SerializeField]
+    GameObject playerEntry;
+    [SerializeField]
+    GameObject footer;
 
     bool IsconnectedToMaster;
     bool gameReady;
@@ -50,6 +56,7 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
         MenuManager.Instance.OpenMain();
 
         roomCreated = false;
+        readyToJoin = false;
     }
 
     IEnumerator Shuffle()
@@ -70,16 +77,18 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
 
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            {
+                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
+            });
+
         if (!PhotonNetwork.IsConnectedAndReady)
         {
             print("not connected");
 
             AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
-            {
-                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
-            });
+
 
             PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
             PhotonNetwork.AuthValues = auth;
@@ -90,7 +99,12 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
         {
             print("is connected");
             IsconnectedToMaster = true;
-            JoinRoomButton.interactable = true;
+
+            if (readyToJoin)
+            {
+                JoinOrCreateRoom();
+            }
+            //JoinRoomButton.interactable = true;
         }
     }
 
@@ -138,6 +152,20 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
     public void OnJoinedRoom()
     {
         Debug.Log("joined room");
+
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            CreateNewPlayer(PhotonNetwork.PlayerList[i]);
+        }
+    }
+
+    private void CreateNewPlayer(Photon.Realtime.Player player)
+    {
+        if (!player.IsLocal)
+            AvatarManager.Instance.SetPlayerAvatar(player.NickName, player.CustomProperties["avatar"].ToString());
+        Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        entry.Set(player.NickName, player.IsLocal, player.IsMasterClient);
     }
 
     public void OnConnectedToMaster()
@@ -148,7 +176,29 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
             print("Connected to Master");
 
             IsconnectedToMaster = true;
-            JoinRoomButton.interactable = true;
+
+            if (readyToJoin)
+            {
+                JoinOrCreateRoom();
+            }
+            //JoinRoomButton.interactable = true;
+        }
+    }
+
+    bool readyToJoin;
+
+    public void ReadyToJoin()
+    {
+        LoginPanel.SetActive(false);
+        WaitPanel.SetActive(true);
+
+        if (IsconnectedToMaster)
+        {
+            JoinOrCreateRoom();
+        }
+        else
+        {
+            readyToJoin = true;
         }
     }
 
@@ -176,20 +226,12 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
         };
 
         roomOptions.CustomRoomPropertiesForLobby = new string[]
-         {
-             "bet",
-             "type"
-         };
+        {
+             "bet","type"
+        };
 
-        //RoomOptions roomOptions = new RoomOptions();
-        //roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
-        //roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
-
-        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom, 
+        PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom,
             null, null, null, roomOptions, null);
-
-        LoginPanel.SetActive(false);
-        WaitPanel.SetActive(true);
     }
 
     IEnumerator StartGameIn(int time)
@@ -213,10 +255,14 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            StartGameButton.SetActive(true);
+            footer.SetActive(true);
         }
 
         InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
+
+        CreateNewPlayer(newPlayer);
+        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        //entry.Set(newPlayer.NickName, false, false);
     }
 
     private void StartGame()
@@ -232,11 +278,13 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
 
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
+
+        FadeScreen.Instance.FadeIn(2, null);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-
+        //remove player
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
@@ -272,15 +320,9 @@ public class MultiPanel :MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks,
 
         PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
             GameManager.Instance.EquippedItem["CardBack"];
-        //InfoText.text = ("Created Room");
 
-        //if (mode == GameMode.CreateRoom)
-        //{
-        //    InfoText.text = PhotonNetwork.CurrentRoom.Name;
-        //    roomCreated = true;
-        //}
-
-        //StartCoroutine(TimeOut());
+        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        //entry.Set(GameManager.Instance.MyPlayer.Avatar, GameManager.Instance.MyPlayer.Name, true, true);
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)

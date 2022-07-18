@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, IMatchmakingCallbacks, IOnEventCallback
 {
@@ -18,16 +19,14 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     [SerializeField]
     GameObject shuffleSeatsButton;
     [SerializeField]
-    SpriteRenderer[] avatars;
-    [SerializeField]
-    Sprite robot;
+    Image[] avatars;
+    //[SerializeField]
+    //GameObject[] avatarFrames;
 
     const int startGameCode = 1;
     const int shuffleCode = 2;
 
     string[] playersOrder;
-
-    Dictionary<string, Sprite> lookUpAvatars;
 
     private void OnEnable()
     {
@@ -46,10 +45,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             print("not connected");
             AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
 
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
-            {
-                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
-            });
+            //PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            //{
+            //        { "avatar", GameManager.Instance.MyPlayer.Avatar }
+            //});
 
             PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
             PhotonNetwork.AuthValues = auth;
@@ -70,8 +69,6 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         this.isHost = isHost;
 
         playersOrder = new string[4];
-
-        lookUpAvatars = new Dictionary<string, Sprite>();
 
         if (isHost)
         {
@@ -105,7 +102,6 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
 
             PhotonNetwork.CreateRoom(roomName, roomOptions);
-            CreateAvatar(PhotonNetwork.LocalPlayer);
         }
         else
         {
@@ -117,6 +113,11 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(startGameCode, playersOrder, eventOptionsCards, SendOptions.SendReliable);
+
+
+        startGameButton.SetActive(false);
+        shuffleSeatsButton.SetActive(false);
+        //fades
     }
 
     public void OnConnected()
@@ -185,12 +186,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         {
             if (players[i] != "empty")
             {
-                avatars[i].sprite = lookUpAvatars[players[i]];
-                avatars[i].gameObject.SetActive(true);
+                avatars[i].sprite = AvatarManager.Instance.GetPlayerAvatar(players[i]);
+                avatars[i].transform.parent.gameObject.SetActive(true);
             }
             else
             {
-                avatars[i].gameObject.SetActive(false);
+                avatars[i].transform.parent.gameObject.SetActive(false);
             }
         }
     }
@@ -222,7 +223,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnCreatedRoom()
     {
-
+        CreateAvatar(PhotonNetwork.LocalPlayer);
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
@@ -234,8 +235,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         Debug.Log("Joined private room successfully");
 
-        List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
-        MajlisScript.Instance.SetItems(customization);
+        //apply new customization
+        //List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
+        //MajlisScript.Instance.SetItems(customization);
 
         foreach (var item in PhotonNetwork.PlayerList)
         {
@@ -265,7 +267,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         {
             case startGameCode:
 
-                if(!PhotonNetwork.IsMasterClient)
+                if (!PhotonNetwork.IsMasterClient)
                     PhotonNetwork.CurrentRoom.CustomProperties["players"] = photonEvent.CustomData;
 
                 StartCoroutine(StartGameRoutine());
@@ -280,9 +282,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         AddBots();
 
         yield return new WaitForSeconds(3);
-
-        GameManager.Instance.GameType = GameType.Friends;
-        SceneManager.LoadScene(2);
+        
+        FadeScreen.Instance.FadeIn(2, () => 
+        {
+            GameManager.Instance.GameType = GameType.Friends;
+            SceneManager.LoadScene(2);
+        });
     }
 
     private void CreateAvatar(Photon.Realtime.Player newPlayer)
@@ -290,13 +295,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         if (newPlayer.ActorNumber < 1)
             return;
 
-        string path = "Avatar/Body/" + newPlayer.CustomProperties["avatar"];
-        Sprite avatar = Resources.Load<Sprite>(path);
-        //print(newPlayer.ActorNumber);
-        avatars[newPlayer.ActorNumber - 1].gameObject.SetActive(true);
-        avatars[newPlayer.ActorNumber - 1].sprite = avatar;
-
-        lookUpAvatars.Add(newPlayer.NickName, avatar);
+        avatars[newPlayer.ActorNumber - 1].transform.parent.gameObject.SetActive(true);
+        avatars[newPlayer.ActorNumber - 1].sprite = newPlayer.IsLocal ? AvatarManager.Instance.playerAvatar :
+            AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
     }
 
 
@@ -304,10 +305,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         for (int i = PhotonNetwork.PlayerList.Length - 1; i < 4; i++)
         {
-            if (!avatars[i].gameObject.activeSelf)
+            if (!avatars[i].transform.parent.gameObject.activeSelf)
             {
-                avatars[i].gameObject.SetActive(true);
-                avatars[i].sprite = robot;
+                avatars[i].transform.parent.gameObject.SetActive(true);
+                avatars[i].sprite = AvatarManager.Instance.RobotAvatar;
             }
         }
     }
