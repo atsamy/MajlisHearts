@@ -4357,8 +4357,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TxtColors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &142259999
 GameObject:
   m_ObjectHideFlags: 0
@@ -16657,8 +16657,9 @@ GameObject:
   - component: {fileID: 436596828}
   - component: {fileID: 436596827}
   - component: {fileID: 436596830}
+  - component: {fileID: 436596831}
   m_Layer: 5
-  m_Name: English
+  m_Name: english
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16800,6 +16801,21 @@ MonoBehaviour:
     Start: {x: 1, y: 0, z: 0}
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &436596831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436596825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61aad29c1f21e8b41b3e56798ab0b794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TxtColors:
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 0.90588236, b: 0.80784315, a: 1}
 --- !u!1 &439636528
 GameObject:
   m_ObjectHideFlags: 0
@@ -19448,7 +19464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &527529165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21531,7 +21547,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604389433}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
@@ -28738,8 +28754,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TxtColors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &775574198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33596,6 +33612,7 @@ GameObject:
   - component: {fileID: 913121989}
   - component: {fileID: 913121988}
   - component: {fileID: 913121991}
+  - component: {fileID: 913121992}
   m_Layer: 5
   m_Name: arabic
   m_TagString: Untagged
@@ -33739,6 +33756,21 @@ MonoBehaviour:
     Start: {x: 1, y: 0, z: 0}
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &913121992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913121986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61aad29c1f21e8b41b3e56798ab0b794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TxtColors:
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 0.90588236, b: 0.80784315, a: 1}
 --- !u!1 &915054733
 GameObject:
   m_ObjectHideFlags: 0
@@ -38739,8 +38771,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TxtColors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1064672737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43790,8 +43822,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TxtColors:
-  - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
+  - {r: 1, g: 0.8745098, b: 0.79607844, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1240346297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51431,7 +51463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1456837779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -61793,6 +61825,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e059974d0e40f4ba6b48a751dd05fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tabScript:
+  - {fileID: 436596831}
+  - {fileID: 913121992}
   notification: {fileID: 1909411729}
   notificationSprites:
   - {fileID: 21300000, guid: 69a8e0f480f957546a03d88fdaed5a04, type: 3}

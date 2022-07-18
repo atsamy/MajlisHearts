@@ -9764,7 +9764,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveAnimations: []
-  ScaleAnimation: []
+  ScaleAnimation:
+  - Duration: 0.25
+    Reverse: 0
+    StartAfter: 0
+    Start: {x: 1, y: 0, z: 0}
   ColorAnimation: []
   PlayOnEnable: 1
 --- !u!1 &1347090208
