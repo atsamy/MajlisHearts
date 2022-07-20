@@ -9,8 +9,12 @@ public class EditableItem : MonoBehaviour
     public string Code;
     SpriteRenderer sprite;
     Sprite originalSprite;
+    [SerializeField]
+    Sprite[] varientSprites;
 
     int counter = 0;
+
+    string room;
     //public Transform CameraLocation;
 
     private void Awake()
@@ -48,6 +52,6 @@ public class EditableItem : MonoBehaviour
 
     internal void ChangeItem(string ID)
     {
-        sprite.sprite = Resources.Load<Sprite>(Code + "/" + ID);
+        sprite.sprite = Resources.Load<Sprite>("Majlis/" + room + "/" + Code + "/" + ID);
     }
 }

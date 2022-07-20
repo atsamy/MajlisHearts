@@ -36,6 +36,7 @@ public class LoginManager : MonoBehaviour
         playfab.OnInventoryReturned += Playfab_OnInventoryReturned;
         playfab.OnConnectionError += Playfab_OnConnectionError;
         playfab.OnCatalogReturned += Playfab_OnCatalogReturned;
+        playfab.OnTitleDataReturned += Playfab_OnTitleDataReturned;
 
         LogIn();
     }
@@ -47,6 +48,7 @@ public class LoginManager : MonoBehaviour
         playfab.OnInventoryReturned -= Playfab_OnInventoryReturned;
         playfab.OnConnectionError -= Playfab_OnConnectionError;
         playfab.OnCatalogReturned -= Playfab_OnCatalogReturned;
+        playfab.OnTitleDataReturned -= Playfab_OnTitleDataReturned;
     }
 
     public void LogIn()
@@ -62,6 +64,8 @@ public class LoginManager : MonoBehaviour
         {
             playfab.DeviceLogin();
         }
+
+
     }
 
     void InitPlayGames()
@@ -76,6 +80,18 @@ public class LoginManager : MonoBehaviour
 
         //print("initiated");
 #endif
+    }
+
+    private void Playfab_OnTitleDataReturned(Dictionary<string, string> titleData)
+    {
+        foreach (var item in titleData)
+        {
+            if (item.Key == "Tasks")
+            {
+                TasksManager.Instance.Tasks = JsonUtility.FromJson<Wrapper<TaskData>>(item.Value).array;
+            }
+        }
+        playfab.GetCatalog();
     }
 
     private void Playfab_OnCatalogReturned(List<CatalogItem> catalogItems)
@@ -174,10 +190,12 @@ public class LoginManager : MonoBehaviour
                 case "TableTop":
                     GameManager.Instance.EquippedItem.Add("TableTop", item.Value.Value);
                     break;
+                case "TaskIndex":
+                    TasksManager.Instance.SetIndex(int.Parse(item.Value.Value));
+                    break;
             }
         }
-
-        playfab.GetCatalog();
+        playfab.GetTitleData();
     }
 
     public void SetDefaultItems(Dictionary<string, List<CatalogueItem>> AllItems)
@@ -237,7 +255,8 @@ public class LoginManager : MonoBehaviour
                 if (result)
                 {
                     GameManager.Instance.MyPlayer.Name = name;
-                    playfab.GetCatalog();
+                    //playfab.GetCatalog();
+                    playfab.GetTitleData();
                     //StartCoroutine(LoadYourAsyncScene());
                 }
                 else

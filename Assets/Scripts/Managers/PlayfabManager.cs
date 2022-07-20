@@ -28,6 +28,7 @@ public class PlayfabManager : MonoBehaviour
     public delegate void TitleDataReturned(Dictionary<string, string> titleData);
     public event TitleDataReturned OnTitleDataReturned;
 
+
     public delegate void ConnectionError(string message);
     public event ConnectionError OnConnectionError;
 
@@ -176,6 +177,7 @@ public class PlayfabManager : MonoBehaviour
             onFriendsReturned?.Invoke(null);
         }); ;
     }
+
     internal void LoginWithGoogle(string authCode)
     {
         PlayFabClientAPI.LoginWithGoogleAccount(new LoginWithGoogleAccountRequest()
@@ -191,7 +193,6 @@ public class PlayfabManager : MonoBehaviour
             Debug.Log(errorResult.GenerateErrorReport());
         });
     }
-
 
     private void SetupSessionData(Action<UserTitleInfo> onData)
     {

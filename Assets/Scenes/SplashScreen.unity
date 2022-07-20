@@ -1355,6 +1355,7 @@ GameObject:
   - component: {fileID: 1140238101}
   - component: {fileID: 1140238102}
   - component: {fileID: 1140238103}
+  - component: {fileID: 1140238104}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1463,6 +1464,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAvatar: {fileID: 0}
   RobotAvatar: {fileID: 21300000, guid: a2d8daa829f99604b8bc16e9dd630008, type: 3}
+--- !u!114 &1140238104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140238097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07f5eac9857791e46a4e8a2221effb47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tasks: []
 --- !u!1 &1238977186
 GameObject:
   m_ObjectHideFlags: 0
