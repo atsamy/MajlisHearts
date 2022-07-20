@@ -105,14 +105,14 @@ public class MoveAnimation : RectTransformAnimationBase
     {
         Vector3 Target = transform.anchoredPosition;
         transform.anchoredPosition = Start;
-        transform.DOAnchorPos(Target, Duration);
+        transform.DOAnchorPos(Target, Duration).SetUpdate(true);
     }
 
     protected override void PlayReverse()
     {
         Vector3 Target = transform.anchoredPosition;
         transform.anchoredPosition = Start;
-        transform.DOAnchorPos(Target, Duration).SetLoops(1, LoopType.Yoyo);
+        transform.DOAnchorPos(Target, Duration).SetLoops(1, LoopType.Yoyo).SetUpdate(true);
     }
 }
 
@@ -131,13 +131,13 @@ public class ColorAnimation : AnimationBase
         Debug.Log(image.name);
         Color Target = image.color;
         image.color = Start;
-        image.DOColor(Target, Duration);
+        image.DOColor(Target, Duration).SetUpdate(true);
     }
     protected override void PlayReverse()
     {
         Color Target = image.color;
         image.color = Start;
-        image.DOColor(Target, Duration).SetLoops(1, LoopType.Yoyo);
+        image.DOColor(Target, Duration).SetLoops(1, LoopType.Yoyo).SetUpdate(true);
     }
 }
 [System.Serializable]
@@ -147,13 +147,13 @@ public class ScaleAnimation : TransformAnimationBase
     {
         Vector3 Target = transform.localScale;
         transform.localScale = Start;
-        transform.DOScale(Target, Duration);
+        transform.DOScale(Target, Duration).SetUpdate(true);
     }
 
     protected override void PlayReverse()
     {
         Vector3 Target = transform.localScale;
         transform.localScale = Start;
-        transform.DOScale(Target, Duration).SetLoops(1, LoopType.Yoyo);
+        transform.DOScale(Target, Duration).SetLoops(1, LoopType.Yoyo).SetUpdate(true);
     }
 }

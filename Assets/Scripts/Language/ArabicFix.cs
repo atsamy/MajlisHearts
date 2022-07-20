@@ -13,10 +13,5 @@ public class ArabicFix : MonoBehaviour
 			Text text = GetComponent<Text>();
 			text.text = ArabicFixer.Fix(text.text);
 		}
-		else
-		{
-			Text text = GetComponent<Text>();
-			text.text = ArabicFixer.Fix(text.text);
-		}
 	}
 }
