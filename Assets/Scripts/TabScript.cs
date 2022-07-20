@@ -9,20 +9,21 @@ public class TabScript : MonoBehaviour
     //public Sprite[] BtnSprites;
     // Start is called before the first frame update
     //Image image;
+    //[SerializeField]
     Text text;
     Button button;
 
     void Awake()
     {
         //image = GetComponent<Image>();
-        //text = GetComponentInChildren<Text>();
+        text = GetComponentInChildren<Text>();
         button = GetComponent<Button>();
     }
 
     public void Pressed(bool value)
     {
         //image.sprite = BtnSprites[index];
-        //text.color = TxtColors[value ? 1 : 0];
+        text.color = TxtColors[value ? 1 : 0];
         button.interactable = !value;
 
         if (value)
