@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37089851, g: 0.3783701, b: 0.3572253, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311915, g: 0.3807396, b: 0.35872662, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7749,7 +7749,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f383d0aa0c1ba3e4a89a13be83a678b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditableItems: []
+  RoomItems:
+  - RoomId: Majlis
+    OldItems: {fileID: 0}
+    EditableItems:
+    - {fileID: 1533604092}
 --- !u!1 &210844496
 GameObject:
   m_ObjectHideFlags: 0
@@ -11601,7 +11605,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -11813,6 +11816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: Couch
+  varientSprites: []
   SelectedID: 
 --- !u!1 &312135298
 GameObject:
@@ -54575,6 +54579,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: Couch
+  varientSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   SelectedID: 
 --- !u!60 &1533604093
 PolygonCollider2D:
@@ -63711,7 +63719,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a055835928634749a1866aaca82a079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllItems: []
+  myCamera: {fileID: 0}
+  selectedID: 
+  selectedItem: {fileID: 0}
   CategoryPanel: {fileID: 915054735}
+  cameraHover: {fileID: 0}
 --- !u!1 &1735961670
 GameObject:
   m_ObjectHideFlags: 0

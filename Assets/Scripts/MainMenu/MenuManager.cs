@@ -91,13 +91,13 @@ public class MenuManager : MonoBehaviour
         MainUI.SetActive(false);
     }
 
-    public void BackToMainUI()
-    {
-        EditorPanel.GetComponent<EditorUI>().CategoryPanel_OnCancel();
+//    public void BackToMainUI()
+//    {
+////        EditorPanel.GetComponent<EditorUI>().CategoryPanel_OnCancel();
 
-        EditorPanel.SetActive(false);
-        MainUI.SetActive(true);
-    }
+//        EditorPanel.SetActive(false);
+//        MainUI.SetActive(true);
+//    }
 
     public void OpenSettings()
     {

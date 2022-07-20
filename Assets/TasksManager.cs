@@ -28,4 +28,9 @@ public class TasksManager : MonoBehaviour
         data.Add("TaskIndex", currentIndex.ToString());
         PlayfabManager.instance.SetPlayerData(data);
     }
+
+    internal void ExcuteTask()
+    {
+        
+    }
 }

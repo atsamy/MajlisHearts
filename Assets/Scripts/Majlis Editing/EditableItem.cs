@@ -31,7 +31,7 @@ public class EditableItem : MonoBehaviour
         {
             float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
             print(itemPos);
-            EditorUI.Instance.ShowItems(Code, itemPos);
+            //EditorUI.Instance.ShowItems(Code, itemPos);
         }
         else
             counter = 1;
@@ -50,8 +50,8 @@ public class EditableItem : MonoBehaviour
         sprite.sprite = originalSprite;
     }
 
-    internal void ChangeItem(string ID)
+    internal void ChangeItem(int index)
     {
-        sprite.sprite = Resources.Load<Sprite>("Majlis/" + room + "/" + Code + "/" + ID);
+        sprite.sprite = varientSprites[index];
     }
 }
