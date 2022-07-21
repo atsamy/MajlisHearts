@@ -14,6 +14,11 @@ public class EditableItem : MonoBehaviour
 
     public Sprite[] VarientIcons { get => varientIcons; }
 
+    private void Awake()
+    {
+        Init();
+    }
+
     private void OnMouseDown()
     {
         if (counter == 1)
@@ -40,6 +45,11 @@ public class EditableItem : MonoBehaviour
     }
 
     public virtual void ChangeItem(int index)
+    {
+
+    }
+
+    public virtual void Init()
     {
 
     }

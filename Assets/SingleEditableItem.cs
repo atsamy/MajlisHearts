@@ -6,7 +6,7 @@ public class SingleEditableItem : EditableItem
 {
 
     SpriteRenderer sprite;
-    Sprite originalSprite;
+    protected Sprite originalSprite;
     [SerializeField]
     Sprite[] varientSprites;
 
@@ -17,7 +17,7 @@ public class SingleEditableItem : EditableItem
         Init();
     }
 
-    public void Init()
+    public override void Init()
     {
         if (sprite == null)
         {
