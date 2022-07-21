@@ -12,6 +12,8 @@ public class EditableItem : MonoBehaviour
     [SerializeField]
     Sprite[] varientSprites;
 
+    public Sprite[] VarientSprites { get => varientSprites; }
+
     int counter = 0;
 
     string room;
@@ -25,6 +27,7 @@ public class EditableItem : MonoBehaviour
 
     [HideInInspector]
     public string SelectedID;
+
     private void OnMouseDown()
     {
         if (counter == 1)
