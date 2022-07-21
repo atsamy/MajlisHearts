@@ -7,33 +7,19 @@ using UnityEngine.UI;
 public class EditableItem : MonoBehaviour
 {
     public string Code;
-    SpriteRenderer sprite;
-    Sprite originalSprite;
-    [SerializeField]
-    Sprite[] varientSprites;
-
-    public Sprite[] VarientSprites { get => varientSprites; }
-
     int counter = 0;
 
-    string room;
-    //public Transform CameraLocation;
+    [SerializeField]
+    Sprite[] varientIcons;
 
-    private void Awake()
-    {
-        sprite = GetComponent<SpriteRenderer>();
-        originalSprite = sprite.sprite;
-    }
-
-    [HideInInspector]
-    public string SelectedID;
+    public Sprite[] VarientIcons { get => varientIcons; }
 
     private void OnMouseDown()
     {
         if (counter == 1)
         {
-            float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
-            print(itemPos);
+            //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
+            //print(itemPos);
             //EditorUI.Instance.ShowItems(Code, itemPos);
         }
         else
@@ -48,13 +34,13 @@ public class EditableItem : MonoBehaviour
         counter = 0;
     }
 
-    internal void ResetToOriginal()
+    public virtual void ResetToOriginal()
     {
-        sprite.sprite = originalSprite;
+
     }
 
-    internal void ChangeItem(int index)
+    public virtual void ChangeItem(int index)
     {
-        sprite.sprite = varientSprites[index];
+
     }
 }

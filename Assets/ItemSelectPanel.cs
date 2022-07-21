@@ -18,7 +18,7 @@ public class ItemSelectPanel : MonoBehaviour
     {
         for (int i = 0; i < buttonIcons.Length; i++)
         {
-            buttonIcons[i].sprite = item.VarientSprites[i];
+            buttonIcons[i].sprite = item.VarientIcons[i];
         }
 
         editableItem.ChangeItem(0);

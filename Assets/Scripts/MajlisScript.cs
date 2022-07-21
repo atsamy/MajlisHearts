@@ -23,14 +23,21 @@ public class MajlisScript : MonoBehaviour
         switch (task.ActionType)
         {
             case TaskAction.Clean:
-                RoomItems.First(a => a.RoomId == task.Target).OldItems.SetActive(false);
+                GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
+                cameraHover.GoToLocation(oldItems.transform, () => 
+                {
+                    oldItems.SetActive(false);
+                });
                 taskPanel.Close();
                 break;
             case TaskAction.Change:
                 string[] ids = task.Target.Split('_');
                 EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == task.Target);
-                cameraHover.GoToLocation(editableItem.transform);
-                taskPanel.OpenEditPanel(editableItem);
+                cameraHover.GoToLocation(editableItem.transform, () => 
+                {
+                    taskPanel.OpenEditPanel(editableItem);
+                });
+                
                 break;
         }
     }

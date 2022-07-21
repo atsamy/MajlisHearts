@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using System;
 
 public class CameraHover : MonoBehaviour
 {
@@ -67,14 +68,20 @@ public class CameraHover : MonoBehaviour
         return false;
     }
 
-    public void GoToLocation(Transform Location)
+    public void GoToLocation(Transform Location,Action onArrived)
     {
         originalPosition = transform.position;
         originalRotation = transform.rotation;
 
         locked = true;
-        transform.DOMove(Location.position, 0.5f).SetEase(Ease.InOutCubic);
-        transform.DORotateQuaternion(Location.rotation, 0.5f);
+        Vector3 tagetLocation = Location.position;
+        tagetLocation.z = -20;
+
+        transform.DOMove(tagetLocation, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() => 
+        {
+            onArrived?.Invoke();
+        });
+        //transform.DORotateQuaternion(Location.rotation, 0.5f);
     }
 
     public void GoBack()
