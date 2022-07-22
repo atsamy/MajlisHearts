@@ -10,7 +10,7 @@ public class TasksManager : MonoBehaviour
     int currentIndex;
 
     public TaskData CurrentTask { get => Tasks[currentIndex]; }
-
+    public bool tasksCompleted { get => currentIndex >= Tasks.Length; }
     private void Awake()
     {
         Instance = this;

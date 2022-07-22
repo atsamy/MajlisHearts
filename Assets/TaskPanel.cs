@@ -14,13 +14,22 @@ public class TaskPanel : MonoBehaviour
     [SerializeField]
     ItemSelectPanel editPanel;
 
+    TaskItemScript currentTaskItem;
 
     private void Awake()
     {
-        TaskItemScript task = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
+        InitTask();
+    }
+
+    private void InitTask()
+    {
+        if (TasksManager.Instance.tasksCompleted)
+            return;
+
+        currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         TaskData currentTask = TasksManager.Instance.CurrentTask;
-        
-        task.Set(LanguageManager.Instance.GetString(currentTask.ID), currentTask.Cost, () => 
+
+        currentTaskItem.Set(LanguageManager.Instance.GetString(currentTask.ID), currentTask.Cost, () =>
         {
             MajlisScript.Instance.ExecuteTask(currentTask);
         });
@@ -34,6 +43,7 @@ public class TaskPanel : MonoBehaviour
 
     public void Close()
     {
+        taskPanel.SetActive(false);
         MenuManager.Instance.OpenMain();
     }
 
@@ -41,13 +51,21 @@ public class TaskPanel : MonoBehaviour
     {
         taskPanel.SetActive(false);
 
-        editPanel.Show(editableItem, (index) => 
+        editPanel.Show(editableItem, (index) =>
         {
+            TaskDone();
             //save edit
             MenuManager.Instance.OpenMain();
         }, () => 
         {
             MenuManager.Instance.OpenMain();
         });
+    }
+
+    public void TaskDone()
+    {
+        TasksManager.Instance.TaskFinished();
+        Destroy(currentTaskItem.gameObject);
+        InitTask();
     }
 }

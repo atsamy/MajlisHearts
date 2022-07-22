@@ -29,6 +29,7 @@ public class MajlisScript : MonoBehaviour
                     oldItems.SetActive(false);
                 });
                 taskPanel.Close();
+                taskPanel.TaskDone();
                 break;
             case TaskAction.Change:
                 string[] ids = task.Target.Split('_');
