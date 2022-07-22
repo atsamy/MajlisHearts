@@ -14,19 +14,20 @@ public class ItemSelectPanel : MonoBehaviour
     int selectedIndex = 0;
     EditableItem editableItem;
 
-    public void Show(EditableItem item,Action<int> confirmed,Action cancelled)
+    public void Show(ref EditableItem item,Action<int> confirmed,Action cancelled)
     {
+        gameObject.SetActive(true);
+
         for (int i = 0; i < buttonIcons.Length; i++)
         {
             buttonIcons[i].sprite = item.VarientIcons[i];
         }
 
+        editableItem = item;
         editableItem.ChangeItem(0);
 
         this.confirmed = confirmed;
         this.cancelled = cancelled;
-
-        editableItem = item;
     }
 
     public void Select(int index)

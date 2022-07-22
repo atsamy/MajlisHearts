@@ -51,7 +51,7 @@ public class TaskPanel : MonoBehaviour
     {
         taskPanel.SetActive(false);
 
-        editPanel.Show(editableItem, (index) =>
+        editPanel.Show(ref editableItem, (index) =>
         {
             TaskDone();
             //save edit

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311915, g: 0.3807396, b: 0.35872662, a: 1}
+  m_IndirectSpecularColor: {r: 0.37089851, g: 0.3783701, b: 0.3572253, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7754,7 +7754,7 @@ MonoBehaviour:
   - RoomId: Majlis
     OldItems: {fileID: 0}
     EditableItems:
-    - {fileID: 0}
+    - {fileID: 1533604094}
   - RoomId: SmallMajlis
     OldItems: {fileID: 1143296654}
     EditableItems:
@@ -11746,6 +11746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -55813,8 +55814,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1701029749}
         m_TargetAssemblyTypeName: ItemSelectPanel, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 3
+        m_MethodName: Done
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
