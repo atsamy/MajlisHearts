@@ -92,9 +92,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.IsVisible = false;
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
 
-            Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
-
-            wrappedCustomization.array = GameManager.Instance.Customization.ToArray();
+            Wrapper<FinishedTask> wrappedCustomization = new Wrapper<FinishedTask>();
+            //change this
+            wrappedCustomization.array = TasksManager.Instance.FinishedTasks.ToArray();
             roomOptions.CustomRoomProperties.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
             roomOptions.CustomRoomProperties.Add("players", playersOrder);
 

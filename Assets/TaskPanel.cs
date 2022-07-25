@@ -47,13 +47,19 @@ public class TaskPanel : MonoBehaviour
         MenuManager.Instance.OpenMain();
     }
 
-    internal void OpenEditPanel(EditableItem editableItem)
+    internal void OpenEditPanel(EditableItem editableItem,string target)
     {
         taskPanel.SetActive(false);
 
         editPanel.Show(editableItem, (index) =>
         {
-            TaskDone();
+            FinishedTask task = new FinishedTask()
+            {
+                ActionType = TaskAction.Change,
+                Target = target + "_" + index
+            };
+
+            TaskDone(task);
             //save edit
             MenuManager.Instance.OpenMain();
         }, () => 
@@ -62,9 +68,9 @@ public class TaskPanel : MonoBehaviour
         });
     }
 
-    public void TaskDone()
+    public void TaskDone(FinishedTask task)
     {
-        TasksManager.Instance.TaskFinished();
+        TasksManager.Instance.TaskFinished(task);
         Destroy(currentTaskItem.gameObject);
         InitTask();
     }

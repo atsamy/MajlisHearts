@@ -149,6 +149,10 @@ public class LoginManager : MonoBehaviour
             this.newUser = true;
             SetLanguageAndUserName();
         }
+        else if (string.IsNullOrEmpty(userInfo.DisplayName))
+        {
+            ShowUserNamePanel();
+        }
         else
         {
             GameManager.Instance.MyPlayer.Avatar = userInfo.AvatarUrl;
@@ -172,14 +176,15 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnUserDataReturned(Dictionary<string, UserDataRecord> userData)
     {
-        GameManager.Instance.Customization = new List<InventoryItem>();
+        //GameManager.Instance.Customization = new List<InventoryItem>();
+        TasksManager.Instance.FinishedTasks = new List<FinishedTask>();
 
         foreach (var item in userData)
         {
             switch (item.Key)
             {
                 case "Customization":
-                    GameManager.Instance.Customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(item.Value.Value).array.ToList();
+                    TasksManager.Instance.FinishedTasks = JsonUtility.FromJson<Wrapper<FinishedTask>>(item.Value.Value).array.ToList();
                     break;
                 //case "Avatar":
                 //    GameManager.Instance.MyPlayer.Avatar = item.Value.Value;
@@ -224,13 +229,13 @@ public class LoginManager : MonoBehaviour
 
         playfab.SetPlayerData(GameManager.Instance.EquippedItem);
 
-        Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
-        wrappedCustomization.array = customization.ToArray();
+        //Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
+        //wrappedCustomization.array = customization.ToArray();
 
-        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
-        {
-            { "Customization", JsonUtility.ToJson(wrappedCustomization) }
-        });
+        //PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+        //{
+        //    { "Customization", JsonUtility.ToJson(wrappedCustomization) }
+        //});
     }
 
     private void Playfab_OnConnectionError(string message)

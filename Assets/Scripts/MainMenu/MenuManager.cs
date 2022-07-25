@@ -11,7 +11,7 @@ public class MenuManager : MonoBehaviour
     public GameObject GameModePanel;
     public GameObject EditorPanel;
     public GameObject MainUI;
-    public AvatarPanel AvatarPanel;
+    //public AvatarPanel AvatarPanel;
     public SettingsPanel SettingsPanel;
     public StoreScene StoreScene;
     public HeaderScript Header;
@@ -33,10 +33,6 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         if (string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
-        {
-            OpenAvatarPanel();
-        }
-        else
         {
             Header.SetAvatar();
         }
@@ -65,15 +61,6 @@ public class MenuManager : MonoBehaviour
         print(JsonUtility.ToJson(data));
     }
 
-    public void OpenAvatarPanel()
-    {
-        AvatarPanel.Open((index) =>
-        {
-            GameManager.Instance.SaveAvatar("Avatar" + index);
-            Header.SetAvatar();
-        });
-    }
-
     public void StartSingleGame()
     {
         SFXManager.Instance.PlayClip("Select");
@@ -90,14 +77,6 @@ public class MenuManager : MonoBehaviour
         EditorPanel.SetActive(true);
         MainUI.SetActive(false);
     }
-
-//    public void BackToMainUI()
-//    {
-////        EditorPanel.GetComponent<EditorUI>().CategoryPanel_OnCancel();
-
-//        EditorPanel.SetActive(false);
-//        MainUI.SetActive(true);
-//    }
 
     public void OpenSettings()
     {

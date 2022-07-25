@@ -10,10 +10,12 @@ public class CatalogueItem
     public string ItemClass;
     public string Name;
 
+    string description;
+
     public Sprite Sprite;
     GameObject model;
 
-    public bool IsDefault { get => (Price == 0); }
+    public bool IsDefault { get => (description == "default"); }
     public bool IsCustomization { get; private set; }
 
     public CatalogueItem(PlayFab.ClientModels.CatalogItem item)
@@ -23,10 +25,11 @@ public class CatalogueItem
         int.TryParse(item.CustomData,out Level);
         ItemClass = item.ItemClass;
 
-        Name = item.Description;
+        Name = item.DisplayName;
+        description = item.Description;
 
         Sprite = Resources.Load<Sprite>("Sprites/" + ID);
-        IsCustomization = (item.Description == "customization");
+        IsCustomization = (description == "customization");
     }
 
     public GameObject GetModel()

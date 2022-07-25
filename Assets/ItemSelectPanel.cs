@@ -16,6 +16,8 @@ public class ItemSelectPanel : MonoBehaviour
 
     public void Show(EditableItem item,Action<int> confirmed,Action cancelled)
     {
+        gameObject.SetActive(true);
+
         for (int i = 0; i < buttonIcons.Length; i++)
         {
             buttonIcons[i].sprite = item.VarientIcons[i];

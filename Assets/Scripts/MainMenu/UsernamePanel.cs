@@ -10,7 +10,12 @@ public class UsernamePanel : MonoBehaviour
     Action<string> onSubmit;
     [SerializeField]
     GameObject error;
-    // Start is called before the first frame update
+
+    [SerializeField]
+    CharacterSelectTab[] characterSelectTabs;
+
+    int selectedIndex;
+
     public void Show(Action<string> OnSubmit)
     {
         gameObject.SetActive(true);
@@ -22,7 +27,7 @@ public class UsernamePanel : MonoBehaviour
         if (string.IsNullOrEmpty(NameInput.text))
             return;
 
-        SFXManager.Instance.PlayClip("OK");
+        GameManager.Instance.SaveAvatar("Avatar" + selectedIndex);
 
         PlayfabManager.instance.SetDisplayName(NameInput.text, (result) =>
          {
@@ -43,5 +48,15 @@ public class UsernamePanel : MonoBehaviour
         SFXManager.Instance.PlayClip("Close");
         error.SetActive(false);
         gameObject.SetActive(false);
+    }
+
+    public void ChooseCharacters(int index)
+    {
+        for (int i = 0; i < characterSelectTabs.Length; i++)
+        {
+            characterSelectTabs[i].Pressed(i == index);
+        }
+
+        selectedIndex = index;
     }
 }

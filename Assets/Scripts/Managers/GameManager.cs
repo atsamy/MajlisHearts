@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public event Action<int> OnCurrencyChanged;
 
-    [HideInInspector]
-    public List<InventoryItem> Customization;
+    //[HideInInspector]
+    //public List<InventoryItem> Customization;
     [HideInInspector]
     public GameType GameType;
     [HideInInspector]
@@ -91,25 +91,25 @@ public class GameManager : MonoBehaviour
         MyPlayer.Avatar = avatar;
     }
 
-    public void SetCustomization(string category, string id)
-    {
-        if (Customization.Any(a => a.Category == category))
-        {
-            Customization.Find(a => a.Category == category).ID = id;
-        }
-        else
-        {
-            Customization.Add(new InventoryItem(category, id));
-        }
+    //public void SetCustomization(string category, string id)
+    //{
+    //    if (Customization.Any(a => a.Category == category))
+    //    {
+    //        Customization.Find(a => a.Category == category).ID = id;
+    //    }
+    //    else
+    //    {
+    //        Customization.Add(new InventoryItem(category, id));
+    //    }
 
-        Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
-        wrappedCustomization.array = Customization.ToArray();
+    //    Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
+    //    wrappedCustomization.array = Customization.ToArray();
 
-        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
-        {
-            { "Customization", JsonUtility.ToJson( wrappedCustomization) }
-        });
-    }
+    //    PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+    //    {
+    //        { "Customization", JsonUtility.ToJson( wrappedCustomization) }
+    //    });
+    //}
 
 
 }

@@ -7,6 +7,7 @@ public class TasksManager : MonoBehaviour
 {
     public static TasksManager Instance;
     public TaskData[] Tasks;
+    public List<FinishedTask> FinishedTasks;
     int currentIndex;
 
     public TaskData CurrentTask { get => Tasks[currentIndex]; }
@@ -21,11 +22,39 @@ public class TasksManager : MonoBehaviour
         currentIndex = value;
     }
 
-    public void TaskFinished()
+    public void TaskFinished(FinishedTask task)
     {
+        FinishedTasks.Add(task);
         currentIndex++;
         Dictionary<string, string> data = new Dictionary<string, string>();
         data.Add("TaskIndex", currentIndex.ToString());
+
+        Wrapper<FinishedTask> wrappedCustomization = new Wrapper<FinishedTask>();
+        wrappedCustomization.array = FinishedTasks.ToArray();
+
+        data.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
         PlayfabManager.instance.SetPlayerData(data);
     }
+}
+
+[Serializable]
+public class FinishedTask
+{
+    public TaskAction ActionType;
+    public string Target;
+}
+
+[Serializable]
+public class TaskData
+{
+    public string ID;
+    public int Cost;
+    public TaskAction ActionType;
+    public string Target;
+}
+
+public enum TaskAction
+{
+    Clean = 0,
+    Change = 1
 }

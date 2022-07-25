@@ -29,14 +29,20 @@ public class MajlisScript : MonoBehaviour
                     oldItems.SetActive(false);
                 });
                 taskPanel.Close();
-                taskPanel.TaskDone();
+                FinishedTask tasks = new FinishedTask()
+                {
+                    ActionType = TaskAction.Clean,
+                    Target = task.Target
+                };
+                taskPanel.TaskDone(tasks);
                 break;
             case TaskAction.Change:
                 string[] ids = task.Target.Split('_');
                 EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == task.Target);
+
                 cameraHover.GoToLocation(editableItem.transform, () => 
                 {
-                    taskPanel.OpenEditPanel(editableItem);
+                    taskPanel.OpenEditPanel(editableItem,task.Target);
                 });
                 
                 break;
