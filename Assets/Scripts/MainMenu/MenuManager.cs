@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
     public static MenuManager Instance;
 
     public GameObject GameModePanel;
-    public GameObject EditorPanel;
+    //public GameObject EditorPanel;
     public GameObject MainUI;
     //public AvatarPanel AvatarPanel;
     public SettingsPanel SettingsPanel;
@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        if (string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
+        if (!string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
         {
             Header.SetAvatar();
         }
@@ -72,12 +72,6 @@ public class MenuManager : MonoBehaviour
         });
     }
 
-    public void ShowEditorPanel()
-    {
-        EditorPanel.SetActive(true);
-        MainUI.SetActive(false);
-    }
-
     public void OpenSettings()
     {
         MainUI.SetActive(false);
@@ -92,7 +86,7 @@ public class MenuManager : MonoBehaviour
 
     internal void ShowInvitePopup(string sender, string message)
     {
-        InvitePopup.ShowWithMessage( "<color=green>" + ArabicFixer.Fix(sender) + "</color> " + LanguageManager.Instance.GetString("invitationmessage"), () =>
+        InvitePopup.ShowWithMessage(LanguageManager.Instance.GetString("invitationmessage") + " <color=green>" + ArabicFixer.Fix(sender) + "</color> ", () =>
          {
              string[] inviteOptions = message.Split(':');
 

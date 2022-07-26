@@ -42,6 +42,7 @@ public class FriendListPanel : MonoBehaviour
 
             for (int i = 0; i < friends.Count; i++)
             {
+                print(friends[i].TitleDisplayName + " " + friends[i].Profile.AvatarUrl);
                 AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
                 FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
                 friend.Set(friends[i].TitleDisplayName);
@@ -136,7 +137,8 @@ public class FriendListPanel : MonoBehaviour
 
         if (!isPlayersSelected)
         {
-            MenuManager.Instance.Popup.ShowWithMessage("Please Choose Friends To Invite", null);
+            //fix
+            MenuManager.Instance.Popup.ShowWithCode("choosefriends", null);
             return;
         }
 

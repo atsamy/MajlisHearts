@@ -13,7 +13,7 @@ public class Popup : MonoBehaviour
 
     public Text Message;
 
-    public Message[] Messages;
+    //public Message[] Messages;
 
     void Show(Action OnOKPressed)
     {
@@ -23,10 +23,10 @@ public class Popup : MonoBehaviour
         ClosePressed = null;
     }
 
-    public void ShowWithCode(string Code, Action OnOKPressed = null)
+    public void ShowWithCode(string code, Action OnOKPressed = null)
     {
         Show(OnOKPressed);
-        Message.text = Messages.Where(a => a.Code == Code).First().MessageText;
+        Message.text = LanguageManager.Instance.GetString(code);
     }
 
     public void ShowWithMessage(string message, Action OnOKPressed = null)
@@ -60,9 +60,9 @@ public class Popup : MonoBehaviour
 
 }
 
-[Serializable]
-public class Message
-{
-    public string Code;
-    public string MessageText;
-}
+//[Serializable]
+//public class Message
+//{
+//    public string Code;
+//    public string MessageText;
+//}

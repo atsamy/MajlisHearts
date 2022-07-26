@@ -11,6 +11,7 @@ public class AvatarManager : MonoBehaviour
 
     public static AvatarManager Instance;
     Dictionary<string, Sprite> savedPlayers;
+
     private void Awake()
     {
         Instance = this;

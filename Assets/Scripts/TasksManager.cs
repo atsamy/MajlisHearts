@@ -6,7 +6,9 @@ using UnityEngine;
 public class TasksManager : MonoBehaviour
 {
     public static TasksManager Instance;
+    [HideInInspector]
     public TaskData[] Tasks;
+    [HideInInspector]
     public List<FinishedTask> FinishedTasks;
     int currentIndex;
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ArabicSupport;
 using UnityEngine.UI;
 
 public class FriendListItem : MonoBehaviour
@@ -26,7 +26,7 @@ public class FriendListItem : MonoBehaviour
 
     public void Set(string name)
     {
-        playerName.text = name;
+        playerName.text = ArabicFixer.Fix(name);
         this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
     }
 

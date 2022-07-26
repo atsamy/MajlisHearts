@@ -1965,7 +1965,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb2908974c75e44e80d43e784a3abde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Customization: []
   GameType: 0
   Bet: 0
   IsTeam: 0
@@ -2006,7 +2005,7 @@ MonoBehaviour:
   - language: 0
     font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   - language: 1
-    font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    font: {fileID: 12800000, guid: d98f92ce2402941f1b07fcb25cef7b14, type: 3}
   LanguageFile: {fileID: 4900000, guid: 3d41a0c19c72fc44ab7d08b422b61c77, type: 3}
 --- !u!114 &1140238102
 MonoBehaviour:
@@ -2055,6 +2054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tasks: []
+  FinishedTasks: []
 --- !u!1 &1238977186
 GameObject:
   m_ObjectHideFlags: 0

@@ -93,7 +93,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
 
             Wrapper<FinishedTask> wrappedCustomization = new Wrapper<FinishedTask>();
-            //change this
+
             wrappedCustomization.array = TasksManager.Instance.FinishedTasks.ToArray();
             roomOptions.CustomRoomProperties.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
             roomOptions.CustomRoomProperties.Add("players", playersOrder);
@@ -236,8 +236,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         Debug.Log("Joined private room successfully");
 
         //apply new customization
-        //List<InventoryItem> customization = JsonUtility.FromJson<Wrapper<InventoryItem>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
-        //MajlisScript.Instance.SetItems(customization);
+        List<FinishedTask> customization = JsonUtility.FromJson<Wrapper<FinishedTask>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
+        MajlisScript.Instance.AdjustMajlis(customization);
 
         foreach (var item in PhotonNetwork.PlayerList)
         {

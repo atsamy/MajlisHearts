@@ -18,23 +18,61 @@ public class MajlisScript : MonoBehaviour
         cameraHover = Camera.main.GetComponent<CameraHover>();
     }
 
+    private void Start()
+    {
+        AdjustMajlis(TasksManager.Instance.FinishedTasks);
+    }
+
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.R))
+    //        ResetTask(TasksManager.Instance.FinishedTasks);
+    //}
+
+    public void AdjustMajlis(List<FinishedTask> finishedTasks)
+    {
+        foreach (var task in finishedTasks)
+        {
+            switch (task.ActionType)
+            {
+                case TaskAction.Clean:
+                    GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
+                    oldItems.SetActive(false);
+                    break;
+                case TaskAction.Change:
+                    string[] ids = task.Target.Split('_');
+                    EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
+                    editableItem.ChangeItem(int.Parse(ids[2]));
+                    break;
+            }
+        }
+    }
+
+    public void ResetTask(List<FinishedTask> finishedTasks)
+    {
+        foreach (var task in finishedTasks)
+        {
+            switch (task.ActionType)
+            {
+                case TaskAction.Clean:
+                    GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
+                    oldItems.SetActive(true);
+                    break;
+                case TaskAction.Change:
+                    string[] ids = task.Target.Split('_');
+                    EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
+                    editableItem.ResetToOriginal();
+                    break;
+            }
+        }
+    }
+
     public void ExecuteTask(TaskData task)
     {
         switch (task.ActionType)
         {
             case TaskAction.Clean:
-                GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
-                cameraHover.GoToLocation(oldItems.transform, () => 
-                {
-                    oldItems.SetActive(false);
-                });
-                taskPanel.Close();
-                FinishedTask tasks = new FinishedTask()
-                {
-                    ActionType = TaskAction.Clean,
-                    Target = task.Target
-                };
-                taskPanel.TaskDone(tasks);
+                CleanRoom(task.Target);
                 break;
             case TaskAction.Change:
                 string[] ids = task.Target.Split('_');
@@ -47,6 +85,22 @@ public class MajlisScript : MonoBehaviour
                 
                 break;
         }
+    }
+
+    private void CleanRoom(string target)
+    {
+        GameObject oldItems = RoomItems.First(a => a.RoomId == target).OldItems;
+        cameraHover.GoToLocation(oldItems.transform, () =>
+        {
+            oldItems.SetActive(false);
+        });
+        taskPanel.Close();
+        FinishedTask tasks = new FinishedTask()
+        {
+            ActionType = TaskAction.Clean,
+            Target = target
+        };
+        taskPanel.TaskDone(tasks);
     }
 }
 [Serializable]
