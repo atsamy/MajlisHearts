@@ -28,6 +28,7 @@ public class MultiEditableItems : EditableItem
     {
         foreach (var item in AllItems)
         {
+            if(item != null)
             item.Init();
         }
     }

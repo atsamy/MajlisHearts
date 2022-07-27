@@ -237,6 +237,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         //apply new customization
         List<FinishedTask> customization = JsonUtility.FromJson<Wrapper<FinishedTask>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
+        MajlisScript.Instance.ResetTask();
         MajlisScript.Instance.AdjustMajlis(customization);
 
         foreach (var item in PhotonNetwork.PlayerList)

@@ -48,9 +48,9 @@ public class MajlisScript : MonoBehaviour
         }
     }
 
-    public void ResetTask(List<FinishedTask> finishedTasks)
+    public void ResetTask()
     {
-        foreach (var task in finishedTasks)
+        foreach (var task in TasksManager.Instance.FinishedTasks)
         {
             switch (task.ActionType)
             {
