@@ -29,6 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
+    private const int FinishScore = 100;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -245,7 +246,7 @@ public class GameScript : MonoBehaviour
 
             item.SetTotalScore();
 
-            if (item.TotalScore >= 50)
+            if (item.TotalScore >= FinishScore)
                 isGameOver = true;
         }
 

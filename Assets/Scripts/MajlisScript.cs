@@ -36,8 +36,8 @@ public class MajlisScript : MonoBehaviour
             switch (task.ActionType)
             {
                 case TaskAction.Clean:
-                    GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
-                    oldItems.SetActive(false);
+                    RoomItems.First(a => a.RoomId == task.Target).OldItems.gameObject.SetActive(false);
+                    //oldItems.SetActive(false);
                     break;
                 case TaskAction.Change:
                     string[] ids = task.Target.Split('_');
@@ -55,8 +55,8 @@ public class MajlisScript : MonoBehaviour
             switch (task.ActionType)
             {
                 case TaskAction.Clean:
-                    GameObject oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
-                    oldItems.SetActive(true);
+                    CleanAnimation oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
+                    oldItems.Reset();
                     break;
                 case TaskAction.Change:
                     string[] ids = task.Target.Split('_');
@@ -89,10 +89,10 @@ public class MajlisScript : MonoBehaviour
 
     private void CleanRoom(string target)
     {
-        GameObject oldItems = RoomItems.First(a => a.RoomId == target).OldItems;
+        CleanAnimation oldItems = RoomItems.First(a => a.RoomId == target).OldItems;
         cameraHover.GoToLocation(oldItems.transform, () =>
         {
-            oldItems.SetActive(false);
+            oldItems.Clean();
         });
         taskPanel.Close();
         FinishedTask tasks = new FinishedTask()
@@ -107,7 +107,7 @@ public class MajlisScript : MonoBehaviour
 public class RoomItem
 {
     public string RoomId;
-    public GameObject OldItems;
+    public CleanAnimation OldItems;
     public EditableItem[] EditableItems;
 }
 

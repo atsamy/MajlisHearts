@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, List<CatalogueItem>> Catalog;
     [HideInInspector]
     public Dictionary<string, string> EquippedItem;
+
+    public const float LevelFactor = 1000f;
+
     void Awake()
     {
         if (!Instance)
@@ -68,6 +71,21 @@ public class GameManager : MonoBehaviour
         return Inventory.Contains(new InventoryItem(category, id));
     }
 
+    public bool AddPoints(int value, out float progress)
+    {
+        int Level = MyPlayer.Level;
+        MyPlayer.Points += value;
+        int newLevel = MyPlayer.Level;
+
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() {
+            { "Points",MyPlayer.Points.ToString()}
+        });
+
+        progress = (float)value / LevelFactor;
+
+        return newLevel > Level;
+    }
+
     public void EquipItem(string itemName, string itemID)
     {
         PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
@@ -90,28 +108,6 @@ public class GameManager : MonoBehaviour
         PlayfabManager.instance.SetAvatar(avatar);
         MyPlayer.Avatar = avatar;
     }
-
-    //public void SetCustomization(string category, string id)
-    //{
-    //    if (Customization.Any(a => a.Category == category))
-    //    {
-    //        Customization.Find(a => a.Category == category).ID = id;
-    //    }
-    //    else
-    //    {
-    //        Customization.Add(new InventoryItem(category, id));
-    //    }
-
-    //    Wrapper<InventoryItem> wrappedCustomization = new Wrapper<InventoryItem>();
-    //    wrappedCustomization.array = Customization.ToArray();
-
-    //    PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
-    //    {
-    //        { "Customization", JsonUtility.ToJson( wrappedCustomization) }
-    //    });
-    //}
-
-
 }
 
 [System.Serializable]
@@ -119,33 +115,13 @@ public class PlayerInfo
 {
     public string Name;
     public string Avatar;
-    public int Score;
+    public int Points;
 
-    public int GetXP(int currentLevel)
+    public float CurrentPogress { get { return (float)(Points % GameManager.LevelFactor) / GameManager.LevelFactor; } }
+
+    public int Level
     {
-        float XP = 0;
-
-        if (currentLevel < 21)
-            XP = currentLevel * currentLevel * 100;
-        else
-            XP = 40000 + ((currentLevel - 20) * 5000);
-
-        return (int)XP;
-    }
-
-    public float LevelProgress()
-    {
-        int Level = GetLevel();
-        float total = GetXP(Level + 1) - GetXP(Level);
-        return (Score - GetXP(Level)) / total;
-    }
-    public int GetLevel()
-    {
-        int Level = 0;
-        while (Score > GetXP(Level + 1))
-            Level++;
-
-        return Level;
+        get { return Mathf.FloorToInt(Points / GameManager.LevelFactor) + 1; }
     }
 }
 

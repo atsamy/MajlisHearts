@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SingleEditableItem : EditableItem
 {
@@ -33,6 +34,9 @@ public class SingleEditableItem : EditableItem
 
     public override void ChangeItem(int index)
     {
-        sprite.sprite = varientSprites[index];
+        transform.DOScale(0.8f, 0.25f).SetLoops(1, LoopType.Yoyo).SetEase(Ease.InOutCubic).OnComplete(()=>
+        {
+            sprite.sprite = varientSprites[index];
+        });
     }
 }

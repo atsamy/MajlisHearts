@@ -34,17 +34,25 @@ public class ItemSelectPanel : MonoBehaviour
     {
         selectedIndex = index;
         editableItem.ChangeItem(index);
+
+        SFXManager.Instance.PlayClip("select");
     }
 
     public void Done()
     {
         confirmed?.Invoke(selectedIndex);
         gameObject.SetActive(false);
+
+        SFXManager.Instance.PlayClip("confirm");
     }
 
     public void Close()
     {
+        MenuManager.Instance.CameraHover.Unlock();
         editableItem.ResetToOriginal();
+        MenuManager.Instance.OpenMain();
         gameObject.SetActive(false);
+
+        SFXManager.Instance.PlayClip("close");
     }
 }

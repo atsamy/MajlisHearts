@@ -37,10 +37,10 @@ public class SFXManager : MonoBehaviour
         //if (Tracks.Length > 0)
         //{
         //    Music.clip = Tracks[UnityEngine.Random.Range(0, Tracks.Length)];
-            //Music.Play();
+        //Music.Play();
         //}
-
-        Music.mute = PlayerPrefs.GetInt("Music", 1) == 0;
+        if (Music != null)
+            Music.mute = PlayerPrefs.GetInt("Music", 1) == 0;
     }
 
     IEnumerator PlaySoundTime(string code, float time)
@@ -131,7 +131,9 @@ public class SFXManager : MonoBehaviour
         {
             audioSource.mute = value;
         }
-        Ambient.mute = value;
+
+        if (Ambient != null)
+            Ambient.mute = value;
     }
 
     internal void UnPauseAllAudio()

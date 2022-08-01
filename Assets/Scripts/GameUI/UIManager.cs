@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     ResultPanel ResultPanel;
     [SerializeField]
+    LevelPanel LevelPanel;
+    [SerializeField]
     WaitingScript waitingPanel;
     [SerializeField]
     Image tableTop;
@@ -115,30 +117,50 @@ public class UIManager : MonoBehaviour
         Scores.SetActive(false);
         emojiButton.SetActive(false);
 
-        if (isGameOver)
-        {
-            ResultPanel.ShowResult(game.Players, () =>
-             {
-                 LeaveRoom();
-                 SceneManager.LoadScene(1);
-             });
+        //Player[] orderedPlayers = game.Players.OrderBy(a => a.Score).ToArray();
+        //int rank = 0;
 
-            return;
-        }
-        if (game.MyPlayer.Score < 6)
-            GameSFXManager.Instance.PlayClip("Win");
+        //for (int i = 0; i < orderedPlayers.Length; i++)
+        //{
+        //    if (orderedPlayers[i] is MainPlayer)
+        //    {
+        //        rank = i;
+        //    }
+        //}
 
-        if (hostPlayer)
+        LevelPanel.Open(game.MyPlayer.Score, () =>
         {
-            DealFinishedPanel.ShowRound(game.Players, false, () =>
-              {
-                  game.StartNextDeal();
-              });
-        }
-        else
-        {
-            DealFinishedPanel.ShowRound(game.Players, false, null);
-        }
+
+            if (isGameOver)
+            {
+
+                ResultPanel.ShowResult(game.Players, () =>
+                 {
+                     LeaveRoom();
+                     SceneManager.LoadScene(1);
+                 });
+
+
+                return;
+            }
+            //if (game.MyPlayer.Score < 6)
+            //{
+            //    // win effect
+            //    GameSFXManager.Instance.PlayClip("Win");
+            //}
+
+            if (hostPlayer)
+            {
+                DealFinishedPanel.ShowRound(game.Players, false, () =>
+                  {
+                      game.StartNextDeal();
+                  });
+            }
+            else
+            {
+                DealFinishedPanel.ShowRound(game.Players, false, null);
+            }
+        });
     }
 
     public void ShowScores()
@@ -296,6 +318,8 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(ShowEmoAnimation(playerIndex));
         });
+
+        SFXManager.Instance.PlayClip("Pop");
     }
 
     IEnumerator ShowEmoAnimation(int playerIndex)

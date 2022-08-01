@@ -52,9 +52,8 @@ public class Popup : MonoBehaviour
 
     public void OK()
     {
-        OKPressed?.Invoke();
         gameObject.SetActive(false);
-
+        OKPressed?.Invoke();
         SFXManager.Instance.PlayClip("OK");
     }
 

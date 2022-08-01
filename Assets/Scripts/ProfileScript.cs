@@ -27,8 +27,8 @@ public class ProfileScript : MenuScene
     {
         playerName.text = GameManager.Instance.MyPlayer.Name;
         //score.text = GameManager.Instance.MyPlayer.Score.ToString();
-        levelFill.fillAmount = GameManager.Instance.MyPlayer.LevelProgress();
-        level.text = GameManager.Instance.MyPlayer.GetLevel().ToString();
+        levelFill.fillAmount = GameManager.Instance.MyPlayer.CurrentPogress;
+        level.text = GameManager.Instance.MyPlayer.Level.ToString();
     }
 
     private void OnEnable()

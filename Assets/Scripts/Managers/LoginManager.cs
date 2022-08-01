@@ -20,6 +20,9 @@ public class LoginManager : MonoBehaviour
 
     public LanguagePanel LanguagePanel;
 
+    [SerializeField]
+    Popup noConnection;
+
     PlayfabManager playfab;
     int loginValue;
 
@@ -38,7 +41,22 @@ public class LoginManager : MonoBehaviour
         playfab.OnCatalogReturned += Playfab_OnCatalogReturned;
         playfab.OnTitleDataReturned += Playfab_OnTitleDataReturned;
 
-        LogIn();
+        CheckConnection();
+    }
+
+    private void CheckConnection()
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            noConnection.ShowWithCode("noconnection", () =>
+            {
+                CheckConnection();
+            });
+        }
+        else
+        {
+            LogIn();
+        }
     }
 
     private void OnDisable()
@@ -197,6 +215,9 @@ public class LoginManager : MonoBehaviour
                     break;
                 case "TaskIndex":
                     TasksManager.Instance.SetIndex(int.Parse(item.Value.Value));
+                    break;
+                case "Points":
+                    GameManager.Instance.MyPlayer.Points = int.Parse(item.Value.Value);
                     break;
             }
         }

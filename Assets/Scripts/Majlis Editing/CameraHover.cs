@@ -84,10 +84,10 @@ public class CameraHover : MonoBehaviour
         //transform.DORotateQuaternion(Location.rotation, 0.5f);
     }
 
-    public void GoBack()
+    public void Unlock()
     {
         locked = false;
-        transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InOutCubic);
-        transform.DORotateQuaternion(originalRotation, 0.5f);
+        //transform.DOMove(originalPosition, 0.5f).SetEase(Ease.InOutCubic);
+        //transform.DORotateQuaternion(originalRotation, 0.5f);
     }
 }

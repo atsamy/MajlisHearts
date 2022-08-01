@@ -7,7 +7,7 @@ using System;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
-
+    public CameraHover CameraHover;
     public GameObject GameModePanel;
     //public GameObject EditorPanel;
     public GameObject MainUI;

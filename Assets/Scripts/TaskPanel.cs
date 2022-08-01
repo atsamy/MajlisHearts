@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class TaskPanel : MonoBehaviour
 {
+    //[SerializeField]
+    //Transform content;
     [SerializeField]
-    Transform content;
-    [SerializeField]
-    GameObject taskItem;
+    TaskItemScript taskItem;
     [SerializeField]
     GameObject taskPanel;
     [SerializeField]
     ItemSelectPanel editPanel;
 
-    TaskItemScript currentTaskItem;
+    //[SerializeField]
+    //CameraHover cameraHover;
+    //TaskItemScript currentTaskItem;
 
     private void Awake()
     {
@@ -26,10 +28,10 @@ public class TaskPanel : MonoBehaviour
         if (TasksManager.Instance.tasksCompleted)
             return;
 
-        currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
+        //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         TaskData currentTask = TasksManager.Instance.CurrentTask;
 
-        currentTaskItem.Set(LanguageManager.Instance.GetString(currentTask.ID), currentTask.Cost, () =>
+        taskItem.Set(LanguageManager.Instance.GetString(currentTask.ID), currentTask.Cost, () =>
         {
             MajlisScript.Instance.ExecuteTask(currentTask);
         });
@@ -43,6 +45,7 @@ public class TaskPanel : MonoBehaviour
 
     public void Close()
     {
+        MenuManager.Instance.CameraHover.Unlock();
         taskPanel.SetActive(false);
         MenuManager.Instance.OpenMain();
     }
@@ -70,8 +73,10 @@ public class TaskPanel : MonoBehaviour
 
     public void TaskDone(FinishedTask task)
     {
+        MenuManager.Instance.CameraHover.Unlock();
         TasksManager.Instance.TaskFinished(task);
-        Destroy(currentTaskItem.gameObject);
+        taskItem.gameObject.SetActive(false);
+        //Destroy(taskItem.gameObject);
         InitTask();
     }
 }

@@ -16,6 +16,7 @@ public class TaskItemScript : MonoBehaviour
 
     public void Set(string taskName,int cost,Action action)
     {
+        gameObject.SetActive(true);
         this.taskName.text = taskName;
         this.costText.text = cost.ToString();
 
