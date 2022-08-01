@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aa5ea1f844649764280eeb6c073a6cde
+guid: 79476be2a0748d5488d7647952e0840b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,190 +116,316 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BathRoom_Wall
+      name: Bathroom_Bathtab
       rect:
         serializedVersion: 2
-        x: 6
+        x: 0
+        y: 535
+        width: 424
+        height: 489
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df923e40e98b70a41869dce74d96b73f
+      internalID: 1450911366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Toilet
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 846
+        width: 118
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab5cd2ba73ac5434eaa89f2bb72dff8e
+      internalID: -334803688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Wash_Cloth
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 866
+        width: 146
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b856dc36afbf5d443a0b0d6c48dcdd02
+      internalID: 118426670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Carpet_Main
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 807
+        width: 325
+        height: 217
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c55947c29e20344a8f8e2ee9f08b944
+      internalID: -1240537440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Carpet_Small
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 645
+        width: 249
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07c89815653242b42a885b3d02c79fa2
+      internalID: 1846015164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_AC
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 718
+        width: 153
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e96a4a64e66cd754cb0acafe4ea6e1ed
+      internalID: 1724079744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Fan
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 722
+        width: 94
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99868267bb03db142a7fe0733f3fc7f1
+      internalID: -269782649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Painting
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 529
+        width: 98
+        height: 186
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c62602e244d2c24c82498f9ab47e6e6
+      internalID: 1397906767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Plant
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 614
+        width: 93
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f2b803acf8a71443a89fc75972ba8b0
+      internalID: 1530771122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Small_Painting
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 526
+        width: 64
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d709c86367afa244c96ac1cb505fe951
+      internalID: 1973778038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Cabient
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 256
+        width: 277
+        height: 268
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce5b719039b9602408ecc1a4da448a09
+      internalID: -479983766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Glass_Door
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 54
+        width: 167
+        height: 470
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e224ae2f0dc7e544a900c90f9df5aa04
+      internalID: 2055353757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Lamp
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 13
+        width: 143
+        height: 235
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bab6d2147b465e444ba9019872cfc269
+      internalID: -1675130949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Toliet_Mat
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 30
+        width: 123
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c0219c9a19190a4a94f0b9aea890c85
+      internalID: -112474295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bathroom_Washing_wall
+      rect:
+        serializedVersion: 2
+        x: 518
         y: 0
-        width: 641
-        height: 750
+        width: 506
+        height: 507
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1812a5b43d1b45d4585b2f5a97d5a57c
-      internalID: -382235106
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Wall_Back
-      rect:
-        serializedVersion: 2
-        x: 1593
-        y: 33
-        width: 386
-        height: 559
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a08797891cb7cb34486eeb80671acdde
-      internalID: -346543119
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Main Floor
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 794
-        width: 1031
-        height: 503
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0be62d7b0e6e12748ae2e65690043242
-      internalID: -277874671
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Inside_Floor
-      rect:
-        serializedVersion: 2
-        x: 1119
-        y: 818
-        width: 702
-        height: 402
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6358e121ba7d2840b7a407184bf01b2
-      internalID: 1762016647
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Floor_Bridge
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 1311
-        width: 504
-        height: 302
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 26fd818b6e4ffc9408ea426a5e012094
-      internalID: 192417817
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Top_Wall_Bridge_Library
-      rect:
-        serializedVersion: 2
-        x: 1683
-        y: 1223
-        width: 354
-        height: 355
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c46c5e795e8ba0c49886c9a67256d3b1
-      internalID: 109037019
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Top_Wall_Bridge_Majlis
-      rect:
-        serializedVersion: 2
-        x: 1079
-        y: 1220
-        width: 591
-        height: 295
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c3b51df7b493f5c43b47f1e230887973
-      internalID: -830051445
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Wall_01
-      rect:
-        serializedVersion: 2
-        x: 650
-        y: 92
-        width: 311
-        height: 672
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7461db9db6f46624ca91b45d1741d859
-      internalID: -942260195
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BathRoom_Wall_03
-      rect:
-        serializedVersion: 2
-        x: 968
-        y: 8
-        width: 561
-        height: 758
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 82398ed9552a4fa499c2938a950c3361
-      internalID: 1211753337
+      spriteID: aa7af26f212f9dc4f95e42be2ca9d396
+      internalID: 1628313569
       vertices: []
       indices: 
       edges: []
@@ -315,16 +441,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BathRoom_Top_Wall_Bridge_Library: 109037019
-      BathRoom_Floors_Walls_1: -2044308448
-      BathRoom_Inside_Floor: 1762016647
-      BathRoom_Wall_03: 1211753337
-      BathRoom_Main Floor: -277874671
-      BathRoom_Floor_Bridge: 192417817
-      BathRoom_Wall_Back: -346543119
-      BathRoom_Wall: -382235106
-      BathRoom_Wall_01: -942260195
-      BathRoom_Top_Wall_Bridge_Majlis: -830051445
+      Bathroom_Toilet: -334803688
+      Bathroom_Small_Painting: 1973778038
+      Bathroom_Glass_Door: 2055353757
+      Bathroom_Bathtab: 1450911366
+      Bathroom_Cabient: -479983766
+      Bathroom_Toliet_Mat: -112474295
+      Bathroom_Carpet_Main: -1240537440
+      Bathroom_Washing_wall: 1628313569
+      Bathroom_Lamp: -1675130949
+      Bathroom_Painting: 1397906767
+      Bathroom_Wash_Cloth: 118426670
+      Bathroom_Plant: 1530771122
+      Bathroom_Carpet_Small: 1846015164
+      Bathroom_Fan: -269782649
+      Bathroom_AC: 1724079744
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
