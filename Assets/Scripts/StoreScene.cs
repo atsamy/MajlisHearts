@@ -7,6 +7,8 @@ public class StoreScene : MenuScene
     public GameObject[] ContentPanels;
 
     public StoreItem[] CurrencyStoreItems;
+    public StoreItem WatchVideoBtn;
+
     public int[] SCValues;
     
     public GameObject Loading;
@@ -20,6 +22,22 @@ public class StoreScene : MenuScene
         //{
         //    Tabs[i].Pressed(i == 0);
         //}
+
+        WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 50, 0, (index) =>
+        {
+            AdsManager.Instance.ShowRewardedAd((result)=>
+            {
+                if (result)
+                {
+                    SFXManager.Instance.PlayClip("Coins");
+                    PlayfabManager.instance.AddCurrency(50, (result) =>
+                    {
+                        print("add currency: " + result);
+                    });
+                    GameManager.Instance.AddCurrency(SCValues[index]);
+                }
+            });
+        });
 
         avatarContent.itemEquipped += (item) =>
         {

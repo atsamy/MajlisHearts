@@ -25,8 +25,6 @@ public class CardsUIManager : MonoBehaviour
     List<CardUI> playerCardsUI;
 
     [SerializeField]
-    GameObject emojiPanel;
-    [SerializeField]
     PlayerDetails[] playersDetails;
     [SerializeField]
     PlayerCardsLayout playerCards;

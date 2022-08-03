@@ -24,7 +24,7 @@ public class ItemSelectPanel : MonoBehaviour
         }
 
         editableItem = item;
-        editableItem.ChangeItem(0);
+        editableItem.ChangeItem(0,0.2f);
 
         this.confirmed = confirmed;
         this.cancelled = cancelled;

@@ -41,6 +41,8 @@ public class TaskPanel : MonoBehaviour
     {
         taskPanel.SetActive(true);
         MenuManager.Instance.CloseMain();
+
+        SFXManager.Instance.PlayClip("Open");
     }
 
     public void Close()
@@ -48,6 +50,8 @@ public class TaskPanel : MonoBehaviour
         MenuManager.Instance.CameraHover.Unlock();
         taskPanel.SetActive(false);
         MenuManager.Instance.OpenMain();
+
+        SFXManager.Instance.PlayClip("Close");
     }
 
     internal void OpenEditPanel(EditableItem editableItem,string target)

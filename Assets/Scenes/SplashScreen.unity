@@ -1950,6 +1950,7 @@ GameObject:
   - component: {fileID: 1140238102}
   - component: {fileID: 1140238103}
   - component: {fileID: 1140238104}
+  - component: {fileID: 1140238105}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2071,6 +2072,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tasks: []
   FinishedTasks: []
+--- !u!114 &1140238105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140238097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c2d0d1d67291824cbb31d548a89a629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VideoPriority: 00000000
+  InterstitialPriority: 00000000
 --- !u!1 &1238977186
 GameObject:
   m_ObjectHideFlags: 0
@@ -2284,13 +2299,13 @@ MonoBehaviour:
   SoundEffects:
   - Code: Popup
     Clip: {fileID: 8300000, guid: fba6ea0d79528f34492a2b7ebfbb012f, type: 3}
-    Volume: 0
+    Volume: 0.5
   - Code: OK
     Clip: {fileID: 8300000, guid: 8d6188663714a394dbe6b59cbed518e4, type: 3}
-    Volume: 0
+    Volume: 0.5
   - Code: Close
     Clip: {fileID: 8300000, guid: e59f149be9c3f1a4498de08f89ded3e0, type: 3}
-    Volume: 0
+    Volume: 0.5
   Tracks: []
 --- !u!4 &1244134459
 Transform:
@@ -3706,7 +3721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5781590936897769167, guid: b4a3ffd2f3c3e4c81822290ed3827fb1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5781590937430843385, guid: b4a3ffd2f3c3e4c81822290ed3827fb1, type: 3}
       propertyPath: m_SizeDelta.x

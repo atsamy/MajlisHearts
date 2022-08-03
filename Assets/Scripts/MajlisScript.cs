@@ -90,6 +90,8 @@ public class MajlisScript : MonoBehaviour
         {
             taskPanel.OpenEditPanel(editableItem, target);
         });
+
+        SFXManager.Instance.PlayClip("Select");
     }
 
     private void CleanRoom(string target)

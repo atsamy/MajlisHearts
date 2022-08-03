@@ -12,10 +12,10 @@ public class LevelPanel : MonoBehaviour
     Image levelProgress;
 
     [SerializeField]
-    TextMeshProUGUI totalPoints;
+    Text totalPoints;
 
     [SerializeField]
-    TextMeshProUGUI newPoints;
+    Text newPoints;
 
     [SerializeField]
     TextMeshProUGUI levelText;

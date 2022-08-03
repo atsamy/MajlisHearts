@@ -297,6 +297,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenEmojiPanel()
     {
+        GameSFXManager.Instance.PlayClip("Click");
         emojiPanel.SetActive(true);
     }
 
@@ -312,21 +313,20 @@ public class UIManager : MonoBehaviour
     public void ShowEmoji(int playerIndex, int index)
     {
         EmojiImages[playerIndex].sprite = Emojes[index];
+        EmojiImages[playerIndex].transform.parent.gameObject.SetActive(true);
+        //EmojiImages[playerIndex].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() =>
+        //{
+        StartCoroutine(ShowEmoAnimation(playerIndex));
+        //});
 
-        EmojiImages[playerIndex].gameObject.SetActive(true);
-        EmojiImages[playerIndex].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() =>
-        {
-            StartCoroutine(ShowEmoAnimation(playerIndex));
-        });
-
-        SFXManager.Instance.PlayClip("Pop");
+        GameSFXManager.Instance.PlayClip("Pop");
     }
 
     IEnumerator ShowEmoAnimation(int playerIndex)
     {
         yield return new WaitForSeconds(3);
-        EmojiImages[playerIndex].transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Flash);
-        EmojiImages[playerIndex].gameObject.SetActive(false);
+        //EmojiImages[playerIndex].transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Flash);
+        EmojiImages[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
     private void Game_OnCardsDealt()
