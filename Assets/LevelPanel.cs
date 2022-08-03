@@ -39,10 +39,10 @@ public class LevelPanel : MonoBehaviour
 
         float progress;
 
-
+        GameSFXManager.Instance.PlayClip("Count");
         if (GameManager.Instance.AddPoints(score, out progress))
         {
-            StartCoroutine(CountNumbers(startPoints,score,0.5f));
+            StartCoroutine(CountNumbers(startPoints, score, 0.5f));
             levelProgress.DOFillAmount(1, 0.5f).OnComplete(() =>
             {
                 //celebrate
@@ -58,14 +58,15 @@ public class LevelPanel : MonoBehaviour
             levelProgress.DOFillAmount(currentProgress + progress, 1).OnComplete(() =>
              {
                  StartCoroutine(Finish(1, finished));
-                //nextButton.SetActive(true);
-            });
+                 //nextButton.SetActive(true);
+             });
         }
     }
 
     public IEnumerator Finish(float time, Action finished)
     {
         yield return new WaitForSeconds(time);
+        gameObject.SetActive(false);
         finished?.Invoke();
     }
 
@@ -75,8 +76,8 @@ public class LevelPanel : MonoBehaviour
 
         while (timer < time)
         {
-            totalPoints.text = (startPoints + (points * (timer / time))).ToString();
-            newPoints.text = (points * (1 - (timer / time))).ToString();
+            totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))).ToString();
+            newPoints.text = (Mathf.Round(points * (1 - (timer / time)))).ToString();
 
             timer += Time.deltaTime;
             yield return null;
@@ -86,15 +87,11 @@ public class LevelPanel : MonoBehaviour
         newPoints.text = "0";
     }
 
-    int GetScore(int dealScore)
+    int GetScore(int dealScore) => dealScore switch
     {
-        if (dealScore == 0)
-            return 40;
-        else if (dealScore < 6)
-            return 30;
-        else if (dealScore < 11)
-            return 20;
-        else
-            return 10;
-    }
+        0 => 40,
+        < 6 => 30,
+        < 11 => 20,
+        _ => 10
+    };
 }

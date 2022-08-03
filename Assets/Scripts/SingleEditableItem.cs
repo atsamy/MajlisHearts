@@ -32,11 +32,24 @@ public class SingleEditableItem : EditableItem
         sprite.sprite = originalSprite;
     }
 
+    public override void SetOriginal()
+    {
+        originalSprite = sprite.sprite;
+    }
+
     public override void ChangeItem(int index)
     {
-        transform.DOScale(0.8f, 0.25f).SetLoops(1, LoopType.Yoyo).SetEase(Ease.InOutCubic).OnComplete(()=>
+        SetModified();
+        sprite.sprite = varientSprites[index];
+    }
+
+    public override void ChangeItem(int index,float time)
+    {
+        SetModified();
+        transform.DOScale(0.7f, time * 2).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             sprite.sprite = varientSprites[index];
+            transform.DOScale(1f, time).SetEase(Ease.Flash);
         });
     }
 }

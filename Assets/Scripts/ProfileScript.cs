@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ArabicSupport;
 
 public class ProfileScript : MenuScene
 {
@@ -25,7 +26,9 @@ public class ProfileScript : MenuScene
 
     private void Start()
     {
-        playerName.text = GameManager.Instance.MyPlayer.Name;
+        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
+        playerName.font = LanguageManager.Instance.GetFont();
+
         //score.text = GameManager.Instance.MyPlayer.Score.ToString();
         levelFill.fillAmount = GameManager.Instance.MyPlayer.CurrentPogress;
         level.text = GameManager.Instance.MyPlayer.Level.ToString();

@@ -33,17 +33,17 @@ public class ItemSelectPanel : MonoBehaviour
     public void Select(int index)
     {
         selectedIndex = index;
-        editableItem.ChangeItem(index);
+        editableItem.ChangeItem(index,0.2f);
 
-        SFXManager.Instance.PlayClip("select");
+        SFXManager.Instance.PlayClip("Select");
     }
 
     public void Done()
     {
         confirmed?.Invoke(selectedIndex);
         gameObject.SetActive(false);
-
-        SFXManager.Instance.PlayClip("confirm");
+        editableItem.SetOriginal();
+        SFXManager.Instance.PlayClip("Confirm");
     }
 
     public void Close()
@@ -53,6 +53,6 @@ public class ItemSelectPanel : MonoBehaviour
         MenuManager.Instance.OpenMain();
         gameObject.SetActive(false);
 
-        SFXManager.Instance.PlayClip("close");
+        SFXManager.Instance.PlayClip("Close");
     }
 }

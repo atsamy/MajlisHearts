@@ -13,6 +13,9 @@ public class EditableItem : MonoBehaviour
     Sprite[] varientIcons;
 
     public Sprite[] VarientIcons { get => varientIcons; }
+    //public bool Modified { set => modified = value; }
+
+    bool modified;
 
     private void Awake()
     {
@@ -23,6 +26,10 @@ public class EditableItem : MonoBehaviour
     {
         if (counter == 1)
         {
+            if (modified)
+            {
+                MajlisScript.Instance.ShowEditableItem(Code);
+            }
             //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
             //print(itemPos);
             //EditorUI.Instance.ShowItems(Code, itemPos);
@@ -47,6 +54,21 @@ public class EditableItem : MonoBehaviour
     public virtual void ChangeItem(int index)
     {
 
+    }
+
+    public virtual void ChangeItem(int index,float time)
+    {
+
+    }
+
+    public virtual void SetOriginal()
+    {
+
+    }
+
+    protected void SetModified()
+    {
+        modified = true;
     }
 
     public virtual void Init()

@@ -43,6 +43,7 @@ public class MajlisScript : MonoBehaviour
                     string[] ids = task.Target.Split('_');
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
                     editableItem.ChangeItem(int.Parse(ids[2]));
+                    editableItem.SetOriginal();
                     break;
             }
         }
@@ -75,16 +76,20 @@ public class MajlisScript : MonoBehaviour
                 CleanRoom(task.Target);
                 break;
             case TaskAction.Change:
-                string[] ids = task.Target.Split('_');
-                EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == task.Target);
+                ShowEditableItem(task.Target);
 
-                cameraHover.GoToLocation(editableItem.transform, () => 
-                {
-                    taskPanel.OpenEditPanel(editableItem,task.Target);
-                });
-                
                 break;
         }
+    }
+
+    public void ShowEditableItem(string target)
+    {
+        EditableItem editableItem = RoomItems.First(a => a.RoomId == target.Split('_')[0]).EditableItems.First(a => a.Code == target);
+
+        cameraHover.GoToLocation(editableItem.transform, () =>
+        {
+            taskPanel.OpenEditPanel(editableItem, target);
+        });
     }
 
     private void CleanRoom(string target)

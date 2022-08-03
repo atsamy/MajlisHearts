@@ -404,12 +404,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f52e97db11156e4d8e22b0f4b7a96fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveAnimations:
+  MoveAnimations: []
+  ScaleAnimation:
   - Duration: 0.25
     Reverse: 0
     StartAfter: 0
     Start: {x: 1, y: 0, z: 0}
-  ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
 --- !u!1 &22494892
@@ -1219,7 +1219,7 @@ MonoBehaviour:
   - Duration: 0.25
     Reverse: 0
     StartAfter: 0
-    Start: {x: 1500, y: 0, z: 0}
+    Start: {x: 1500, y: -193.2, z: 0}
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
@@ -3545,6 +3545,9 @@ MonoBehaviour:
     Volume: 0.5
   - Code: LevelUp
     Clip: {fileID: 8300000, guid: ad4783294a9b1c34294d71d5ca3ce03c, type: 3}
+    Volume: 0.5
+  - Code: Count
+    Clip: {fileID: 8300000, guid: 4dc7ad45fb15d49289a9e5ffee78261c, type: 3}
     Volume: 0.5
   Tracks: []
   MultiSoundEffects:
