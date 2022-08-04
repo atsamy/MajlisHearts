@@ -12,13 +12,16 @@ public class LevelPanel : MonoBehaviour
     Image levelProgress;
 
     [SerializeField]
-    Text totalPoints;
+    TextMeshProUGUI totalPoints;
 
     [SerializeField]
-    Text newPoints;
+    TextMeshProUGUI newPoints;
 
     [SerializeField]
     TextMeshProUGUI levelText;
+
+    [SerializeField]
+    GameObject levelUp;
 
     //Action nextPressed;
 
@@ -31,7 +34,7 @@ public class LevelPanel : MonoBehaviour
 
         int score = GetScore(dealscore);
 
-        newPoints.text = score.ToString();
+        newPoints.text = score + "+";
 
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         float currentProgress = GameManager.Instance.MyPlayer.CurrentPogress;
@@ -42,14 +45,14 @@ public class LevelPanel : MonoBehaviour
         GameSFXManager.Instance.PlayClip("Count");
         if (GameManager.Instance.AddPoints(score, out progress))
         {
-            StartCoroutine(CountNumbers(startPoints, score, 0.5f));
-            levelProgress.DOFillAmount(1, 0.5f).OnComplete(() =>
+            StartCoroutine(CountNumbers(startPoints, score, 1f));
+            levelProgress.DOFillAmount(1, 1f).OnComplete(() =>
             {
                 //celebrate
                 levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
                 GameSFXManager.Instance.PlayClip("LevelUp");
-
-                StartCoroutine(Finish(1.5f, finished));
+                levelUp.SetActive(true);
+                StartCoroutine(Finish(2f, finished));
             });
         }
         else
@@ -57,7 +60,7 @@ public class LevelPanel : MonoBehaviour
             StartCoroutine(CountNumbers(startPoints, score, 1));
             levelProgress.DOFillAmount(currentProgress + progress, 1).OnComplete(() =>
              {
-                 StartCoroutine(Finish(1, finished));
+                 StartCoroutine(Finish(2, finished));
                  //nextButton.SetActive(true);
              });
         }
