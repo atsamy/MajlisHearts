@@ -52,8 +52,8 @@ public class ProfileScript : MenuScene
 
         changeUserName.Show((name)=>
         {
-            headerUserName.text = name;
-            playerName.text = name;
+            headerUserName.text = ArabicFixer.Fix(name);
+            playerName.text = ArabicFixer.Fix(name);
             GameManager.Instance.MyPlayer.Name = name;
         });
     }

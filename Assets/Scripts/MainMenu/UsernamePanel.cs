@@ -24,23 +24,28 @@ public class UsernamePanel : MonoBehaviour
 
     public void Submit()
     {
+        SubmitUserName();
+
+        GameManager.Instance.SaveAvatar("Avatar" + selectedIndex);
+    }
+
+    public void SubmitUserName()
+    {
         if (string.IsNullOrEmpty(NameInput.text))
             return;
 
-        GameManager.Instance.SaveAvatar("Avatar" + selectedIndex);
-
         PlayfabManager.instance.SetDisplayName(NameInput.text, (result) =>
-         {
-             if (result)
-             {
-                 onSubmit?.Invoke(NameInput.text);
-                 gameObject.SetActive(false);
-             }
-             else
-             {
-                 error.SetActive(false);
-             }
-         });
+        {
+            if (result)
+            {
+                onSubmit?.Invoke(NameInput.text);
+                gameObject.SetActive(false);
+            }
+            else
+            {
+                error.SetActive(true);
+            }
+        });
     }
 
     public void Close()
