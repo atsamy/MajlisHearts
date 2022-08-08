@@ -1,15 +1,12 @@
-//using GameSparks.Core;
-//using GooglePlayGames;
-//using GooglePlayGames.BasicApi;
-//using PlayFab;
+using GooglePlayGames;
 using PlayFab.ClientModels;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GooglePlayGames.BasicApi;
 
 //using UnityEngine.Analytics;
 
@@ -71,12 +68,13 @@ public class LoginManager : MonoBehaviour
 
     public void LogIn()
     {
-        InitPlayGames();
+        
         loginValue = PlayerPrefs.GetInt("login", 0);
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            playfab.DeviceLogin();//AccountLogin();
+            InitPlayGames();
+            AccountLogin();
         }
         else
         {
@@ -89,14 +87,17 @@ public class LoginManager : MonoBehaviour
     void InitPlayGames()
     {
 #if UNITY_ANDROID
-        //PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-        //.RequestServerAuthCode(false).AddOauthScope("profile").Build();
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        .AddOauthScope("profile")
+        .RequestServerAuthCode(false)
+        .Build();
+        PlayGamesPlatform.InitializeInstance(config);
 
-        //PlayGamesPlatform.DebugLogEnabled = true;
-        //PlayGamesPlatform.InitializeInstance(config);
-        //PlayGamesPlatform.Activate();
+        // recommended for debugging:
+        PlayGamesPlatform.DebugLogEnabled = true;
 
-        //print("initiated");
+        // Activate the Google Play Games platform
+        PlayGamesPlatform.Activate();
 #endif
     }
 
@@ -146,8 +147,15 @@ public class LoginManager : MonoBehaviour
             if (success)
             {
 #if UNITY_ANDROID
-                //print("auth code " + PlayGamesPlatform.Instance.GetServerAuthCode());
-                //PlayfabManager.instance.LoginWithGoogle(PlayGamesPlatform.Instance.GetServerAuthCode());
+                var serverAuthCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+                print("Server Auth Code: " + serverAuthCode);
+
+                //PlayGamesPlatform.Instance.RequestServerSideAccess(false, (code) =>
+                //{
+                //    print("code:"+code);
+                PlayfabManager.instance.LoginWithGoogle(serverAuthCode);
+                //});
+                
 #elif UNITY_IOS
                 //playfab.DeviceLogin();
                 playfab.LoginWithApple();
@@ -169,6 +177,7 @@ public class LoginManager : MonoBehaviour
         }
         else if (string.IsNullOrEmpty(userInfo.DisplayName))
         {
+            print("lang:"+LanguageManager.Instance.CurrentLanguage);
             ShowUserNamePanel();
         }
         else

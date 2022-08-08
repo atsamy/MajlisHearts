@@ -13,7 +13,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
     public string[] HCProductID;
 
-    public int[] HCAmount;
+    internal int[] HCAmount;
 
     public delegate void GetPrices(string[] prices);
     public GetPrices OnGetPrices;
@@ -33,6 +33,8 @@ public class Purchaser : MonoBehaviour, IStoreListener
             // Begin to configure our connection to Purchasing
             InitializePurchasing();
         }
+
+        HCAmount = new int[HCProductID.Length];
     }
 
     public void InitializePurchasing()
@@ -69,6 +71,15 @@ public class Purchaser : MonoBehaviour, IStoreListener
         for (int i = 0; i < HCProductID.Length; i++)
         {
             Prices[i] = m_StoreController.products.WithID(HCProductID[i]).metadata.localizedPriceString;
+            int amount = 0;
+            if (int.TryParse(m_StoreController.products.WithID(HCProductID[i]).metadata.localizedDescription, out amount))
+            {
+                HCAmount[i] = amount;
+            }
+            else
+            {
+                HCAmount[i] = 500;
+            }
         }
 
         if (OnGetPrices != null)

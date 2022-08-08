@@ -9,7 +9,7 @@ public class StoreScene : MenuScene
     public StoreItem[] CurrencyStoreItems;
     public StoreItem WatchVideoBtn;
 
-    public int[] SCValues;
+    //public int[] SCValues;
     
     public GameObject Loading;
 
@@ -34,7 +34,7 @@ public class StoreScene : MenuScene
                     {
                         print("add currency: " + result);
                     });
-                    GameManager.Instance.AddCurrency(SCValues[index]);
+                    GameManager.Instance.AddCurrency(Purchaser.Instance.HCAmount[index]);
                 }
             });
         });
@@ -60,14 +60,14 @@ public class StoreScene : MenuScene
         {
             for (int i = 0; i < CurrencyStoreItems.Length; i++)
             {
-                CurrencyStoreItems[i].Set(prices[i], SCValues[i], i, (index) =>
+                CurrencyStoreItems[i].Set(prices[i], Purchaser.Instance.HCAmount[i], i, (index) =>
                 {
                     SFXManager.Instance.PlayClip("Coins");
-                    PlayfabManager.instance.AddCurrency(SCValues[index], (result) =>
+                    PlayfabManager.instance.AddCurrency(Purchaser.Instance.HCAmount[index], (result) =>
                      {
                          print("add currency: " + result);
                      });
-                    GameManager.Instance.AddCurrency(SCValues[index]);
+                    GameManager.Instance.AddCurrency(Purchaser.Instance.HCAmount[index]);
                     //SFXManager.Instance.PlayClip("Buy");
                 });
             }

@@ -185,12 +185,12 @@ public class PlayfabManager : MonoBehaviour
             TitleId = PlayFabSettings.TitleId,
             ServerAuthCode = authCode,
             CreateAccount = true,
-        }, (successLoginResult) =>
+        }, (result) => SetupSessionData((titleData) =>
         {
-            Debug.LogFormat("Login With Google Success: ", successLoginResult.PlayFabId);
-        }, (errorResult) =>
+            OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
+        }), (errorResult) =>
         {
-            Debug.Log(errorResult.GenerateErrorReport());
+            Debug.LogError(errorResult.GenerateErrorReport());
         });
     }
 

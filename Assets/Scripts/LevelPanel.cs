@@ -12,6 +12,9 @@ public class LevelPanel : MonoBehaviour
     Image levelProgress;
 
     [SerializeField]
+    Image newLevelProgress;
+
+    [SerializeField]
     TextMeshProUGUI totalPoints;
 
     [SerializeField]
@@ -23,14 +26,17 @@ public class LevelPanel : MonoBehaviour
     [SerializeField]
     GameObject levelUp;
 
+    int nextLevelPoints = 1;
     //Action nextPressed;
 
     public void Open(int dealscore, Action finished)
     {
+        nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
+
         gameObject.SetActive(true);
         //this.nextPressed = nextPressed;
         int startPoints = GameManager.Instance.MyPlayer.Points;
-        totalPoints.text = startPoints.ToString();
+        totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
 
         int score = GetScore(dealscore);
 
@@ -39,6 +45,7 @@ public class LevelPanel : MonoBehaviour
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         float currentProgress = GameManager.Instance.MyPlayer.CurrentPogress;
         levelProgress.fillAmount = currentProgress;
+        newLevelProgress.fillAmount = currentProgress;
 
         float progress;
 
@@ -46,22 +53,23 @@ public class LevelPanel : MonoBehaviour
         if (GameManager.Instance.AddPoints(score, out progress))
         {
             StartCoroutine(CountNumbers(startPoints, score, 1f));
-            levelProgress.DOFillAmount(1, 1f).OnComplete(() =>
+            newLevelProgress.DOFillAmount(1, 1f).OnComplete(() =>
             {
+                levelProgress.DOFillAmount(1, 0.2f);
                 //celebrate
                 levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
                 GameSFXManager.Instance.PlayClip("LevelUp");
                 levelUp.SetActive(true);
-                StartCoroutine(Finish(2f, finished));
+                StartCoroutine(Finish(3f, finished));
             });
         }
         else
         {
             StartCoroutine(CountNumbers(startPoints, score, 1));
-            levelProgress.DOFillAmount(currentProgress + progress, 1).OnComplete(() =>
+            newLevelProgress.DOFillAmount(currentProgress + progress, 1).OnComplete(() =>
              {
+                 levelProgress.DOFillAmount(currentProgress + progress, 0.2f);
                  StartCoroutine(Finish(2, finished));
-                 //nextButton.SetActive(true);
              });
         }
     }
@@ -79,14 +87,14 @@ public class LevelPanel : MonoBehaviour
 
         while (timer < time)
         {
-            totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))).ToString();
+            totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))) + "/" + nextLevelPoints; ;
             newPoints.text = (Mathf.Round(points * (1 - (timer / time)))).ToString();
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        totalPoints.text = (startPoints + points).ToString();
+        totalPoints.text = (startPoints + points) + "/" + nextLevelPoints;
         newPoints.text = "0";
     }
 

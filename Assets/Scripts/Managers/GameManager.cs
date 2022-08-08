@@ -119,6 +119,8 @@ public class PlayerInfo
 
     public float CurrentPogress { get { return (float)(Points % GameManager.LevelFactor) / GameManager.LevelFactor; } }
 
+    public int LevelPoints { get { return (int)GameManager.LevelFactor * (Level + 1); } }
+
     public int Level
     {
         get { return Mathf.FloorToInt(Points / GameManager.LevelFactor) + 1; }
