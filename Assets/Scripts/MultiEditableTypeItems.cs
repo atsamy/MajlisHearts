@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiEditableItems : EditableItem
+public class MultiEditableTypeItems : EditableItem
 {
     [SerializeField]
-    EditableItemUnit[] AllItems;
+    SingleEditableItem[] AllItems;
 
     public override void ResetToOriginal()
     {
