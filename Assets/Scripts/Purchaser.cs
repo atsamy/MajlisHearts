@@ -27,14 +27,13 @@ public class Purchaser : MonoBehaviour, IStoreListener
     void Start()
     {
         Instance = this;
+        HCAmount = new int[HCProductID.Length];
 
         if (m_StoreController == null)
         {
             // Begin to configure our connection to Purchasing
             InitializePurchasing();
         }
-
-        HCAmount = new int[HCProductID.Length];
     }
 
     public void InitializePurchasing()

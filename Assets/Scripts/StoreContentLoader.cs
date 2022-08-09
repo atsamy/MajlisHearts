@@ -51,7 +51,7 @@ public class StoreContentLoader : MonoBehaviour
 
                    if (catalogueItems[index].Price > GameManager.Instance.Currency)
                    {
-                       MenuManager.Instance.Popup.ShowWithMessage("you dont have enough money, buy more coins?", () =>
+                       MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
                        {
                            transform.GetComponentInParent<StoreScene>().TabPressed(0);
                        });

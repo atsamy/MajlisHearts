@@ -48,4 +48,10 @@ public class SettingsPanel : MenuScene
 
         notification.sprite = notificationSprites[isOn];
     }
+
+    public override void Close()
+    {
+        MenuManager.Instance.OpenMain();
+        base.Close();
+    }
 }

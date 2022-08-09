@@ -13,13 +13,13 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     public Text gameInfoTop;
     //public GameObject StartGameButton;
     //public Button JoinRoomButton;
-
+    int gameType = 0;
+    //[SerializeField]
+    //SelectGroup betSelection;
+    //[SerializeField]
+    //SelectGroup typeSelection;
     [SerializeField]
-    SelectGroup betSelection;
-    [SerializeField]
-    SelectGroup typeSelection;
-    [SerializeField]
-    GameObject LoginPanel;
+    ChoosePopup gameTypePopup;
     [SerializeField]
     GameObject WaitPanel;
     [SerializeField]
@@ -40,6 +40,10 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     const int beginGame = 25;
     bool roomCreated;
 
+    public int GameEntryFee = 50;
+
+    //int gameCost;
+
     public void Close()
     {
         SFXManager.Instance.PlayClip("Close");
@@ -51,12 +55,23 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         IsconnectedToMaster = false;
 
         WaitPanel.SetActive(false);
-        LoginPanel.SetActive(false);
+        gameTypePopup.gameObject.SetActive(false);
 
         MenuManager.Instance.OpenMain();
 
         roomCreated = false;
         readyToJoin = false;
+
+        foreach (Transform item in playersContent)
+        {
+            Destroy(item.gameObject);
+        }
+    }
+
+    public void ClosePopup()
+    {
+        gameTypePopup.gameObject.SetActive(false);
+        MenuManager.Instance.OpenMain();
     }
 
     IEnumerator Shuffle()
@@ -72,7 +87,37 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
         MenuManager.Instance.CloseMain();
         SFXManager.Instance.PlayClip("Select");
-        LoginPanel.SetActive(true);
+
+        GameManager.Instance.Bet = GameEntryFee * Mathf.CeilToInt((float)GameManager.Instance.MyPlayer.Level / 5f);
+
+        gameTypePopup.Show(LanguageManager.Instance.GetString("startmultigame").Replace("/c", "<color=green>" + GameManager.Instance.Bet + "</color>"), (type)=>
+        {
+            if (GameManager.Instance.Currency < GameManager.Instance.Bet)
+            {
+                MenuManager.Instance.Popup.ShowWithCode("nocoins", ()=>
+                {
+                    MenuManager.Instance.OpenStore(0);
+                },()=>
+                {
+                    MenuManager.Instance.OpenMain();
+                });
+
+                return;
+            }
+            gameType = type;
+            GameManager.Instance.IsTeam = (gameType == 1);
+
+            WaitPanel.SetActive(true);
+
+            if (IsconnectedToMaster)
+            {
+                JoinOrCreateRoom();
+            }
+            else
+            {
+                readyToJoin = true;
+            }
+        });
 
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
@@ -187,20 +232,10 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     bool readyToJoin;
 
-    public void ReadyToJoin()
-    {
-        LoginPanel.SetActive(false);
-        WaitPanel.SetActive(true);
-
-        if (IsconnectedToMaster)
-        {
-            JoinOrCreateRoom();
-        }
-        else
-        {
-            readyToJoin = true;
-        }
-    }
+    //public void ReadyToJoin()
+    //{
+    //    LoginPanel.SetActive(false);
+    //}
 
     public void JoinOrCreateRoom()
     {
@@ -211,11 +246,11 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable()
         {
-            { "bet", betSelection.GroupIndex },
-            { "type", typeSelection.GroupIndex }
+            { "bet", GameManager.Instance.Bet },
+            { "type", gameType}
         };
 
-        print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
+        //print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
 
         RoomOptions roomOptions = new RoomOptions()
         {
@@ -227,7 +262,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         roomOptions.CustomRoomPropertiesForLobby = new string[]
         {
-             "bet","type"
+            "bet",
+            "type"
         };
 
         PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom,
@@ -267,6 +303,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     private void StartGame()
     {
+        GameManager.Instance.DeductCurrency(GameManager.Instance.Bet);
+
         PhotonNetwork.RemoveCallbackTarget(this);
         GameManager.Instance.GameType = GameType.Online;
         SceneManager.LoadScene(2);

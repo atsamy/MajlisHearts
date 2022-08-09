@@ -37,8 +37,13 @@ public class Popup : MonoBehaviour
 
     public void ShowWithMessage(string message, Action OnOKPressed, Action OnClosePressed)
     {
-        Show(OnOKPressed);
         ShowWithMessage(message, OnOKPressed);
+        ClosePressed = OnClosePressed;
+    }
+
+    public void ShowWithCode(string message, Action OnOKPressed, Action OnClosePressed)
+    {
+        ShowWithCode(message, OnOKPressed);
         ClosePressed = OnClosePressed;
     }
 

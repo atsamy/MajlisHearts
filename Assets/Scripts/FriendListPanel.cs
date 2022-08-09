@@ -143,7 +143,7 @@ public class FriendListPanel : MonoBehaviour
             return;
         }
 
-        selectTypePopup.Show((type) =>
+        selectTypePopup.Show(LanguageManager.Instance.GetString("choosemode"),(type) =>
         {
             string roomName = Random.Range(0, 10000).ToString("0000");
             string gameType = type == 0 ? "single" : "team";
