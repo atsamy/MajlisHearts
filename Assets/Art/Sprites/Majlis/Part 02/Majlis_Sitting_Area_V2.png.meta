@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61f0197d1488c1c4ea96909ab58547c9
+guid: 35c2b8ce31de8234683ab75f86532e82
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,127 +116,253 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Majlis_Windows_Glass
+      name: Majlis_sofa_left
       rect:
         serializedVersion: 2
-        x: 68
-        y: 672
-        width: 180
-        height: 334
+        x: 1
+        y: 695
+        width: 409
+        height: 329
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4c46ff162dfaae4f9bacd7352fcf571
-      internalID: -1447285658
+      spriteID: a711eef8da40f154da0ec3a8981eeaf3
+      internalID: -361124433
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Floor_Side
+      name: Majlis_sofa_Back
       rect:
         serializedVersion: 2
-        x: 35
-        y: 427
-        width: 385
-        height: 243
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 46d104fef5fd40e47894eb9ebf5fceb2
-      internalID: -1844523565
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Majlis_Floor_Main
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 4
-        width: 663
-        height: 395
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a7774d4b4c9f98b42b91c4b0c16df298
-      internalID: -540043968
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Majlis_Wall_Main
-      rect:
-        serializedVersion: 2
-        x: 611
-        y: 418
+        x: 1
+        y: 358
         width: 410
-        height: 606
+        height: 327
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a3acbf00fd464842b7a8d9f8a9ff046
-      internalID: -666971893
+      spriteID: 4008d178df87b4945ab859c2123af8ab
+      internalID: -392882703
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Wall_Window
+      name: Majlis_sofa_Right
       rect:
         serializedVersion: 2
-        x: 725
-        y: 3
-        width: 293
-        height: 400
+        x: 1
+        y: 20
+        width: 410
+        height: 330
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5c26e75ac2488e419ce05bffb65f7e3
-      internalID: -1111060431
+      spriteID: 6129ef07aa4538241ac094c7a05568ad
+      internalID: -765124533
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Wall_Column
+      name: Majlis_Chair_right
       rect:
         serializedVersion: 2
-        x: 388
-        y: 518
-        width: 215
-        height: 506
+        x: 413
+        y: 771
+        width: 296
+        height: 253
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 61f79f0ccb1bf4546921dcc24086e3c3
-      internalID: 1835281336
+      spriteID: b229777e09bd0fb4b8f553bed3aa0d8d
+      internalID: -1147582491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Chair_left
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 772
+        width: 289
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ced8cbe9efd7b54c835f736f255b966
+      internalID: -1610777762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Side_Table_Back
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 602
+        width: 190
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7e8a2ccbc37e344e85f41e80fe56b7e
+      internalID: -941995297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Elipse_table
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 609
+        width: 176
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4e551c9703c94448ab85a73e7b2b41c
+      internalID: 991171672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Plants_Rec_Pot
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 429
+        width: 214
+        height: 166
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 726ab164975294341a930714258be9ee
+      internalID: 297282733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Side_Table_right
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 414
+        width: 178
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eb1471be81e7b1409cb5a804e9a4c19
+      internalID: 54424231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Wall_Table
+      rect:
+        serializedVersion: 2
+        x: 838
+        y: 395
+        width: 154
+        height: 205
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c73a3e1b8c8f1c646aa39e6be857a11e
+      internalID: 1563109732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Wall_Table_Frame
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 649
+        width: 80
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c058a57ad07bed44be7107aae199eb8
+      internalID: 1200831651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_TV_Carpet
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 0
+        width: 609
+        height: 397
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5fc18d28e850364a8ada5778e7deabc
+      internalID: 1871424014
       vertices: []
       indices: 
       edges: []
@@ -252,12 +378,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Majlis_Wall_Column: 1835281336
-      Majlis_Floor_Main: -540043968
-      Majlis_Wall_Window: -1111060431
-      Majlis_Floor_Side: -1844523565
-      Majlis_Wall_Main: -666971893
-      Majlis_Windows_Glass: -1447285658
+      Majlis_Wall_Table: 1563109732
+      Majlis_Chair_right: -1147582491
+      Majlis_Elipse_table: 991171672
+      Majlis_sofa_left: -361124433
+      Majlis_Side_Table_right: 54424231
+      Majlis_sofa_Right: -765124533
+      Majlis_Chair_left: -1610777762
+      Majlis_TV_Carpet: 1871424014
+      Majlis_Wall_Table_Frame: 1200831651
+      Majlis_Plants_Rec_Pot: 297282733
+      Majlis_sofa_Back: -392882703
+      Majlis_Side_Table_Back: -941995297
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

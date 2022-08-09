@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61f0197d1488c1c4ea96909ab58547c9
+guid: be83abe9c1fa5e24884fc592d4b922ff
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,55 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Majlis_Windows_Glass
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 672
-        width: 180
-        height: 334
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e4c46ff162dfaae4f9bacd7352fcf571
-      internalID: -1447285658
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Majlis_Floor_Side
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 427
-        width: 385
-        height: 243
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 46d104fef5fd40e47894eb9ebf5fceb2
-      internalID: -1844523565
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Majlis_Floor_Main
+      name: Majlis_Enterance_Floor
       rect:
         serializedVersion: 2
         x: 0
-        y: 4
-        width: 663
-        height: 395
+        y: 1253
+        width: 1103
+        height: 795
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,71 +130,197 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7774d4b4c9f98b42b91c4b0c16df298
-      internalID: -540043968
+      spriteID: 81679bfe2ea24d64a87d4b1e740179f3
+      internalID: -535811073
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Wall_Main
+      name: Majlis_Enterance_Left_Wall
       rect:
         serializedVersion: 2
-        x: 611
-        y: 418
-        width: 410
-        height: 606
+        x: 1207
+        y: 1347
+        width: 838
+        height: 701
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5a3acbf00fd464842b7a8d9f8a9ff046
-      internalID: -666971893
+      spriteID: 57d7808ff2d2dd94da86d94121c668ff
+      internalID: -790988291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Wall_Window
+      name: Majlis_Enterance_Right_Wall
       rect:
         serializedVersion: 2
-        x: 725
-        y: 3
-        width: 293
-        height: 400
+        x: 1205
+        y: 546
+        width: 840
+        height: 772
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5c26e75ac2488e419ce05bffb65f7e3
-      internalID: -1111060431
+      spriteID: 805d6ce54ce0c2443ba774b2bd7511d9
+      internalID: -271761000
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Majlis_Wall_Column
+      name: Majlis_Enterance_Mat
       rect:
         serializedVersion: 2
-        x: 388
-        y: 518
-        width: 215
-        height: 506
+        x: 935
+        y: 1072
+        width: 252
+        height: 151
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 61f79f0ccb1bf4546921dcc24086e3c3
-      internalID: 1835281336
+      spriteID: 1b713390b3ed65140a84e43d832be8b0
+      internalID: 1603335278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Plant_Small
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 1075
+        width: 119
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f538134d489c1804fa82deb47c954a68
+      internalID: -868281805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Plant_Long
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 893
+        width: 223
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f08b095efb56ebd479a91c1ea4f43a0d
+      internalID: 2146744405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Top_wall_Side
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 892
+        width: 230
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 508bb4c8a200b444c9f218ea473745fa
+      internalID: -767378525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Top_wall_Middle
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 554
+        width: 369
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9af8132996381c742b7481b6c9a48e31
+      internalID: -1643888518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Gate_Left
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 634
+        width: 315
+        height: 621
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90e38f3733f70834fab561a8b61b847d
+      internalID: -964653882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Majlis_Enterance_Gate_Right
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 572
+        width: 368
+        height: 681
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7b15c771666ce249b2cb6c2abcf23ff
+      internalID: 554454359
       vertices: []
       indices: 
       edges: []
@@ -252,12 +336,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Majlis_Wall_Column: 1835281336
-      Majlis_Floor_Main: -540043968
-      Majlis_Wall_Window: -1111060431
-      Majlis_Floor_Side: -1844523565
-      Majlis_Wall_Main: -666971893
-      Majlis_Windows_Glass: -1447285658
+      Majlis_Enterance_Floor: -535811073
+      Majlis_Enterance_Plant_Small: -868281805
+      Majlis_Enterance_Top_wall_Side: -767378525
+      Majlis_Enterance_Plant_Long: 2146744405
+      Majlis_Enterance_Gate_Right: 554454359
+      Majlis_Enterance_Gate_Left: -964653882
+      Majlis_Enterance_Right_Wall: -271761000
+      Majlis_Enterance_Mat: 1603335278
+      Majlis_Enterance_Top_wall_Middle: -1643888518
+      Majlis_Enterance_Left_Wall: -790988291
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
