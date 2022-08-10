@@ -85,7 +85,7 @@ public class GameScript : MonoBehaviour
 
     public void SetEnvironment(string tableTop, string cardBack)
     {
-        OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/" + tableTop),
+        OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/Tables/" + tableTop),
             Resources.Load<Sprite>("CardBack/" + cardBack));
     }
 

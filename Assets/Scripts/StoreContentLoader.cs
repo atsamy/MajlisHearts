@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.UI;
 
 public class StoreContentLoader : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class StoreContentLoader : MonoBehaviour
             ContentStoreItem storeItem = Instantiate(contentStoreItem, content).GetComponent<ContentStoreItem>();
             bool equipped = false;
 
+            //content.GetComponent<HorizontalLayoutGroup>().
+
             if (GameManager.Instance.EquippedItem.ContainsKey(category))
                 equipped = (GameManager.Instance.EquippedItem[category] == catalogueItems[i].ID);
 
@@ -57,7 +60,7 @@ public class StoreContentLoader : MonoBehaviour
                        });
                        return;
                    }
-                   MenuManager.Instance.Popup.ShowWithMessage("are you sure you want to buy this item", () =>
+                   MenuManager.Instance.Popup.ShowWithCode("confirmbuy", () =>
                    {
                        SFXManager.Instance.PlayClip("Buy");
 
