@@ -19,7 +19,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     //[SerializeField]
     //SelectGroup typeSelection;
     [SerializeField]
-    ChoosePopup gameTypePopup;
+    MuliGameOptions multiOptionsPanel;
     [SerializeField]
     GameObject WaitPanel;
     [SerializeField]
@@ -55,7 +55,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         IsconnectedToMaster = false;
 
         WaitPanel.SetActive(false);
-        gameTypePopup.gameObject.SetActive(false);
+        multiOptionsPanel.gameObject.SetActive(false);
 
         MenuManager.Instance.OpenMain();
 
@@ -70,7 +70,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void ClosePopup()
     {
-        gameTypePopup.gameObject.SetActive(false);
+        multiOptionsPanel.gameObject.SetActive(false);
         MenuManager.Instance.OpenMain();
     }
 
@@ -88,11 +88,11 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         MenuManager.Instance.CloseMain();
         SFXManager.Instance.PlayClip("Select");
 
-        GameManager.Instance.Bet = GameEntryFee * Mathf.CeilToInt((float)GameManager.Instance.MyPlayer.Level / 5f);
+        
 
-        gameTypePopup.Show(LanguageManager.Instance.GetString("startmultigame").Replace("/c", "<color=green>" + GameManager.Instance.Bet + "</color>"), (type)=>
+        multiOptionsPanel.Show((cost,type)=>
         {
-            if (GameManager.Instance.Currency < GameManager.Instance.Bet)
+            if (GameManager.Instance.Currency < cost)
             {
                 MenuManager.Instance.Popup.ShowWithCode("nocoins", ()=>
                 {
@@ -104,6 +104,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
                 return;
             }
+
+            GameManager.Instance.Bet = cost;
             gameType = type;
             GameManager.Instance.IsTeam = (gameType == 1);
 
