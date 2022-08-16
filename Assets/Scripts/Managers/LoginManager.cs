@@ -130,7 +130,7 @@ public class LoginManager : MonoBehaviour
             }
         }
 
-        if (AllItems.Count == 0)
+        if (GameManager.Instance.EquippedItem.Count == 0)
             SetDefaultItems(AllItems);
 
         GameManager.Instance.Catalog = AllItems;

@@ -160,7 +160,7 @@ public class FriendListPanel : MonoBehaviour
             GameManager.Instance.IsTeam = (type == 1);
 
             friendListPanel.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
 
             MenuManager.Instance.OpenMeeting(roomName, true);
 

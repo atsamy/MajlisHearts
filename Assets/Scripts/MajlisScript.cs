@@ -12,6 +12,8 @@ public class MajlisScript : MonoBehaviour
     [SerializeField]
     TaskPanel taskPanel;
 
+    public Action TaskFinished;
+
     private void Awake()
     {
         Instance = this;
@@ -77,7 +79,6 @@ public class MajlisScript : MonoBehaviour
                 break;
             case TaskAction.Change:
                 ShowEditableItem(task.Target);
-
                 break;
         }
     }
@@ -88,7 +89,7 @@ public class MajlisScript : MonoBehaviour
 
         cameraHover.GoToLocation(editableItem.transform, () =>
         {
-            taskPanel.OpenEditPanel(editableItem, target);
+            taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
         });
 
         SFXManager.Instance.PlayClip("Select");
@@ -99,9 +100,13 @@ public class MajlisScript : MonoBehaviour
         CleanAnimation oldItems = RoomItems.First(a => a.RoomId == target).OldItems;
         cameraHover.GoToLocation(oldItems.transform, () =>
         {
-            oldItems.Clean();
+            oldItems.Clean(()=>
+            {
+                MenuManager.Instance.OpenMain();
+                TaskFinished?.Invoke();
+            });
         });
-        taskPanel.Close();
+        taskPanel.ClosePanel();
         FinishedTask tasks = new FinishedTask()
         {
             ActionType = TaskAction.Clean,

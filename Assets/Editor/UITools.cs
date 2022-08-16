@@ -25,9 +25,20 @@ public class UITools : Editor {
     }
 
     [MenuItem("My Tools/Clear Playerprefs")]
-
     static void ClearPrefs()
     {
         PlayerPrefs.DeleteAll();
+    }
+
+    [MenuItem("My Tools/Enable Tutorial")]
+    static void EnableTutorial()
+    {
+        PlayerPrefs.DeleteKey("tutorial");
+    }
+
+    [MenuItem("My Tools/Disable Tutorial")]
+    static void DisableTutorial()
+    {
+        PlayerPrefs.SetInt("tutorial",2);
     }
 }

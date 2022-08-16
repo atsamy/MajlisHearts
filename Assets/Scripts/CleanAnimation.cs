@@ -6,12 +6,13 @@ using System;
 
 public class CleanAnimation : MonoBehaviour
 {
-    public void Clean()
+    public void Clean(Action taskFinished)
     {
-        StartCoroutine(CleanRoutine());
+        SFXManager.Instance.PlayClip("Clean");
+        StartCoroutine(CleanRoutine(taskFinished));
     }
 
-    IEnumerator CleanRoutine()
+    IEnumerator CleanRoutine(Action taskFinished)
     {
         foreach (Transform item in transform)
         {
@@ -20,14 +21,12 @@ public class CleanAnimation : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.3f);
-
+        taskFinished?.Invoke();
         gameObject.SetActive(false);
     }
 
     internal void Reset()
     {
-        SFXManager.Instance.PlayClip("Clean");
-
         foreach (Transform item in transform)
         {
             item.localScale = Vector3.one;

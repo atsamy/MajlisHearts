@@ -47,14 +47,18 @@ public class TaskPanel : MonoBehaviour
 
     public void Close()
     {
+        ClosePanel();
+        MenuManager.Instance.OpenMain();
+    }
+
+    public void ClosePanel()
+    {
         MenuManager.Instance.CameraHover.Unlock();
         taskPanel.SetActive(false);
-        MenuManager.Instance.OpenMain();
-
         SFXManager.Instance.PlayClip("Close");
     }
 
-    internal void OpenEditPanel(EditableItem editableItem,string target)
+    internal void OpenEditPanel(EditableItem editableItem,string target,Action taskFinished)
     {
         taskPanel.SetActive(false);
 
@@ -67,6 +71,7 @@ public class TaskPanel : MonoBehaviour
             };
 
             TaskDone(task);
+            taskFinished?.Invoke();
             //save edit
             MenuManager.Instance.OpenMain();
         }, () => 

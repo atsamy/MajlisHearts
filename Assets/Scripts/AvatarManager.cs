@@ -42,6 +42,9 @@ public class AvatarManager : MonoBehaviour
         if (name == GameManager.Instance.MyPlayer.Name)
             return playerAvatar;
 
-        return savedPlayers[name];
+        if (savedPlayers.ContainsKey(name))
+            return savedPlayers[name];
+        else
+            return null;
     }
 }

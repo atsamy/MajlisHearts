@@ -86,7 +86,13 @@ public class MenuManager : MonoBehaviour
 
     internal void ShowInvitePopup(string sender, string message)
     {
-        InvitePopup.ShowWithMessage(LanguageManager.Instance.GetString("invitationmessage") + " <color=green>" + ArabicFixer.Fix(sender) + "</color> ", () =>
+        bool isArabic = LanguageManager.Instance.CurrentLanguage == Language.Arabic;
+
+        string invitationMessage = (isArabic ? "" : " <color=green>" + ArabicFixer.Fix(sender) + "</color> ") +
+            LanguageManager.Instance.GetString("invitationmessage") +
+            (isArabic ? " <color=green>" + ArabicFixer.Fix(sender) + "</color> " : "");
+
+        InvitePopup.ShowWithMessage(invitationMessage, () =>
          {
              string[] inviteOptions = message.Split(':');
 

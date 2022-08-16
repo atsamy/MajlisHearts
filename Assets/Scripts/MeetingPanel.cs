@@ -45,10 +45,10 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             print("not connected");
             AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
 
-            //PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
-            //{
-            //        { "avatar", GameManager.Instance.MyPlayer.Avatar }
-            //});
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            {
+                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
+            });
 
             PhotonNetwork.LocalPlayer.NickName = GameManager.Instance.MyPlayer.Name;
             PhotonNetwork.AuthValues = auth;
@@ -248,7 +248,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed joining private room");
+        Debug.Log("Failed joining private room: " + message);
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -296,9 +296,15 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         if (newPlayer.ActorNumber < 1)
             return;
 
+        Sprite playerSprite = AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
+
+        if (playerSprite == null)
+        {
+            AvatarManager.Instance.SetPlayerAvatar(newPlayer.NickName,newPlayer.CustomProperties["avatar"].ToString());
+        }
+
         avatars[newPlayer.ActorNumber - 1].transform.parent.gameObject.SetActive(true);
-        avatars[newPlayer.ActorNumber - 1].sprite = newPlayer.IsLocal ? AvatarManager.Instance.playerAvatar :
-            AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
+        avatars[newPlayer.ActorNumber - 1].sprite = AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
     }
 
 
