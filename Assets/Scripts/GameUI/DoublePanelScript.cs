@@ -9,6 +9,8 @@ public class DoublePanelScript : MonoBehaviour
 
     public void ShowPanel(Card card)
     {
+        //yield return new WaitForSeconds(2f);
+
         gameObject.SetActive(true);
 
         if (card.IsQueenOfSpades)

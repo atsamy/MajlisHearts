@@ -12,6 +12,11 @@ public class CardUI : MonoBehaviour
 
     public Action<Card> OnPressed;
     public RectTransform RectTransform;
+
+    bool drag;
+    bool dragged;
+    Vector3 offSet;
+    Vector3 originalPosition;
     // Start is called before the first frame update
     void Awake()
     {
@@ -35,7 +40,46 @@ public class CardUI : MonoBehaviour
 
     public void Pressed()
     {
-        OnPressed?.Invoke(CardInfo);
+        //OnPressed?.Invoke(CardInfo);
+    }
+
+    public void PointerDown()
+    {
+        offSet = transform.position - Input.mousePosition;
+        originalPosition = transform.position;
+        drag = true;
+        StartCoroutine(Drag());
+    }
+
+    IEnumerator Drag()
+    {
+        while (drag)
+        {
+            transform.position = Input.mousePosition + offSet;
+
+            if (Vector3.Distance(originalPosition, Input.mousePosition + offSet) > 5 && !dragged)
+            {
+                transform.rotation = Quaternion.identity;
+                dragged = true;
+            }
+
+            yield return null;
+        }
+    }
+
+    public void PointerUp()
+    {
+        drag = false;
+
+        if ((transform.localPosition.y > 50 && dragged) || !dragged)
+        {
+            OnPressed?.Invoke(CardInfo);
+        }
+        else
+        {
+            UIManager.Instance.SetCardLocations();
+        }
+        dragged = false;
     }
 
     public void SetInteractable(bool value)

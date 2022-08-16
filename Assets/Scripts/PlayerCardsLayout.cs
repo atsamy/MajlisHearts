@@ -7,11 +7,6 @@ public class PlayerCardsLayout : MonoBehaviour
 {
     [SerializeField]
     int spacing;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     public void SetLocations()
     {

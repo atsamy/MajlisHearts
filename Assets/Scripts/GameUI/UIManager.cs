@@ -108,7 +108,12 @@ public class UIManager : MonoBehaviour
 
     private void CardsPassed()
     {
-        cardsUIManager.UpdateCards(mainPlayer);
+        StartCoroutine(cardsUIManager.UpdateCards(mainPlayer));
+    }
+
+    public void SetCardLocations()
+    {
+        cardsUIManager.SetCardLocations();
     }
 
     private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
@@ -366,8 +371,6 @@ public class UIManager : MonoBehaviour
         {
             PassCards(cards);
         });
-
-        //PassText.text = "Pass Right";
     }
 
     public void PlayerTurn(DealInfo info)
@@ -382,7 +385,7 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        waitingPanel.Show();
+        //waitingPanel.Show();
         mainPlayer.PassCards(selectedPassCards);
         Scores.SetActive(true);
     }

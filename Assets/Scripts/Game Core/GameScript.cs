@@ -156,8 +156,10 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    protected void CheckDoubleCards()
+    async protected void CheckDoubleCards()
     {
+        await System.Threading.Tasks.Task.Delay(2000);
+
         foreach (var item in Players)
         {
             item.CheckForDoubleCards();

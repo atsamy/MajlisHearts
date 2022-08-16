@@ -170,6 +170,13 @@ public class AIPlayer : Player
 
     protected override void CheckDoubleCards(Card card)
     {
+         DecideOnCard(card);
+    }
+
+    void DecideOnCard(Card card)
+    {
+        //await System.Threading.Tasks.Task.Delay(2000);
+
         float value = 0;
 
         if (shapeCount[card.Shape] > 4)

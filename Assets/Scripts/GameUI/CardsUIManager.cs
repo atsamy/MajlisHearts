@@ -86,7 +86,7 @@ public class CardsUIManager : MonoBehaviour
         this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 160);
     }
 
-    void OrganizeCards()
+    public void OrganizeCards()
     {
         playerCardsUI = playerCardsUI.OrderBy(a => a.CardInfo.Shape).ThenByDescending(a => a.CardInfo.Rank).ToList();
 
@@ -98,6 +98,11 @@ public class CardsUIManager : MonoBehaviour
         playerCards.SetLocations();
     }
 
+    public void SetCardLocations()
+    {
+        playerCards.SetLocations();
+    }
+
     internal void AddDoubledCard(Card card, int index)
     {
         if (card.IsTenOfDiamonds)
@@ -106,7 +111,7 @@ public class CardsUIManager : MonoBehaviour
             playersDetails[index].ShowDouble(1);
     }
 
-    internal void UpdateCards(MainPlayer mainPlayer)
+    internal IEnumerator UpdateCards(MainPlayer mainPlayer)
     {
         foreach (var item in playerCardsUI)
         {
@@ -125,6 +130,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
+            newCard.transform.localPosition = new Vector3(i * 150 - 150,300,0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
 
@@ -139,7 +145,7 @@ public class CardsUIManager : MonoBehaviour
             //bug here
             cardUI.SetInteractable(false);
         }
-
+        yield return new WaitForSeconds(1.7f);
         OrganizeCards();
     }
 
