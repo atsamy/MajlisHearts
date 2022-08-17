@@ -21,7 +21,9 @@ public class Multiplayer : MonoBehaviour
 
     public void Set(string name, bool isMe, bool isHost)
     {
-        playerName.text = ArabicFixer.Fix(name);
+        playerName.text = ArabicFixer.Fix(name,false,false);
+        playerName.font = LanguageManager.Instance.GetFont();
+
         playerFrame.sprite = frameSprites[isMe ? 0 : 1];
         label[isHost ? 0 : 1].SetActive(true);
         label[isHost ? 1 : 0].SetActive(false);

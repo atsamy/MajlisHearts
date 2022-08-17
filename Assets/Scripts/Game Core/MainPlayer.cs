@@ -16,6 +16,7 @@ public class MainPlayer : Player
     public delegate void WaitDoubleCards(Card card);
     public event WaitDoubleCards OnWaitDoubleCards;
 
+    public event Action WaitOthers;
     //public delegate void ForcePlay();
     public event Action OnForcePlay;
 
@@ -51,6 +52,11 @@ public class MainPlayer : Player
     protected override void CheckDoubleCards(Card card)
     {
         OnWaitDoubleCards?.Invoke(card);
+    }
+
+    protected override void WaitForOthers()
+    {
+        WaitOthers?.Invoke();
     }
 
     internal void ForcePlay()

@@ -11,7 +11,7 @@ public class PlayerFinalResult : PlayerDealResult
 
     public void Set(Player player,int reward)
     {
-        Set(name, player.Avatar);
+        Set(player.Name, player.Avatar);
         SetScore(player.TotalScore);
         Reward.text = reward.ToString();
     }

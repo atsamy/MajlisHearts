@@ -29,7 +29,7 @@ public class LevelPanel : MonoBehaviour
     int nextLevelPoints = 1;
     //Action nextPressed;
 
-    public void Open(int dealscore, Action finished)
+    public void Open(int rank, Action finished)
     {
         nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
 
@@ -38,7 +38,7 @@ public class LevelPanel : MonoBehaviour
         int startPoints = GameManager.Instance.MyPlayer.Points;
         totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
 
-        int score = GetScore(dealscore);
+        int score = GetScore(rank);
 
         newPoints.text = score + "+";
 
@@ -98,11 +98,11 @@ public class LevelPanel : MonoBehaviour
         newPoints.text = "0";
     }
 
-    int GetScore(int dealScore) => dealScore switch
+    int GetScore(int rank) => rank switch
     {
-        0 => 40,
-        < 6 => 30,
-        < 11 => 20,
-        _ => 10
+        0 => 200,
+        1 => 100,
+        2 => 50,
+        _ => 20
     };
 }

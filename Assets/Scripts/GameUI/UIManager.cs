@@ -122,50 +122,49 @@ public class UIManager : MonoBehaviour
         Scores.SetActive(false);
         emojiButton.SetActive(false);
 
-        //Player[] orderedPlayers = game.Players.OrderBy(a => a.Score).ToArray();
-        //int rank = 0;
 
-        //for (int i = 0; i < orderedPlayers.Length; i++)
-        //{
-        //    if (orderedPlayers[i] is MainPlayer)
-        //    {
-        //        rank = i;
-        //    }
-        //}
-
-        LevelPanel.Open(game.MyPlayer.Score, () =>
+        if (isGameOver)
         {
+            Player[] orderedPlayers = game.Players.OrderBy(a => a.Score).ToArray();
+            int rank = 0;
 
-            if (isGameOver)
+            for (int i = 0; i < orderedPlayers.Length; i++)
             {
+                if (orderedPlayers[i] is MainPlayer)
+                {
+                    rank = i;
+                }
+            }
 
+            LevelPanel.Open(rank, () =>
+            {
                 ResultPanel.ShowResult(game.Players, () =>
                  {
                      LeaveRoom();
                      SceneManager.LoadScene(1);
                  });
+            });
 
+            return;
+        }
+        //if (game.MyPlayer.Score < 6)
+        //{
+        //    // win effect
+        //    GameSFXManager.Instance.PlayClip("Win");
+        //}
 
-                return;
-            }
-            //if (game.MyPlayer.Score < 6)
-            //{
-            //    // win effect
-            //    GameSFXManager.Instance.PlayClip("Win");
-            //}
+        if (hostPlayer)
+        {
+            DealFinishedPanel.ShowRound(game.Players, false, () =>
+              {
+                  game.StartNextDeal();
+              });
+        }
+        else
+        {
+            DealFinishedPanel.ShowRound(game.Players, false, null);
+        }
 
-            if (hostPlayer)
-            {
-                DealFinishedPanel.ShowRound(game.Players, false, () =>
-                  {
-                      game.StartNextDeal();
-                  });
-            }
-            else
-            {
-                DealFinishedPanel.ShowRound(game.Players, false, null);
-            }
-        });
     }
 
     public void ShowScores()
@@ -342,6 +341,7 @@ public class UIManager : MonoBehaviour
             mainPlayer.OnPlayerTurn += PlayerTurn;
             mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
             mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
+            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
             cardsUIManager.SetMainPlayer(mainPlayer);
 
             SetPlayers(game.Players);
@@ -349,6 +349,11 @@ public class UIManager : MonoBehaviour
         }
         SetScore();
         cardsUIManager.ShowPlayerCards(mainPlayer, true);
+    }
+
+    private void MainPlayer_WaitOthers()
+    {
+        waitingPanel.Show();
     }
 
     private void MainPlayer_OnWaitDoubleCards(Card card)

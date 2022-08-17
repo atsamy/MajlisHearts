@@ -9,7 +9,6 @@ public class LanguageSetter : MonoBehaviour
     // Use this for initialization
     Language prevLanguage;
     bool started;
-    public bool FixLines;
 
     void Start()
     {

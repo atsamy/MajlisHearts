@@ -14,6 +14,6 @@ public class FixEntryText : MonoBehaviour
 
     public void Fix(string value)
     {
-        text.text = ArabicFixer.Fix(value);
+        text.text = ArabicFixer.Fix(value,false,false);
     }
 }

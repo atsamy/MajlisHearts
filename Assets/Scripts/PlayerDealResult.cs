@@ -27,7 +27,9 @@ public class PlayerDealResult : MonoBehaviour
 
     public void Set(string name,Sprite avatar)
     {
-        playerName.text = ArabicFixer.Fix(name);
+        playerName.text = ArabicFixer.Fix(name,false,false);
+        playerName.font = LanguageManager.Instance.GetFont();
+
         playerAvatar.sprite = avatar;
     }
 

@@ -5,7 +5,7 @@ using System.IO;
 using System.Xml;
 using ArabicSupport;
 using System;
-
+using TMPro;
 
 public enum Language
 {
@@ -117,7 +117,7 @@ public class LanguageManager : MonoBehaviour
             return "";
         }
 
-        string text = (string)Strings[name];
+        string text = ((string)Strings[name]).Replace("\\n", "\n");
 
         if (CurrentLanguage == Language.Arabic)
             text = ArabicFixer.Fix(text, false, false);
@@ -148,16 +148,16 @@ public class LanguageManager : MonoBehaviour
         return null;
     }
 
-    //public TMP_FontAsset GetTMPFont()
-    //{
-    //    for (int i = 0; i < fonts.Length; i++)
-    //    {
-    //        if (fonts[i].language == CurrentLanguage)
-    //            return fonts[i].TMP_font;
-    //    }
+    public TMP_FontAsset GetTMPFont()
+    {
+        for (int i = 0; i < fonts.Length; i++)
+        {
+            if (fonts[i].language == CurrentLanguage)
+                return fonts[i].TMP_font;
+        }
 
-    //    return null;
-    //}
+        return null;
+    }
 }
 
 [Serializable]
@@ -165,4 +165,5 @@ public struct LanguageFont
 {
     public Language language;
     public Font font;
+    public TMP_FontAsset TMP_font;
 }

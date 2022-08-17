@@ -61,10 +61,23 @@ public class Player
 
     public void CheckForDoubleCards()
     {
+        bool hasDoubleCard = false;
+
         if (HasCard(Card.QueenOfSpades))
+        {
             CheckDoubleCards(Card.QueenOfSpades);
+            hasDoubleCard = true;
+        }
         if (HasCard(Card.TenOfDiamonds))
+        {
             CheckDoubleCards(Card.TenOfDiamonds);
+            hasDoubleCard = true;
+        }
+
+        if (!hasDoubleCard)
+        {
+            WaitForOthers();
+        }
     }
 
     public int GetShapeCount(CardShape shape)
@@ -106,6 +119,11 @@ public class Player
     }
 
     protected virtual void CheckDoubleCards(Card card)
+    {
+
+    }
+
+    protected virtual void WaitForOthers()
     {
 
     }

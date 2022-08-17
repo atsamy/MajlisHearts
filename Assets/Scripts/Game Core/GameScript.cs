@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
-    private const int FinishScore = 100;
+    private const int FinishScore = 30;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -58,18 +58,20 @@ public class GameScript : MonoBehaviour
             if (i == 0)
             {
                 Players[i] = new MainPlayer(i);
-                Players[i].Avatar = AvatarManager.Instance.playerAvatar;//GameManager.Instance.MyPlayer.Avatar;
+                Players[i].Avatar = AvatarManager.Instance.playerAvatar;
+                Players[i].Name = GameManager.Instance.MyPlayer.Name;
             }
             else
             {
                 Players[i] = new AIPlayer(i);
                 Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
+                Players[i].Name = "Player " + i;
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             Players[i].OnDoubleCard += GameScript_OnDoubleCard;
-            Players[i].Name = "Player " + (i + 1);
+            
         }
 
         myPlayer = (MainPlayer)Players[0];

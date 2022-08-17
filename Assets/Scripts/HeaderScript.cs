@@ -18,7 +18,7 @@ public class HeaderScript : MonoBehaviour
     {
         currencyText.text = (GameManager.Instance.Currency.ToString());
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
-        userNameText.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
+        userNameText.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
 
         GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
     }

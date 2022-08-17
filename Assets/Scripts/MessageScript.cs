@@ -17,7 +17,7 @@ public class MessageScript : MonoBehaviour
     public void Set(string name,string message)
     {
         print(message);
-        playerName.text = ArabicFixer.Fix(name);
+        playerName.text = ArabicFixer.Fix(name,false,false);
         playerName.font = LanguageManager.Instance.GetFont();
         this.message.text = ArabicFixer.Fix(message);
         this.message.font = LanguageManager.Instance.GetFont();

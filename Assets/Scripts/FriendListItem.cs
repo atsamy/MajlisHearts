@@ -26,7 +26,11 @@ public class FriendListItem : MonoBehaviour
 
     public void Set(string name)
     {
-        playerName.text = ArabicFixer.Fix(name);
+        ArabicFixerTool.useHinduNumbers = false;
+
+        playerName.text = ArabicFixer.Fix(name,false,false);
+        playerName.font = LanguageManager.Instance.GetFont();
+
         this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
     }
 

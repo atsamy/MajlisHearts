@@ -26,7 +26,7 @@ public class ProfileScript : MenuScene
 
     private void Start()
     {
-        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
+        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
         playerName.font = LanguageManager.Instance.GetFont();
 
         //score.text = GameManager.Instance.MyPlayer.Score.ToString();

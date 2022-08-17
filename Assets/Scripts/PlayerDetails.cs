@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ArabicSupport;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,7 @@ public class PlayerDetails : MonoBehaviour
         if (avatar != null)
             avatarImage.sprite = avatar;
 
-        nameText.text = name;
+        nameText.text = ArabicFixer.Fix(name, false, false);
         levelText.text = level.ToString();
         scoreText.text = "0";
     }
