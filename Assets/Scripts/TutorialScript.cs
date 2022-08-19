@@ -23,6 +23,9 @@ public class TutorialScript : MonoBehaviour
     Button taskButton;
     [SerializeField]
     GameObject[] closeToDo;
+
+    [SerializeField]
+    Transform settingsBtn;
     //[SerializeField]
     //Transform taskPosition;
     [SerializeField]
@@ -84,7 +87,7 @@ public class TutorialScript : MonoBehaviour
             {
                 case 4:
                     hand.gameObject.SetActive(true);
-                    hand.position = todoButton.transform.position + Vector3.left * 60;
+                    hand.position = todoButton.transform.position + Vector3.down * 130;
                     characterPanel.SetActive(false);
                     block = true;
                     originalParent = todoButton.transform.parent;
@@ -117,7 +120,7 @@ public class TutorialScript : MonoBehaviour
                 case 6:
                     bgBlock.SetActive(false);
                     hand.gameObject.SetActive(true);
-                    hand.position = taskButton.transform.position + Vector3.left * 100;
+                    hand.position = taskButton.transform.position + Vector3.down * 120;
 
                     characterPanel.SetActive(false);
                     block = true;
@@ -146,7 +149,7 @@ public class TutorialScript : MonoBehaviour
                     break;
                 case 8:
                     hand.gameObject.SetActive(true);
-                    hand.position = playButton.transform.position + Vector3.left * 60;
+                    hand.position = playButton.transform.position + Vector3.down * 150;
                     characterPanel.SetActive(false);
                     block = true;
                     originalParent = playButton.transform.parent;
@@ -154,6 +157,8 @@ public class TutorialScript : MonoBehaviour
                     playButton.onClick.AddListener(() =>
                     {
                         playButton.transform.parent = originalParent;
+
+                        originalParent = gameModePanel.transform.parent;
                         gameModePanel.transform.parent = parent;
                         playButton.onClick.RemoveAllListeners();
 
@@ -180,16 +185,32 @@ public class TutorialScript : MonoBehaviour
                     return;
 
                 case 10:
+                    gameModePanel.transform.parent = originalParent;
+                    gameModePanel.transform.SetSiblingIndex(8);
+
+                    originalParent = modeButtons[0].transform.parent;
+                    modeButtons[0].transform.parent = parent;
+
                     pointer.gameObject.SetActive(true);
-                    pointer.position = modeButtons[0].transform.position;
+                    pointer.position = modeButtons[0].transform.position + Vector3.up * 10;
                     break;
                 case 11:
-                    pointer.position = modeButtons[1].transform.position;
+                    modeButtons[0].transform.parent = originalParent;
+                    originalParent = modeButtons[1].transform.parent;
+                    modeButtons[1].transform.parent = parent;
+
+                    pointer.position = modeButtons[1].transform.position + Vector3.up * 10;
                     break;
                 case 12:
-                    pointer.position = modeButtons[2].transform.position;
+                    modeButtons[1].transform.parent = originalParent;
+                    originalParent = modeButtons[2].transform.parent;
+                    modeButtons[2].transform.parent = parent;
+
+                    pointer.position = modeButtons[2].transform.position + Vector3.up * 10;
                     break;
                 case 13:
+                    modeButtons[2].transform.parent = originalParent;
+
                     gameModePanel.SetActive(false);
                     pointer.gameObject.SetActive(false);
                     break;
@@ -200,11 +221,24 @@ public class TutorialScript : MonoBehaviour
                     characterPanel.SetActive(false);
                     return;
                 case 15:
+                    MenuManager.Instance.OpenMain();
+
+                    originalParent = settingsBtn.parent;
+                    settingsBtn.parent = parent;
+
                     characterPanel.SetActive(true);
+
+                    hand.gameObject.SetActive(true);
+                    hand.position = settingsBtn.transform.position + Vector3.down * 150;
                     // show pointer to settings
                     break;
                 case 16:
+
+                    settingsBtn.parent = originalParent;
+
                     gameObject.SetActive(false);
+
+                    PlayerPrefs.SetInt("tutorial", 1);
                     //hand.gameObject.SetActive(true);
                     //hand.position = modeButtons[2].transform.position + Vector3.left * 50;
 

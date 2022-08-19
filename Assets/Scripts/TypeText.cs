@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TypeText : MonoBehaviour
 {
-    Text text;
+    TextMeshProUGUI text;
     string content;
     int index;
 
@@ -15,7 +16,7 @@ public class TypeText : MonoBehaviour
 
     void Awake()
     {
-        text = GetComponent<Text>();
+        text = GetComponent<TextMeshProUGUI>();
         source = GetComponent<AudioSource>();
     }
 
