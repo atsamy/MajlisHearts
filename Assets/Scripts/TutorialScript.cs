@@ -233,7 +233,15 @@ public class TutorialScript : MonoBehaviour
                     // show pointer to settings
                     break;
                 case 16:
+                    foreach (var item in closeGamePanelBtns)
+                    {
+                        item.SetActive(true);
+                    }
 
+                    foreach (var item in modeButtons)
+                    {
+                        item.enabled = true;
+                    }
                     settingsBtn.parent = originalParent;
 
                     gameObject.SetActive(false);

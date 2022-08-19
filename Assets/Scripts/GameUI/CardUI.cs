@@ -45,6 +45,9 @@ public class CardUI : MonoBehaviour
 
     public void PointerDown()
     {
+        if (!button.interactable)
+            return;
+
         offSet = transform.position - Input.mousePosition;
         originalPosition = transform.position;
         drag = true;
@@ -69,6 +72,9 @@ public class CardUI : MonoBehaviour
 
     public void PointerUp()
     {
+        if (!button.interactable)
+            return;
+
         drag = false;
 
         if ((transform.localPosition.y > 50 && dragged) || !dragged)
