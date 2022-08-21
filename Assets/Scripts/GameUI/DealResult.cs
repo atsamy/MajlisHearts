@@ -25,9 +25,20 @@ public class DealResult : MonoBehaviour
     protected Action<int> PanelClosed;
     int rank = 0;
 
-    public void ShowRound(Player[] players, bool inGame, Action<int> OnPanelClosed)
+    public void ShowRound(Player[] players, bool inGame,bool gameOver, Action<int> OnPanelClosed)
     {
-        buttonText.text = inGame ? LanguageManager.Instance.GetString("close") : LanguageManager.Instance.GetString("nextround");
+        if (gameOver)
+        {
+            buttonText.text = LanguageManager.Instance.GetString("next");
+        }
+        else if (inGame)
+        {
+            buttonText.text = LanguageManager.Instance.GetString("close");
+        }
+        else
+        {
+            buttonText.text = LanguageManager.Instance.GetString("nextround");
+        }
 
         bool isTeam = GameManager.Instance.IsTeam;
 

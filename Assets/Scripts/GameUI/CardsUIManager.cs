@@ -121,7 +121,7 @@ public class CardsUIManager : MonoBehaviour
                 MainPlayerCard(item);
             });
 
-            Debug.Log(item.CardInfo);
+            //Debug.Log(item.CardInfo);
 
             //bug here
             item.SetInteractable(false);

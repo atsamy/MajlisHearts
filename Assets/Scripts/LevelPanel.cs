@@ -15,6 +15,9 @@ public class LevelPanel : MonoBehaviour
     Image newLevelProgress;
 
     [SerializeField]
+    GameObject Reward;
+
+    [SerializeField]
     TextMeshProUGUI totalPoints;
 
     [SerializeField]

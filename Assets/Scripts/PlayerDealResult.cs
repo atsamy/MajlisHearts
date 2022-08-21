@@ -7,15 +7,17 @@ using ArabicSupport;
 public class PlayerDealResult : MonoBehaviour
 {
     [SerializeField]
-    protected Image playerAvatar;
+    Image playerAvatar;
     [SerializeField]
-    protected Text playerName;
+    Text playerName;
     [SerializeField]
-    protected TextMeshProUGUI score;
+    TextMeshProUGUI score;
     [SerializeField]
-    protected Image scoreFrame;
+    TextMeshProUGUI addedScore;
     [SerializeField]
-    protected Image playerFrame;
+    Image scoreFrame;
+    [SerializeField]
+    Image playerFrame;
     [SerializeField]
     GameObject winFrame;
     [SerializeField]
@@ -34,11 +36,11 @@ public class PlayerDealResult : MonoBehaviour
 
         if (inGame)
         {
-            this.score.text = score.ToString();
+            this.score.text = player.Score.ToString();
         }
         else
         {
-            countScore(player.TotalScore - player.Score, player.TotalScore);
+            StartCoroutine(countScore(player.TotalScore - player.Score, player.TotalScore));
         }
     }
 
@@ -46,22 +48,24 @@ public class PlayerDealResult : MonoBehaviour
     {
         float timer = 1;
 
-        score.text = startScore + " + <color=Green>" + endScore + "</color>";
+        score.text = startScore.ToString();
+        addedScore.text = (endScore - startScore).ToString();
         yield return new WaitForSeconds(0.5f);
 
         while (timer > 0)
         {
             timer -= Time.deltaTime;
 
-            score.text = Mathf.Round(Mathf.Lerp(startScore,endScore,timer)).ToString() + " + <color=Green>" +
-                Mathf.Round(Mathf.Lerp(endScore - startScore, 0, timer)).ToString() + "</color>";
+            score.text = Mathf.Round(Mathf.Lerp(startScore, endScore, timer)).ToString();
+            addedScore.text = Mathf.Round(Mathf.Lerp(endScore - startScore, 0, timer)).ToString();
 
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
 
         score.text = endScore.ToString();
+        addedScore.text = "";
     }
 
     public void ShowTeamBadge(int teamIndex)

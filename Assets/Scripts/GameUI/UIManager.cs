@@ -126,13 +126,21 @@ public class UIManager : MonoBehaviour
         if (isGameOver)
         {
 
-                DealFinishedPanel.ShowRound(game.Players,false, (rank) =>
+                DealFinishedPanel.ShowRound(game.Players,false,true, (rank) =>
                  {
-                     LevelPanel.Open(rank, () =>
+                     if (GameManager.Instance.GameType != GameType.Single)
+                     {
+                         LevelPanel.Open(rank, () =>
+                         {
+                             LeaveRoom();
+                             SceneManager.LoadScene(1);
+                         });
+                     }
+                     else
                      {
                          LeaveRoom();
                          SceneManager.LoadScene(1);
-                     });
+                     }
                  });
 
 
@@ -146,14 +154,14 @@ public class UIManager : MonoBehaviour
 
         if (hostPlayer)
         {
-            DealFinishedPanel.ShowRound(game.Players, false, (rank) =>
+            DealFinishedPanel.ShowRound(game.Players, false,false, (rank) =>
               {
                   game.StartNextDeal();
               });
         }
         else
         {
-            DealFinishedPanel.ShowRound(game.Players, false, null);
+            DealFinishedPanel.ShowRound(game.Players, false,false, null);
         }
 
     }

@@ -283,7 +283,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
                     int recieverIndex = (senderIndex + 1) % 4;
 
-                    print("reciever: " + recieverIndex + " senderIndex " + senderIndex);
+                    //print("reciever: " + recieverIndex + " senderIndex " + senderIndex);
 
                     if (Players[senderIndex].IsPlayer)
                     {

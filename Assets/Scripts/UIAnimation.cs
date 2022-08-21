@@ -128,7 +128,7 @@ public class ColorAnimation : AnimationBase
     }
     protected override void PlaySingle()
     {
-        Debug.Log(image.name);
+        //Debug.Log(image.name);
         Color Target = image.color;
         image.color = Start;
         image.DOColor(Target, Duration).SetUpdate(true);
