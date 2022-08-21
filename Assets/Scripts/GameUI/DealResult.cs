@@ -13,6 +13,8 @@ public class DealResult : MonoBehaviour
     [SerializeField]
     protected GameObject teamPlayersParent;
     [SerializeField]
+    protected Transform[] singlePlayersPositions;
+    [SerializeField]
     protected PlayerDealResult[] singlePlayers;
     [SerializeField]
     protected PlayerDealResult[] teamPlayers;
@@ -35,38 +37,54 @@ public class DealResult : MonoBehaviour
 
         PlayerDealResult[] currentPlayers = isTeam ? teamPlayers : singlePlayers;
 
-        float leastScore = Mathf.Infinity;
-        int highestScore = 0;
-        int winnerIndex = 0;
-        int loserIndex = 0;
+        //float leastScore = Mathf.Infinity;
+        //int highestScore = 0;
+        //int winnerIndex = 0;
+        //int loserIndex = 0;
 
-        for (int i = 0; i < players.Length; i++)
-        {
-            currentPlayers[i].Set(players[i].Name, players[i].Avatar);
-            currentPlayers[i].SetScore(inGame ? players[i].Score : players[i].TotalScore);
-            currentPlayers[i].SetWinner(false);
-
-            if (players[i].TotalScore < leastScore)
-            {
-                leastScore = players[i].TotalScore;
-                winnerIndex = i;
-            }
-
-            if (highestScore < players[i].TotalScore)
-            {
-                highestScore = players[i].TotalScore;
-                loserIndex = i;
-            }
-        }
+        Player[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
 
         if (!isTeam)
         {
-            currentPlayers[winnerIndex].SetWinner(true);
+            for (int i = 0; i < sortedPlayers.Length; i++)
+            {
+                currentPlayers[i].Set(sortedPlayers[i],inGame);
+                currentPlayers[i].SetWinner(false);
+            }
+
+            currentPlayers[0].SetWinner(true);
         }
         else
         {
-            currentPlayers[(loserIndex + 1) % 4].SetWinner(true);
-            currentPlayers[(loserIndex + 3) % 4].SetWinner(true);
+            int loser = players.ToList().IndexOf(players.First(a =>a.TotalScore == players.Max(a => a.TotalScore)));
+
+            currentPlayers[3].Set(players[loser], inGame);
+            currentPlayers[2].Set(players[(loser + 2) % 4], inGame);
+            currentPlayers[1].Set(players[(loser + 1) % 4], inGame);
+            currentPlayers[0].Set(players[(loser + 3) % 4], inGame);
+
+            currentPlayers[0].SetWinner(true);
+            currentPlayers[1].SetWinner(true);
+            //for (int i = 0; i < players.Length; i++)
+            //{
+            //    currentPlayers[i].Set(players[i].Name, players[i].Avatar);
+            //    currentPlayers[i].SetScore(inGame, players[i].Score, players[i].TotalScore);
+            //    currentPlayers[i].SetWinner(false);
+
+            //    if (players[i].TotalScore < leastScore)
+            //    {
+            //        leastScore = players[i].TotalScore;
+            //        winnerIndex = i;
+            //    }
+
+            //    if (highestScore < players[i].TotalScore)
+            //    {
+            //        highestScore = players[i].TotalScore;
+            //        loserIndex = i;
+            //    }
+            //}
+
+
         }
 
         this.PanelClosed = OnPanelClosed;
@@ -79,6 +97,11 @@ public class DealResult : MonoBehaviour
           {
               gameObject.SetActive(false);
           });
+    }
+
+    public void ArrangeSinglePlayers()
+    {
+
     }
 
     public void Pressed()

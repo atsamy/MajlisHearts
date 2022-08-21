@@ -25,17 +25,43 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     Sprite[] avatarFrames;
 
-    public void Set(string name,Sprite avatar)
+    public void Set(Player player,bool inGame)
     {
-        playerName.text = ArabicFixer.Fix(name,false,false);
+        playerName.text = ArabicFixer.Fix(player.Name,false,false);
         playerName.font = LanguageManager.Instance.GetFont();
 
-        playerAvatar.sprite = avatar;
+        playerAvatar.sprite = player.Avatar;
+
+        if (inGame)
+        {
+            this.score.text = score.ToString();
+        }
+        else
+        {
+            countScore(player.TotalScore - player.Score, player.TotalScore);
+        }
     }
 
-    public void SetScore(int score)
+    IEnumerator countScore(float startScore,float endScore)
     {
-        this.score.text = score.ToString();
+        float timer = 1;
+
+        score.text = startScore + " + <color=Green>" + endScore + "</color>";
+        yield return new WaitForSeconds(0.5f);
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+
+            score.text = Mathf.Round(Mathf.Lerp(startScore,endScore,timer)).ToString() + " + <color=Green>" +
+                Mathf.Round(Mathf.Lerp(endScore - startScore, 0, timer)).ToString() + "</color>";
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        score.text = endScore.ToString();
     }
 
     public void ShowTeamBadge(int teamIndex)

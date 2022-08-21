@@ -12,7 +12,7 @@ public class PlayerFinalResult : PlayerDealResult
     public void Set(Player player,int reward)
     {
         Set(player.Name, player.Avatar);
-        SetScore(player.TotalScore);
+        SetScore(false,player.Score,player.TotalScore);
         Reward.text = reward.ToString();
     }
 
