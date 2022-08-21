@@ -22,9 +22,10 @@ public class DealResult : MonoBehaviour
     GameObject Footer;
     [SerializeField]
     Text buttonText;
-    protected Action PanelClosed;
+    protected Action<int> PanelClosed;
+    int rank = 0;
 
-    public void ShowRound(Player[] players, bool inGame, Action OnPanelClosed)
+    public void ShowRound(Player[] players, bool inGame, Action<int> OnPanelClosed)
     {
         buttonText.text = inGame ? LanguageManager.Instance.GetString("close") : LanguageManager.Instance.GetString("nextround");
 
@@ -44,11 +45,17 @@ public class DealResult : MonoBehaviour
 
         Player[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
 
+        for (int i = 0; i < sortedPlayers.Length; i++)
+        {
+            if (sortedPlayers[i] is MainPlayer)
+                rank = i;
+        }
+
         if (!isTeam)
         {
             for (int i = 0; i < sortedPlayers.Length; i++)
             {
-                currentPlayers[i].Set(sortedPlayers[i],inGame);
+                currentPlayers[i].Set(sortedPlayers[i], inGame);
                 currentPlayers[i].SetWinner(false);
             }
 
@@ -56,7 +63,7 @@ public class DealResult : MonoBehaviour
         }
         else
         {
-            int loser = players.ToList().IndexOf(players.First(a =>a.TotalScore == players.Max(a => a.TotalScore)));
+            int loser = players.ToList().IndexOf(players.First(a => a.TotalScore == players.Max(a => a.TotalScore)));
 
             currentPlayers[3].Set(players[loser], inGame);
             currentPlayers[2].Set(players[(loser + 2) % 4], inGame);
@@ -93,7 +100,7 @@ public class DealResult : MonoBehaviour
 
     public void ShowInGame(Player[] players)
     {
-        ShowRound(players, true, () =>
+        ShowRound(players, true, (rank) =>
           {
               gameObject.SetActive(false);
           });
@@ -106,7 +113,7 @@ public class DealResult : MonoBehaviour
 
     public void Pressed()
     {
-        PanelClosed?.Invoke();
+        PanelClosed?.Invoke(rank);
         gameObject.SetActive(false);
         GameSFXManager.Instance.PlayClip("Click");
     }

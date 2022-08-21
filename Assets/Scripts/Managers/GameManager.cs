@@ -71,20 +71,36 @@ public class GameManager : MonoBehaviour
         return Inventory.Contains(new InventoryItem(category, id));
     }
 
-    public bool AddPoints(int value, out float progress)
+    public float AddPoints(int value)
     {
-        int Level = MyPlayer.Level;
-        MyPlayer.Points += value;
-        int newLevel = MyPlayer.Level;
+        //int Level = MyPlayer.Level;
+        //MyPlayer.Points += value;
+        //int newLevel = MyPlayer.Level;
 
         PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() {
             { "Points",MyPlayer.Points.ToString()}
         });
 
-        progress = (float)value / LevelFactor;
+        //progress = ;
 
-        return newLevel > Level;
+        return (float)value / LevelFactor;
     }
+
+    public int GetRewardAndSave(int rank)
+    {
+        int reward = GetReward(rank);
+        AddCurrency(reward);
+        PlayfabManager.instance.AddCurrency(reward, null);
+
+        return reward;
+    }
+
+    int GetReward(int rank) => rank switch
+    {
+        0 => GameManager.Instance.Bet * 2,
+        1 => GameManager.Instance.Bet * (GameManager.Instance.IsTeam ? 2 : 1),
+        _ => 0
+    };
 
     public void EquipItem(string itemName, string itemID)
     {

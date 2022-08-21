@@ -21,17 +21,25 @@ public class LevelPanel : MonoBehaviour
     TextMeshProUGUI newPoints;
 
     [SerializeField]
+    TextMeshProUGUI coinsText;
+
+    [SerializeField]
     TextMeshProUGUI levelText;
 
     [SerializeField]
     GameObject levelUp;
 
-    int nextLevelPoints = 1;
-    //Action nextPressed;
+    [SerializeField]
+    GameObject nextButton;
 
-    public void Open(int rank, Action finished)
+    int nextLevelPoints = 1;
+    Action nextPressed;
+
+    public void Open(int rank, Action next)
     {
         nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
+
+        nextPressed = next;
 
         gameObject.SetActive(true);
         //this.nextPressed = nextPressed;
@@ -47,41 +55,43 @@ public class LevelPanel : MonoBehaviour
         levelProgress.fillAmount = currentProgress;
         newLevelProgress.fillAmount = currentProgress;
 
-        float progress;
 
         GameSFXManager.Instance.PlayClip("Count");
-        if (GameManager.Instance.AddPoints(score, out progress))
+
+        int reward = GameManager.Instance.GetRewardAndSave(rank);
+
+        StartCoroutine(CountNumbers(startPoints, score, reward, 1f));
+
+        float progress = GameManager.Instance.AddPoints(score);
+        float totalProgress = MathF.Min(1, currentProgress + progress);
+        bool isNewLevel = currentProgress + progress >= 1;
+
+        newLevelProgress.DOFillAmount(totalProgress, 1f).OnComplete(() =>
         {
-            StartCoroutine(CountNumbers(startPoints, score, 1f));
-            newLevelProgress.DOFillAmount(1, 1f).OnComplete(() =>
-            {
-                levelProgress.DOFillAmount(1, 0.2f);
+            levelProgress.DOFillAmount(totalProgress, 0.2f);
                 //celebrate
-                levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
-                GameSFXManager.Instance.PlayClip("LevelUp");
-                levelUp.SetActive(true);
-                StartCoroutine(Finish(3f, finished));
-            });
-        }
-        else
-        {
-            StartCoroutine(CountNumbers(startPoints, score, 1));
-            newLevelProgress.DOFillAmount(currentProgress + progress, 1).OnComplete(() =>
-             {
-                 levelProgress.DOFillAmount(currentProgress + progress, 0.2f);
-                 StartCoroutine(Finish(2, finished));
-             });
-        }
+            if (isNewLevel)
+            {
+                StartCoroutine(ShowLevelUp());
+            }
+            else
+            {
+                nextButton.SetActive(true);
+            }
+        });
+
     }
 
-    public IEnumerator Finish(float time, Action finished)
+    private IEnumerator ShowLevelUp()
     {
-        yield return new WaitForSeconds(time);
-        gameObject.SetActive(false);
-        finished?.Invoke();
+        levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
+        GameSFXManager.Instance.PlayClip("LevelUp");
+        levelUp.SetActive(true);
+        yield return new WaitForSeconds(1);
+        nextButton.SetActive(true);
     }
 
-    public IEnumerator CountNumbers(int startPoints, int points, float time)
+    public IEnumerator CountNumbers(int startPoints, int points, int reward, float time)
     {
         float timer = 0;
 
@@ -90,12 +100,18 @@ public class LevelPanel : MonoBehaviour
             totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))) + "/" + nextLevelPoints; ;
             newPoints.text = (Mathf.Round(points * (1 - (timer / time)))).ToString();
 
+            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Currency,
+                GameManager.Instance.Currency + reward, time)) + " + " +
+                Mathf.Round(Mathf.Lerp(reward, 0, timer));
+
             timer += Time.deltaTime;
             yield return null;
         }
 
         totalPoints.text = (startPoints + points) + "/" + nextLevelPoints;
         newPoints.text = "0";
+
+
     }
 
     int GetScore(int rank) => rank switch
@@ -105,4 +121,9 @@ public class LevelPanel : MonoBehaviour
         2 => 50,
         _ => 20
     };
+
+    public void NextPressed()
+    {
+        nextPressed?.Invoke();
+    }
 }

@@ -19,8 +19,8 @@ public class UIManager : MonoBehaviour
     PassCardsPanel passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
-    [SerializeField]
-    ResultPanel ResultPanel;
+    //[SerializeField]
+    //ResultPanel ResultPanel;
     [SerializeField]
     LevelPanel LevelPanel;
     [SerializeField]
@@ -125,25 +125,16 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-            Player[] orderedPlayers = game.Players.OrderBy(a => a.Score).ToArray();
-            int rank = 0;
 
-            for (int i = 0; i < orderedPlayers.Length; i++)
-            {
-                if (orderedPlayers[i] is MainPlayer)
-                {
-                    rank = i;
-                }
-            }
-
-            LevelPanel.Open(rank, () =>
-            {
-                ResultPanel.ShowResult(game.Players, () =>
+                DealFinishedPanel.ShowRound(game.Players,false, (rank) =>
                  {
-                     LeaveRoom();
-                     SceneManager.LoadScene(1);
+                     LevelPanel.Open(rank, () =>
+                     {
+                         LeaveRoom();
+                         SceneManager.LoadScene(1);
+                     });
                  });
-            });
+
 
             return;
         }
@@ -155,7 +146,7 @@ public class UIManager : MonoBehaviour
 
         if (hostPlayer)
         {
-            DealFinishedPanel.ShowRound(game.Players, false, () =>
+            DealFinishedPanel.ShowRound(game.Players, false, (rank) =>
               {
                   game.StartNextDeal();
               });
