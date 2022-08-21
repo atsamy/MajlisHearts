@@ -155,7 +155,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         if (isHost && PhotonNetwork.PlayerList.Length > 1)
         {
             startGameButton.SetActive(true);
-            shuffleSeatsButton.SetActive(true);
+
+            if(GameManager.Instance.IsTeam)
+                shuffleSeatsButton.SetActive(true);
 
             playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
             PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;

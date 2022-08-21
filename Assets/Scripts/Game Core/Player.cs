@@ -59,8 +59,10 @@ public class Player
         return OwnedCards.Contains(card);
     }
 
-    public void CheckForDoubleCards()
+    public async void CheckForDoubleCards()
     {
+        await System.Threading.Tasks.Task.Delay(2000);
+
         bool hasDoubleCard = false;
 
         if (HasCard(Card.QueenOfSpades))

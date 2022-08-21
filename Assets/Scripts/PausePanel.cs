@@ -19,6 +19,7 @@ public class PausePanel : MonoBehaviour
 
     public void BackToMajlis()
     {
+        UIManager.Instance.LeaveRoom();
         FadeScreen.Instance.FadeIn(2, () => 
         {
             Time.timeScale = 1;

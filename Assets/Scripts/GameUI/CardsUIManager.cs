@@ -83,7 +83,7 @@ public class CardsUIManager : MonoBehaviour
     {
         this.cardBack = new GameObject();
         this.cardBack.AddComponent<Image>().sprite = cardBack;
-        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 160);
+        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(140, 186.7f);
     }
 
     public void OrganizeCards()

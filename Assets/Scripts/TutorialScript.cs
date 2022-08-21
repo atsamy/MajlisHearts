@@ -87,7 +87,7 @@ public class TutorialScript : MonoBehaviour
             {
                 case 4:
                     hand.gameObject.SetActive(true);
-                    hand.position = todoButton.transform.position + Vector3.down * 130;
+                    hand.position = todoButton.transform.position + Vector3.down * 145;
                     characterPanel.SetActive(false);
                     block = true;
                     originalParent = todoButton.transform.parent;
@@ -120,7 +120,7 @@ public class TutorialScript : MonoBehaviour
                 case 6:
                     bgBlock.SetActive(false);
                     hand.gameObject.SetActive(true);
-                    hand.position = taskButton.transform.position + Vector3.down * 120;
+                    hand.position = taskButton.transform.position + Vector3.down * 130;
 
                     characterPanel.SetActive(false);
                     block = true;
@@ -149,7 +149,7 @@ public class TutorialScript : MonoBehaviour
                     break;
                 case 8:
                     hand.gameObject.SetActive(true);
-                    hand.position = playButton.transform.position + Vector3.down * 150;
+                    hand.position = playButton.transform.position + Vector3.down * 155;
                     characterPanel.SetActive(false);
                     block = true;
                     originalParent = playButton.transform.parent;

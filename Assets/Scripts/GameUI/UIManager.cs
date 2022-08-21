@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
@@ -32,8 +33,6 @@ public class UIManager : MonoBehaviour
     MainPlayer mainPlayer;
 
     public DoublePanelScript DoublePanel;
-    public GameObject Scores;
-    //public Text PassText;
 
     CardsUIManager cardsUIManager;
     GameScript game;
@@ -108,6 +107,7 @@ public class UIManager : MonoBehaviour
 
     private void CardsPassed()
     {
+        waitingPanel.Hide();
         StartCoroutine(cardsUIManager.UpdateCards(mainPlayer));
     }
 
@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
     private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
         doubleCardCount = 0;
-        Scores.SetActive(false);
+        scoresHolder.SetActive(false);
         emojiButton.SetActive(false);
 
 
@@ -172,7 +172,7 @@ public class UIManager : MonoBehaviour
         DealFinishedPanel.ShowInGame(game.Players);
     }
 
-    private void LeaveRoom()
+    public void LeaveRoom()
     {
         if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
         {
@@ -390,8 +390,8 @@ public class UIManager : MonoBehaviour
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        //waitingPanel.Show();
+        waitingPanel.Show();
         mainPlayer.PassCards(selectedPassCards);
-        Scores.SetActive(true);
+        //scoresHolder.SetActive(true);
     }
 }

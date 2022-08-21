@@ -23,6 +23,11 @@ public class HeaderScript : MonoBehaviour
         GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
     }
 
+    private void OnDisable()
+    {
+        GameManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
+    }
+
     public void SetAvatar()
     {
         AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
