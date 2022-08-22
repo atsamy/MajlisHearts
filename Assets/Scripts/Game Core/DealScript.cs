@@ -98,7 +98,7 @@ public class DealScript
 
         doubleCount++;
 
-        Debug.Log("double card " + doubleCount);
+        //Debug.Log("double card " + doubleCount);
 
         if (doubleCount == 2)
         {

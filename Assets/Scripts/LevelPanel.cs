@@ -14,8 +14,8 @@ public class LevelPanel : MonoBehaviour
     [SerializeField]
     Image newLevelProgress;
 
-    [SerializeField]
-    GameObject Reward;
+    //[SerializeField]
+    //GameObject Reward;
 
     [SerializeField]
     TextMeshProUGUI totalPoints;
@@ -97,6 +97,7 @@ public class LevelPanel : MonoBehaviour
     public IEnumerator CountNumbers(int startPoints, int points, int reward, float time)
     {
         float timer = 0;
+        yield return new WaitForSeconds(1);
 
         while (timer < time)
         {

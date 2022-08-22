@@ -111,7 +111,7 @@ public class DealResult : MonoBehaviour
 
     public void ShowInGame(Player[] players)
     {
-        ShowRound(players, true, (rank) =>
+        ShowRound(players, true,false, (rank) =>
           {
               gameObject.SetActive(false);
           });

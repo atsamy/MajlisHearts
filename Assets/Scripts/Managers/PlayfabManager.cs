@@ -379,12 +379,12 @@ public class PlayfabManager : MonoBehaviour
             (res) =>
             {
                 Debug.Log("Currency Added Successfully");
-                result.Invoke(true);
+                result?.Invoke(true);
             },
             (error) =>
             {
                 Debug.Log("AddCurrency Error: " + error.ErrorMessage);
-                result.Invoke(false);
+                result?.Invoke(false);
             }
         );
     }
