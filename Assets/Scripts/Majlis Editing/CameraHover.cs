@@ -10,13 +10,18 @@ public class CameraHover : MonoBehaviour
     Vector3 startPosition;
     bool locked;
 
-    Vector3 originalPosition;
-    Quaternion originalRotation;
+    //Vector3 originalPosition;
+    //Quaternion originalRotation;
+
+    [SerializeField]
+    Vector2 minBounds;
+    [SerializeField]
+    Vector2 maxBounds;
 
     [SerializeField]
     float hoverSpeed = 5;
 
-    void Update()
+    void LateUpdate()
     {
         if (locked)
             return;
@@ -32,6 +37,9 @@ public class CameraHover : MonoBehaviour
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, Input.mousePosition.y - startPosition.y, 0);
             transform.position += mousePosition.normalized * Time.deltaTime * hoverSpeed;
+
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x,minBounds.x, maxBounds.x),
+                Mathf.Clamp(transform.position.y,minBounds.y, maxBounds.y), -20);
         }
     }
 
@@ -70,8 +78,8 @@ public class CameraHover : MonoBehaviour
 
     public void GoToLocation(Transform Location,Action onArrived)
     {
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
+        //originalPosition = transform.position;
+        //originalRotation = transform.rotation;
 
         locked = true;
         Vector3 tagetLocation = Location.position;
