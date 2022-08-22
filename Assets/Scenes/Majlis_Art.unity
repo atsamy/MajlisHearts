@@ -385,6 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2891987}
   - component: {fileID: 2891988}
+  - component: {fileID: 2891989}
   m_Layer: 0
   m_Name: Garage_Short_Wall_Right
   m_TagString: Untagged
@@ -459,6 +460,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2891989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2891986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: 322217328, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  - {fileID: 322217328, guid: 21779e9970a567849a2d85137262c70e, type: 3}
+  - {fileID: 322217328, guid: 1d840f5a344ef1e48855c1ab8ffcf75e, type: 3}
 --- !u!1 &3139370
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +915,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: e1eebe77a5d15944b84aa7a90f38d6cf, type: 3}
   varientSprites:
   - {fileID: 1397906767, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!1 &8951760
@@ -1082,7 +1102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &12817293
 Transform:
   m_ObjectHideFlags: 0
@@ -5063,7 +5083,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &106662367
 SpriteRenderer:
@@ -5130,7 +5150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 43ed7b1d7a5f9854f85bfa3bc1a86746, type: 3}
   varientSprites:
   - {fileID: 344185003, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
 --- !u!1 &110328175
@@ -8404,6 +8425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 195192126}
   - component: {fileID: 195192127}
+  - component: {fileID: 195192128}
   m_Layer: 0
   m_Name: Garage_Chair (1)
   m_TagString: Untagged
@@ -8422,7 +8444,8 @@ Transform:
   m_LocalPosition: {x: -7.5759993, y: -0.19199991, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1836714942}
   m_Father: {fileID: 1875452479}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8478,6 +8501,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &195192128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195192125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: -270718702, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  - {fileID: -270718702, guid: 21779e9970a567849a2d85137262c70e, type: 3}
+  - {fileID: -270718702, guid: 1d840f5a344ef1e48855c1ab8ffcf75e, type: 3}
 --- !u!1 &195618707
 GameObject:
   m_ObjectHideFlags: 0
@@ -9743,7 +9784,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &235054503
 SpriteRenderer:
@@ -9810,7 +9851,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: ad7d2bc1c5be36849b7e47b043ede5db, type: 3}
+  - {fileID: 21300000, guid: 617c60ce503524145842bea817476347, type: 3}
+  - {fileID: 21300000, guid: 0ea4f0319fd999345a6761960faf6e59, type: 3}
   varientSprites:
   - {fileID: -250282977, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: -250282977, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -12216,7 +12260,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &293435441
 SpriteRenderer:
@@ -12283,7 +12327,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 074d6229de730a745bbd03673160dc04, type: 3}
+  - {fileID: 21300000, guid: 22d309f76dc997d418be4cb872a5e3e1, type: 3}
+  - {fileID: 21300000, guid: 9461f7b2173e1f843983a39f7c6bd272, type: 3}
   varientSprites:
   - {fileID: -2057666676, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: -2057666676, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -15026,7 +15073,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 12fb4bd8d54dad1449c5c139a26ad055, type: 3}
   varientSprites:
   - {fileID: 1973778038, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!212 &359560244
@@ -18776,7 +18824,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: cc9d590bc0f75a347abed9e106e83269, type: 3}
+  - {fileID: 21300000, guid: 245b2b314cb779242b1cedbcd2529489, type: 3}
+  - {fileID: 21300000, guid: 189ee4518da0eac429d3700ece333e07, type: 3}
   varientSprites:
   - {fileID: 1469216633, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: 1469216633, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -19710,7 +19761,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: e75fa87998da1a74faf6619d7912555a, type: 3}
+  - {fileID: 21300000, guid: 62a8166ea9ccee44da047f39390ffd27, type: 3}
+  - {fileID: 21300000, guid: 0dbf527b09ebc0f4098f378e0c22582e, type: 3}
   varientSprites:
   - {fileID: 1846015164, guid: 208335169bee218469f419ab0b9dc915, type: 3}
   - {fileID: 1846015164, guid: 8aade39b92367804ca74871005c4d04a, type: 3}
@@ -20824,7 +20878,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &493738252
 SpriteRenderer:
@@ -20891,7 +20945,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 074d6229de730a745bbd03673160dc04, type: 3}
+  - {fileID: 21300000, guid: 22d309f76dc997d418be4cb872a5e3e1, type: 3}
+  - {fileID: 21300000, guid: 9461f7b2173e1f843983a39f7c6bd272, type: 3}
   varientSprites:
   - {fileID: -1501376992, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: -1501376992, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -20927,7 +20984,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &493824832
 SpriteRenderer:
@@ -20994,7 +21051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 122ba0811c8fabe42bdaa7f2d28f78bc, type: 3}
+  - {fileID: 21300000, guid: d08374bbc7f241843abdea95f19b5f20, type: 3}
+  - {fileID: 21300000, guid: d5b6ca82250e6f5408c1d9c42089b51c, type: 3}
   varientSprites:
   - {fileID: 1699156595, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: 1699156595, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -21977,7 +22037,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 045d69cf7a8545c43bd08ffe3da7cedd, type: 3}
+  - {fileID: 21300000, guid: 85c4e75734024bf428f57b6359d84bd3, type: 3}
+  - {fileID: 21300000, guid: 88eb737307a9f55418faad87381289f7, type: 3}
   AllItems:
   - {fileID: 514565721}
   - {fileID: 3139373}
@@ -22939,6 +23002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 541352955}
   - component: {fileID: 541352956}
+  - component: {fileID: 541352957}
   m_Layer: 0
   m_Name: Garage_Short_wall_Tall
   m_TagString: Untagged
@@ -23013,6 +23077,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &541352957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541352954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: 510357617, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  - {fileID: 510357617, guid: 21779e9970a567849a2d85137262c70e, type: 3}
+  - {fileID: 510357617, guid: 1d840f5a344ef1e48855c1ab8ffcf75e, type: 3}
 --- !u!1 &541687938
 GameObject:
   m_ObjectHideFlags: 0
@@ -23227,7 +23309,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 36ca4d5f729b9a749b26b764476d6907, type: 3}
   varientSprites:
   - {fileID: 1724079744, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!212 &542264976
@@ -23685,6 +23768,8 @@ GameObject:
   m_Component:
   - component: {fileID: 550341963}
   - component: {fileID: 550341964}
+  - component: {fileID: 550341966}
+  - component: {fileID: 550341965}
   m_Layer: 0
   m_Name: Garage_Short_Wall_Left
   m_TagString: Untagged
@@ -23707,7 +23792,7 @@ Transform:
   - {fileID: 2891987}
   - {fileID: 541352955}
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &550341964
 SpriteRenderer:
@@ -23761,6 +23846,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &550341965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550341962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59cc3ec78ce9e412ba61cc1eb0e8af37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: ea4ef0a6a293cd34eb9a029709cbbd91, type: 3}
+  - {fileID: 21300000, guid: 2c62acafcbc110648aa8782572be854a, type: 3}
+  - {fileID: 21300000, guid: 3afae6a58397e7c4d96b3074cf7f99cf, type: 3}
+  AllItems:
+  - {fileID: 550341966}
+  - {fileID: 2891989}
+  - {fileID: 541352957}
+--- !u!114 &550341966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550341962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: -1639886053, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  - {fileID: -1639886053, guid: 21779e9970a567849a2d85137262c70e, type: 3}
+  - {fileID: -1639886053, guid: 1d840f5a344ef1e48855c1ab8ffcf75e, type: 3}
 --- !u!1 &553147402
 GameObject:
   m_ObjectHideFlags: 0
@@ -27544,7 +27668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 649501577}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Item to be added
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28053,7 +28177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 24147170c38359a4ea005364991eea0b, type: 3}
   varientSprites:
   - {fileID: -249694962, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
 --- !u!212 &656772135
@@ -33989,7 +34114,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: f18c1b83270f06846bb6ffc0835f680e, type: 3}
   varientSprites:
   - {fileID: -795983811, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
 --- !u!212 &814520651
@@ -36129,7 +36255,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: cb3167b13ee82004f8b43dfafba1a425, type: 3}
+  - {fileID: 21300000, guid: b9fde91f8b9caca4e833c379e44f0253, type: 3}
+  - {fileID: 21300000, guid: 62af53cf13b70fc469d2acc0ead65a9d, type: 3}
   varientSprites:
   - {fileID: -1191197252, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: -1191197252, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -39444,7 +39573,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 338a9596f659d7049be5668bf03e6d54, type: 3}
+  - {fileID: 21300000, guid: c3913e748773b49458537e21d891616e, type: 3}
+  - {fileID: 21300000, guid: b51d87cc5221df840b49a7042776a6f4, type: 3}
   varientSprites:
   - {fileID: -1240537440, guid: 208335169bee218469f419ab0b9dc915, type: 3}
   - {fileID: 21300000, guid: 6e85596aca2906e4a86c228babd64810, type: 3}
@@ -51432,7 +51564,6 @@ Transform:
   - {fileID: 12817293}
   - {fileID: 1618503858}
   - {fileID: 1807195472}
-  - {fileID: 1836714942}
   - {fileID: 493738251}
   - {fileID: 293435440}
   - {fileID: 493824831}
@@ -55232,7 +55363,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: afce738ea642c5343a49145deda05431, type: 3}
+  - {fileID: 21300000, guid: c30e21e7a0f9a3d4fa1459b532e2392e, type: 3}
+  - {fileID: 21300000, guid: 056e5113719a25c488819a9b8dc3807a, type: 3}
   varientSprites:
   - {fileID: -942260195, guid: aa5ea1f844649764280eeb6c073a6cde, type: 3}
   - {fileID: -942260195, guid: b3abbe4386691364d885e3638640ff08, type: 3}
@@ -61329,7 +61463,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1415782010
 SpriteRenderer:
@@ -61396,7 +61530,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 4cf7f9abe71aecf419c4524cb18e9121, type: 3}
   varientSprites:
   - {fileID: 780315871, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
 --- !u!1 &1416231556
@@ -61786,7 +61921,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1422990342
 Transform:
   m_ObjectHideFlags: 0
@@ -62779,7 +62914,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1436746505
 MonoBehaviour:
@@ -62794,7 +62929,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 6e92046d70b2c0d45907bca41377a06b, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 27eb588425e237440bc5d9d72a39e47b, type: 3}
 --- !u!1 &1440123039
@@ -63839,7 +63975,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: d7b9784327339e24899f24b142929236, type: 3}
   varientSprites:
   - {fileID: -334803688, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!1 &1475273140
@@ -65000,7 +65137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 5a38aff07332ae3459ab1674a2046f6c, type: 3}
   varientSprites:
   - {fileID: -479983766, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!1 &1500375565
@@ -68431,7 +68569,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 4e294569b916c514595cce6d68f5b4ea, type: 3}
   AllItems:
   - {fileID: 1566063490}
   - {fileID: 1272911508}
@@ -71145,7 +71284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1618503858
 Transform:
   m_ObjectHideFlags: 0
@@ -71889,7 +72028,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: cda4a1beb856bd148b8ad80c1973d203, type: 3}
+  - {fileID: 21300000, guid: 24227bab6e0d7e84087787e0e34bb618, type: 3}
+  - {fileID: 21300000, guid: d9f57dbd8123a1541b790094695fbfa9, type: 3}
   varientSprites:
   - {fileID: 350387822, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: 350387822, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -74055,7 +74197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: f6ce4bedaa6d6d841a7622799a7c612d, type: 3}
   varientSprites:
   - {fileID: -269782649, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!1 &1688283319
@@ -79073,7 +79216,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: afce738ea642c5343a49145deda05431, type: 3}
+  - {fileID: 21300000, guid: c30e21e7a0f9a3d4fa1459b532e2392e, type: 3}
+  - {fileID: 21300000, guid: 056e5113719a25c488819a9b8dc3807a, type: 3}
   varientSprites:
   - {fileID: 1211753337, guid: aa5ea1f844649764280eeb6c073a6cde, type: 3}
   - {fileID: 1211753337, guid: b3abbe4386691364d885e3638640ff08, type: 3}
@@ -79851,7 +79997,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1813104631
 SpriteRenderer:
@@ -79918,7 +80064,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 94395686953badf45959c983134e1910, type: 3}
+  - {fileID: 21300000, guid: ac2fb80cec0a57642b2ffedecf5b8749, type: 3}
+  - {fileID: 21300000, guid: 83db22b13102e2c4eb3880fa8ff7bf2d, type: 3}
   varientSprites:
   - {fileID: 203062566, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
   - {fileID: 203062566, guid: 21779e9970a567849a2d85137262c70e, type: 3}
@@ -80489,6 +80638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1836714942}
   - component: {fileID: 1836714943}
+  - component: {fileID: 1836714944}
   m_Layer: 0
   m_Name: Garage_Wrench (1)
   m_TagString: Untagged
@@ -80504,12 +80654,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836714941}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7030005, y: -1.7880001, z: -0.03203687}
+  m_LocalPosition: {x: 0.056999207, y: 0.30200005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1201847836}
-  m_RootOrder: 4
+  m_Father: {fileID: 195192126}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1836714943
 SpriteRenderer:
@@ -80551,8 +80701,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
-  m_Sprite: {fileID: -1296387482, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  m_SortingOrder: 12
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -80560,9 +80710,25 @@ SpriteRenderer:
   m_Size: {x: 0.5, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1836714944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836714941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: -1296387482, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
 --- !u!1 &1837671306
 GameObject:
   m_ObjectHideFlags: 0
@@ -81284,7 +81450,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 9a2580b22dc35f34585203705e62d358, type: 3}
+  - {fileID: 21300000, guid: bbb2e20547826fd459746a30bc32ba42, type: 3}
+  - {fileID: 21300000, guid: 02587538ffad3474b98d474262b4ae45, type: 3}
   varientSprites:
   - {fileID: 118426670, guid: 208335169bee218469f419ab0b9dc915, type: 3}
   - {fileID: 118426670, guid: 8aade39b92367804ca74871005c4d04a, type: 3}
@@ -82501,7 +82670,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: afce738ea642c5343a49145deda05431, type: 3}
+  - {fileID: 21300000, guid: c30e21e7a0f9a3d4fa1459b532e2392e, type: 3}
+  - {fileID: 21300000, guid: 056e5113719a25c488819a9b8dc3807a, type: 3}
   varientSprites:
   - {fileID: -382235106, guid: aa5ea1f844649764280eeb6c073a6cde, type: 3}
   - {fileID: -382235106, guid: b3abbe4386691364d885e3638640ff08, type: 3}
@@ -82516,6 +82688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1875452479}
   - component: {fileID: 1875452480}
+  - component: {fileID: 1875452482}
   - component: {fileID: 1875452481}
   m_Layer: 0
   m_Name: Garage_Chair
@@ -82538,7 +82711,7 @@ Transform:
   m_Children:
   - {fileID: 195192126}
   m_Father: {fileID: 1201847836}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1875452480
 SpriteRenderer:
@@ -82601,10 +82774,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 1875452478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
+  m_Script: {fileID: 11500000, guid: 59cc3ec78ce9e412ba61cc1eb0e8af37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  varientSprites: []
+  Code: 
+  varientIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  AllItems:
+  - {fileID: 1875452482}
+  - {fileID: 195192128}
+  - {fileID: 1836714944}
+--- !u!114 &1875452482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875452478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: -270718702, guid: c15bce2abef4d1442b8186565dfbbf07, type: 3}
+  - {fileID: -270718702, guid: 21779e9970a567849a2d85137262c70e, type: 3}
+  - {fileID: -270718702, guid: 1d840f5a344ef1e48855c1ab8ffcf75e, type: 3}
 --- !u!1 &1876552367
 GameObject:
   m_ObjectHideFlags: 0
@@ -86036,7 +86235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 38cb13fb55b35614aa4820b7ecf43a44, type: 3}
   AllItems:
   - {fileID: 1942065683}
   - {fileID: 946696691}
@@ -87650,7 +87850,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: da8829528df6f0247a42ca12dcf93d2e, type: 3}
+  - {fileID: 21300000, guid: cf630f334e61b27459c6193d5ff5186a, type: 3}
+  - {fileID: 21300000, guid: e44ad935175c75349bc6dfcf9aaa310c, type: 3}
   varientSprites:
   - {fileID: -112474295, guid: 208335169bee218469f419ab0b9dc915, type: 3}
   - {fileID: -112474295, guid: 8aade39b92367804ca74871005c4d04a, type: 3}
@@ -89719,7 +89922,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 77e202e8deda6334cb97a28066ed9693, type: 3}
+  - {fileID: 21300000, guid: 3be4b79671436da44a030aec2fd4b83c, type: 3}
+  - {fileID: 21300000, guid: b0d8a7eebe4c94c42909fa480162afde, type: 3}
   varientSprites:
   - {fileID: -277874671, guid: aa5ea1f844649764280eeb6c073a6cde, type: 3}
   - {fileID: -277874671, guid: b3abbe4386691364d885e3638640ff08, type: 3}
@@ -90091,7 +90297,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: d094950ea15286746a6909ca20b528c3, type: 3}
+  - {fileID: 21300000, guid: 2a531e595ea9810469d4e0da1c6689a8, type: 3}
+  - {fileID: 21300000, guid: 68245016ffd50f047ab6e93daf084670, type: 3}
   varientSprites:
   - {fileID: 1450911366, guid: 208335169bee218469f419ab0b9dc915, type: 3}
   - {fileID: 1450911366, guid: 8aade39b92367804ca74871005c4d04a, type: 3}
@@ -92479,7 +92688,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 410c94f46b9b55a4098db29275ae3a34, type: 3}
+  - {fileID: 21300000, guid: c529965112fc23f47928723d4726bf46, type: 3}
+  - {fileID: 21300000, guid: 0e8a955d76d8f1c44a45de7733f3003e, type: 3}
   varientSprites:
   - {fileID: 1762016647, guid: aa5ea1f844649764280eeb6c073a6cde, type: 3}
   - {fileID: 1762016647, guid: b3abbe4386691364d885e3638640ff08, type: 3}
@@ -95790,7 +96002,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 615613fa0ba8be94bba3f5dd8875331e, type: 3}
   varientSprites:
   - {fileID: 1628313569, guid: 208335169bee218469f419ab0b9dc915, type: 3}
 --- !u!1 &224685508863503887
@@ -96030,7 +96243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &3992448727616770790
 SpriteRenderer:
   m_ObjectHideFlags: 0
