@@ -7717,7 +7717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &886591455
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14424,7 +14424,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singlePlayersParent: {fileID: 886591454}
   teamPlayersParent: {fileID: 1563628138}
-  singlePlayersPositions: []
   singlePlayers:
   - {fileID: 5904818464075210830}
   - {fileID: 1584242814}
@@ -14435,6 +14434,11 @@ MonoBehaviour:
   - {fileID: 1406070540}
   - {fileID: 1106510090}
   - {fileID: 989944991}
+  ranks:
+  - {fileID: 2051852528}
+  - {fileID: 349225476}
+  - {fileID: 1643560163}
+  - {fileID: 1843305550}
   Footer: {fileID: 1682925430}
   buttonText: {fileID: 1893598023}
 --- !u!1 &1610726741

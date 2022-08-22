@@ -27,9 +27,9 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     Sprite[] avatarFrames;
 
-    public void Set(Player player,bool inGame)
+    public void Set(Player player, bool inGame)
     {
-        playerName.text = ArabicFixer.Fix(player.Name,false,false);
+        playerName.text = ArabicFixer.Fix(player.Name, false, false);
         playerName.font = LanguageManager.Instance.GetFont();
 
         playerAvatar.sprite = player.Avatar;
@@ -42,9 +42,11 @@ public class PlayerDealResult : MonoBehaviour
         {
             StartCoroutine(countScore(player.TotalScore - player.Score, player.TotalScore));
         }
+
+        SetPlayer(player.Name == GameManager.Instance.MyPlayer.Name);
     }
 
-    IEnumerator countScore(float startScore,float endScore)
+    IEnumerator countScore(float startScore, float endScore)
     {
         float timer = 1;
 
@@ -73,7 +75,7 @@ public class PlayerDealResult : MonoBehaviour
         teamBadge[teamIndex].SetActive(true);
     }
 
-    public void SetWinner(bool value)
+    public void SetPlayer(bool value)
     {
         scoreFrame.sprite = scoreFrames[value ? 1 : 0];
         playerFrame.sprite = avatarFrames[value ? 1 : 0];

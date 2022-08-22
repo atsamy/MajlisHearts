@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class StoreScene : MenuScene
 {
@@ -9,6 +10,8 @@ public class StoreScene : MenuScene
     public StoreItem[] CurrencyStoreItems;
     public StoreItem WatchVideoBtn;
 
+    [SerializeField]
+    TextMeshProUGUI coinsText;
     //public int[] SCValues;
     
     public GameObject Loading;
@@ -44,6 +47,21 @@ public class StoreScene : MenuScene
             GameManager.Instance.SaveAvatar(item);
             MenuManager.Instance.Header.SetAvatar();
         };
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnCurrencyChanged += Instance_OnCurrencyChanged;
+    }
+
+    private void Instance_OnCurrencyChanged(int value)
+    {
+        coinsText.text = value.ToString();
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnCurrencyChanged -= Instance_OnCurrencyChanged;
     }
 
     public void Open(int index)
