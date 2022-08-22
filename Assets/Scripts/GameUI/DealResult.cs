@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-
+using TMPro;
 
 public class DealResult : MonoBehaviour
 {
@@ -12,12 +12,14 @@ public class DealResult : MonoBehaviour
     protected GameObject singlePlayersParent;
     [SerializeField]
     protected GameObject teamPlayersParent;
-    [SerializeField]
-    protected Transform[] singlePlayersPositions;
+    //[SerializeField]
+    //protected Transform[] singlePlayersPositions;
     [SerializeField]
     protected PlayerDealResult[] singlePlayers;
     [SerializeField]
     protected PlayerDealResult[] teamPlayers;
+    [SerializeField]
+    TextMeshProUGUI[] ranks;
     [SerializeField]
     GameObject Footer;
     [SerializeField]
@@ -56,21 +58,33 @@ public class DealResult : MonoBehaviour
 
         Player[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
 
-        for (int i = 0; i < sortedPlayers.Length; i++)
-        {
-            if (sortedPlayers[i] is MainPlayer)
-                rank = i;
-        }
+        int rankIndex = 0;
+        int score = sortedPlayers[0].TotalScore;
+
+        string[] ranksText = new string[] {"1st","2nd","3rd","4th" };
 
         if (!isTeam)
         {
             for (int i = 0; i < sortedPlayers.Length; i++)
             {
                 currentPlayers[i].Set(sortedPlayers[i], inGame);
-                currentPlayers[i].SetWinner(false);
+
+                if (sortedPlayers[i].TotalScore > score)
+                {
+                    rankIndex++;
+                    score = sortedPlayers[i].TotalScore;
+
+                }
+
+                ranks[i].text = ranksText[rankIndex];
+
+                if (sortedPlayers[i] is MainPlayer)
+                {
+                    rank = rankIndex;
+                }
             }
 
-            currentPlayers[0].SetWinner(true);
+            
         }
         else
         {
@@ -80,9 +94,7 @@ public class DealResult : MonoBehaviour
             currentPlayers[2].Set(players[(loser + 2) % 4], inGame);
             currentPlayers[1].Set(players[(loser + 1) % 4], inGame);
             currentPlayers[0].Set(players[(loser + 3) % 4], inGame);
-
-            currentPlayers[0].SetWinner(true);
-            currentPlayers[1].SetWinner(true);
+            //currentPlayers[1].SetWinner(true);
             //for (int i = 0; i < players.Length; i++)
             //{
             //    currentPlayers[i].Set(players[i].Name, players[i].Avatar);
