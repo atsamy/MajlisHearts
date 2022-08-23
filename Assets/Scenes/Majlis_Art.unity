@@ -6631,13 +6631,14 @@ GameObject:
   m_Component:
   - component: {fileID: 151644149}
   - component: {fileID: 151644150}
+  - component: {fileID: 151644151}
   m_Layer: 0
   m_Name: Kitchen_Frames (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &151644149
 Transform:
   m_ObjectHideFlags: 0
@@ -6694,7 +6695,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: 52e78b0f333642446a8ba9cd42bb34b8, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6702,9 +6703,30 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &151644151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151644148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 4fa4ecc6844741240abf776bd7455655, type: 3}
+  - {fileID: 21300000, guid: 4fa4ecc6844741240abf776bd7455655, type: 3}
+  - {fileID: 21300000, guid: 4fa4ecc6844741240abf776bd7455655, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 52e78b0f333642446a8ba9cd42bb34b8, type: 3}
+  - {fileID: 21300000, guid: 52e78b0f333642446a8ba9cd42bb34b8, type: 3}
+  - {fileID: 21300000, guid: 52e78b0f333642446a8ba9cd42bb34b8, type: 3}
 --- !u!1 &155081745
 GameObject:
   m_ObjectHideFlags: 0
@@ -6873,6 +6895,62 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &155807377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 155807378}
+  - component: {fileID: 155807379}
+  m_Layer: 0
+  m_Name: Ceilling Lamp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &155807378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807377}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2010105908}
+  - {fileID: 2102896999}
+  - {fileID: 1579851931}
+  m_Father: {fileID: 974591891}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &155807379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155807377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07741797b1f8346ec94afa3bcf06f4ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 49c2f417fdab5e042830a49c471f49b3, type: 3}
+  - {fileID: 21300000, guid: e41888d1bdd55dd4da9d4509f91c14ba, type: 3}
+  - {fileID: 21300000, guid: edbee23ed1e7a2241a4fd90108708e4c, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
+  - {fileID: 21300000, guid: 00d273bc9f31124498d968b7c4c951b6, type: 3}
+  - {fileID: 21300000, guid: c6464289459298641a2e1dc43c9ce46b, type: 3}
 --- !u!1 &158643856
 GameObject:
   m_ObjectHideFlags: 0
@@ -8094,7 +8172,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &192536479
 SpriteRenderer:
@@ -8161,7 +8239,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 9a2635cabb8030e46be941313826bd4c, type: 3}
+  - {fileID: 21300000, guid: 5dab2f6bcb0912f48a54907baab573a4, type: 3}
+  - {fileID: 21300000, guid: 9edae33d31fd1ae468158c0f1f8728e8, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 9f931fd15a8d3c540b9332626c32818d, type: 3}
   - {fileID: 21300000, guid: ab3683eaddf68604fa425348680fee0c, type: 3}
@@ -9516,7 +9597,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &231344768
 SpriteRenderer:
@@ -9583,7 +9664,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: da3effcf9b6e27442a2935b4a531c29a, type: 3}
+  - {fileID: 21300000, guid: 6102fb8b3aad9094a8efe5b8556afc43, type: 3}
+  - {fileID: 21300000, guid: 6cd257481dfbddc44b6e5a72d1820a9a, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 14f0d37c3ef778b4ab2192cd9c7cb7c4, type: 3}
   - {fileID: 21300000, guid: 4b600132429ca4e409542dd0c43a0830, type: 3}
@@ -12451,7 +12535,6 @@ GameObject:
   m_Component:
   - component: {fileID: 305030463}
   - component: {fileID: 305030465}
-  - component: {fileID: 305030464}
   m_Layer: 0
   m_Name: Kitchen_Island_Plate (9)
   m_TagString: Untagged
@@ -12471,25 +12554,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1558289612}
+  m_Father: {fileID: 800452771}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &305030464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305030462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!212 &305030465
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12531,15 +12598,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &305037743
@@ -17541,7 +17608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: e1e555e051557dd45b97b496c75acab7, type: 3}
+  - {fileID: 21300000, guid: 56bc45278b21d5c4a91b4fb3f762ffc4, type: 3}
+  - {fileID: 21300000, guid: 1d7acc7a13bf03443babf6bb2aa67b43, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 916cb30922c6f40448a80f05cbe7346e, type: 3}
   - {fileID: 21300000, guid: 5436eb9b890a7ff45bac30c4e7555b38, type: 3}
@@ -17812,7 +17882,6 @@ GameObject:
   m_Component:
   - component: {fileID: 420166034}
   - component: {fileID: 420166036}
-  - component: {fileID: 420166035}
   m_Layer: 0
   m_Name: Kitchen_Island_Plate (8)
   m_TagString: Untagged
@@ -17832,25 +17901,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1558289612}
+  m_Father: {fileID: 800452771}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &420166035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420166033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!212 &420166036
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -17892,15 +17945,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &425979280
@@ -19065,7 +19118,6 @@ GameObject:
   m_Component:
   - component: {fileID: 455714873}
   - component: {fileID: 455714875}
-  - component: {fileID: 455714874}
   m_Layer: 0
   m_Name: Kitchen_Island_Plate (5)
   m_TagString: Untagged
@@ -19085,25 +19137,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1558289612}
+  m_Father: {fileID: 800452771}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &455714874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455714872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!212 &455714875
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -19145,15 +19181,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &456352256
@@ -20440,13 +20476,14 @@ GameObject:
   m_Component:
   - component: {fileID: 476504440}
   - component: {fileID: 476504441}
+  - component: {fileID: 476504442}
   m_Layer: 0
   m_Name: Kitchen_Flower (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &476504440
 Transform:
   m_ObjectHideFlags: 0
@@ -20503,7 +20540,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 1a9b9fb56d51b364dbb81642f2fcc99a, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -20511,9 +20548,26 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &476504442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476504439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: bef75c04bb5e7db44942863fc3c2ab95, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 1a9b9fb56d51b364dbb81642f2fcc99a, type: 3}
 --- !u!1 &482544034
 GameObject:
   m_ObjectHideFlags: 0
@@ -23402,7 +23456,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &542844056
 SpriteRenderer:
@@ -23469,7 +23523,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: ea86e691860d8dd49850b6238ffb4bc1, type: 3}
+  - {fileID: 21300000, guid: 40f7e1b540c1dfa41920d0392ce1643b, type: 3}
+  - {fileID: 21300000, guid: e40895e4c58e4e2469b5640a241b6039, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: ee72f873e9a210d4185127ff793382f3, type: 3}
   - {fileID: 21300000, guid: ef268ff49094e5d47a90a728a8446816, type: 3}
@@ -33535,6 +33592,61 @@ Transform:
   m_Father: {fileID: 222948963}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &800452770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800452771}
+  - component: {fileID: 800452772}
+  m_Layer: 0
+  m_Name: Plates
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &800452771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800452770}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1032260049}
+  - {fileID: 1798903016}
+  - {fileID: 420166034}
+  - {fileID: 305030463}
+  - {fileID: 455714873}
+  m_Father: {fileID: 1558289612}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &800452772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800452770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07741797b1f8346ec94afa3bcf06f4ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!1 &808794090
 GameObject:
   m_ObjectHideFlags: 0
@@ -33731,9 +33843,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 833160505}
   - {fileID: 2005129161}
   - {fileID: 974591891}
   - {fileID: 2121067291}
+  - {fileID: 1114208017}
   - {fileID: 2139899697}
   - {fileID: 542844055}
   - {fileID: 1341824069}
@@ -33742,7 +33856,6 @@ Transform:
   - {fileID: 192536478}
   - {fileID: 231344767}
   - {fileID: 1328104157}
-  - {fileID: 833160505}
   m_Father: {fileID: 896254213}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -35063,7 +35176,7 @@ Transform:
   - {fileID: 361991351}
   - {fileID: 1237351148}
   m_Father: {fileID: 810931401}
-  m_RootOrder: 11
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &836045571
 GameObject:
@@ -41149,13 +41262,14 @@ GameObject:
   m_Component:
   - component: {fileID: 959865988}
   - component: {fileID: 959865989}
+  - component: {fileID: 959865990}
   m_Layer: 0
   m_Name: Kitchen_Microwave (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &959865988
 Transform:
   m_ObjectHideFlags: 0
@@ -41211,8 +41325,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: d6daf3e5733b84a4d8845966325c3a72, type: 3}
+  m_SortingOrder: 6
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -41220,9 +41334,30 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &959865990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959865987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 4cf266ad62a4a314880d0992edf6c810, type: 3}
+  - {fileID: 21300000, guid: 4cf266ad62a4a314880d0992edf6c810, type: 3}
+  - {fileID: 21300000, guid: 4cf266ad62a4a314880d0992edf6c810, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: d6daf3e5733b84a4d8845966325c3a72, type: 3}
+  - {fileID: 21300000, guid: d6daf3e5733b84a4d8845966325c3a72, type: 3}
+  - {fileID: 21300000, guid: d6daf3e5733b84a4d8845966325c3a72, type: 3}
 --- !u!1 &961253004
 GameObject:
   m_ObjectHideFlags: 0
@@ -41842,7 +41977,7 @@ Transform:
   - {fileID: 1071337521}
   - {fileID: 476504440}
   - {fileID: 1558289612}
-  - {fileID: 1579851931}
+  - {fileID: 155807378}
   - {fileID: 992468914}
   - {fileID: 1377790571}
   - {fileID: 959865988}
@@ -41851,7 +41986,7 @@ Transform:
   - {fileID: 404646789}
   - {fileID: 983651804}
   m_Father: {fileID: 810931401}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &978294244
 GameObject:
@@ -42153,13 +42288,14 @@ GameObject:
   m_Component:
   - component: {fileID: 983651804}
   - component: {fileID: 983651805}
+  - component: {fileID: 983651806}
   m_Layer: 0
   m_Name: Trash_Pin (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &983651804
 Transform:
   m_ObjectHideFlags: 0
@@ -42216,7 +42352,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 1a49ff5ad911fdb42acc2d09f7bfd109, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -42224,9 +42360,30 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &983651806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983651803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: db10b46d5bb9d8f4e80aaff9ff175281, type: 3}
+  - {fileID: 21300000, guid: db10b46d5bb9d8f4e80aaff9ff175281, type: 3}
+  - {fileID: 21300000, guid: db10b46d5bb9d8f4e80aaff9ff175281, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 1a49ff5ad911fdb42acc2d09f7bfd109, type: 3}
+  - {fileID: 21300000, guid: 1a49ff5ad911fdb42acc2d09f7bfd109, type: 3}
+  - {fileID: 21300000, guid: 1a49ff5ad911fdb42acc2d09f7bfd109, type: 3}
 --- !u!1 &985136872
 GameObject:
   m_ObjectHideFlags: 0
@@ -42543,7 +42700,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 1ad02cfbde86e454580742ff4a20bbc8, type: 3}
+  - {fileID: 21300000, guid: 1be84d0647c1cf14abbd2d71442e5d0e, type: 3}
+  - {fileID: 21300000, guid: 9de44a80f595513419126b68cfa54275, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 893f2b8ca3bbf79488797813c2f1763d, type: 3}
   - {fileID: 21300000, guid: 18c387a1bfdc8af40a143324901c8071, type: 3}
@@ -44241,7 +44401,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1032260049}
   - component: {fileID: 1032260051}
-  - component: {fileID: 1032260050}
   m_Layer: 0
   m_Name: Kitchen_Island_Plate (6)
   m_TagString: Untagged
@@ -44261,25 +44420,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1558289612}
+  m_Father: {fileID: 800452771}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1032260050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032260048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!212 &1032260051
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -44321,15 +44464,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1032910271
@@ -46236,13 +46379,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1071337521}
   - component: {fileID: 1071337522}
+  - component: {fileID: 1071337523}
   m_Layer: 0
   m_Name: Kitchen_Plant (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1071337521
 Transform:
   m_ObjectHideFlags: 0
@@ -46299,7 +46443,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: a79bce106800b1c449b84a3bac808b16, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -46307,9 +46451,26 @@ SpriteRenderer:
   m_Size: {x: 16, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1071337523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071337520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: de138e0a9ba4dda4fbb6f4e2cbaa7b6e, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: a79bce106800b1c449b84a3bac808b16, type: 3}
 --- !u!1 &1072029043
 GameObject:
   m_ObjectHideFlags: 0
@@ -48398,6 +48559,112 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &1114208016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1114208017}
+  - component: {fileID: 1114208019}
+  - component: {fileID: 1114208018}
+  m_Layer: 0
+  m_Name: Kitchen_Carpet (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1114208017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114208016}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1326.316, y: -634.844, z: 8.809846}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 810931401}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1114208018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114208016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 4ad13b049a246d340ab3042b9a3cc7ef, type: 3}
+  - {fileID: 21300000, guid: f7a69f6d9bba5c248941c0b8ab557d2a, type: 3}
+  - {fileID: 21300000, guid: 5416c1bbb5ddc934b99d64fb2398b6d1, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 3dc2caf153d27aa4ca1d42351f47dfc3, type: 3}
+  - {fileID: 21300000, guid: f89cbe65f00874045a4ac2b5e0ba33f0, type: 3}
+  - {fileID: 21300000, guid: 6e8746a9542a88a4090ba0fa83c5a411, type: 3}
+--- !u!212 &1114208019
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114208016}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 64, y: 64}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1114878817
@@ -57252,7 +57519,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1328104158
 SpriteRenderer:
@@ -57319,7 +57586,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: c3982153fbea33d45ac2046a8398a06b, type: 3}
+  - {fileID: 21300000, guid: 34c97c5ee96c9bc44b0e757f8242d8f5, type: 3}
+  - {fileID: 21300000, guid: 6b86a074a2e5ca74b960d5259b83f153, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 430a59bad60efc543b61bc60f56f2bac, type: 3}
   - {fileID: 21300000, guid: f8ca91dceae69cb47b7b2380fa4cb914, type: 3}
@@ -58271,7 +58541,7 @@ Transform:
   - {fileID: 1235814080}
   - {fileID: 1734164168}
   m_Father: {fileID: 810931401}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1341824070
 SpriteRenderer:
@@ -58338,7 +58608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 9307038124a833740bd389c16ad8a6b9, type: 3}
+  - {fileID: 21300000, guid: 0dfc3f7dd4b23e54c84760e97b51a1e3, type: 3}
+  - {fileID: 21300000, guid: b4b5a6d5fa88c7c4ebcfb0b9d26d2cf2, type: 3}
   AllItems:
   - {fileID: 1341824072}
   - {fileID: 1608886171}
@@ -60427,13 +60700,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1377790571}
   - component: {fileID: 1377790572}
+  - component: {fileID: 1377790573}
   m_Layer: 0
   m_Name: Fire_Extinguisher (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1377790571
 Transform:
   m_ObjectHideFlags: 0
@@ -60490,7 +60764,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 27eb588425e237440bc5d9d72a39e47b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -60498,9 +60772,30 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1377790573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377790570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 61376e7e3fcf95c408913dd3b249bd92, type: 3}
+  - {fileID: 21300000, guid: 61376e7e3fcf95c408913dd3b249bd92, type: 3}
+  - {fileID: 21300000, guid: 61376e7e3fcf95c408913dd3b249bd92, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 27eb588425e237440bc5d9d72a39e47b, type: 3}
+  - {fileID: 21300000, guid: 27eb588425e237440bc5d9d72a39e47b, type: 3}
+  - {fileID: 21300000, guid: 27eb588425e237440bc5d9d72a39e47b, type: 3}
 --- !u!1 &1381910916
 GameObject:
   m_ObjectHideFlags: 0
@@ -67121,7 +67416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1542792890}
   - component: {fileID: 1542792892}
-  - component: {fileID: 1542792891}
+  - component: {fileID: 1542792893}
   m_Layer: 0
   m_Name: Kitchen_Cutting_Board (1)
   m_TagString: Untagged
@@ -67142,24 +67437,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1558289612}
-  m_RootOrder: 5
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1542792891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542792889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
-  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
-  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
 --- !u!212 &1542792892
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -67201,17 +67480,35 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 8, y: 8}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1542792893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542792889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
+  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
+  - {fileID: 21300000, guid: 487439e2f36ba2a43ab9c0922b122b6a, type: 3}
 --- !u!1 &1542960170
 GameObject:
   m_ObjectHideFlags: 0
@@ -68193,15 +68490,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1558289612}
   - component: {fileID: 1558289615}
-  - component: {fileID: 1558289614}
-  - component: {fileID: 1558289613}
+  - component: {fileID: 1558289617}
+  - component: {fileID: 1558289616}
   m_Layer: 0
   m_Name: Kitchen_Island_Cloth (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1558289612
 Transform:
   m_ObjectHideFlags: 0
@@ -68214,53 +68511,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1032260049}
-  - {fileID: 1798903016}
-  - {fileID: 420166034}
-  - {fileID: 305030463}
-  - {fileID: 455714873}
+  - {fileID: 800452771}
   - {fileID: 1542792890}
   m_Father: {fileID: 974591891}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1558289613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558289611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Code: 
-  varientIcons: []
-  AllItems:
-  - {fileID: 1558289614}
-  - {fileID: 1032260050}
-  - {fileID: 1798903017}
-  - {fileID: 420166035}
-  - {fileID: 305030464}
-  - {fileID: 455714874}
-  - {fileID: 1542792891}
---- !u!114 &1558289614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558289611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: d50c2ed5709381a44abdd9b36ae6641b, type: 3}
-  - {fileID: 21300000, guid: f4c08ec0cf4fdb2418d574c0aa043e08, type: 3}
-  - {fileID: 21300000, guid: 6120709d99330514c9341d63802e0a5f, type: 3}
 --- !u!212 &1558289615
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -68302,17 +68557,56 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d50c2ed5709381a44abdd9b36ae6641b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 32, y: 32}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1558289616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558289611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59cc3ec78ce9e412ba61cc1eb0e8af37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: d50c2ed5709381a44abdd9b36ae6641b, type: 3}
+  - {fileID: 21300000, guid: f4c08ec0cf4fdb2418d574c0aa043e08, type: 3}
+  - {fileID: 21300000, guid: 6120709d99330514c9341d63802e0a5f, type: 3}
+  AllItems:
+  - {fileID: 1558289617}
+  - {fileID: 800452772}
+  - {fileID: 1542792893}
+--- !u!114 &1558289617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558289611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons: []
+  varientSprites:
+  - {fileID: 21300000, guid: d50c2ed5709381a44abdd9b36ae6641b, type: 3}
+  - {fileID: 21300000, guid: f4c08ec0cf4fdb2418d574c0aa043e08, type: 3}
+  - {fileID: 21300000, guid: 6120709d99330514c9341d63802e0a5f, type: 3}
 --- !u!1 &1560254427
 GameObject:
   m_ObjectHideFlags: 0
@@ -69585,15 +69879,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1579851931}
   - component: {fileID: 1579851934}
-  - component: {fileID: 1579851933}
-  - component: {fileID: 1579851932}
   m_Layer: 0
   m_Name: Kitchen_Ceiling_Lamp (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1579851931
 Transform:
   m_ObjectHideFlags: 0
@@ -69605,46 +69897,10 @@ Transform:
   m_LocalPosition: {x: -1325.653, y: -631.808, z: 8.809846}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2010105908}
-  - {fileID: 2102896999}
-  m_Father: {fileID: 974591891}
-  m_RootOrder: 3
+  m_Children: []
+  m_Father: {fileID: 155807378}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1579851932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579851930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Code: 
-  varientIcons: []
-  AllItems:
-  - {fileID: 1579851933}
-  - {fileID: 2010105909}
-  - {fileID: 2102897000}
---- !u!114 &1579851933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579851930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
-  - {fileID: 21300000, guid: 00d273bc9f31124498d968b7c4c951b6, type: 3}
-  - {fileID: 21300000, guid: c6464289459298641a2e1dc43c9ce46b, type: 3}
 --- !u!212 &1579851934
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -69686,7 +69942,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -69694,7 +69950,7 @@ SpriteRenderer:
   m_Size: {x: 16, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1583678005
@@ -77052,7 +77308,7 @@ Transform:
   - {fileID: 767814147}
   - {fileID: 1879541639}
   m_Father: {fileID: 810931401}
-  m_RootOrder: 7
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1753439506
 SpriteRenderer:
@@ -77119,7 +77375,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 87b8e25bd7300d0418685f98bd7613f5, type: 3}
+  - {fileID: 21300000, guid: 5e64ed4e17386df47aebb7a3b38cb48d, type: 3}
+  - {fileID: 21300000, guid: e1b366b6c9515e24ba5c2b1bb5494e94, type: 3}
   AllItems:
   - {fileID: 1753439508}
   - {fileID: 767814149}
@@ -79473,7 +79732,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1798903016}
   - component: {fileID: 1798903018}
-  - component: {fileID: 1798903017}
   m_Layer: 0
   m_Name: Kitchen_Island_Plate (7)
   m_TagString: Untagged
@@ -79493,25 +79751,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1558289612}
+  m_Father: {fileID: 800452771}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1798903017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798903015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
-  - {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
 --- !u!212 &1798903018
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -79553,15 +79795,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: ad979e277b6405a459beec29ed41e4bc, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1800288134
@@ -88031,7 +88273,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1971401653
 SpriteRenderer:
@@ -88073,7 +88315,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: b4f7076be6952bb4dbfbd3c2f6a644ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -88098,7 +88340,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 54ba01f171dcf994a9b8b50e6e7b2c7b, type: 3}
+  - {fileID: 21300000, guid: 29a1d7dca9fb1fb4fb321cf9ff5fdf1e, type: 3}
+  - {fileID: 21300000, guid: bff5dc68c42da7942ac42b3c45cbbda4, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: fc5b2da2a9cd5314c98dc296d9f7ff68, type: 3}
   - {fileID: 21300000, guid: 5eca62e7a4975ae48817ea1553010908, type: 3}
@@ -89081,7 +89326,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2005129162
 SpriteRenderer:
@@ -89148,7 +89393,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: b2b4c06bf82203342b995189aa16af2d, type: 3}
+  - {fileID: 21300000, guid: 0451443fd41421e468ed99142c05160d, type: 3}
+  - {fileID: 21300000, guid: 9ab4ef82137eac148a239999d5bbfef6, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 11bdb249d020199419bd1b26cfe7631f, type: 3}
   - {fileID: 21300000, guid: 20bc7d7211da5894099330bb30d6034d, type: 3}
@@ -89287,7 +89535,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2010105908}
   - component: {fileID: 2010105910}
-  - component: {fileID: 2010105909}
   m_Layer: 0
   m_Name: Kitchen_Ceiling_Lamp (3)
   m_TagString: Untagged
@@ -89303,29 +89550,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010105907}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4460449, y: -0.86102295, z: 0}
+  m_LocalPosition: {x: -1327.099, y: -632.669, z: 8.809846}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1579851931}
+  m_Father: {fileID: 155807378}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2010105909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2010105907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
-  - {fileID: 21300000, guid: 00d273bc9f31124498d968b7c4c951b6, type: 3}
-  - {fileID: 21300000, guid: c6464289459298641a2e1dc43c9ce46b, type: 3}
 --- !u!212 &2010105910
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -89367,7 +89598,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89375,7 +89606,7 @@ SpriteRenderer:
   m_Size: {x: 16, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2012467656
@@ -92311,13 +92542,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2074238583}
   - component: {fileID: 2074238584}
+  - component: {fileID: 2074238585}
   m_Layer: 0
   m_Name: Kitchen_Paintings_Small (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2074238583
 Transform:
   m_ObjectHideFlags: 0
@@ -92374,7 +92606,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 75a2333208de44b4ab1f6384bb345ad6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -92382,9 +92614,30 @@ SpriteRenderer:
   m_Size: {x: 8, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2074238585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074238582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  varientIcons:
+  - {fileID: 21300000, guid: 0d8a4870a9a7f9d45bcdbfa3f41e74fa, type: 3}
+  - {fileID: 21300000, guid: 0d8a4870a9a7f9d45bcdbfa3f41e74fa, type: 3}
+  - {fileID: 21300000, guid: 0d8a4870a9a7f9d45bcdbfa3f41e74fa, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: 75a2333208de44b4ab1f6384bb345ad6, type: 3}
+  - {fileID: 21300000, guid: 75a2333208de44b4ab1f6384bb345ad6, type: 3}
+  - {fileID: 21300000, guid: 75a2333208de44b4ab1f6384bb345ad6, type: 3}
 --- !u!1 &2075253914
 GameObject:
   m_ObjectHideFlags: 0
@@ -94133,7 +94386,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2102896999}
   - component: {fileID: 2102897001}
-  - component: {fileID: 2102897000}
   m_Layer: 0
   m_Name: Kitchen_Ceiling_Lamp (4)
   m_TagString: Untagged
@@ -94149,29 +94401,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102896998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.72302246, y: -0.43200684, z: 0}
+  m_LocalPosition: {x: -1326.376, y: -632.24, z: 8.809846}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1579851931}
+  m_Father: {fileID: 155807378}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2102897000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102896998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b1255bcb79cd9498c76bf73bc8e271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  varientSprites:
-  - {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
-  - {fileID: 21300000, guid: 00d273bc9f31124498d968b7c4c951b6, type: 3}
-  - {fileID: 21300000, guid: c6464289459298641a2e1dc43c9ce46b, type: 3}
 --- !u!212 &2102897001
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -94213,7 +94449,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 9efae561c0bf6a74c93a241ea8757fe1, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94221,7 +94457,7 @@ SpriteRenderer:
   m_Size: {x: 16, y: 16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2104849048
@@ -94654,9 +94890,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2121067291}
   - component: {fileID: 2121067292}
-  - component: {fileID: 2121067293}
   m_Layer: 0
-  m_Name: Kitchen_Carpet
+  m_Name: Kitchen_Carpet_Removed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94675,7 +94910,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2121067292
 SpriteRenderer:
@@ -94729,24 +94964,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2121067293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121067290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Code: 
-  varientIcons: []
-  varientSprites:
-  - {fileID: 21300000, guid: 3dc2caf153d27aa4ca1d42351f47dfc3, type: 3}
-  - {fileID: 21300000, guid: f89cbe65f00874045a4ac2b5e0ba33f0, type: 3}
-  - {fileID: 21300000, guid: 6e8746a9542a88a4090ba0fa83c5a411, type: 3}
 --- !u!1 &2126793753
 GameObject:
   m_ObjectHideFlags: 0
@@ -95372,7 +95589,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 810931401}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2139899698
 SpriteRenderer:
@@ -95439,7 +95656,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 1aeed517c6f7d7e4aa8811622ab0bc96, type: 3}
+  - {fileID: 21300000, guid: 2b5f6246b9c08cf4b909dacfe7def03f, type: 3}
+  - {fileID: 21300000, guid: ed25852de4ea95a40b1384056790b924, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: db8d3498254497548b48ff6dc19840d5, type: 3}
   - {fileID: 21300000, guid: fa9bd338a28ece94a9b1e387e86c949e, type: 3}
