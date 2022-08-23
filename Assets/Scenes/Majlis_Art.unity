@@ -812,7 +812,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 6aa8c92190a171244a2a7403b0addeb1, type: 3}
+  - {fileID: 21300000, guid: 2ea32917f0be9eb4a98509e420227fef, type: 3}
+  - {fileID: 21300000, guid: e8257dd0846613e4fb42e3af3c6e73ee, type: 3}
   AllItems:
   - {fileID: 5230903}
   - {fileID: 1671966578}
@@ -1102,7 +1105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &12817293
 Transform:
   m_ObjectHideFlags: 0
@@ -1227,7 +1230,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 10c542698fa13c54db4823518981819d, type: 3}
+  - {fileID: 21300000, guid: 10c542698fa13c54db4823518981819d, type: 3}
+  - {fileID: 21300000, guid: 10c542698fa13c54db4823518981819d, type: 3}
   AllItems:
   - {fileID: 14257685}
   - {fileID: 127666956}
@@ -5050,7 +5056,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 296f612e34f6dab46a6da72bc63ceac9, type: 3}
+  - {fileID: 21300000, guid: fa3d13b9a465304468022aac2bf3e561, type: 3}
+  - {fileID: 21300000, guid: 6efd7f274046e0c49aaef96e341dcd6c, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: b92d5b39b36be1d43bf2595ac4d04a0a, type: 3}
   - {fileID: 21300000, guid: 1f743dbca99d90b448dbcf337b7419fb, type: 3}
@@ -6537,6 +6546,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &150846144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 150846145}
+  - component: {fileID: 150846146}
+  m_Layer: 0
+  m_Name: Garden_Sitting_Rug _Removed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &150846145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150846144}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.15996933, y: -0.5581193, z: 0.08893165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1904116123}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &150846146
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150846144}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: d703f3d961219e04aa1e06d1dc54eb34, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 4.11, y: 2.4}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &151190309
 GameObject:
   m_ObjectHideFlags: 0
@@ -7647,6 +7740,7 @@ Transform:
   - {fileID: 368946858}
   - {fileID: 1827995635}
   - {fileID: 1947174978}
+  - {fileID: 394221999}
   m_Father: {fileID: 723774826}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7663,7 +7757,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: bea68b11e0bdff1489d9c14c81efa996, type: 3}
+  - {fileID: 21300000, guid: 3455b20177d4626408005e3e2c9ce72f, type: 3}
+  - {fileID: 21300000, guid: 000af152ef2a02e42a4b60c570d2a120, type: 3}
   varientSprites:
   - {fileID: -20713478, guid: cd46e238c8b4e544c8fa3289a69627d3, type: 3}
   - {fileID: -20713478, guid: 2fae5988b1e993248b3fdbb79f33265f, type: 3}
@@ -10145,7 +10242,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 2ff4c825922b66d4d8f0dd091cc4191b, type: 3}
+  - {fileID: 21300000, guid: 00ef76bb1c91dce458cb3cafcc0b18e3, type: 3}
+  - {fileID: 21300000, guid: dd2233aa26a80b7498a6beed784c02ce, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 5f2ced2fb4e4fd548b3f4811d0be3147, type: 3}
   - {fileID: 21300000, guid: c3eda361fbb8e7444ad91873534c333f, type: 3}
@@ -12468,7 +12568,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 396c42e00ecf09d45abc46f6b8f27261, type: 3}
+  - {fileID: 21300000, guid: 2b9bd334edea75a4e9980c99763863ad, type: 3}
+  - {fileID: 21300000, guid: 6569dae6eafa3404e89bb57fc2af9092, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: f94bcfc887dc25a4abce6c9c8be55ac6, type: 3}
   - {fileID: 21300000, guid: c3a16edfc87744040bfea2a06332bd0a, type: 3}
@@ -15703,7 +15806,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: b813ec295db67834eadfffa109757e73, type: 3}
+  - {fileID: 21300000, guid: e12589f8bb5f8684eabd313bd132b936, type: 3}
+  - {fileID: 21300000, guid: 09cea38229f3b494e99e33588f4a1830, type: 3}
   AllItems:
   - {fileID: 1577769165}
   - {fileID: 863917435}
@@ -17070,8 +17176,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 723774826}
-  m_RootOrder: 2
+  m_Father: {fileID: 175673024}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &394222000
 SpriteRenderer:
@@ -18225,7 +18331,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 3e4055acf8bbaf043ad8fbaec7f3aa57, type: 3}
+  - {fileID: 21300000, guid: 2f7dbfec05666be46976ef6c47c3f98d, type: 3}
+  - {fileID: 21300000, guid: a7005714ff1855b449689e132bcdd1a3, type: 3}
   AllItems:
   - {fileID: 435019731}
   - {fileID: 756097345}
@@ -22337,7 +22446,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 08f6265b0ca8a1043b97b3c942afdeda, type: 3}
+  - {fileID: 21300000, guid: 08f6265b0ca8a1043b97b3c942afdeda, type: 3}
+  - {fileID: 21300000, guid: 08f6265b0ca8a1043b97b3c942afdeda, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 7438f389e67da7b498680abbecbf5b6e, type: 3}
   - {fileID: 21300000, guid: 7438f389e67da7b498680abbecbf5b6e, type: 3}
@@ -23816,7 +23928,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: adf01fe6257d87a4e822cb60cf6ed6ce, type: 3}
+  - {fileID: 21300000, guid: d1706da24162fe44990d792afae4f675, type: 3}
+  - {fileID: 21300000, guid: 6ccde66dd3f7f1e48a6d5f7711175c54, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 3d3f41bc9f1e9ce4f985cad1360a48fd, type: 3}
   - {fileID: 21300000, guid: 9034c6ad2e90c4b41be79e43c7cc4fc3, type: 3}
@@ -26771,7 +26886,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 1637a7ca2812e3a44876e480675a3965, type: 3}
+  - {fileID: 21300000, guid: 1637a7ca2812e3a44876e480675a3965, type: 3}
+  - {fileID: 21300000, guid: 1637a7ca2812e3a44876e480675a3965, type: 3}
   AllItems:
   - {fileID: 624030024}
   - {fileID: 1114878820}
@@ -28772,7 +28890,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 62635194ea5e7934288f3a207d4a5bee, type: 3}
+  - {fileID: 21300000, guid: 62635194ea5e7934288f3a207d4a5bee, type: 3}
+  - {fileID: 21300000, guid: 62635194ea5e7934288f3a207d4a5bee, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: a4f556b1b47e9064da7c011455d07647, type: 3}
   - {fileID: 21300000, guid: a4f556b1b47e9064da7c011455d07647, type: 3}
@@ -30912,7 +31033,6 @@ Transform:
   m_Children:
   - {fileID: 1520186385}
   - {fileID: 175673024}
-  - {fileID: 394221999}
   m_Father: {fileID: 739984022}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33419,7 +33539,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: d9e1153ca54fefc489f71f165a157662, type: 3}
+  - {fileID: 21300000, guid: d9e1153ca54fefc489f71f165a157662, type: 3}
+  - {fileID: 21300000, guid: d9e1153ca54fefc489f71f165a157662, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 7d8bdd582624637419e9007dd5da8604, type: 3}
   - {fileID: 21300000, guid: 7d8bdd582624637419e9007dd5da8604, type: 3}
@@ -35146,7 +35269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &833160505
 Transform:
   m_ObjectHideFlags: 0
@@ -42105,7 +42228,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 7897b98c602cbb442a7c956bc790b79b, type: 3}
+  - {fileID: 21300000, guid: 3aa142d5913d99c47a1fe31353dd5558, type: 3}
+  - {fileID: 21300000, guid: 0311ae5157bc6f647aa447ca7c456e08, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: c6ae65440a778fd4c9065bfc58d17e55, type: 3}
   - {fileID: 21300000, guid: 2f8f4141c2aea2c4dbeb4a71727046bf, type: 3}
@@ -48457,7 +48583,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: f1af55c137bc5aa46845ef15db74a939, type: 3}
+  - {fileID: 21300000, guid: 6e70a7d4bcecaa547a6a393965deb802, type: 3}
+  - {fileID: 21300000, guid: 9679f20d4f35714478e1d3684cd4db61, type: 3}
   AllItems:
   - {fileID: 1113023725}
   - {fileID: 238209595}
@@ -52458,7 +52587,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 6aa8c92190a171244a2a7403b0addeb1, type: 3}
+  - {fileID: 21300000, guid: 2ea32917f0be9eb4a98509e420227fef, type: 3}
+  - {fileID: 21300000, guid: e8257dd0846613e4fb42e3af3c6e73ee, type: 3}
   AllItems:
   - {fileID: 1938116450}
   - {fileID: 1374994780}
@@ -52865,7 +52997,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 85222a8c0b3031740a8e639a52c5295a, type: 3}
+  - {fileID: 21300000, guid: b2f4e147c18437f4c87f4284937ec994, type: 3}
+  - {fileID: 21300000, guid: 1e245090f451a49429fe36ab3647cbc3, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 62610e89724ed8b418b351b91d80fc4d, type: 3}
   - {fileID: 21300000, guid: 4710f54fecc87d14a8fefa829646437a, type: 3}
@@ -56260,7 +56395,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 52a614068ff91c44fb677f9129f78eb0, type: 3}
+  - {fileID: 21300000, guid: 52a614068ff91c44fb677f9129f78eb0, type: 3}
+  - {fileID: 21300000, guid: 52a614068ff91c44fb677f9129f78eb0, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 4f797464f0b3f414a9fb11addf197f2f, type: 3}
   - {fileID: 21300000, guid: 4f797464f0b3f414a9fb11addf197f2f, type: 3}
@@ -59124,7 +59262,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 9085722a1fd089642aa6670e6757f3c9, type: 3}
+  - {fileID: 21300000, guid: 9085722a1fd089642aa6670e6757f3c9, type: 3}
+  - {fileID: 21300000, guid: 9085722a1fd089642aa6670e6757f3c9, type: 3}
   AllItems:
   - {fileID: 2055190463}
   - {fileID: 908233446}
@@ -62251,7 +62392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1422990342
 Transform:
   m_ObjectHideFlags: 0
@@ -64104,7 +64245,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 262782385c1f81a4aa8c6cd9cd1ef445, type: 3}
+  - {fileID: 21300000, guid: 262782385c1f81a4aa8c6cd9cd1ef445, type: 3}
+  - {fileID: 21300000, guid: 262782385c1f81a4aa8c6cd9cd1ef445, type: 3}
   AllItems:
   - {fileID: 1468016311}
   - {fileID: 1870634993}
@@ -66258,7 +66402,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: bea68b11e0bdff1489d9c14c81efa996, type: 3}
+  - {fileID: 21300000, guid: 3455b20177d4626408005e3e2c9ce72f, type: 3}
+  - {fileID: 21300000, guid: 000af152ef2a02e42a4b60c570d2a120, type: 3}
   varientSprites:
   - {fileID: -20713478, guid: cd46e238c8b4e544c8fa3289a69627d3, type: 3}
   - {fileID: -20713478, guid: 2fae5988b1e993248b3fdbb79f33265f, type: 3}
@@ -67896,7 +68043,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: cadebaa731c8c584397648b4a173842a, type: 3}
+  - {fileID: 21300000, guid: 8038daf0c53f5b24db96456cc8cd8354, type: 3}
+  - {fileID: 21300000, guid: 2594d51aa47d95b4f98292946edfab24, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: b478e38dc5e40d84bb218d6a723981c7, type: 3}
   - {fileID: 21300000, guid: 2c3fe45c7e1619b47a6f95cea3622b24, type: 3}
@@ -71602,7 +71752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1618503858
 Transform:
   m_ObjectHideFlags: 0
@@ -72159,7 +72309,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 77943901dce5e234f947ee546e6ed31d, type: 3}
+  - {fileID: 21300000, guid: 77943901dce5e234f947ee546e6ed31d, type: 3}
+  - {fileID: 21300000, guid: 77943901dce5e234f947ee546e6ed31d, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 4c480c20c2c497143b652efd48cfaec1, type: 3}
   - {fileID: 21300000, guid: 4c480c20c2c497143b652efd48cfaec1, type: 3}
@@ -74573,7 +74726,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: fa687a96c349f534a9d7e7e4cfe82220, type: 3}
+  - {fileID: 21300000, guid: 0d6e798a883d5e941adc55b6cf98465e, type: 3}
+  - {fileID: 21300000, guid: 559a939fc59e8a549a5baa9cc6482138, type: 3}
   AllItems:
   - {fileID: 1688283322}
   - {fileID: 1907017197}
@@ -78284,7 +78440,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 0235c8f7007c1b347ba819a1969a2275, type: 3}
+  - {fileID: 21300000, guid: e538e847cab261843b5a3f3e3ff718a3, type: 3}
+  - {fileID: 21300000, guid: cfc988ca543315e44b5fb716c3516aa2, type: 3}
   varientSprites:
   - {fileID: -1199160854, guid: cd46e238c8b4e544c8fa3289a69627d3, type: 3}
   - {fileID: -1199160854, guid: 2fae5988b1e993248b3fdbb79f33265f, type: 3}
@@ -81584,90 +81743,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1847261311
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1847261312}
-  - component: {fileID: 1847261313}
-  m_Layer: 0
-  m_Name: Garden_Sitting_Rug
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1847261312
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847261311}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15996933, y: -0.5581193, z: 0.08893165}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1904116123}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1847261313
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847261311}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d703f3d961219e04aa1e06d1dc54eb34, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 4.11, y: 2.4}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &1848919140
 GameObject:
   m_ObjectHideFlags: 0
@@ -84448,7 +84523,7 @@ Transform:
   m_Children:
   - {fileID: 2033594976}
   - {fileID: 354644149}
-  - {fileID: 1847261312}
+  - {fileID: 150846145}
   - {fileID: 172141209}
   - {fileID: 1771126849}
   - {fileID: 547678924}
@@ -86026,7 +86101,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 7b55004c8cbcc9847a5486b37313e573, type: 3}
+  - {fileID: 21300000, guid: f4895ad3d45fe1b46956f0f36e5a5d46, type: 3}
+  - {fileID: 21300000, guid: 63c25b7a76ed5044fba2f21fdcf713d5, type: 3}
   AllItems:
   - {fileID: 1931707368}
   - {fileID: 2145876250}
@@ -86952,7 +87030,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 9a2ddd6da827dd544beec0ba93c8b28d, type: 3}
+  - {fileID: 21300000, guid: 44a56ba958d67bb4995eb64a4fe55a9f, type: 3}
+  - {fileID: 21300000, guid: 952d0176e912e3347893aeec53c63db3, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 7777d89cf85c9a143b758dead4d66caa, type: 3}
   - {fileID: 21300000, guid: 31c13d9ff44ae684dad97789e4a97ba1, type: 3}
@@ -92771,7 +92852,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: a936a6c78ea6ac94fb5a1270b4b9a95f, type: 3}
+  - {fileID: 21300000, guid: 8207e9f52138a274fabd64c90cef3401, type: 3}
+  - {fileID: 21300000, guid: e81d689d45c3f494aa80ae214eaf54c1, type: 3}
   AllItems:
   - {fileID: 382692049}
   - {fileID: 829252758}
@@ -92827,7 +92911,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: 53839704712c1274ebdd4c660bc2aff8, type: 3}
+  - {fileID: 21300000, guid: 6bc133dbd084df543aa927c633b9700f, type: 3}
+  - {fileID: 21300000, guid: f030c6dd8e5e6084b82562d7da3095bc, type: 3}
   AllItems:
   - {fileID: 2079601240}
   - {fileID: 1505345299}
@@ -93245,7 +93332,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  varientIcons: []
+  varientIcons:
+  - {fileID: 21300000, guid: de88182a16884724f870d7aba4726b57, type: 3}
+  - {fileID: 21300000, guid: de88182a16884724f870d7aba4726b57, type: 3}
+  - {fileID: 21300000, guid: de88182a16884724f870d7aba4726b57, type: 3}
   varientSprites:
   - {fileID: 21300000, guid: 5a178401c1eb8084caf9151ec60ee475, type: 3}
   - {fileID: 21300000, guid: 5a178401c1eb8084caf9151ec60ee475, type: 3}
