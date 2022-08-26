@@ -189,7 +189,7 @@ public class CardsUIManager : MonoBehaviour
         cardUI.transform.SetParent(CardsHolder[0]);
         //selectedPassCards.Remove(cardUI.CardInfo);
         UIManager.Instance.RemoveCard(cardUI);
-
+        cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
         {
             AddToPassCards(cardUI);

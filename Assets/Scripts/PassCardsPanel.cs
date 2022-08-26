@@ -29,6 +29,7 @@ public class PassCardsPanel : MonoBehaviour
                 selectedPassCards.Add(card.CardInfo);
                 card.transform.SetParent(item);
                 card.transform.DOLocalMove(Vector3.zero, 0.25f);
+                card.PassCard = true;
                 cardAdded = true;
             }
             else if (item.childCount == 0)

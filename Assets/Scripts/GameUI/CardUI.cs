@@ -11,12 +11,14 @@ public class CardUI : MonoBehaviour
     Button button;
 
     public Action<Card> OnPressed;
-    public RectTransform RectTransform;
 
+    internal RectTransform RectTransform;
     bool drag;
     bool dragged;
     Vector3 offSet;
     Vector3 originalPosition;
+    internal bool PassCard;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -56,11 +58,14 @@ public class CardUI : MonoBehaviour
 
     IEnumerator Drag()
     {
+        if(PassCard)
+            transform.parent = UIManager.Instance.DragCardHolder;
+
         while (drag)
         {
             transform.position = Input.mousePosition + offSet;
 
-            if (Vector3.Distance(originalPosition, Input.mousePosition + offSet) > 5 && !dragged)
+            if (Vector3.Distance(originalPosition, Input.mousePosition + offSet) > 10 && !dragged)
             {
                 transform.rotation = Quaternion.identity;
                 dragged = true;
@@ -77,7 +82,7 @@ public class CardUI : MonoBehaviour
 
         drag = false;
 
-        if ((transform.localPosition.y > 50 && dragged) || !dragged)
+        if ((transform.localPosition.y > 50 && dragged) || !dragged || PassCard)
         {
             OnPressed?.Invoke(CardInfo);
         }

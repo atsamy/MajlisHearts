@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     MainPlayer mainPlayer;
 
     public DoublePanelScript DoublePanel;
+    public Transform DragCardHolder;
 
     CardsUIManager cardsUIManager;
     GameScript game;
