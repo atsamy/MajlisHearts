@@ -60,5 +60,6 @@ public class TaskData
 public enum TaskAction
 {
     Clean = 0,
-    Change = 1
+    Change = 1,
+    Fix = 2
 }

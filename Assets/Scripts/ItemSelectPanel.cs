@@ -33,7 +33,15 @@ public class ItemSelectPanel : MonoBehaviour
     public void Select(int index)
     {
         selectedIndex = index;
-        editableItem.ChangeItem(index,0.2f);
+
+        if (editableItem is MultiEditableTypeItems)
+        {
+            ((MultiEditableTypeItems)editableItem).ChangeItem(index, 0.2f);
+        }
+        else
+        {
+            editableItem.ChangeItem(index, 0.2f);
+        }
 
         SFXManager.Instance.PlayClip("Select");
     }

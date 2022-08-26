@@ -24,6 +24,14 @@ public class MultiEditableTypeItems : EditableItem
         }
     }
 
+    public override void ChangeItem(int index, float time)
+    {
+        foreach (var item in AllItems)
+        {
+            item.ChangeItem(index);
+        }
+    }
+
     public override void Init()
     {
         foreach (var item in AllItems)

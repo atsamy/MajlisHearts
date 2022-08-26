@@ -47,6 +47,11 @@ public class MajlisScript : MonoBehaviour
                     editableItem.ChangeItem(int.Parse(ids[2]));
                     editableItem.SetOriginal();
                     break;
+                case TaskAction.Fix:
+                    string[] fixids = task.Target.Split('_');
+                    EditableItem fixItem = RoomItems.First(a => a.RoomId == fixids[0]).EditableItems.First(a => a.Code == (fixids[0] + "_" + fixids[1]));
+                    fixItem.ChangeItem(0);
+                    break;
             }
         }
     }
@@ -79,6 +84,9 @@ public class MajlisScript : MonoBehaviour
                 break;
             case TaskAction.Change:
                 ShowEditableItem(task.Target);
+                break;
+            case TaskAction.Fix:
+                FixItem(task.Target);
                 break;
         }
     }
@@ -113,6 +121,41 @@ public class MajlisScript : MonoBehaviour
             Target = target
         };
         taskPanel.TaskDone(tasks);
+    }
+
+    void FixItem(string target)
+    {
+        EditableItem editableItem = RoomItems.First(a => a.RoomId == target.Split('_')[0]).EditableItems.First(a => a.Code == target);
+
+        cameraHover.GoToLocation(editableItem.transform, () =>
+        {
+            MenuManager.Instance.OpenMain();
+            //taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
+            editableItem.ChangeItem(0);
+            TaskFinished?.Invoke();
+        });
+
+        taskPanel.ClosePanel();
+        FinishedTask tasks = new FinishedTask()
+        {
+            ActionType = TaskAction.Fix,
+            Target = target
+        };
+        taskPanel.TaskDone(tasks);
+        //SFXManager.Instance.PlayClip("Select");
+    }
+
+    public void RetrieveItems()
+    {
+        RoomItems = new RoomItem[transform.childCount];
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            RoomItems[i] = new RoomItem();
+            RoomItems[i].RoomId = transform.GetChild(i).name;
+            RoomItems[i].OldItems = transform.GetChild(i).GetComponentInChildren<CleanAnimation>();
+            RoomItems[i].EditableItems = transform.GetChild(i).GetComponentsInChildren<EditableItem>();
+        }
     }
 }
 [Serializable]

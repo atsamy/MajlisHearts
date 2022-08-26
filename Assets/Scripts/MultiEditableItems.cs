@@ -8,6 +8,7 @@ public class MultiEditableItems : EditableItem
     [SerializeField]
     EditableItemUnit[] AllItems;
 
+    public bool FixItem;
     public override void ResetToOriginal()
     {
         foreach (var item in AllItems)
@@ -17,6 +18,14 @@ public class MultiEditableItems : EditableItem
     }
 
     public override void ChangeItem(int index)
+    {
+        foreach (var item in AllItems)
+        {
+            item.ChangeItem(index);
+        }
+    }
+
+    public override void ChangeItem(int index, float time)
     {
         foreach (var item in AllItems)
         {

@@ -31,7 +31,19 @@ public class TaskPanel : MonoBehaviour
         //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         TaskData currentTask = TasksManager.Instance.CurrentTask;
 
-        taskItem.Set(LanguageManager.Instance.GetString(currentTask.ID), currentTask.Cost, () =>
+        string taskName = LanguageManager.Instance.GetString(currentTask.ActionType.ToString());
+        if (currentTask.ActionType == TaskAction.Clean)
+        {
+            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.Target));
+        }
+        else
+        {
+            string[] data = currentTask.Target.Split("_");
+            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(data[0]))
+                .Replace("%I", LanguageManager.Instance.GetString(data[1]));
+        }
+
+        taskItem.Set(taskName, currentTask.Cost, () =>
         {
             MajlisScript.Instance.ExecuteTask(currentTask);
         });
