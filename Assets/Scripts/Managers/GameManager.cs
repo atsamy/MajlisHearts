@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
     {
         Currency -= value;
         OnCurrencyChanged?.Invoke(Currency);
+        PlayfabManager.instance.DeductCurrency(value,(result)=>
+        {
+
+        });
     }
 
     public void AddCurrency(int value)

@@ -61,5 +61,6 @@ public enum TaskAction
 {
     Clean = 0,
     Change = 1,
-    Fix = 2
+    Fix = 2,
+    Add = 3
 }

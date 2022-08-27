@@ -17,6 +17,7 @@ public class TaskPanel : MonoBehaviour
     //[SerializeField]
     //CameraHover cameraHover;
     //TaskItemScript currentTaskItem;
+    int currentCost;
 
     private void Awake()
     {
@@ -31,7 +32,7 @@ public class TaskPanel : MonoBehaviour
         //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         TaskData currentTask = TasksManager.Instance.CurrentTask;
 
-        string taskName = LanguageManager.Instance.GetString(currentTask.ActionType.ToString());
+        string taskName = LanguageManager.Instance.GetString(currentTask.ID.Split("_")[0]);
         if (currentTask.ActionType == TaskAction.Clean)
         {
             taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.Target));
@@ -47,6 +48,8 @@ public class TaskPanel : MonoBehaviour
         {
             MajlisScript.Instance.ExecuteTask(currentTask);
         });
+
+        currentCost = currentTask.Cost;
     }
 
     public void Open()
@@ -97,6 +100,8 @@ public class TaskPanel : MonoBehaviour
         MenuManager.Instance.CameraHover.Unlock();
         TasksManager.Instance.TaskFinished(task);
         taskItem.gameObject.SetActive(false);
+
+        GameManager.Instance.DeductCurrency(currentCost);
         //Destroy(taskItem.gameObject);
         InitTask();
     }

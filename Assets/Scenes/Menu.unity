@@ -1564,7 +1564,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1040.0763, y: 612.3088}
+  m_SizeDelta: {x: 1249.659, y: 662.085}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &25961879
 MonoBehaviour:
@@ -1803,13 +1803,14 @@ GameObject:
   - component: {fileID: 29551196}
   - component: {fileID: 29551198}
   - component: {fileID: 29551197}
+  - component: {fileID: 29551199}
   m_Layer: 5
   m_Name: gameinvitation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &29551196
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1827,8 +1828,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000022888, y: 203}
-  m_SizeDelta: {x: 444.1274, y: 63.7429}
+  m_AnchoredPosition: {x: -0.000019073, y: 231}
+  m_SizeDelta: {x: 497.06, y: 90.743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &29551197
 MonoBehaviour:
@@ -1852,14 +1853,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: GAME INVITATION
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
-  m_sharedMaterial: {fileID: -1962281512941770574, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ebf68aa09b6f4879ad0a7e8239af585, type: 2}
+  m_sharedMaterial: {fileID: 6147262760074920257, guid: 9ebf68aa09b6f4879ad0a7e8239af585, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4286556393
   m_fontColor: {r: 0.9137255, g: 0.65882355, b: 0.49803922, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1877,8 +1878,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1927,6 +1928,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29551195}
   m_CullTransparentMesh: 1
+--- !u!114 &29551199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29551195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &30166784
 GameObject:
   m_ObjectHideFlags: 0
@@ -3101,7 +3114,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 55418489}
   - {fileID: 83824965}
-  FixItem: 0
 --- !u!114 &55418489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6487,7 +6499,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 120451090}
   - {fileID: 1782880191}
-  FixItem: 0
 --- !u!114 &120451090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8029,7 +8040,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &142260000
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10316,7 +10327,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 186543736}
   - {fileID: 398238534}
-  FixItem: 0
 --- !u!114 &186543736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16412,7 +16422,6 @@ MonoBehaviour:
   - {fileID: 288661476}
   - {fileID: 1015796623}
   - {fileID: 314427233}
-  FixItem: 0
 --- !u!114 &288661476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17473,7 +17482,6 @@ MonoBehaviour:
   - {fileID: 1075332890}
   - {fileID: 1969624516}
   - {fileID: 387169048}
-  FixItem: 0
 --- !u!114 &299084523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18060,7 +18068,6 @@ MonoBehaviour:
   - {fileID: 1744971205}
   - {fileID: 1723897707}
   - {fileID: 1463017106}
-  FixItem: 0
 --- !u!114 &312859969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19919,7 +19926,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 336327324}
   - {fileID: 1955686330}
-  FixItem: 0
 --- !u!114 &336327324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20590,7 +20596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &350157747
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20633,8 +20639,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ACCEPT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
-  m_sharedMaterial: {fileID: -1962281512941770574, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ebf68aa09b6f4879ad0a7e8239af585, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: da4cfd1232b664c898aa2a0b33084b0a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -20658,8 +20664,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -20717,7 +20723,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 350157746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a47cfe8692abf5d4486e7e8d6c77ce76, type: 3}
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &350609537
@@ -21677,7 +21683,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 367301739}
   - {fileID: 1043494220}
-  FixItem: 0
 --- !u!114 &367301739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23519,7 +23524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43de48a8158d2454a9256d57eefaa11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Message: {fileID: 629218466}
+  Message: {fileID: 0}
 --- !u!114 &394902421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24413,7 +24418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &409832904
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24465,7 +24470,7 @@ MonoBehaviour:
   m_text: 1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
-  m_sharedMaterial: {fileID: -1962281512941770574, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: a3f8760c6f56ae9449297d0b60d204a7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25368,7 +25373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &421914411
 Transform:
   m_ObjectHideFlags: 0
@@ -26667,7 +26672,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 451981634}
   - {fileID: 1195238382}
-  FixItem: 0
 --- !u!114 &451981634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28087,8 +28091,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -56}
-  m_SizeDelta: {x: 550, y: 100}
+  m_AnchoredPosition: {x: -268.76, y: -143}
+  m_SizeDelta: {x: 477.657, y: 132.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &492206120
 MonoBehaviour:
@@ -28259,7 +28263,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 496017925}
   - {fileID: 207641038}
-  FixItem: 0
 --- !u!114 &496017925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31023,7 +31026,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 554791959}
   - {fileID: 1765765121}
-  FixItem: 0
 --- !u!212 &554791961
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -33200,7 +33202,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 600081303}
   - {fileID: 985628967}
-  FixItem: 0
 --- !u!114 &600081303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35746,7 +35747,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 628332315}
   - {fileID: 1134881314}
-  FixItem: 0
 --- !u!114 &628332315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37549,7 +37549,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 651796833}
   - {fileID: 1318776579}
-  FixItem: 0
 --- !u!114 &651796833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39092,7 +39091,6 @@ MonoBehaviour:
   - {fileID: 666785356}
   - {fileID: 756034791}
   - {fileID: 1198846420}
-  FixItem: 0
 --- !u!114 &666785356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39943,7 +39941,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &686525707
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48800,7 +48798,6 @@ MonoBehaviour:
   - {fileID: 851854651}
   - {fileID: 1379567193}
   - {fileID: 1495666746}
-  FixItem: 0
 --- !u!114 &851854651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49025,7 +49022,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 853778719}
   - {fileID: 2114695976}
-  FixItem: 0
 --- !u!114 &853778719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50199,8 +50195,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -170}
-  m_SizeDelta: {x: 550, y: 100}
+  m_AnchoredPosition: {x: 268.76, y: -143}
+  m_SizeDelta: {x: 477.657, y: 132.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873768828
 MonoBehaviour:
@@ -55067,8 +55063,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 81}
-  m_SizeDelta: {x: 660.761, y: 109.3429}
+  m_AnchoredPosition: {x: 10.031, y: 81.21}
+  m_SizeDelta: {x: 1035.24, y: 162.42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &943787727
 MonoBehaviour:
@@ -55092,8 +55088,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'You recieved an invitation from '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
-  m_sharedMaterial: {fileID: -1962281512941770574, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ebf68aa09b6f4879ad0a7e8239af585, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: da4cfd1232b664c898aa2a0b33084b0a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -55117,8 +55113,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -63132,7 +63128,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1088036476}
   - {fileID: 2012159683}
-  FixItem: 0
 --- !u!114 &1088036476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65473,7 +65468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_SofaLeft
   varientIcons:
   - {fileID: 21300000, guid: 14077d2a6608aa343a267f937d0503dc, type: 3}
   - {fileID: 21300000, guid: a03a6624ee526ae41ac9546bbd72ce33, type: 3}
@@ -65481,7 +65476,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1121953138}
   - {fileID: 1276741039}
-  FixItem: 0
 --- !u!114 &1121953138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66507,7 +66501,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1134343991}
   - {fileID: 1129452482}
-  FixItem: 0
 --- !u!114 &1134343991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67304,7 +67297,6 @@ MonoBehaviour:
   - {fileID: 865969603}
   - {fileID: 419425159}
   - {fileID: 1789333583}
-  FixItem: 0
 --- !u!114 &1151863994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68188,7 +68180,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1160244063}
   - {fileID: 1802555030}
-  FixItem: 0
 --- !u!114 &1160244063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68736,7 +68727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2c48afe41b412499319895fb2d37d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currencyText: {fileID: 686525709}
+  currencyText: {fileID: 409832906}
   levelText: {fileID: 1290604023}
   userNameText: {fileID: 1497298408}
   avatar: {fileID: 928329569}
@@ -69399,7 +69390,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1182764988}
   - {fileID: 2047233668}
-  FixItem: 0
 --- !u!212 &1182764990
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -71737,7 +71727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_SofaRight
   varientIcons:
   - {fileID: 21300000, guid: f3842c7038f119e48a95e3a6b1658fa4, type: 3}
   - {fileID: 21300000, guid: c6fbec488e7c6fb428e03ec5623d7f64, type: 3}
@@ -71745,7 +71735,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1209073192}
   - {fileID: 296010955}
-  FixItem: 0
 --- !u!114 &1209073192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72113,7 +72102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1218529558
 RectTransform:
   m_ObjectHideFlags: 0
@@ -76286,7 +76275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1278658459
 RectTransform:
   m_ObjectHideFlags: 0
@@ -76455,7 +76444,6 @@ MonoBehaviour:
   - {fileID: 328447420}
   - {fileID: 1079307670}
   - {fileID: 705407645}
-  FixItem: 0
 --- !u!114 &1279033917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77078,7 +77066,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1283060914}
   - {fileID: 437068324}
-  FixItem: 0
 --- !u!114 &1283060914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80776,7 +80763,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1349480606}
   - {fileID: 1995201639}
-  FixItem: 0
 --- !u!114 &1349480606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84082,7 +84068,6 @@ MonoBehaviour:
   - {fileID: 1409396128}
   - {fileID: 1520509246}
   - {fileID: 566616482}
-  FixItem: 0
 --- !u!114 &1409396128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85732,6 +85717,7 @@ MonoBehaviour:
   CameraHover: {fileID: 883032367}
   GameModePanel: {fileID: 857691679}
   MainUI: {fileID: 1900031486}
+  currencyText: {fileID: 409832906}
   SettingsPanel: {fileID: 1691958836}
   StoreScene: {fileID: 1380988471}
   Header: {fileID: 1166490081}
@@ -89084,7 +89070,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1482914530}
   - {fileID: 624637234}
-  FixItem: 0
 --- !u!114 &1482914530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91296,7 +91281,6 @@ MonoBehaviour:
   - {fileID: 1513354831}
   - {fileID: 111677514}
   - {fileID: 1824413966}
-  FixItem: 0
 --- !u!114 &1513354831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94237,7 +94221,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1554198733}
   - {fileID: 403545165}
-  FixItem: 0
 --- !u!114 &1554198733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96404,7 +96387,6 @@ MonoBehaviour:
   - {fileID: 1588952753}
   - {fileID: 1281859661}
   - {fileID: 442550474}
-  FixItem: 0
 --- !u!212 &1588952755
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101421,7 +101403,6 @@ MonoBehaviour:
   - {fileID: 909639665}
   - {fileID: 977644329}
   - {fileID: 534700935}
-  FixItem: 0
 --- !u!1 &1664748274
 GameObject:
   m_ObjectHideFlags: 0
@@ -104093,7 +104074,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1702705268}
   - {fileID: 1502488564}
-  FixItem: 0
 --- !u!114 &1702705268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106003,7 +105983,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1724576033}
   - {fileID: 267661715}
-  FixItem: 0
 --- !u!114 &1724576033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107384,7 +107363,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1750762470}
   - {fileID: 1823829327}
-  FixItem: 0
 --- !u!114 &1750762470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107746,7 +107724,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1754577016}
   - {fileID: 1949173938}
-  FixItem: 0
 --- !u!114 &1754577016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108813,7 +108790,6 @@ MonoBehaviour:
   - {fileID: 1274423320}
   - {fileID: 99622266}
   - {fileID: 1121595305}
-  FixItem: 0
 --- !u!1 &1775904243
 GameObject:
   m_ObjectHideFlags: 0
@@ -108952,7 +108928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_TV
   varientIcons:
   - {fileID: 21300000, guid: 81aea32b9c92bab4690ef307cec0ba90, type: 3}
   - {fileID: 21300000, guid: 81aea32b9c92bab4690ef307cec0ba90, type: 3}
@@ -109072,7 +109048,6 @@ MonoBehaviour:
   - {fileID: 1672495049}
   - {fileID: 330901016}
   - {fileID: 168744864}
-  FixItem: 0
 --- !u!114 &1777757026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110516,7 +110491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1796060425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -110559,8 +110534,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: DECLINE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
-  m_sharedMaterial: {fileID: -1962281512941770574, guid: 1262cd999dfab6b45bbadcbc04783a5d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ebf68aa09b6f4879ad0a7e8239af585, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: da4cfd1232b664c898aa2a0b33084b0a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -110584,8 +110559,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -110643,7 +110618,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1796060424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a47cfe8692abf5d4486e7e8d6c77ce76, type: 3}
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1796868637
@@ -113378,7 +113353,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1826302289}
   - {fileID: 1973822607}
-  FixItem: 0
 --- !u!114 &1826302289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113754,7 +113728,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1829344935}
   - {fileID: 944800763}
-  FixItem: 0
 --- !u!114 &1829344935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114751,7 +114724,6 @@ MonoBehaviour:
   - {fileID: 189542187}
   - {fileID: 543640932}
   - {fileID: 795755300}
-  FixItem: 0
 --- !u!114 &1840764019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115434,7 +115406,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1860638566}
   - {fileID: 560568487}
-  FixItem: 0
 --- !u!114 &1860638566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118874,7 +118845,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 28
+    m_FontSize: 36
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 2
@@ -121703,7 +121674,6 @@ MonoBehaviour:
   AllItems:
   - {fileID: 1969869419}
   - {fileID: 989363081}
-  FixItem: 0
 --- !u!212 &1969869421
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -122081,7 +122051,6 @@ MonoBehaviour:
   - {fileID: 853001519}
   - {fileID: 420971838}
   - {fileID: 227340190}
-  FixItem: 0
 --- !u!1 &1979918163
 GameObject:
   m_ObjectHideFlags: 0
@@ -125308,7 +125277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_TVTable
   varientIcons:
   - {fileID: 21300000, guid: 523f115e8da70a24998b8c6eb7d871dd, type: 3}
   - {fileID: 21300000, guid: 13dcb6f1cf1d92648951e6b445b4ffc3, type: 3}
@@ -129161,7 +129130,6 @@ MonoBehaviour:
   - {fileID: 996204859}
   - {fileID: 1333515099}
   - {fileID: 548034326}
-  FixItem: 0
 --- !u!114 &2122359810
 MonoBehaviour:
   m_ObjectHideFlags: 0

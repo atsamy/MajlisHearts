@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HeaderScript : MonoBehaviour
 {
     [SerializeField]
-    Text currencyText;
+    TextMeshProUGUI currencyText;
     [SerializeField]
     Text levelText;
     [SerializeField]
@@ -19,23 +20,11 @@ public class HeaderScript : MonoBehaviour
         currencyText.text = (GameManager.Instance.Currency.ToString());
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         userNameText.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
-
-        GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
 
     public void SetAvatar()
     {
         AvatarManager.Instance.SetPlayerAvatar(GameManager.Instance.MyPlayer.Avatar);
         avatar.sprite = AvatarManager.Instance.playerAvatar;
-    }
-
-    void OnCurrencyChanged(int value)
-    {
-        currencyText.text = (value.ToString());
     }
 }

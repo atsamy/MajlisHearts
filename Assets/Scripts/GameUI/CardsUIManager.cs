@@ -163,6 +163,10 @@ public class CardsUIManager : MonoBehaviour
             cardUI.transform.rotation = Quaternion.identity;
             playerCards.SetLocations();
         }
+        else
+        {
+            UIManager.Instance.SetCardLocations();
+        }
     }
 
     //void ShowWinningCard()

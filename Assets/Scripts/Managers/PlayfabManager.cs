@@ -389,13 +389,13 @@ public class PlayfabManager : MonoBehaviour
         );
     }
 
-    public void DeductCurrency(string code, int value, Action<bool> result)
+    public void DeductCurrency(int value, Action<bool> result)
     {
         PlayFabClientAPI.ExecuteCloudScript(
             new ExecuteCloudScriptRequest()
             {
                 FunctionName = "deductCurrency",
-                FunctionParameter = new { CurrencyType = code, Amount = value }
+                FunctionParameter = new { CurrencyType = "SC", Amount = value }
             },
             (res) =>
             {

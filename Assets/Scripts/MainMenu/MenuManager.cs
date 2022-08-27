@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ArabicSupport;
 using System;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class MenuManager : MonoBehaviour
     public GameObject GameModePanel;
     //public GameObject EditorPanel;
     public GameObject MainUI;
+    public TextMeshProUGUI currencyText;
     //public AvatarPanel AvatarPanel;
     public SettingsPanel SettingsPanel;
     public StoreScene StoreScene;
@@ -59,6 +61,13 @@ public class MenuManager : MonoBehaviour
         data.array = taskDatas;
 
         print(JsonUtility.ToJson(data));
+
+        GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
 
     public void StartSingleGame()
@@ -124,5 +133,10 @@ public class MenuManager : MonoBehaviour
     public void CloseMain()
     {
         MainUI.SetActive(false);
+    }
+
+    void OnCurrencyChanged(int value)
+    {
+        currencyText.text = (value.ToString());
     }
 }

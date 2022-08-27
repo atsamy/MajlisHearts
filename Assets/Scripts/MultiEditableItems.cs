@@ -8,7 +8,6 @@ public class MultiEditableItems : EditableItem
     [SerializeField]
     EditableItemUnit[] AllItems;
 
-    public bool FixItem;
     public override void ResetToOriginal()
     {
         foreach (var item in AllItems)

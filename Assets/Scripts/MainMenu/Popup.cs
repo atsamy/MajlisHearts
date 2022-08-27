@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-
+using TMPro;
 
 public class Popup : MonoBehaviour
 {
@@ -27,6 +27,7 @@ public class Popup : MonoBehaviour
     {
         Show(OnOKPressed);
         Message.text = LanguageManager.Instance.GetString(code);
+        Message.font = LanguageManager.Instance.GetFont();
     }
 
     public void ShowWithMessage(string message, Action OnOKPressed = null)
