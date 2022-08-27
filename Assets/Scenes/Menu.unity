@@ -6491,7 +6491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_PlantPot
   varientIcons:
   - {fileID: 21300000, guid: 796dbf0098161c84bbc5e86b6d971b28, type: 3}
   - {fileID: 21300000, guid: fb4843a4525093441a6ae01b7080eb9f, type: 3}
@@ -18016,7 +18016,6 @@ GameObject:
   - component: {fileID: 312859967}
   - component: {fileID: 312859970}
   - component: {fileID: 312859969}
-  - component: {fileID: 312859968}
   m_Layer: 0
   m_Name: Majlis_Small_Table (3)
   m_TagString: Untagged
@@ -18032,42 +18031,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312859966}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2829247, y: 7.697507, z: -0.05028507}
+  m_LocalPosition: {x: 4.2019997, y: -2.3739996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1883006864}
-  - {fileID: 959641960}
-  - {fileID: 1744971204}
-  - {fileID: 1723897706}
-  - {fileID: 1463017105}
-  m_Father: {fileID: 1120043622}
-  m_RootOrder: 8
+  m_Children: []
+  m_Father: {fileID: 959641960}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &312859968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312859966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Code: 
-  varientIcons:
-  - {fileID: 21300000, guid: e7fd082672025874c8682315cb47907c, type: 3}
-  - {fileID: 21300000, guid: 7f562498f66a9c040930c15315101463, type: 3}
-  - {fileID: 21300000, guid: eefff2a5349cf6f499b1491e9628af0b, type: 3}
-  AllItems:
-  - {fileID: 312859969}
-  - {fileID: 1883006865}
-  - {fileID: 959641961}
-  - {fileID: 1744971205}
-  - {fileID: 1723897707}
-  - {fileID: 1463017106}
 --- !u!114 &312859969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25373,7 +25343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &421914411
 Transform:
   m_ObjectHideFlags: 0
@@ -56201,6 +56171,7 @@ GameObject:
   - component: {fileID: 959641960}
   - component: {fileID: 959641962}
   - component: {fileID: 959641961}
+  - component: {fileID: 959641963}
   m_Layer: 0
   m_Name: Majlis_Small_Table (4)
   m_TagString: Untagged
@@ -56216,12 +56187,17 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959641959}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.2019997, y: 2.3739996, z: 0}
+  m_LocalPosition: {x: 0.08092499, y: 10.0715065, z: -0.05028507}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 312859967}
-  m_RootOrder: 1
+  m_Children:
+  - {fileID: 1883006864}
+  - {fileID: 1744971204}
+  - {fileID: 1723897706}
+  - {fileID: 1463017105}
+  - {fileID: 312859967}
+  m_Father: {fileID: 1120043622}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &959641961
 MonoBehaviour:
@@ -56291,6 +56267,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &959641963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959641959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: Majlis_SmallTable
+  varientIcons:
+  - {fileID: 21300000, guid: e7fd082672025874c8682315cb47907c, type: 3}
+  - {fileID: 21300000, guid: 7f562498f66a9c040930c15315101463, type: 3}
+  - {fileID: 21300000, guid: eefff2a5349cf6f499b1491e9628af0b, type: 3}
+  AllItems:
+  - {fileID: 312859969}
+  - {fileID: 1883006865}
+  - {fileID: 959641961}
+  - {fileID: 1744971205}
+  - {fileID: 1723897707}
+  - {fileID: 1463017106}
 --- !u!1 &963832068
 GameObject:
   m_ObjectHideFlags: 0
@@ -63086,7 +63086,7 @@ GameObject:
   - component: {fileID: 1088036476}
   - component: {fileID: 1088036475}
   m_Layer: 0
-  m_Name: Majlis_Plants_Rec_Pot (2)
+  m_Name: Majlis_Plants_Rec_Pot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63120,7 +63120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_PlantRecPot
   varientIcons:
   - {fileID: 21300000, guid: 4e9748fcce5bc064baa2d02314ebf221, type: 3}
   - {fileID: 21300000, guid: 4e9748fcce5bc064baa2d02314ebf221, type: 3}
@@ -65052,7 +65052,7 @@ Transform:
   - {fileID: 120451088}
   - {fileID: 1446313065}
   - {fileID: 1160244061}
-  - {fileID: 312859967}
+  - {fileID: 959641960}
   - {fileID: 2045051013}
   - {fileID: 1776083473}
   - {fileID: 1724576031}
@@ -68172,7 +68172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_Plant
   varientIcons:
   - {fileID: 21300000, guid: f62b054b02ef2b341a2e0735b4d8f85c, type: 3}
   - {fileID: 21300000, guid: 223f6d07ff810e74f96fd923a1189774, type: 3}
@@ -72189,7 +72189,7 @@ GameObject:
   - component: {fileID: 1218719338}
   - component: {fileID: 1218719337}
   m_Layer: 0
-  m_Name: Majlis_TV_Carpet (1)
+  m_Name: Majlis_TV_Carpet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72222,7 +72222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_TVCarpet
   varientIcons:
   - {fileID: 21300000, guid: 373d22ed80813594ea1668f2b59a89ad, type: 3}
   - {fileID: 21300000, guid: d8ac46201ac75eb4fbdc9b40eb0dfb21, type: 3}
@@ -78252,7 +78252,7 @@ MonoBehaviour:
     - {fileID: 120451089}
     - {fileID: 1446313066}
     - {fileID: 1160244062}
-    - {fileID: 312859968}
+    - {fileID: 959641963}
     - {fileID: 2045051014}
     - {fileID: 1776083474}
     - {fileID: 1724576032}
@@ -88368,12 +88368,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463017104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.354, y: 5.3620005, z: 0}
+  m_LocalPosition: {x: -4.1520004, y: 2.9880009, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 312859967}
-  m_RootOrder: 4
+  m_Father: {fileID: 959641960}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1463017106
 MonoBehaviour:
@@ -101010,6 +101010,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1657997353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1657997354}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1657997354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657997353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.25126827, y: 6.4397397, z: 0.16208921}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1658916797
 GameObject:
   m_ObjectHideFlags: 0
@@ -105769,12 +105800,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723897705}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.1589994, y: 2.9940004, z: 0}
+  m_LocalPosition: {x: 0.04300022, y: 0.62000084, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 312859967}
-  m_RootOrder: 3
+  m_Father: {fileID: 959641960}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1723897707
 MonoBehaviour:
@@ -105941,7 +105972,7 @@ GameObject:
   - component: {fileID: 1724576033}
   - component: {fileID: 1724576032}
   m_Layer: 0
-  m_Name: Majlis_Tv_Lamp (2)
+  m_Name: Majlis_Tv_Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105975,7 +106006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Majlis_TVLamp
   varientIcons:
   - {fileID: 21300000, guid: 7ea58494d5f1a3f4fb093459326196b2, type: 3}
   - {fileID: 21300000, guid: 2868d73ff5811a94fa169abd38ffa5df, type: 3}
@@ -107077,12 +107108,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744971203}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.058000565, y: 0.6160002, z: 0}
+  m_LocalPosition: {x: 4.26, y: -1.7579994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 312859967}
-  m_RootOrder: 2
+  m_Father: {fileID: 959641960}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1744971205
 MonoBehaviour:
@@ -117137,11 +117168,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883006863}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.399, y: 4.7460003, z: 0}
+  m_LocalPosition: {x: -4.1970005, y: 2.3720007, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 312859967}
+  m_Father: {fileID: 959641960}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1883006865

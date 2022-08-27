@@ -43,6 +43,13 @@ public class MajlisScript : MonoBehaviour
                     break;
                 case TaskAction.Change:
                     string[] ids = task.Target.Split('_');
+
+                    //if (!RoomItems.First(a => a.RoomId == ids[0]).EditableItems.Any(a => a.Code == (ids[0] + "_" + ids[1])))
+                    //{
+                    //    print("id: " + (ids[0] + "_" + ids[1]));
+                    //    return;
+                    //}
+
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
                     editableItem.ChangeItem(int.Parse(ids[2]));
                     editableItem.SetOriginal();
