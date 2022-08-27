@@ -15,7 +15,8 @@ public class CardsUIManager : MonoBehaviour
     public Transform[] CardsHolder;
     //[SerializeField]
     //PassCardsPanel passCardsPanel;
-
+    [SerializeField]
+    CardShapeSprites[] cardShapeSprites;
     //public Transform DoubleCardHolder;
 
     public Transform[] DeckCardsPosition;
@@ -29,7 +30,7 @@ public class CardsUIManager : MonoBehaviour
     [SerializeField]
     PlayerCardsLayout playerCards;
 
-    Dictionary<Card, Sprite> cardSprites;
+    //Dictionary<Card, Sprite> cardSprites;
 
     public void SetMainPlayer(MainPlayer mainPlayer)
     {
@@ -38,19 +39,19 @@ public class CardsUIManager : MonoBehaviour
 
     private void Awake()
     {
-        cardSprites = new Dictionary<Card, Sprite>();
+        //cardSprites = new Dictionary<Card, Sprite>();
 
 
-        for (int i = 0; i < 13; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                CardShape shape = (CardShape)j;
-                CardRank rank = (CardRank)i;
+        //for (int i = 0; i < 13; i++)
+        //{
+        //    for (int j = 0; j < 4; j++)
+        //    {
+        //        CardShape shape = (CardShape)j;
+        //        CardRank rank = (CardRank)i;
 
-                cardSprites.Add(new Card(shape, rank), Resources.Load<Sprite>("Cards/" + shape + "_" + rank));
-            }
-        }
+        //        cardSprites.Add(new Card(shape, rank), cardShapeSprites[(int)shape].Sprites[(int)rank]);
+        //    }
+        //}
 
         deckCards = new List<DeckCard>();
     }
@@ -67,7 +68,7 @@ public class CardsUIManager : MonoBehaviour
 
             Card card = mainPlayer.OwnedCards[i];
 
-            playerCardsUI.Last().Set(cardSprites[card], card, (card) =>
+            playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
             {
                  AddToPassCards(newCard.GetComponent<CardUI>());
             });
@@ -135,7 +136,7 @@ public class CardsUIManager : MonoBehaviour
             playerCardsUI.Add(cardUI);
 
             Card card = mainPlayer.PassedCards[i];
-            cardUI.Set(cardSprites[card], card, (card) =>
+            cardUI.Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
             {
                 mainPlayer.ChooseCard(card);
                 MainPlayerCard(cardUI);
@@ -220,7 +221,7 @@ public class CardsUIManager : MonoBehaviour
         playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
-            deckCard.Image.sprite = cardSprites[card];
+            deckCard.Image.sprite = cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
 
             if (playerIndex == 1 || playerIndex == 3)
             {
@@ -390,4 +391,11 @@ public class DeckCard
         Transform = gameObject.transform;
         Image = gameObject.GetComponent<Image>();
     }
+}
+
+[System.Serializable]
+public class CardShapeSprites
+{
+    public CardShape ShapeName;
+    public Sprite[] Sprites;
 }
