@@ -37,7 +37,7 @@ public class CameraHover : MonoBehaviour
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, Input.mousePosition.y - startPosition.y, 0);
             transform.position += mousePosition.normalized * Time.deltaTime * hoverSpeed * Mathf.Clamp(mousePosition.sqrMagnitude / 100000,1,3);
-            print(mousePosition.sqrMagnitude);
+ 
             transform.position = new Vector3(Mathf.Clamp(transform.position.x,minBounds.x, maxBounds.x),
                 Mathf.Clamp(transform.position.y,minBounds.y, maxBounds.y), -20);
         }

@@ -13,7 +13,7 @@ public class PlayfabManager : MonoBehaviour
     //GameManager gameManager;
 
 
-    public delegate void PlayerLogedIn(UserTitleInfo userInfo,bool newUser);
+    public delegate void PlayerLogedIn(UserTitleInfo userInfo, bool newUser);
     public event PlayerLogedIn OnPlayerLoggedIn;
 
     public delegate void InventoryReturned(Dictionary<string, int> currency, List<ItemInstance> userInfo);
@@ -61,7 +61,7 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.LoginWithAndroidDeviceID(request,
             (result) => SetupSessionData((titleData) =>
             {
-                OnPlayerLoggedIn?.Invoke(titleData,result.NewlyCreated);
+                OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
             }),
             (error) =>
             {
@@ -82,7 +82,7 @@ public class PlayfabManager : MonoBehaviour
 
     internal void RemoveQuest(string id, Action<bool> p)
     {
-        
+
     }
 
     internal void LoginWithApple()
@@ -114,13 +114,13 @@ public class PlayfabManager : MonoBehaviour
             ImageUrl = avatar
         };
 
-        PlayFabClientAPI.UpdateAvatarUrl(request,(result)=> 
-        {
-            Debug.Log("avatar update success");
-        },(error)=> 
-        {
-            Debug.Log(error.ErrorMessage);
-        });
+        PlayFabClientAPI.UpdateAvatarUrl(request, (result) =>
+         {
+             Debug.Log("avatar update success");
+         }, (error) =>
+         {
+             Debug.Log(error.ErrorMessage);
+         });
     }
     //internal void UpdateQuests(Quest[] quests)
     //{
@@ -374,7 +374,8 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.AddUserVirtualCurrency(
             new AddUserVirtualCurrencyRequest()
             {
-                VirtualCurrency = "SC", Amount = value 
+                VirtualCurrency = "SC",
+                Amount = value
             },
             (res) =>
             {
@@ -391,21 +392,22 @@ public class PlayfabManager : MonoBehaviour
 
     public void DeductCurrency(int value, Action<bool> result)
     {
-        PlayFabClientAPI.ExecuteCloudScript(
-            new ExecuteCloudScriptRequest()
+
+        PlayFabClientAPI.SubtractUserVirtualCurrency(
+            new SubtractUserVirtualCurrencyRequest()
             {
-                FunctionName = "deductCurrency",
-                FunctionParameter = new { CurrencyType = "SC", Amount = value }
+                VirtualCurrency = "SC",
+                Amount = value
             },
             (res) =>
             {
-                Debug.Log("Currency Deducted Successfully");
-                result.Invoke(true);
+                Debug.Log("Currency Subtracted Successfully");
+                result?.Invoke(true);
             },
             (error) =>
             {
-                Debug.Log("DeductCurrency Error: " + error.ErrorMessage);
-                result.Invoke(false);
+                Debug.Log("Subtract Currency Error: " + error.ErrorMessage);
+                result?.Invoke(false);
             }
         );
     }
