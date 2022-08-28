@@ -17167,7 +17167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Library_Sofa
   varientIcons:
   - {fileID: 21300000, guid: ac464a43b93d9c44f919cd54c8f234ca, type: 3}
   - {fileID: 21300000, guid: 8002186e199a69c4aa3bcba3ce05791a, type: 3}
@@ -42472,8 +42472,9 @@ GameObject:
   m_Component:
   - component: {fileID: 736157031}
   - component: {fileID: 736157032}
+  - component: {fileID: 736157033}
   m_Layer: 0
-  m_Name: Majlis_Library_Long_Carpet_Removed
+  m_Name: Majlis_Library_Long_Carpet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42546,6 +42547,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &736157033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736157030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: Library_Carpet
+  varientIcons:
+  - {fileID: 21300000, guid: 8fe70c02b7c2f8644bfddf237faa0314, type: 3}
+  - {fileID: 21300000, guid: a6b9063ffd4f21243919a8295d38ce38, type: 3}
+  - {fileID: 21300000, guid: 886aee162be82814ea9e399282323e02, type: 3}
+  varientSprites:
+  - {fileID: 21300000, guid: e0122575671bd394d8516236ae4354af, type: 3}
+  - {fileID: 21300000, guid: b9b8c408d54dee84ca4929649cf7d69c, type: 3}
+  - {fileID: 21300000, guid: cf3182977b6b6504890b30d28c6be248, type: 3}
 --- !u!1 &736182507
 GameObject:
   m_ObjectHideFlags: 0
@@ -68911,7 +68933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Library_ShoesClosetMat
   varientIcons:
   - {fileID: 21300000, guid: f4ec5d408de7e5d4d9f5f3065e8c9e00, type: 3}
   - {fileID: 21300000, guid: 3a7423e0a376d07478c43e680b3ab8fe, type: 3}
@@ -78543,7 +78565,7 @@ MonoBehaviour:
     - {fileID: 2121184233}
     - {fileID: 1442047132}
     - {fileID: 868151492}
-    - {fileID: 1460631041}
+    - {fileID: 736157033}
     - {fileID: 1378458160}
   taskPanel: {fileID: 1765178145}
 --- !u!1 &1310006065
@@ -81933,7 +81955,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1463036242}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1378458160
 MonoBehaviour:
@@ -81947,7 +81969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Library_ShoesCloset
   varientIcons:
   - {fileID: 21300000, guid: 3fac2c66151aaab469d1a95efff56df2, type: 3}
   - {fileID: 21300000, guid: 1b7ec417d7f6bdd49b9d7057e63f8faa, type: 3}
@@ -87932,112 +87954,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459565594}
   m_CullTransparentMesh: 1
---- !u!1 &1460631039
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1460631040}
-  - component: {fileID: 1460631042}
-  - component: {fileID: 1460631041}
-  m_Layer: 0
-  m_Name: Majlis_Library_Long_Carpet (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1460631040
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460631039}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.75, y: -1.16, z: 0.070852056}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1463036242}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1460631041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460631039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9fc4c508f7ef844fbb4c6c76b412f4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Code: 
-  varientIcons:
-  - {fileID: 21300000, guid: 8fe70c02b7c2f8644bfddf237faa0314, type: 3}
-  - {fileID: 21300000, guid: a6b9063ffd4f21243919a8295d38ce38, type: 3}
-  - {fileID: 21300000, guid: 886aee162be82814ea9e399282323e02, type: 3}
-  varientSprites:
-  - {fileID: 21300000, guid: e0122575671bd394d8516236ae4354af, type: 3}
-  - {fileID: 21300000, guid: b9b8c408d54dee84ca4929649cf7d69c, type: 3}
-  - {fileID: 21300000, guid: cf3182977b6b6504890b30d28c6be248, type: 3}
---- !u!212 &1460631042
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460631039}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 5
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 11.74, y: 5.88}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &1463017104
 GameObject:
   m_ObjectHideFlags: 0
@@ -88175,7 +88091,6 @@ Transform:
   - {fileID: 2053343511}
   - {fileID: 1686476611}
   - {fileID: 736157031}
-  - {fileID: 1460631040}
   - {fileID: 1378458159}
   m_Father: {fileID: 1711086701}
   m_RootOrder: 7
@@ -104457,7 +104372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Library_Column
   varientIcons:
   - {fileID: 21300000, guid: 98eb17c1db619ac41a2458087ca474a7, type: 3}
   - {fileID: 21300000, guid: 0318118b366eb224282a51f116659b76, type: 3}
@@ -113677,7 +113592,7 @@ GameObject:
   - component: {fileID: 1829344935}
   - component: {fileID: 1829344934}
   m_Layer: 0
-  m_Name: Majlis_Library_Painting (2)
+  m_Name: Majlis_Library_Painting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113711,7 +113626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6024682323d179d41a712f4ba2f01b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Code: 
+  Code: Library_Painting
   varientIcons:
   - {fileID: 21300000, guid: 435ed01ed747b6248b15afcbe2ae5bb4, type: 3}
   - {fileID: 21300000, guid: 435ed01ed747b6248b15afcbe2ae5bb4, type: 3}
