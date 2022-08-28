@@ -51,18 +51,22 @@ public class TutorialScript : MonoBehaviour
     MajlisScript majlisScript;
 
     int index = 0;
-
+    public static bool IsTutorialDone
+    {
+        get => PlayerPrefs.GetInt("tutorial", 0) == 1;
+        set => PlayerPrefs.SetInt("tutorial", value ? 1 : 0);
+    }
     Transform originalParent;
 
     bool block;
 
-    int tutorialIndex;
+    //int tutorialIndex;
     // Start is called before the first frame update
     void Start()
     {
-        tutorialIndex = PlayerPrefs.GetInt("tutorial", 0);
+        //tutorialIndex = PlayerPrefs.GetInt("tutorial", 0);
 
-        if (tutorialIndex == 0)
+        if (!IsTutorialDone)
         {
             tutorial.SetActive(true);
             text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
@@ -97,8 +101,8 @@ public class TutorialScript : MonoBehaviour
                     {
                         todoButton.transform.parent = originalParent;
 
-                            //fix this later
-                            todoButton.onClick.RemoveAllListeners();
+                        //fix this later
+                        todoButton.onClick.RemoveAllListeners();
                         characterPanel.SetActive(true);
                         hand.gameObject.SetActive(false);
 
@@ -106,13 +110,13 @@ public class TutorialScript : MonoBehaviour
                         {
                             item.SetActive(false);
                         }
-                            //index++;
-                            //print(index);
+                        //index++;
+                        //print(index);
 
-                            block = false;
-                            //MenuManager.Instance.CloseMain();
-                            //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
-                        });
+                        block = false;
+                        //MenuManager.Instance.CloseMain();
+                        //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
+                    });
                     return;
 
                 case 5:
@@ -175,13 +179,13 @@ public class TutorialScript : MonoBehaviour
                         {
                             item.SetActive(false);
                         }
-                            //index++;
-                            //print(index);
+                        //index++;
+                        //print(index);
 
-                            block = false;
+                        block = false;
 
-                            //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
-                        });
+                        //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
+                    });
                     return;
 
                 case 10:
@@ -246,7 +250,8 @@ public class TutorialScript : MonoBehaviour
 
                     gameObject.SetActive(false);
 
-                    PlayerPrefs.SetInt("tutorial", 1);
+                    IsTutorialDone = true;
+                    //PlayerPrefs.SetInt("tutorial", 1);
                     //hand.gameObject.SetActive(true);
                     //hand.position = modeButtons[2].transform.position + Vector3.left * 50;
 

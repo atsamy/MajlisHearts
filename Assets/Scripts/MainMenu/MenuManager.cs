@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using ArabicSupport;
 using System;
 using TMPro;
+using NiobiumStudios;
 
 public class MenuManager : MonoBehaviour
 {
@@ -63,6 +64,12 @@ public class MenuManager : MonoBehaviour
         print(JsonUtility.ToJson(data));
 
         GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
+        DailyRewards.instance.onClaimPrize += ClaimDailyReward;
+    }
+
+    void ClaimDailyReward(int day)
+    {
+        GameManager.Instance.AddCurrency(DailyRewards.instance.GetReward(day).reward);
     }
 
     private void OnDisable()
