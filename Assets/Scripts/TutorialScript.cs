@@ -47,9 +47,6 @@ public class TutorialScript : MonoBehaviour
     [SerializeField]
     GameObject[] closeGamePanelBtns;
 
-    [SerializeField]
-    MajlisScript majlisScript;
-
     int index = 0;
     public static bool IsTutorialDone
     {
@@ -132,7 +129,7 @@ public class TutorialScript : MonoBehaviour
                     taskButton.onClick.AddListener(() =>
                     {
                         hand.gameObject.SetActive(false);
-                        majlisScript.TaskFinished += () =>
+                        MajlisScript.Instance.TaskFinished += () =>
                         {
                             block = false;
 
