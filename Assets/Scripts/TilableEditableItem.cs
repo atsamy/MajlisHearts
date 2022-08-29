@@ -14,12 +14,22 @@ public class TilableEditableItem : SingleEditableItem
         }
     }
 
+    public override void ChangeItem(int index, float time)
+    {
+        ChangeItem(index);
+    }
+
     public override void ResetToOriginal()
     {
         foreach (var item in allTiles)
         {
             item.sprite = originalSprite;
         }
+    }
+
+    public override void SetOriginal()
+    {
+        originalSprite = allTiles[0].sprite;
     }
 
     public override void Init()

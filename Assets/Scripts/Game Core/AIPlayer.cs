@@ -156,10 +156,18 @@ public class AIPlayer : Player
 
         if (card.Shape == CardShape.Spade)
         {
+            if (card.IsQueenOfSpades)
+            {
+                return (int)card.Rank * Mathf.Max(300 - shapeCount[CardShape.Spade] * 50,50) / totalValue;
+            }
             return (int)card.Rank * 150 / totalValue;
         }
         else if (card.Shape == CardShape.Diamond)
         {
+            if (card.IsTenOfDiamonds)
+            {
+                return (int)card.Rank * Mathf.Max(270 - shapeCount[CardShape.Diamond] * 50, 20) / totalValue;
+            }
             return (int)card.Rank * 120 / totalValue;
         }
         else
