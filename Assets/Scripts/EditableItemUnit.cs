@@ -24,6 +24,9 @@ public class EditableItemUnit : MonoBehaviour
 
     internal virtual void ChangeItem(int index)
     {
+        if (index >= varientSprites.Length)
+            return;
+
         sprite.sprite = varientSprites[index];
     }
 

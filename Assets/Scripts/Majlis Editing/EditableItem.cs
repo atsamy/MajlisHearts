@@ -16,6 +16,8 @@ public class EditableItem : MonoBehaviour
 
     [SerializeField]
     TaskAction taskName;
+    [SerializeField]
+    TaskAction taskAction;
     //public bool Modified { set => modified = value; }
 
     bool modified;
@@ -54,6 +56,11 @@ public class EditableItem : MonoBehaviour
 
     }
 
+    public virtual int GetVarientsCount()
+    {
+        return 0;
+    }
+
     public virtual void ChangeItem(int index)
     {
 
@@ -83,7 +90,7 @@ public class EditableItem : MonoBehaviour
     {
         TaskData data = new TaskData()
         {
-            ActionType = taskName,
+            ActionType = taskAction,
             Cost = 40,
             ID = taskName + "_" + Code,
             Target = Code
@@ -91,5 +98,11 @@ public class EditableItem : MonoBehaviour
 
         JsonUtility.ToJson(data);
         GUIUtility.systemCopyBuffer = JsonUtility.ToJson(data);
+    }
+
+    public void CopyLanguageFieldToClipBoard()
+    {
+        string objectName = Code.Split("_")[1];
+        GUIUtility.systemCopyBuffer = "<string name =\"" + objectName + "\">"+objectName+"</string>";
     }
 }

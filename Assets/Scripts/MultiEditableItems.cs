@@ -8,14 +8,19 @@ public class MultiEditableItems : EditableItem
     [SerializeField]
     EditableItemUnit[] AllItems;
 
-    public int VarientsCount => AllItems[0].VarientCount;
-
     public override void ResetToOriginal()
     {
         foreach (var item in AllItems)
         {
             item.ResetToOriginal();
         }
+    }
+    public override int GetVarientsCount()
+    {
+        if (AllItems.Length == 0)
+            return 0;
+
+        return AllItems[0].VarientCount;
     }
 
     public override void ChangeItem(int index)

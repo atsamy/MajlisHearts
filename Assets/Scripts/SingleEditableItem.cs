@@ -15,7 +15,7 @@ public class SingleEditableItem : EditableItem
     bool disableAnimation;
 
     public Sprite[] VarientSprites { get => varientSprites; }
-    public int VarientsCount => varientSprites.Length;
+    
 
     private void Awake()
     {
@@ -45,6 +45,11 @@ public class SingleEditableItem : EditableItem
     {
         SetModified();
         sprite.sprite = varientSprites[index];
+    }
+
+    public override int GetVarientsCount()
+    {
+        return varientSprites.Length;
     }
 
     public override void ChangeItem(int index,float time)
