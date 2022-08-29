@@ -15,6 +15,7 @@ public class SingleEditableItem : EditableItem
     bool disableAnimation;
 
     public Sprite[] VarientSprites { get => varientSprites; }
+    public int VarientsCount => varientSprites.Length;
 
     private void Awake()
     {

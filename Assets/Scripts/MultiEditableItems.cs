@@ -8,6 +8,8 @@ public class MultiEditableItems : EditableItem
     [SerializeField]
     EditableItemUnit[] AllItems;
 
+    public int VarientsCount => AllItems[0].VarientCount;
+
     public override void ResetToOriginal()
     {
         foreach (var item in AllItems)

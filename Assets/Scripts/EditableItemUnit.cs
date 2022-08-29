@@ -10,6 +10,8 @@ public class EditableItemUnit : MonoBehaviour
     [SerializeField]
     Sprite[] varientSprites;
 
+    public int VarientCount => varientSprites.Length;
+
     private void Awake()
     {
         Init();

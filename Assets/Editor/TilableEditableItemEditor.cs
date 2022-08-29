@@ -15,25 +15,25 @@ public class TilableEditableItemEditor : Editor
         item.Init();
 
         EditorGUILayout.LabelField("Test");
-        
-        if (GUILayout.Button("Show 1"))
+
+        for (int i = 0; i < item.VarientsCount; i++)
         {
-            item.ChangeItem(0);
+            if (GUILayout.Button("Show " + (i + 1)))
+            {
+                item.ChangeItem(i);
+            }
         }
 
-        if (GUILayout.Button("Show 2"))
-        {
-            item.ChangeItem(1);
-        }
-
-        if (GUILayout.Button("Show 3"))
-        {
-            item.ChangeItem(2);
-        }
-
-        if (GUILayout.Button("Reset"))
+        if (GUILayout.Button("Show Original"))
         {
             item.ResetToOriginal();
+        }
+
+        GUILayout.Space(5);
+
+        if (GUILayout.Button("Copy Task To Clipboard"))
+        {
+            item.CopyTaskToClipboard();
         }
     }
 }

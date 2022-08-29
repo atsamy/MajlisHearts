@@ -13,6 +13,9 @@ public class EditableItem : MonoBehaviour
     Sprite[] varientIcons;
 
     public Sprite[] VarientIcons { get => varientIcons; }
+
+    [SerializeField]
+    TaskAction taskName;
     //public bool Modified { set => modified = value; }
 
     bool modified;
@@ -74,5 +77,19 @@ public class EditableItem : MonoBehaviour
     public virtual void Init()
     {
 
+    }
+
+    public void CopyTaskToClipboard()
+    {
+        TaskData data = new TaskData()
+        {
+            ActionType = taskName,
+            Cost = 40,
+            ID = taskName + "_" + Code,
+            Target = Code
+        };
+
+        JsonUtility.ToJson(data);
+        GUIUtility.systemCopyBuffer = JsonUtility.ToJson(data);
     }
 }
