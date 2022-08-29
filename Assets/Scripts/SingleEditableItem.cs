@@ -11,6 +11,9 @@ public class SingleEditableItem : EditableItem
     [SerializeField]
     Sprite[] varientSprites;
 
+    [SerializeField]
+    bool disableAnimation;
+
     public Sprite[] VarientSprites { get => varientSprites; }
 
     private void Awake()
@@ -46,6 +49,12 @@ public class SingleEditableItem : EditableItem
     public override void ChangeItem(int index,float time)
     {
         SetModified();
+
+        if (disableAnimation)
+        {
+            sprite.sprite = varientSprites[index];
+            return;
+        }
         transform.DOScale(0.7f, time * 2).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             sprite.sprite = varientSprites[index];
