@@ -15,9 +15,9 @@ public class EditableItem : MonoBehaviour
     public Sprite[] VarientIcons { get => varientIcons; }
 
     [SerializeField]
-    TaskAction taskName;
+    ActionName actionName;
     [SerializeField]
-    TaskAction taskAction;
+    ActionType actionType;
     //public bool Modified { set => modified = value; }
 
     bool modified;
@@ -33,7 +33,13 @@ public class EditableItem : MonoBehaviour
         {
             if (modified)
             {
-                MajlisScript.Instance.ShowEditableItem(Code);
+                TaskData task = new TaskData()
+                {
+                    TargetArea = transform.parent.name,
+                    TargetItem = Code,
+                    ActionType = ActionType.Change
+                };
+                MajlisScript.Instance.ShowEditableItem(task);
             }
             //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
             //print(itemPos);
@@ -90,10 +96,11 @@ public class EditableItem : MonoBehaviour
     {
         TaskData data = new TaskData()
         {
-            ActionType = taskAction,
+            ActionType = actionType,
+            ActionName = actionName.ToString(),
             Cost = 40,
-            ID = taskName + "_" + Code,
-            Target = Code
+            TargetArea = transform.parent.name,
+            TargetItem = Code
         };
 
         JsonUtility.ToJson(data);

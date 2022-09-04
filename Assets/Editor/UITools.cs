@@ -41,4 +41,11 @@ public class UITools : Editor {
     {
         PlayerPrefs.SetInt("tutorial",2);
     }
+    [MenuItem("My Tools/Reset Daily Rewards")]
+    static void ResetDailyRewards()
+    {
+        PlayerPrefs.DeleteKey("LAST_REWARD");
+        PlayerPrefs.DeleteKey("LAST_REWARD_TIME");
+        PlayerPrefs.DeleteKey("DEBUG_TIME");
+    }
 }

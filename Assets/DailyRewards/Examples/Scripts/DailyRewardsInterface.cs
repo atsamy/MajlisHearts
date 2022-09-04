@@ -39,7 +39,7 @@ namespace NiobiumStudios
         public Button buttonCloseWindow;            // Close Button on the upper right corner
         public Text textTimeDue;                    // Text showing how long until the next claim
         public GridLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
-        public ScrollRect scrollRect;               // The Scroll Rect
+        //public ScrollRect scrollRect;               // The Scroll Rect
 
         private bool readyToClaim;                  // Update flag
         private List<DailyRewardUI> dailyRewardsUI = new List<DailyRewardUI>();
@@ -109,12 +109,6 @@ namespace NiobiumStudios
                     dailyRewards.debugTime = new TimeSpan();
                     dailyRewards.lastRewardTime = System.DateTime.MinValue;
 					readyToClaim = false;
-				});
-			if(buttonReloadScene)
-				// Reloads the same scene
-				buttonReloadScene.onClick.AddListener(() =>
-				{
-					Application.LoadLevel(Application.loadedLevelName);
 				});
 
 			UpdateUI();
@@ -192,8 +186,8 @@ namespace NiobiumStudios
             buttonClose.gameObject.SetActive(!isRewardAvailableNow);
             if (isRewardAvailableNow)
             {
-                SnapToReward();
-                textTimeDue.text = "You can claim your reward!";
+                //SnapToReward();
+                textTimeDue.text = LanguageManager.Instance.GetString("claimreward");
             }
             readyToClaim = isRewardAvailableNow;
         }
@@ -214,12 +208,12 @@ namespace NiobiumStudios
 
             var target = dailyRewardsUI[lastRewardIdx].GetComponent<RectTransform>();
 
-            var content = scrollRect.content;
+            //var content = scrollRect.content;
 
             //content.anchoredPosition = (Vector2)scrollRect.transform.InverseTransformPoint(content.position) - (Vector2)scrollRect.transform.InverseTransformPoint(target.position);
 
-            float normalizePosition = (float)target.GetSiblingIndex() / (float)content.transform.childCount;
-            scrollRect.verticalNormalizedPosition = normalizePosition;
+            //float normalizePosition = (float)target.GetSiblingIndex() / (float)content.transform.childCount;
+            //scrollRect.verticalNormalizedPosition = normalizePosition;
         }
 
         void Update()
@@ -246,7 +240,7 @@ namespace NiobiumStudios
 
                 string formattedTs = dailyRewards.GetFormattedTime(difference);
 
-                textTimeDue.text = string.Format("Come back in {0} for your next reward", formattedTs);
+                textTimeDue.text = string.Format(LanguageManager.Instance.GetString("comebacktime"), formattedTs);
             }
         }
 
@@ -261,11 +255,11 @@ namespace NiobiumStudios
             imageReward.sprite = reward.sprite;
             if (rewardQt > 0)
             {
-                textReward.text = string.Format("You got {0} {1}!", reward.reward, unit);
+                textReward.text = string.Format(LanguageManager.Instance.GetString("yougotreward"), reward.reward, LanguageManager.Instance.GetString(unit));
             }
             else
             {
-                textReward.text = string.Format("You got {0}!", unit);
+                textReward.text = string.Format(LanguageManager.Instance.GetString("yougotitem"), LanguageManager.Instance.GetString(unit));
             }
         }
 

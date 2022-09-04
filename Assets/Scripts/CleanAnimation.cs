@@ -6,10 +6,24 @@ using System;
 
 public class CleanAnimation : MonoBehaviour
 {
+    public string Code;
+    public ActionName ActionName;
+
     public void Clean(Action taskFinished)
     {
         SFXManager.Instance.PlayClip("Clean");
-        StartCoroutine(CleanRoutine(taskFinished));
+
+        if (transform.childCount > 0)
+        {
+            StartCoroutine(CleanRoutine(taskFinished));
+        }
+        else
+        {
+            transform.DOScale(0, 0.5f).SetEase(Ease.InOutCubic).OnComplete(()=>
+            {
+                taskFinished?.Invoke();
+            });
+        }
     }
 
     IEnumerator CleanRoutine(Action taskFinished)
@@ -33,5 +47,25 @@ public class CleanAnimation : MonoBehaviour
         }
 
         gameObject.SetActive(true);
+    }
+
+    public void CopyTaskToClipboard()
+    {
+        TaskData data = new TaskData()
+        {
+            ActionType = ActionType.Clean,
+            ActionName = ActionName.ToString(),
+            Cost = 40,
+            TargetItem = Code,
+            TargetArea = transform.parent.name
+        };
+
+        JsonUtility.ToJson(data);
+        GUIUtility.systemCopyBuffer = JsonUtility.ToJson(data);
+    }
+
+    public void CopyLanguageFieldToClipBoard()
+    {
+        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">" + Code + "</string>";
     }
 }

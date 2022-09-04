@@ -40,29 +40,6 @@ public class MenuManager : MonoBehaviour
             Header.SetAvatar();
         }
 
-        TaskData[] taskDatas = new TaskData[2];
-
-        taskDatas[0] = new TaskData()
-        {
-            ID = "clean room",
-            ActionType = TaskAction.Clean,
-            Cost = 30,
-            Target = "LivingCouch"
-        };
-
-        taskDatas[1] = new TaskData()
-        {
-            ID = "change couch",
-            ActionType = TaskAction.Clean,
-            Cost = 40,
-            Target = "LivingRoom"
-        };
-
-        Wrapper<TaskData> data = new Wrapper<TaskData>();
-        data.array = taskDatas;
-
-        print(JsonUtility.ToJson(data));
-
         GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
     }

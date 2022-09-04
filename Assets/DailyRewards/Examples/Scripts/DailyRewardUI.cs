@@ -5,7 +5,7 @@ Author:       Guilherme Nunes Barbosa (gnunesb@gmail.com)
 \***************************************************************************/
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 /* 
  * Daily Reward Object UI representation
  */
@@ -31,12 +31,16 @@ namespace NiobiumStudios
         public bool showRewardName;
 
         [Header("UI Elements")]
-        public Text textDay;                // Text containing the Day text eg. Day 12
-        public Text textReward;             // The Text containing the Reward amount
+        public TextMeshProUGUI textDay;                // Text containing the Day text eg. Day 12
+        public TextMeshProUGUI textReward;             // The Text containing the Reward amount
         public Image imageRewardBackground; // The Reward Image Background
         public Image imageReward;           // The Reward Image
+        public Sprite claimedSprite;
+        public Sprite readySprite;
         public Color colorClaim;            // The Color of the background when claimed
         private Color colorUnclaimed;       // The Color of the background when not claimed
+
+        public GameObject Data;
 
         [Header("Internal")]
         public int day;
@@ -86,13 +90,14 @@ namespace NiobiumStudios
             switch (state)
             {
                 case DailyRewardState.UNCLAIMED_AVAILABLE:
-                    imageRewardBackground.color = colorClaim;
+                    imageRewardBackground.sprite = readySprite;
                     break;
                 case DailyRewardState.UNCLAIMED_UNAVAILABLE:
                     imageRewardBackground.color = colorUnclaimed;
                     break;
                 case DailyRewardState.CLAIMED:
-                    imageRewardBackground.color = colorClaim;
+                    imageRewardBackground.sprite = claimedSprite;
+                    Data.SetActive(false);
                     break;
             }
         }

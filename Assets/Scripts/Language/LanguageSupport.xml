@@ -18,7 +18,7 @@
 		<string name="level">Level</string>
 		<string name="friends">Friends</string>
 		<string name="dailyquest">Daily Quests</string>
-		<string name="hourly">Hourly Reward</string>
+		<string name="dailyreward">Daily Reward</string>
 		<string name="waitingforfriend">Waiting for your friend response</string>
 		<string name="waiting">Waiting for other player</string>
 		<string name="friendaccept">Your Friend Accepted</string>
@@ -29,6 +29,8 @@
 		<string name="noVideo">Video is unavailable now</string>
 		<string name="unavailable">Unavailable</string>
 		<string name="todo">TO DO LIST</string>
+		<string name="claim">CLAIM</string>
+		<string name="claimreward">You can claim your reward!</string>
 		<!--Store-->
 		<string name="coins">COINS</string>
 		<string name="free">Free</string>
@@ -87,7 +89,7 @@
 		<string name="ok">OK</string>
 		<string name="no">No</string>
 		<string name="Collect">Collect</string>
-		<string name="Reward">Reward</string>
+		<string name="reward">Reward</string>
 		<string name="double">DOUBLE!</string>
 		<string name="select">Select</string>
 		<string name="buy">Buy</string>
@@ -144,8 +146,8 @@
 		<string name="gamesetup">GAME SETUP</string>
 		<string name="single">SINGLE</string>
 		<string name="team">TEAM</string>
-		<!--Tutorial-->
 
+		<!--Tutorial-->
 		<string name="tutorial_0">Welcome to Majlismania!</string>
 		<string name="tutorial_1">What a mess!</string>
 		<string name="tutorial_2">Lets organize your majlis to be able to play cards with your friends</string>
@@ -167,10 +169,11 @@
     
 		<!--Tasks-->
 		<string name="Clean">Clean %R</string>
+		<string name="Remove">Remove %R</string>
 		<string name="Change">Install new %I in %R</string>
 		<string name="Fix">Fix %I in %R</string>
 		<string name="Add">Add %I in %R</string>
-		<string name="Paint">Paint %I in %R</string>
+		<string name="Install">Install %I in %R</string>
 
 		<string name="Majlis">the majlis</string>
 		<string name="SmallMajlis">the small majlis</string>
@@ -201,6 +204,10 @@
 		<string name="Column">columns</string>
 		<string name="Painting">painting</string>
 
+		<string name="yougotreward">You got {0} {1}!</string>
+		<string name="yougotitem">You got {0}!</string>
+		<string name="comeback">Come back in {0} for your next reward</string>
+
 		<string name="Mat">the mat</string>
 
 		<string name="SideTable">side table</string>
@@ -217,6 +224,8 @@
 
 		<string name="Flowers">flowers</string>
 		<string name="Trophies">trophies</string>
+
+		<string name ="Covers">the covers</string>
 
 		<string name="Enterance">The enterance</string>
 		<string name="Light">light</string>
@@ -245,6 +254,22 @@
 		<string name ="CarpetSmall">the small carpet</string>
 		<string name ="Cabient">the cabient</string>
 		<string name ="Bathtub">the bathtub</string>
+
+		<string name ="Kitchen">the kitchen</string>
+		<string name ="CounterTop">the counter top</string>
+		<string name ="Shelf">the shelf</string>
+		<string name ="SideCounter">the side counter</string>
+		<string name ="Chairs">the chairs</string>
+		<string name ="Island">the kitchen island</string>
+		<string name ="Trashbin">trash bin</string>
+		<string name ="CoffeMachine">coffe machine</string>
+		<string name ="Microwave">microwave</string>
+		<string name ="FireExtinguisher">fire extinguisher</string>
+		<string name ="Buffet">buffet</string>
+		<string name ="CeillingLight">ceilling light</string>
+		<string name ="Cutlery">cutlery</string>
+		<string name ="TableVase">table vase</string>
+		<string name ="Fridge">the fridge</string>
 	</English>
 
 	<Arabic>
@@ -282,9 +307,10 @@
 		<string name="noVideo">الفيديو غير متوفر الآن</string>
 		<string name="Unavailable">غير متوفر</string>
 		<string name="todo">مهام</string>
+		<string name="claim">استلم</string>
 		<!--Store-->
 		<string name="free">مجاناً</string>
-		<string name="coins">فلوس</string>
+		<string name="coins">عملة</string>
 		<string name="equipped">مجهز</string>
 		<string name="owned">مملوك</string>
 		<string name="watchad">شاهد اعلان</string>
@@ -341,7 +367,8 @@
 		<string name="no">لا</string>
 		<string name="Fans">معجبين</string>
 		<string name="Collect">اجمع</string>
-		<string name="Reward">الجائزة</string>
+		<string name="reward">مكافأة</string>
+		<string name="dailyreward">المكافأة اليومية</string>
 		<string name="double">ضاعف النقط</string>
 		<string name="triple">ثلاثة اضاعف المكافأة</string>
 		<string name="TryAgain">حاول مجدداً</string>
@@ -353,6 +380,7 @@
 		<string name="Name">الاسم</string>
 		<string name="Video">شاهد فيديو</string>
 		<string name="entername">...أدخل الأسم</string>
+		<string name="claimreward">يمكنك استلام مكافأتك</string>
 		<!--PopUps-->
 		<string name="OutOfMoneyH">نفذت الأموال</string>
 		<string name="nocoins">ليس لديك عملات كافية, هل تريد شراء المزيد؟</string>
@@ -417,10 +445,11 @@
 
 		<!--Tasks-->
 		<string name="Clean">نظف %R</string>
+		<string name="Remove">ازل %R</string>
 		<string name="Change">غير %I فى %R</string>
 		<string name="Fix">اصلح %I فى %R</string>
 		<string name="Add">اضف %I فى %R</string>
-		<string name="Paint">ادهن %I فى %R</string>
+		<string name="Install">ركب %I فى %R</string>
 
 		<string name="Majlis">المجلس</string>
 		<string name="SmallMajlis">المجلس الصغير</string>
@@ -450,7 +479,10 @@
 		<string name="Mat">سجادة</string>
 
 		<string name="SideTable">طاوله جانبية</string>
-		
+		<string name ="Covers">الاغطية</string>
+		<string name="yougotreward">لقد حصلت على {0} {1}</string>
+		<string name="yougotitem">حصلت علي {0}</string>
+		<string name="comebacktime">المكافأة  القادمة في {0}</string>
 
 		<string name="Column">عواميد</string>
 		<string name="Painting">لوحات</string>
@@ -497,6 +529,22 @@
 		<string name ="CarpetSmall">السجادة الصغيرة</string>
 		<string name ="Cabient">الكابينة</string>
 		<string name ="Bathtub">حوض الاستحمام</string>
+
+		<string name ="Kitchen">المطبخ</string>
+		<string name ="CounterTop">the counter top</string>
+		<string name ="Shelf">الرف</string>
+		<string name ="SideCounter">the side counter</string>
+		<string name ="Chairs">الكراسي</string>
+		<string name ="Island">جزيرة المطبخ</string>
+		<string name ="Trashbin">سلة المهملات</string>
+		<string name ="CoffeMachine">مكينه القهوة</string>
+		<string name ="Microwave">الميكروويف</string>
+		<string name ="FireExtinguisher">طفاية حريق</string>
+		<string name ="Buffet">بوفيه</string>
+		<string name ="CeillingLight">اضائه السقف</string>
+		<string name ="Cutlery">مجموعة أدوات المائدة</string>
+		<string name ="TableVase">إناء للمائدة</string>
+		<string name ="Fridge">البراد</string>
 	</Arabic>
 </languages>
 

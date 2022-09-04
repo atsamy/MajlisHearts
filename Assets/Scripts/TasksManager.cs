@@ -44,24 +44,35 @@ public class TasksManager : MonoBehaviour
 [Serializable]
 public class FinishedTask
 {
-    public TaskAction ActionType;
-    public string Target;
+    public ActionType ActionType;
+    public string TargetItem;
+    public string TargetArea;
+    public int SelectedIndex;
 }
 
 [Serializable]
 public class TaskData
 {
-    public string ID;
+    public string ActionName;
+    public ActionType ActionType;
+    public string TargetItem;
+    public string TargetArea;
     public int Cost;
-    public TaskAction ActionType;
-    public string Target;
 }
 
-public enum TaskAction
+public enum ActionName
 {
     Clean = 0,
     Change = 1,
     Fix = 2,
     Add = 3,
-    Paint = 4
+    Install = 4,
+    Remove = 5
+}
+
+public enum ActionType
+{
+    Clean = 0,
+    Change = 1,
+    Add = 2
 }

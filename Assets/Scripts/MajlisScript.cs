@@ -37,26 +37,16 @@ public class MajlisScript : MonoBehaviour
         {
             switch (task.ActionType)
             {
-                case TaskAction.Clean:
-                    RoomItems.First(a => a.RoomId == task.Target).OldItems.gameObject.SetActive(false);
-                    //oldItems.SetActive(false);
+                case ActionType.Clean:
+                    RoomItems.First(a => a.RoomId == task.TargetArea).OldItems.First(a => a.Code == task.TargetItem).gameObject.SetActive(false);
                     break;
-                case TaskAction.Change:
-                    string[] ids = task.Target.Split('_');
-
-                    //if (!RoomItems.First(a => a.RoomId == ids[0]).EditableItems.Any(a => a.Code == (ids[0] + "_" + ids[1])))
-                    //{
-                    //    print("id: " + (ids[0] + "_" + ids[1]));
-                    //    return;
-                    //}
-
-                    EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
-                    editableItem.ChangeItem(int.Parse(ids[2]));
+                case ActionType.Change:
+                    EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
+                    editableItem.ChangeItem(task.SelectedIndex);
                     editableItem.SetOriginal();
                     break;
-                case TaskAction.Fix:
-                    string[] fixids = task.Target.Split('_');
-                    EditableItem fixItem = RoomItems.First(a => a.RoomId == fixids[0]).EditableItems.First(a => a.Code == (fixids[0] + "_" + fixids[1]));
+                case ActionType.Add:
+                    EditableItem fixItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
                     fixItem.ChangeItem(0);
                     break;
             }
@@ -69,50 +59,59 @@ public class MajlisScript : MonoBehaviour
         {
             switch (task.ActionType)
             {
-                case TaskAction.Clean:
-                    CleanAnimation oldItems = RoomItems.First(a => a.RoomId == task.Target).OldItems;
+                case ActionType.Clean:
+                    CleanAnimation oldItems = RoomItems.First(a => a.RoomId == task.TargetArea).OldItems.First(a => a.Code == task.TargetItem);
                     oldItems.Reset();
                     break;
-                case TaskAction.Change:
-                    string[] ids = task.Target.Split('_');
-                    EditableItem editableItem = RoomItems.First(a => a.RoomId == ids[0]).EditableItems.First(a => a.Code == (ids[0] + "_" + ids[1]));
-                    editableItem.ResetToOriginal();
+                case ActionType.Change:
+                    ResetEditableItem(task);
+                    break;
+                case ActionType.Add:
+                    ResetEditableItem(task);
                     break;
             }
         }
+    }
+
+    private void ResetEditableItem(FinishedTask task)
+    {
+        EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
+        editableItem.ResetToOriginal();
     }
 
     public void ExecuteTask(TaskData task)
     {
         switch (task.ActionType)
         {
-            case TaskAction.Clean:
-                CleanRoom(task.Target);
+            case ActionType.Clean:
+                CleanRoom(task);
                 break;
-            case TaskAction.Change:
-                ShowEditableItem(task.Target);
+            case ActionType.Change:
+                ShowEditableItem(task);
                 break;
-            case TaskAction.Fix:
-                FixItem(task.Target);
+            case ActionType.Add:
+                FixItem(task);
                 break;
         }
     }
 
-    public void ShowEditableItem(string target)
+    public void ShowEditableItem(TaskData task)
     {
-        EditableItem editableItem = RoomItems.First(a => a.RoomId == target.Split('_')[0]).EditableItems.First(a => a.Code == target);
+        EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
 
         cameraHover.GoToLocation(editableItem.transform, () =>
         {
-            taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
+            taskPanel.OpenEditPanel(editableItem, task , TaskFinished);
         });
 
         SFXManager.Instance.PlayClip("Select");
     }
 
-    private void CleanRoom(string target)
+    private void CleanRoom(TaskData task)
     {
-        CleanAnimation oldItems = RoomItems.First(a => a.RoomId == target).OldItems;
+        CleanAnimation oldItems = RoomItems.First(a => a.RoomId == task.TargetArea)
+            .OldItems.First(a => a.Code == task.TargetItem);
+
         cameraHover.GoToLocation(oldItems.transform, () =>
         {
             oldItems.Clean(()=>
@@ -124,15 +123,16 @@ public class MajlisScript : MonoBehaviour
         taskPanel.ClosePanel();
         FinishedTask tasks = new FinishedTask()
         {
-            ActionType = TaskAction.Clean,
-            Target = target
+            ActionType = ActionType.Clean,
+            TargetArea = task.TargetArea,
+            TargetItem = task.TargetItem
         };
         taskPanel.TaskDone(tasks);
     }
 
-    void FixItem(string target)
+    void FixItem(TaskData task)
     {
-        EditableItem editableItem = RoomItems.First(a => a.RoomId == target.Split('_')[0]).EditableItems.First(a => a.Code == target);
+        EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
 
         cameraHover.GoToLocation(editableItem.transform, () =>
         {
@@ -145,8 +145,9 @@ public class MajlisScript : MonoBehaviour
         taskPanel.ClosePanel();
         FinishedTask tasks = new FinishedTask()
         {
-            ActionType = TaskAction.Fix,
-            Target = target
+            ActionType = ActionType.Add,
+            TargetArea = task.TargetArea,
+            TargetItem = task.TargetItem
         };
         taskPanel.TaskDone(tasks);
         //SFXManager.Instance.PlayClip("Select");
@@ -160,7 +161,7 @@ public class MajlisScript : MonoBehaviour
         {
             RoomItems[i] = new RoomItem();
             RoomItems[i].RoomId = transform.GetChild(i).name;
-            RoomItems[i].OldItems = transform.GetChild(i).GetComponentInChildren<CleanAnimation>();
+            RoomItems[i].OldItems = transform.GetChild(i).GetComponentsInChildren<CleanAnimation>();
             RoomItems[i].EditableItems = transform.GetChild(i).GetComponentsInChildren<EditableItem>();
         }
     }
@@ -169,7 +170,7 @@ public class MajlisScript : MonoBehaviour
 public class RoomItem
 {
     public string RoomId;
-    public CleanAnimation OldItems;
+    public CleanAnimation[] OldItems;
     public EditableItem[] EditableItems;
 }
 

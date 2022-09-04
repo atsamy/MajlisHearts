@@ -32,16 +32,40 @@ public class TaskPanel : MonoBehaviour
         //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         TaskData currentTask = TasksManager.Instance.CurrentTask;
 
-        string taskName = LanguageManager.Instance.GetString(currentTask.ID.Split("_")[0]);
-        if (currentTask.ActionType == TaskAction.Clean)
+        string taskName = LanguageManager.Instance.GetString(currentTask.ActionName);
+
+        if (currentTask.ActionType == ActionType.Clean)
         {
-            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.Target));
+            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.TargetItem));
         }
         else
         {
-            string[] data = currentTask.Target.Split("_");
-            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(data[0]))
-                .Replace("%I", LanguageManager.Instance.GetString(data[1]));
+            string itenName;
+            string count = "";
+            bool isMulti;
+
+            if (isMulti = currentTask.TargetItem.Contains("#"))
+            {
+                isMulti = true;
+                string[] data = currentTask.TargetItem.Split("#");
+                count = data[1];
+                itenName = data[0];
+            }
+            else
+            {
+                itenName = currentTask.TargetItem;
+            }
+
+            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.TargetArea))
+                .Replace("%I", LanguageManager.Instance.GetString(itenName));
+
+            if (isMulti)
+            {
+                if(LanguageManager.Instance.CurrentLanguage == Language.English)
+                    taskName += " " + count;
+                else
+                    taskName = count + " " + taskName;
+            }
         }
 
         taskItem.Set(taskName, currentTask.Cost, () =>
@@ -73,7 +97,7 @@ public class TaskPanel : MonoBehaviour
         SFXManager.Instance.PlayClip("Close");
     }
 
-    internal void OpenEditPanel(EditableItem editableItem,string target,Action taskFinished)
+    internal void OpenEditPanel(EditableItem editableItem,TaskData taskData,Action taskFinished)
     {
         taskPanel.SetActive(false);
 
@@ -81,8 +105,10 @@ public class TaskPanel : MonoBehaviour
         {
             FinishedTask task = new FinishedTask()
             {
-                ActionType = TaskAction.Change,
-                Target = target + "_" + index
+                ActionType = ActionType.Change,
+                TargetArea = taskData.TargetArea,
+                TargetItem = taskData.TargetItem,
+                SelectedIndex = index
             };
 
             TaskDone(task);
