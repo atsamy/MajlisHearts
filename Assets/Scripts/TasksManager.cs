@@ -67,7 +67,9 @@ public enum ActionName
     Fix = 2,
     Add = 3,
     Install = 4,
-    Remove = 5
+    Remove = 5,
+    Hang = 6,
+    Lay
 }
 
 public enum ActionType

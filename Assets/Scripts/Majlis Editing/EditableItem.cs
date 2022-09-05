@@ -109,7 +109,6 @@ public class EditableItem : MonoBehaviour
 
     public void CopyLanguageFieldToClipBoard()
     {
-        string objectName = Code.Split("_")[1];
-        GUIUtility.systemCopyBuffer = "<string name =\"" + objectName + "\">"+objectName+"</string>";
+        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">"+ Code + "</string>";
     }
 }
