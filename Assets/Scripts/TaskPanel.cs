@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TaskPanel : MonoBehaviour
@@ -34,41 +35,56 @@ public class TaskPanel : MonoBehaviour
 
         string taskName = LanguageManager.Instance.GetString(currentTask.ActionName);
 
-        if (currentTask.ActionType == ActionType.Clean)
+        string itenName;
+        string count = "";
+        bool isMulti;
+
+
+        if (isMulti = currentTask.TargetItem.Contains("#"))
         {
-            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.TargetItem));
+            isMulti = true;
+            string[] data = currentTask.TargetItem.Split("#");
+            count = data[1];
+            itenName = data[0];
         }
         else
         {
-            string itenName;
-            string count = "";
-            bool isMulti;
+            itenName = currentTask.TargetItem;
+        }
 
-            if (isMulti = currentTask.TargetItem.Contains("#"))
-            {
-                isMulti = true;
-                string[] data = currentTask.TargetItem.Split("#");
-                count = data[1];
-                itenName = data[0];
-            }
-            else
-            {
-                itenName = currentTask.TargetItem;
-            }
+        if (currentTask.ActionType == ActionType.Clean)
+        {
+            taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(itenName));
+        }
+        else
+        {
 
             taskName = taskName.Replace("%R", LanguageManager.Instance.GetString(currentTask.TargetArea))
                 .Replace("%I", LanguageManager.Instance.GetString(itenName));
-
-            if (isMulti)
-            {
-                if(LanguageManager.Instance.CurrentLanguage == Language.English)
-                    taskName += " " + count;
-                else
-                    taskName = count + " " + taskName;
-            }
         }
 
-        taskItem.Set(taskName, currentTask.Cost, () =>
+        if (isMulti)
+        {
+            if (LanguageManager.Instance.CurrentLanguage == Language.English)
+                taskName += " " + count;
+            else
+                taskName = count + " " + taskName;
+        }
+
+        Sprite taskSprite = null;
+
+        if (currentTask.ActionType != ActionType.Clean)
+        {
+            IJsonTask editableItem = MajlisScript.Instance.RoomItems.First(a => a.RoomId == currentTask.TargetArea).EditableItems.First(a => a.Code == currentTask.TargetItem);
+            taskSprite = editableItem.GetTaskIcon();
+        }
+        else
+        {
+            IJsonTask editableItem = MajlisScript.Instance.RoomItems.First(a => a.RoomId == currentTask.TargetArea).OldItems.First(a => a.Code == currentTask.TargetItem);
+            taskSprite = editableItem.GetTaskIcon();
+        }
+
+        taskItem.Set(taskName, currentTask.Cost, taskSprite, () =>
         {
             MajlisScript.Instance.ExecuteTask(currentTask);
         });

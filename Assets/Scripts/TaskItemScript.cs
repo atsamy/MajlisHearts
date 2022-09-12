@@ -11,14 +11,16 @@ public class TaskItemScript : MonoBehaviour
     Text taskName;
     [SerializeField]
     TextMeshProUGUI costText;
-
+    [SerializeField]
+    Image taskImage;
     Action onPressedAction;
 
-    public void Set(string taskName,int cost,Action action)
+    public void Set(string taskName,int cost,Sprite taskImage,Action action)
     {
         gameObject.SetActive(true);
         this.taskName.text = taskName;
         this.costText.text = cost.ToString();
+        this.taskImage.sprite = taskImage;
 
         onPressedAction = action;
     }

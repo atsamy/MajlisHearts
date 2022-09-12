@@ -4,10 +4,13 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
-public class CleanAnimation : MonoBehaviour
+public class CleanAnimation : MonoBehaviour,IJsonTask
 {
     public string Code;
     public ActionName ActionName;
+
+    [SerializeField]
+    Sprite taskIcon;
 
     public void Clean(Action taskFinished)
     {
@@ -51,6 +54,17 @@ public class CleanAnimation : MonoBehaviour
 
     public void CopyTaskToClipboard()
     {
+
+        GUIUtility.systemCopyBuffer = GetTaskJson();
+    }
+
+    public void CopyLanguageFieldToClipBoard()
+    {
+        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">" + Code + "</string>";
+    }
+
+    public string GetTaskJson()
+    {
         TaskData data = new TaskData()
         {
             ActionType = ActionType.Clean,
@@ -60,12 +74,11 @@ public class CleanAnimation : MonoBehaviour
             TargetArea = transform.parent.name
         };
 
-        JsonUtility.ToJson(data);
-        GUIUtility.systemCopyBuffer = JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data);
     }
 
-    public void CopyLanguageFieldToClipBoard()
+    public Sprite GetTaskIcon()
     {
-        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">" + Code + "</string>";
+        return taskIcon;
     }
 }

@@ -65,7 +65,7 @@ namespace NiobiumStudios
 
         public void Initialize()
         {
-            textDay.text = string.Format("Day {0}", day.ToString());
+            textDay.text = string.Format(LanguageManager.Instance.GetString("day"), day.ToString());
             if (reward.reward > 0)
             {
                 if (showRewardName)

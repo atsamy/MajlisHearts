@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EditableItem : MonoBehaviour
+public class EditableItem : MonoBehaviour, IJsonTask
 {
     public string Code;
     int counter = 0;
@@ -94,6 +94,17 @@ public class EditableItem : MonoBehaviour
 
     public void CopyTaskToClipboard()
     {
+
+        GUIUtility.systemCopyBuffer = GetTaskJson();
+    }
+
+    public void CopyLanguageFieldToClipBoard()
+    {
+        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">"+ Code + "</string>";
+    }
+
+    public string GetTaskJson()
+    {
         TaskData data = new TaskData()
         {
             ActionType = actionType,
@@ -103,12 +114,17 @@ public class EditableItem : MonoBehaviour
             TargetItem = Code
         };
 
-        JsonUtility.ToJson(data);
-        GUIUtility.systemCopyBuffer = JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data);
     }
 
-    public void CopyLanguageFieldToClipBoard()
+    public Sprite GetTaskIcon()
     {
-        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">"+ Code + "</string>";
+        return varientIcons[0];
     }
+}
+
+public interface IJsonTask
+{
+    public string GetTaskJson();
+    public Sprite GetTaskIcon();
 }
