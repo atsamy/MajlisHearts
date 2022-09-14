@@ -24,10 +24,13 @@ public class TasksManager : MonoBehaviour
         currentIndex = value;
     }
 
-    public void TaskFinished(FinishedTask task)
+    public void TaskFinished(FinishedTask task,bool newTask)
     {
         FinishedTasks.Add(task);
-        currentIndex++;
+
+        if(newTask)
+            currentIndex++;
+
         Dictionary<string, string> data = new Dictionary<string, string>();
         data.Add("TaskIndex", currentIndex.ToString());
 

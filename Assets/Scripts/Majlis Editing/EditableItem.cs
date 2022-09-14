@@ -39,7 +39,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
                     TargetItem = Code,
                     ActionType = ActionType.Change
                 };
-                MajlisScript.Instance.ShowEditableItem(task);
+                MajlisScript.Instance.ShowEditableItem(task,false);
             }
             //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
             //print(itemPos);

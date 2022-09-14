@@ -87,7 +87,7 @@ public class MajlisScript : MonoBehaviour
                 CleanRoom(task);
                 break;
             case ActionType.Change:
-                ShowEditableItem(task);
+                ShowEditableItem(task,true);
                 break;
             case ActionType.Add:
                 FixItem(task);
@@ -95,16 +95,29 @@ public class MajlisScript : MonoBehaviour
         }
     }
 
-    public void ShowEditableItem(TaskData task)
+    public void ShowEditableItem(TaskData task,bool isNew)
     {
         EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
 
-        cameraHover.GoToLocation(editableItem.transform, () =>
+        if (isNew)
         {
-            taskPanel.OpenEditPanel(editableItem, task , TaskFinished);
-        });
+            cameraHover.GoToLocation(editableItem.transform, () =>
+            {
+                taskPanel.OpenEditPanel(editableItem, task, TaskFinished, isNew);
+            });
+        }
+        else
+        {
+            StartCoroutine(OpenEditPanel(editableItem,task,isNew));
+        }
 
         SFXManager.Instance.PlayClip("Select");
+    }
+
+    IEnumerator OpenEditPanel(EditableItem editableItem, TaskData task, bool isNew)
+    {
+        yield return new WaitForFixedUpdate();
+        taskPanel.OpenEditPanel(editableItem, task, TaskFinished, isNew);
     }
 
     private void CleanRoom(TaskData task)
@@ -127,7 +140,7 @@ public class MajlisScript : MonoBehaviour
             TargetArea = task.TargetArea,
             TargetItem = task.TargetItem
         };
-        taskPanel.TaskDone(tasks);
+        taskPanel.TaskDone(tasks,true);
     }
 
     void FixItem(TaskData task)
@@ -149,7 +162,7 @@ public class MajlisScript : MonoBehaviour
             TargetArea = task.TargetArea,
             TargetItem = task.TargetItem
         };
-        taskPanel.TaskDone(tasks);
+        taskPanel.TaskDone(tasks,true);
         //SFXManager.Instance.PlayClip("Select");
     }
 

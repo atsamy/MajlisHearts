@@ -14,7 +14,7 @@ public class ItemSelectPanel : MonoBehaviour
     int selectedIndex = 0;
     EditableItem editableItem;
 
-    public void Show(ref EditableItem item,Action<int> confirmed,Action cancelled)
+    public void Show(ref EditableItem item, bool isNew, Action<int> confirmed, Action cancelled)
     {
         gameObject.SetActive(true);
 
@@ -24,7 +24,9 @@ public class ItemSelectPanel : MonoBehaviour
         }
 
         editableItem = item;
-        editableItem.ChangeItem(0,0.2f);
+
+        if (isNew)
+            editableItem.ChangeItem(0, 0.2f);
 
         this.confirmed = confirmed;
         this.cancelled = cancelled;

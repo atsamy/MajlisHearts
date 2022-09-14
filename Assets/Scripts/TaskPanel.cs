@@ -15,6 +15,7 @@ public class TaskPanel : MonoBehaviour
     [SerializeField]
     ItemSelectPanel editPanel;
 
+    //bool isNew;
     //[SerializeField]
     //CameraHover cameraHover;
     //TaskItemScript currentTaskItem;
@@ -113,11 +114,11 @@ public class TaskPanel : MonoBehaviour
         SFXManager.Instance.PlayClip("Close");
     }
 
-    internal void OpenEditPanel(EditableItem editableItem,TaskData taskData,Action taskFinished)
+    internal void OpenEditPanel(EditableItem editableItem,TaskData taskData,Action taskFinished,bool isNew)
     {
         taskPanel.SetActive(false);
 
-        editPanel.Show(ref editableItem, (index) =>
+        editPanel.Show(ref editableItem,isNew, (index) =>
         {
             FinishedTask task = new FinishedTask()
             {
@@ -127,7 +128,7 @@ public class TaskPanel : MonoBehaviour
                 SelectedIndex = index
             };
 
-            TaskDone(task);
+            TaskDone(task,isNew);
             taskFinished?.Invoke();
             //save edit
             MenuManager.Instance.OpenMain();
@@ -137,10 +138,10 @@ public class TaskPanel : MonoBehaviour
         });
     }
 
-    public void TaskDone(FinishedTask task)
+    public void TaskDone(FinishedTask task,bool isNew)
     {
         MenuManager.Instance.CameraHover.Unlock();
-        TasksManager.Instance.TaskFinished(task);
+        TasksManager.Instance.TaskFinished(task,isNew);
         taskItem.gameObject.SetActive(false);
 
         GameManager.Instance.DeductCurrency(currentCost);
