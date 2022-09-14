@@ -28,6 +28,7 @@ public class MultiEditableTypeItems : EditableItem
 
     public override void ChangeItem(int index)
     {
+        SetModified();
         foreach (var item in AllItems)
         {
             item.ChangeItem(index);
@@ -36,6 +37,7 @@ public class MultiEditableTypeItems : EditableItem
 
     public override void ChangeItem(int index, float time)
     {
+        SetModified();
         foreach (var item in AllItems)
         {
             item.ChangeItem(index);
@@ -48,6 +50,14 @@ public class MultiEditableTypeItems : EditableItem
         {
             if(item != null)
             item.Init();
+        }
+    }
+
+    public override void SetOriginal()
+    {
+        foreach (var item in AllItems)
+        {
+            item.SetOriginal();
         }
     }
 }

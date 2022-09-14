@@ -38,4 +38,9 @@ public class EditableItemUnit : MonoBehaviour
             originalSprite = sprite.sprite;
         }
     }
+
+    internal void SetOriginal()
+    {
+        originalSprite = sprite.sprite;
+    }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Unity.Notifications.Android;
+using NiobiumStudios;
 
 [DefaultExecutionOrder(-2)]
 public class GameManager : MonoBehaviour
@@ -127,6 +129,60 @@ public class GameManager : MonoBehaviour
     {
         PlayfabManager.instance.SetAvatar(avatar);
         MyPlayer.Avatar = avatar;
+    }
+
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.D))
+    //    {
+    //        TimeSpan timeSpan = DailyRewards.instance.GetTimeDifference();
+
+    //        print(timeSpan.TotalSeconds);
+    //    }
+    //}
+
+    public void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            AndroidNotificationChannel notificationChannel = new AndroidNotificationChannel()
+            {
+                Id = "channel_id",
+                Name = "Default Channel",
+                Importance = Importance.High,
+                Description = "Generic notifications",
+            };
+            AndroidNotificationCenter.RegisterNotificationChannel(notificationChannel);
+
+
+
+            TimeSpan timeSpan = DailyRewards.instance.GetTimeDifference();
+
+            if (timeSpan.TotalSeconds > 0)
+            {
+                AndroidNotification notification = new AndroidNotification
+                {
+                    Title = "Daily Rewards Ready!",
+                    Text = "Don't forget to collect your daily reward and enjoy playing Majlismania!",
+                    FireTime = DateTime.Now.Add(timeSpan)
+                };
+
+                AndroidNotificationCenter.SendNotification(notification, "channel_id");
+            }
+
+            //AndroidNotification testnotification = new AndroidNotification
+            //{
+            //    Title = "Testing!",
+            //    Text = "Testing test testing the test!",
+            //    FireTime = DateTime.Now.AddSeconds(10)
+            //};
+
+            //AndroidNotificationCenter.SendNotification(testnotification, "channel_id");
+        }
+        else
+        {
+            AndroidNotificationCenter.CancelAllNotifications();
+        }
     }
 }
 

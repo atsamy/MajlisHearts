@@ -3342,6 +3342,8 @@ GameObject:
   - component: {fileID: 55418490}
   - component: {fileID: 55418489}
   - component: {fileID: 55418488}
+  - component: {fileID: 55418492}
+  - component: {fileID: 55418491}
   m_Layer: 0
   m_Name: Majlis_CoffeeTable_2
   m_TagString: Untagged
@@ -3455,6 +3457,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &55418491
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55418486}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 3.23, y: 1.97}
+  serializedVersion: 2
+  m_Radius: 0.68
+--- !u!58 &55418492
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55418486}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.68
 --- !u!1 &56098491
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,6 +6433,8 @@ GameObject:
   - component: {fileID: 120451091}
   - component: {fileID: 120451090}
   - component: {fileID: 120451089}
+  - component: {fileID: 120451093}
+  - component: {fileID: 120451092}
   m_Layer: 0
   m_Name: Majlis_Big_Plant_pot (3)
   m_TagString: Untagged
@@ -6512,6 +6548,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &120451092
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120451087}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.78
+--- !u!58 &120451093
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120451087}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4, y: -2.27}
+  serializedVersion: 2
+  m_Radius: 0.78
 --- !u!1 &120715487
 GameObject:
   m_ObjectHideFlags: 0
@@ -29134,6 +29202,7 @@ GameObject:
   - component: {fileID: 496017926}
   - component: {fileID: 496017925}
   - component: {fileID: 496017924}
+  - component: {fileID: 496017927}
   m_Layer: 0
   m_Name: Majlis_sofa_Back_Right
   m_TagString: Untagged
@@ -29247,6 +29316,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &496017927
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496017922}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 4.1, y: 3.27}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -5.27487, y: 2.0138774}
+      - {x: 0.8580992, y: -1.3309503}
+      - {x: 1.9624577, y: -0.36158943}
+      - {x: -4.7218556, y: 3.7576017}
 --- !u!1 &498268117
 GameObject:
   m_ObjectHideFlags: 0
@@ -49966,7 +50064,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5132c03340467ee47bf1568cba076758, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef06081977d37cf46a6d502505c88a02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -67351,6 +67449,7 @@ GameObject:
   - component: {fileID: 1121953139}
   - component: {fileID: 1121953138}
   - component: {fileID: 1121953137}
+  - component: {fileID: 1121953140}
   m_Layer: 0
   m_Name: Majlis_sofa_left
   m_TagString: Untagged
@@ -67464,6 +67563,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1121953140
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121953135}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 4.09, y: 3.29}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.7762799, y: -0.7117672}
+      - {x: -0.525064, y: -1.3716316}
+      - {x: 4.4643545, y: 1.6724739}
+      - {x: 4.4316907, y: 2.5681634}
+      - {x: 3.436479, y: 3.0942187}
+      - {x: -1.7928052, y: 0.13696909}
 --- !u!1 &1122560372
 GameObject:
   m_ObjectHideFlags: 0
@@ -67559,6 +67689,7 @@ GameObject:
   - component: {fileID: 1123164640}
   - component: {fileID: 1123164642}
   - component: {fileID: 1123164641}
+  - component: {fileID: 1123164643}
   m_Layer: 0
   m_Name: Majlis_MainCarpet
   m_TagString: Untagged
@@ -67657,6 +67788,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &1123164643
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123164639}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.53
 --- !u!1 &1123833182
 GameObject:
   m_ObjectHideFlags: 0
@@ -70296,6 +70443,8 @@ GameObject:
   - component: {fileID: 1160244064}
   - component: {fileID: 1160244063}
   - component: {fileID: 1160244062}
+  - component: {fileID: 1160244066}
+  - component: {fileID: 1160244065}
   m_Layer: 0
   m_Name: Majlis_Big_Plant (2)
   m_TagString: Untagged
@@ -70409,6 +70558,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &1160244065
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160244060}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -4.19, y: 2.43}
+  serializedVersion: 2
+  m_Radius: 0.62
+--- !u!58 &1160244066
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160244060}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.62
 --- !u!1 &1161591564
 GameObject:
   m_ObjectHideFlags: 0
@@ -73347,6 +73528,7 @@ GameObject:
   - component: {fileID: 1209073193}
   - component: {fileID: 1209073192}
   - component: {fileID: 1209073191}
+  - component: {fileID: 1209073194}
   m_Layer: 0
   m_Name: Majlis_sofa_Right
   m_TagString: Untagged
@@ -73460,6 +73642,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1209073194
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209073189}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 4.1, y: 3.3}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.7762799, y: -0.7117672}
+      - {x: -0.525064, y: -1.3716316}
+      - {x: 4.4643545, y: 1.6724739}
+      - {x: 4.4316907, y: 2.5681634}
+      - {x: 3.436479, y: 3.0942187}
+      - {x: -1.7928052, y: 0.13696909}
 --- !u!1 &1209801471
 GameObject:
   m_ObjectHideFlags: 0
@@ -73932,6 +74145,7 @@ GameObject:
   - component: {fileID: 1218719336}
   - component: {fileID: 1218719338}
   - component: {fileID: 1218719337}
+  - component: {fileID: 1218719339}
   m_Layer: 0
   m_Name: Majlis_TV_Carpet
   m_TagString: Untagged
@@ -74030,6 +74244,92 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1218719339
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218719335}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.09, y: 3.97}
+    newSize: {x: 6.09, y: 3.97}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.655, y: -1.735}
+      - {x: 2.8049998, y: -1.635}
+      - {x: 2.885, y: -1.545}
+      - {x: 2.925, y: -1.485}
+      - {x: 2.945, y: -1.435}
+      - {x: 2.955, y: -1.3249999}
+      - {x: 2.945, y: -1.265}
+      - {x: 2.925, y: -1.2149999}
+      - {x: 2.845, y: -1.105}
+      - {x: 2.7749999, y: -1.045}
+      - {x: 2.675, y: -0.97499996}
+      - {x: 2.465, y: -0.85499996}
+      - {x: 1.775, y: -0.465}
+      - {x: 1.475, y: -0.295}
+      - {x: 0.555, y: 0.225}
+      - {x: 0.255, y: 0.39499998}
+      - {x: 0.16499999, y: 0.445}
+      - {x: 0.024999999, y: 0.525}
+      - {x: -0.435, y: 0.78499997}
+      - {x: -0.73499995, y: 0.955}
+      - {x: -1.425, y: 1.345}
+      - {x: -1.515, y: 1.395}
+      - {x: -1.5849999, y: 1.435}
+      - {x: -1.745, y: 1.515}
+      - {x: -1.795, y: 1.535}
+      - {x: -1.885, y: 1.5649999}
+      - {x: -2.0349998, y: 1.5949999}
+      - {x: -2.125, y: 1.605}
+      - {x: -2.2849998, y: 1.605}
+      - {x: -2.385, y: 1.5949999}
+      - {x: -2.5049999, y: 1.5749999}
+      - {x: -2.575, y: 1.555}
+      - {x: -2.655, y: 1.525}
+      - {x: -2.7849998, y: 1.4649999}
+      - {x: -2.8149998, y: 1.435}
+      - {x: -2.935, y: 1.3249999}
+      - {x: -2.985, y: 1.2149999}
+      - {x: -2.995, y: 1.185}
+      - {x: -2.995, y: 1.045}
+      - {x: -2.945, y: 0.955}
+      - {x: -2.865, y: 0.865}
+      - {x: -2.7849998, y: 0.805}
+      - {x: -2.665, y: 0.73499995}
+      - {x: -2.595, y: 0.695}
+      - {x: -2.2949998, y: 0.525}
+      - {x: -1.375, y: 0.005}
+      - {x: -1.0749999, y: -0.16499999}
+      - {x: -0.385, y: -0.555}
+      - {x: -0.085, y: -0.72499996}
+      - {x: 0.835, y: -1.245}
+      - {x: 1.135, y: -1.415}
+      - {x: 1.5949999, y: -1.675}
+      - {x: 1.755, y: -1.745}
+      - {x: 1.8449999, y: -1.775}
+      - {x: 1.925, y: -1.795}
+      - {x: 1.995, y: -1.805}
+      - {x: 2.075, y: -1.8149999}
+      - {x: 2.2649999, y: -1.8149999}
+      - {x: 2.355, y: -1.805}
+      - {x: 2.425, y: -1.795}
+      - {x: 2.5049999, y: -1.775}
 --- !u!1 &1219658563
 GameObject:
   m_ObjectHideFlags: 0
@@ -79570,6 +79870,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1312211170}
   - component: {fileID: 1312211171}
+  - component: {fileID: 1312211174}
+  - component: {fileID: 1312211173}
+  - component: {fileID: 1312211172}
   m_Layer: 0
   m_Name: SideTables
   m_TagString: Untagged
@@ -79618,6 +79921,54 @@ MonoBehaviour:
   - {fileID: 1409396128}
   - {fileID: 1520509246}
   - {fileID: 566616482}
+--- !u!58 &1312211172
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312211169}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.56, y: 2.59}
+  serializedVersion: 2
+  m_Radius: 0.75
+--- !u!58 &1312211173
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312211169}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.74, y: -1.88}
+  serializedVersion: 2
+  m_Radius: 0.75
+--- !u!58 &1312211174
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312211169}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -3.32, y: -2.11}
+  serializedVersion: 2
+  m_Radius: 0.75
 --- !u!1 &1312800651
 GameObject:
   m_ObjectHideFlags: 0
@@ -83229,7 +83580,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c2f618e0111b8be41bd29c920908f999, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef06081977d37cf46a6d502505c88a02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90210,6 +90561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1490443027}
   - component: {fileID: 1490443028}
+  - component: {fileID: 1490443029}
   m_Layer: 0
   m_Name: Majlis Floor
   m_TagString: Untagged
@@ -90256,6 +90608,37 @@ MonoBehaviour:
   AllItems:
   - {fileID: 2044697482}
   - {fileID: 1119937498}
+--- !u!60 &1490443029
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490443026}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.6563978, y: 6.0460606}
+      - {x: -11.784156, y: -1.4195302}
+      - {x: -0.74558115, y: -7.655794}
+      - {x: 4.7312975, y: -4.296132}
+      - {x: 11.544816, y: -0.22497368}
+      - {x: 9.311165, y: 1.1353946}
 --- !u!1 &1491264512
 GameObject:
   m_ObjectHideFlags: 0
@@ -90538,6 +90921,9 @@ GameObject:
   - component: {fileID: 1495666747}
   - component: {fileID: 1495666746}
   - component: {fileID: 1495666748}
+  - component: {fileID: 1495666751}
+  - component: {fileID: 1495666750}
+  - component: {fileID: 1495666749}
   m_Layer: 0
   m_Name: Majlis_Wall_Lamp (1)
   m_TagString: Untagged
@@ -90619,7 +91005,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ab2c6da783e734946b000a4ce7dbc7bc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ef06081977d37cf46a6d502505c88a02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90653,6 +91039,54 @@ MonoBehaviour:
   - {fileID: 851854651}
   - {fileID: 1379567193}
   - {fileID: 1495666746}
+--- !u!58 &1495666749
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495666744}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.09, y: -2.32}
+  serializedVersion: 2
+  m_Radius: 0.42
+--- !u!58 &1495666750
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495666744}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -4.21, y: 2.37}
+  serializedVersion: 2
+  m_Radius: 0.42
+--- !u!58 &1495666751
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495666744}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.42
 --- !u!1 &1495831249
 GameObject:
   m_ObjectHideFlags: 0
@@ -94324,6 +94758,8 @@ GameObject:
   - component: {fileID: 1554198734}
   - component: {fileID: 1554198733}
   - component: {fileID: 1554198732}
+  - component: {fileID: 1554198736}
+  - component: {fileID: 1554198735}
   m_Layer: 0
   m_Name: Majlis_CoffeeTable_1
   m_TagString: Untagged
@@ -94437,6 +94873,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &1554198735
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554198730}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.68
+--- !u!58 &1554198736
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554198730}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 3.2, y: 1.98}
+  serializedVersion: 2
+  m_Radius: 0.68
 --- !u!1 &1554785018
 GameObject:
   m_ObjectHideFlags: 0
@@ -106760,6 +107228,8 @@ GameObject:
   - component: {fileID: 1724576034}
   - component: {fileID: 1724576033}
   - component: {fileID: 1724576032}
+  - component: {fileID: 1724576036}
+  - component: {fileID: 1724576035}
   m_Layer: 0
   m_Name: Majlis_Tv_Lamp
   m_TagString: Untagged
@@ -106873,6 +107343,166 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1724576035
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724576030}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.4, y: -2.45}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.07, y: -0.16}
+      - {x: -0.07, y: -0.45999998}
+      - {x: -0.06, y: -0.47}
+      - {x: -0.06, y: -0.71}
+      - {x: -0.03, y: -0.74}
+      - {x: 0.01, y: -0.74}
+      - {x: 0.03, y: -0.7}
+      - {x: 0.03, y: -0.35999998}
+      - {x: 0.04, y: -0.35}
+      - {x: 0.04, y: -0.08}
+      - {x: 0.06, y: -0.14}
+      - {x: 0.089999996, y: -0.24}
+      - {x: 0.14, y: -0.48999998}
+      - {x: 0.16, y: -0.59999996}
+      - {x: 0.17999999, y: -0.7}
+      - {x: 0.21, y: -0.84}
+      - {x: 0.22999999, y: -0.95}
+      - {x: 0.24, y: -0.98999995}
+      - {x: 0.26, y: -1.01}
+      - {x: 0.28, y: -1.01}
+      - {x: 0.32999998, y: -0.96999997}
+      - {x: 0.31, y: -0.84}
+      - {x: 0.26999998, y: -0.66999996}
+      - {x: 0.13, y: 0.16}
+      - {x: 0.22, y: 0.19}
+      - {x: 0.31, y: 0.25}
+      - {x: 0.35999998, y: 0.29999998}
+      - {x: 0.39, y: 0.37}
+      - {x: 0.39, y: 0.45999998}
+      - {x: 0.34, y: 0.78}
+      - {x: 0.34, y: 0.83}
+      - {x: 0.26, y: 0.93}
+      - {x: 0.14999999, y: 0.97999996}
+      - {x: 0.08, y: 0.98999995}
+      - {x: -0.07, y: 0.98999995}
+      - {x: -0.16, y: 0.96999997}
+      - {x: -0.22999999, y: 0.94}
+      - {x: -0.31, y: 0.88}
+      - {x: -0.34, y: 0.81}
+      - {x: -0.35999998, y: 0.69}
+      - {x: -0.38, y: 0.56}
+      - {x: -0.39999998, y: 0.47}
+      - {x: -0.39999998, y: 0.32999998}
+      - {x: -0.31, y: 0.25}
+      - {x: -0.29, y: 0.22999999}
+      - {x: -0.22, y: 0.19999999}
+      - {x: -0.13, y: 0.16}
+      - {x: -0.24, y: -0.52}
+      - {x: -0.29, y: -0.83}
+      - {x: -0.31, y: -0.98999995}
+      - {x: -0.28, y: -1.02}
+      - {x: -0.25, y: -1.02}
+      - {x: -0.22999999, y: -1}
+      - {x: -0.17999999, y: -0.78999996}
+      - {x: -0.17999999, y: -0.74}
+--- !u!60 &1724576036
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724576030}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.07, y: -0.16}
+      - {x: -0.07, y: -0.45999998}
+      - {x: -0.06, y: -0.47}
+      - {x: -0.06, y: -0.71}
+      - {x: -0.03, y: -0.74}
+      - {x: 0.01, y: -0.74}
+      - {x: 0.03, y: -0.7}
+      - {x: 0.03, y: -0.35999998}
+      - {x: 0.04, y: -0.35}
+      - {x: 0.04, y: -0.08}
+      - {x: 0.06, y: -0.14}
+      - {x: 0.089999996, y: -0.24}
+      - {x: 0.14, y: -0.48999998}
+      - {x: 0.16, y: -0.59999996}
+      - {x: 0.17999999, y: -0.7}
+      - {x: 0.21, y: -0.84}
+      - {x: 0.22999999, y: -0.95}
+      - {x: 0.24, y: -0.98999995}
+      - {x: 0.26, y: -1.01}
+      - {x: 0.28, y: -1.01}
+      - {x: 0.32999998, y: -0.96999997}
+      - {x: 0.31, y: -0.84}
+      - {x: 0.26999998, y: -0.66999996}
+      - {x: 0.13, y: 0.16}
+      - {x: 0.22, y: 0.19}
+      - {x: 0.31, y: 0.25}
+      - {x: 0.35999998, y: 0.29999998}
+      - {x: 0.39, y: 0.37}
+      - {x: 0.39, y: 0.45999998}
+      - {x: 0.34, y: 0.78}
+      - {x: 0.34, y: 0.83}
+      - {x: 0.26, y: 0.93}
+      - {x: 0.14999999, y: 0.97999996}
+      - {x: 0.08, y: 0.98999995}
+      - {x: -0.07, y: 0.98999995}
+      - {x: -0.16, y: 0.96999997}
+      - {x: -0.22999999, y: 0.94}
+      - {x: -0.31, y: 0.88}
+      - {x: -0.34, y: 0.81}
+      - {x: -0.35999998, y: 0.69}
+      - {x: -0.38, y: 0.56}
+      - {x: -0.39999998, y: 0.47}
+      - {x: -0.39999998, y: 0.32999998}
+      - {x: -0.31, y: 0.25}
+      - {x: -0.29, y: 0.22999999}
+      - {x: -0.22, y: 0.19999999}
+      - {x: -0.13, y: 0.16}
+      - {x: -0.24, y: -0.52}
+      - {x: -0.29, y: -0.83}
+      - {x: -0.31, y: -0.98999995}
+      - {x: -0.28, y: -1.02}
+      - {x: -0.25, y: -1.02}
+      - {x: -0.22999999, y: -1}
+      - {x: -0.17999999, y: -0.78999996}
+      - {x: -0.17999999, y: -0.74}
 --- !u!1 &1725917510
 GameObject:
   m_ObjectHideFlags: 0
@@ -126423,6 +127053,7 @@ GameObject:
   - component: {fileID: 2045051013}
   - component: {fileID: 2045051015}
   - component: {fileID: 2045051014}
+  - component: {fileID: 2045051016}
   m_Layer: 0
   m_Name: Majlis_TV_Table (1)
   m_TagString: Untagged
@@ -126521,6 +127152,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &2045051016
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045051012}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.35
 --- !u!1 &2047017445
 GameObject:
   m_ObjectHideFlags: 0
