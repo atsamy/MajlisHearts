@@ -11,13 +11,7 @@ using ExitGames.Client.Photon;
 public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
-    //public GameObject StartGameButton;
-    //public Button JoinRoomButton;
     int gameType = 0;
-    //[SerializeField]
-    //SelectGroup betSelection;
-    //[SerializeField]
-    //SelectGroup typeSelection;
     [SerializeField]
     MuliGameOptions multiOptionsPanel;
     [SerializeField]
@@ -305,6 +299,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     private void StartGame()
     {
+
         GameManager.Instance.DeductCurrency(GameManager.Instance.Bet);
 
         PhotonNetwork.RemoveCallbackTarget(this);

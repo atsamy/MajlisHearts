@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TasksManager : MonoBehaviour
 {
@@ -10,30 +11,35 @@ public class TasksManager : MonoBehaviour
     public TaskData[] Tasks;
     [HideInInspector]
     public List<FinishedTask> FinishedTasks;
-    int currentIndex;
+    //int currentIndex;
 
-    public TaskData CurrentTask { get => Tasks[currentIndex]; }
-    public bool tasksCompleted { get => currentIndex >= Tasks.Length; }
+    public TaskData CurrentTask { get => Tasks[FinishedTasks.Count]; }
+    public bool tasksCompleted { get => FinishedTasks.Count >= Tasks.Length; }
     private void Awake()
     {
         Instance = this;
     }
 
-    internal void SetIndex(int value)
-    {
-        currentIndex = value;
-    }
+    //internal void SetIndex(int value)
+    //{
+    //    currentIndex = value;
+    //}
 
     public void TaskFinished(FinishedTask task,bool newTask)
     {
-        FinishedTasks.Add(task);
+        if (newTask)
+        {
+            FinishedTasks.Add(task);
+        }
+        else
+        {
+            FinishedTasks.Find(a => a.SameTask(task)).SelectedIndex = task.SelectedIndex;
+        }
 
-        if(newTask)
-            currentIndex++;
+        //if(newTask)
+        //    currentIndex++;
 
         Dictionary<string, string> data = new Dictionary<string, string>();
-        data.Add("TaskIndex", currentIndex.ToString());
-
         Wrapper<FinishedTask> wrappedCustomization = new Wrapper<FinishedTask>();
         wrappedCustomization.array = FinishedTasks.ToArray();
 
@@ -51,6 +57,11 @@ public class FinishedTask
     public string TargetItem;
     public string TargetArea;
     public int SelectedIndex;
+
+    public bool SameTask(FinishedTask task)
+    {
+        return task.TargetItem == TargetItem && task.TargetArea == TargetArea;
+    }
 }
 
 [Serializable]

@@ -44,6 +44,13 @@ public class MajlisScript : MonoBehaviour
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
                     editableItem.ChangeItem(task.SelectedIndex);
                     editableItem.SetOriginal();
+
+                    Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
+
+                    foreach (var item in colliders)
+                    {
+                        item.enabled = true;
+                    }
                     break;
                 case ActionType.Add:
                     EditableItem fixItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
@@ -81,6 +88,15 @@ public class MajlisScript : MonoBehaviour
 
     public void ExecuteTask(TaskData task)
     {
+        if (task.Cost > GameManager.Instance.Currency)
+        {
+            MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
+            {
+                MenuManager.Instance.OpenStore(0);
+            });
+            return;
+        }
+
         switch (task.ActionType)
         {
             case ActionType.Clean:

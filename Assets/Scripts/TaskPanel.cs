@@ -128,6 +128,13 @@ public class TaskPanel : MonoBehaviour
                 SelectedIndex = index
             };
 
+            Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
+
+            foreach (var item in colliders)
+            {
+                item.enabled = true;
+            }
+
             TaskDone(task,isNew);
             taskFinished?.Invoke();
             //save edit
@@ -144,7 +151,10 @@ public class TaskPanel : MonoBehaviour
         TasksManager.Instance.TaskFinished(task,isNew);
         taskItem.gameObject.SetActive(false);
 
-        GameManager.Instance.DeductCurrency(currentCost);
+        if (isNew)
+        {
+            GameManager.Instance.DeductCurrency(currentCost);
+        }
         //Destroy(taskItem.gameObject);
         InitTask();
     }

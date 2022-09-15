@@ -44,6 +44,9 @@ public class SingleEditableItem : EditableItem
     public override void ChangeItem(int index)
     {
         SetModified();
+        if (index >= varientSprites.Length)
+            print(name);
+
         sprite.sprite = varientSprites[index];
     }
 

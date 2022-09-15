@@ -8,6 +8,7 @@ public class TilableEditableItem : SingleEditableItem
 
     public override void ChangeItem(int index)
     {
+        SetModified();
         foreach (var item in allTiles)
         {
             item.sprite = VarientSprites[index];
@@ -16,6 +17,7 @@ public class TilableEditableItem : SingleEditableItem
 
     public override void ChangeItem(int index, float time)
     {
+        SetModified();
         ChangeItem(index);
     }
 

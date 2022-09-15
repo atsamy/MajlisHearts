@@ -65,6 +65,15 @@ public class MuliGameOptions : MonoBehaviour
 
     public void StartGame()
     {
+        if (EntryFees[entryIndex] > GameManager.Instance.Currency)
+        {
+            MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
+            {
+                MenuManager.Instance.OpenStore(0);
+            });
+            return;
+        }
+
         selectAction?.Invoke(EntryFees[entryIndex], typeGroup.GroupIndex);
     }
 
