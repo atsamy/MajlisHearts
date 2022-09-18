@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using TMPro;
+using ArabicSupport;
 
 public class UITools : Editor {
 
@@ -41,11 +43,22 @@ public class UITools : Editor {
     {
         PlayerPrefs.SetInt("tutorial",2);
     }
+
     [MenuItem("My Tools/Reset Daily Rewards")]
     static void ResetDailyRewards()
     {
         PlayerPrefs.DeleteKey("LAST_REWARD");
         PlayerPrefs.DeleteKey("LAST_REWARD_TIME");
         PlayerPrefs.DeleteKey("DEBUG_TIME");
+    }
+
+    [MenuItem("My Tools/FixArabicTMP")]
+    static void FixArabicTMP()
+    {
+        TextMeshProUGUI text;
+        if ((text = Selection.activeTransform.gameObject.GetComponent<TextMeshProUGUI>()) != null)
+        {
+            text.text = ArabicFixer.Fix(text.text);
+        }
     }
 }
