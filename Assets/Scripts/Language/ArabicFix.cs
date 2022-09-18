@@ -8,9 +8,9 @@ public class ArabicFix : MonoBehaviour
 {
 	void Awake () 
 	{
-		if (GetComponent<Text>() != null)
+		Text text;
+		if ((text = GetComponent<Text>()) != null)
 		{
-			Text text = GetComponent<Text>();
 			text.text = ArabicFixer.Fix(text.text);
 		}
 	}
