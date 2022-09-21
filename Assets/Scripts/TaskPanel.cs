@@ -114,11 +114,11 @@ public class TaskPanel : MonoBehaviour
         SFXManager.Instance.PlayClip("Close");
     }
 
-    internal void OpenEditPanel(EditableItem editableItem,TaskData taskData,Action taskFinished,bool isNew)
+    internal void OpenEditPanel(EditableItem editableItem,TaskData taskData,Action taskFinished,int selectedIndex,bool isNew)
     {
         taskPanel.SetActive(false);
 
-        editPanel.Show(ref editableItem,isNew, (index) =>
+        editPanel.Show(ref editableItem, selectedIndex, (index) =>
         {
             FinishedTask task = new FinishedTask()
             {

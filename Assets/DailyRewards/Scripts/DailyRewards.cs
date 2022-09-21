@@ -150,6 +150,7 @@ namespace NiobiumStudios
                 Debug.Log(" Reward [" + rewards[availableReward - 1] + "] Claimed!");
                 PlayerPrefs.SetInt(GetLastRewardKey(), availableReward);
 
+                SFXManager.Instance.PlayClip("Reward");
                 // Remove seconds
                 //var timerNoSeconds = now.AddSeconds(-now.Second);
                 // If debug time was added then we store it

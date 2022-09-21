@@ -18,6 +18,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
     ActionName actionName;
     [SerializeField]
     ActionType actionType;
+
+    int selectedIndex = 0;
     //public bool Modified { set => modified = value; }
 
     bool modified;
@@ -39,7 +41,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
                     TargetItem = Code,
                     ActionType = ActionType.Change
                 };
-                MajlisScript.Instance.ShowEditableItem(task,false);
+                MajlisScript.Instance.ShowEditableItem(task,false, selectedIndex);
             }
             //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
             //print(itemPos);
@@ -82,8 +84,9 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     }
 
-    protected void SetModified()
+    protected void SetModified(int index)
     {
+        selectedIndex = index;
         modified = true;
     }
 

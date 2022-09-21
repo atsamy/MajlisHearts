@@ -77,11 +77,13 @@ namespace NiobiumStudios
 
             buttonClose.onClick.AddListener(() =>
             {
+                SFXManager.Instance.PlayClip("Close");
                 canvas.gameObject.SetActive(false);
             });
 
             buttonCloseWindow.onClick.AddListener(() =>
             {
+                SFXManager.Instance.PlayClip("Close");
                 canvas.gameObject.SetActive(false);
             });
 

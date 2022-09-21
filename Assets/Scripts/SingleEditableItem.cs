@@ -15,7 +15,6 @@ public class SingleEditableItem : EditableItem
     bool disableAnimation;
 
     public Sprite[] VarientSprites { get => varientSprites; }
-    
 
     private void Awake()
     {
@@ -43,7 +42,7 @@ public class SingleEditableItem : EditableItem
 
     public override void ChangeItem(int index)
     {
-        SetModified();
+        SetModified(index);
         if (index >= varientSprites.Length)
             print(name);
 
@@ -57,7 +56,7 @@ public class SingleEditableItem : EditableItem
 
     public override void ChangeItem(int index,float time)
     {
-        SetModified();
+        SetModified(index);
 
         if (disableAnimation)
         {

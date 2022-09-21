@@ -103,7 +103,7 @@ public class MajlisScript : MonoBehaviour
                 CleanRoom(task);
                 break;
             case ActionType.Change:
-                ShowEditableItem(task,true);
+                ShowEditableItem(task,true,0);
                 break;
             case ActionType.Add:
                 FixItem(task);
@@ -111,7 +111,7 @@ public class MajlisScript : MonoBehaviour
         }
     }
 
-    public void ShowEditableItem(TaskData task,bool isNew)
+    public void ShowEditableItem(TaskData task,bool isNew,int index)
     {
         EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
 
@@ -119,22 +119,23 @@ public class MajlisScript : MonoBehaviour
         {
             cameraHover.GoToLocation(editableItem.transform, () =>
             {
-                taskPanel.OpenEditPanel(editableItem, task, TaskFinished, isNew);
+                taskPanel.OpenEditPanel(editableItem, task, TaskFinished, 0,isNew);
             });
         }
         else
         {
-            StartCoroutine(OpenEditPanel(editableItem,task,isNew));
+            //StartCoroutine(OpenEditPanel(editableItem,task,isNew));
+            taskPanel.OpenEditPanel(editableItem, task, TaskFinished, index,isNew);
         }
 
         SFXManager.Instance.PlayClip("Select");
     }
 
-    IEnumerator OpenEditPanel(EditableItem editableItem, TaskData task, bool isNew)
-    {
-        yield return new WaitForFixedUpdate();
-        taskPanel.OpenEditPanel(editableItem, task, TaskFinished, isNew);
-    }
+    //IEnumerator OpenEditPanel(EditableItem editableItem, TaskData task, bool isNew)
+    //{
+    //    yield return new WaitForFixedUpdate();
+
+    //}
 
     private void CleanRoom(TaskData task)
     {

@@ -14,7 +14,13 @@ public class ItemSelectPanel : MonoBehaviour
     int selectedIndex = 0;
     EditableItem editableItem;
 
-    public void Show(ref EditableItem item, bool isNew, Action<int> confirmed, Action cancelled)
+    //[SerializeField]
+    //Sprite[] frameSprites;
+
+    [SerializeField]
+    Button[] frameImages;
+
+    public void Show(ref EditableItem item, int selectedIndex, Action<int> confirmed, Action cancelled)
     {
         gameObject.SetActive(true);
 
@@ -25,8 +31,11 @@ public class ItemSelectPanel : MonoBehaviour
 
         editableItem = item;
 
-        if (isNew)
-            editableItem.ChangeItem(0, 0.2f);
+        editableItem.ChangeItem(selectedIndex, 0.2f);
+        for (int i = 0; i < 3; i++)
+        {
+            frameImages[i].interactable = (selectedIndex != i);
+        }
 
         this.confirmed = confirmed;
         this.cancelled = cancelled;
@@ -43,6 +52,11 @@ public class ItemSelectPanel : MonoBehaviour
         else
         {
             editableItem.ChangeItem(index, 0.2f);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            frameImages[i].interactable = (index != i);
         }
 
         SFXManager.Instance.PlayClip("Select");
