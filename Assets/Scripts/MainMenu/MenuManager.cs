@@ -11,10 +11,8 @@ public class MenuManager : MonoBehaviour
     public static MenuManager Instance;
     public CameraHover CameraHover;
     public GameObject GameModePanel;
-    //public GameObject EditorPanel;
     public GameObject MainUI;
-    public TextMeshProUGUI currencyText;
-    //public AvatarPanel AvatarPanel;
+    public ChangeNumber currencyText;
     public SettingsPanel SettingsPanel;
     public StoreScene StoreScene;
     public HeaderScript Header;
@@ -121,6 +119,6 @@ public class MenuManager : MonoBehaviour
 
     void OnCurrencyChanged(int value)
     {
-        currencyText.text = (value.ToString());
+        currencyText.Change(value);
     }
 }

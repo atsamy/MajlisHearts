@@ -208,7 +208,7 @@ namespace NiobiumStudios
 			if(lastRewardIdx > dailyRewardsUI.Count - 1)
 				lastRewardIdx = dailyRewardsUI.Count - 1;
 
-            var target = dailyRewardsUI[lastRewardIdx].GetComponent<RectTransform>();
+            //var target = dailyRewardsUI[lastRewardIdx].GetComponent<RectTransform>();
 
             //var content = scrollRect.content;
 
@@ -236,7 +236,7 @@ namespace NiobiumStudios
                 {
                     readyToClaim = true;
                     UpdateUI();
-                    SnapToReward();
+                    //SnapToReward();
                     return;
                 }
 
@@ -275,7 +275,7 @@ namespace NiobiumStudios
                 UpdateUI();
                 canvas.gameObject.SetActive((showWhenNotAvailable ||  isRewardAvailable) && TutorialScript.IsTutorialDone);
 
-                SnapToReward();
+                //SnapToReward();
                 CheckTimeDifference();
             }
         }

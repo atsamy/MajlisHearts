@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChangeNumber : MonoBehaviour
 {
 
     int startNumber;
     int newNumber;
-    Text textNumber;
+    TextMeshProUGUI textNumber;
 
     bool change;
     float time;
@@ -20,11 +21,8 @@ public class ChangeNumber : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        textNumber = GetComponent<Text>();
-
+        textNumber = GetComponent<TextMeshProUGUI>();
         originalColor = textNumber.color;
-        //increaseColor = Color.green;
-        //decreaseColor = Color.red;
     }
 
     // Update is called once per frame
@@ -33,9 +31,7 @@ public class ChangeNumber : MonoBehaviour
         if (change)
         {
             time += Time.deltaTime;
-
             textNumber.text =  ((int)Mathf.Lerp(startNumber, newNumber, time)).ToString();
-
             transform.localScale = Vector3.one * (1 + Mathf.Sin(time * Mathf.PI) * 0.2f);
 
             if (time >= 1)
