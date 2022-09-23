@@ -19,7 +19,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
     [SerializeField]
     ActionType actionType;
 
-    int selectedIndex = 0;
+    protected int selectedIndex = 0;
     //public bool Modified { set => modified = value; }
 
     bool modified;

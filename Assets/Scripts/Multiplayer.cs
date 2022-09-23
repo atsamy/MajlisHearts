@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 using ArabicSupport;
 
 public class Multiplayer : MonoBehaviour
@@ -12,7 +12,7 @@ public class Multiplayer : MonoBehaviour
     [SerializeField]
     Image playerFrame;
     [SerializeField]
-    Text playerName;
+    TextMeshProUGUI playerName;
     [SerializeField]
     GameObject[] label;
     [SerializeField]
@@ -22,7 +22,8 @@ public class Multiplayer : MonoBehaviour
     public void Set(string name, bool isMe, bool isHost)
     {
         playerName.text = ArabicFixer.Fix(name,false,false);
-        playerName.font = LanguageManager.Instance.GetFont();
+        gameObject.SetActive(true);
+        //playerName.font = LanguageManager.Instance.GetFont();
 
         playerFrame.sprite = frameSprites[isMe ? 0 : 1];
         label[isHost ? 0 : 1].SetActive(true);

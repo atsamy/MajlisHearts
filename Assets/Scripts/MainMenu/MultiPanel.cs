@@ -16,10 +16,10 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     MuliGameOptions multiOptionsPanel;
     [SerializeField]
     GameObject WaitPanel;
+    //[SerializeField]
+    //Transform playersContent;
     [SerializeField]
-    Transform playersContent;
-    [SerializeField]
-    GameObject playerEntry;
+    Multiplayer[] playerEntries;
     [SerializeField]
     GameObject footer;
 
@@ -36,6 +36,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public int GameEntryFee = 50;
 
+    int currentIndex;
     //int gameCost;
 
     public void Close()
@@ -56,9 +57,9 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         roomCreated = false;
         readyToJoin = false;
 
-        foreach (Transform item in playersContent)
+        foreach (Multiplayer item in playerEntries)
         {
-            Destroy(item.gameObject);
+            item.gameObject.SetActive(false);
         }
     }
 
@@ -205,8 +206,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
         if (!player.IsLocal)
             AvatarManager.Instance.SetPlayerAvatar(player.NickName, player.CustomProperties["avatar"].ToString());
-        Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-        entry.Set(player.NickName, player.IsLocal, player.IsMasterClient);
+        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
+        playerEntries[currentIndex].Set(player.NickName, player.IsLocal, player.IsMasterClient);
     }
 
     public void OnConnectedToMaster()

@@ -8,7 +8,7 @@ using ArabicSupport;
 public class ProfileScript : MenuScene
 {
     [SerializeField]
-    Text playerName;
+    TextMeshProUGUI playerName;
     //[SerializeField]
     //TextMeshProUGUI score;
     [SerializeField]
@@ -27,7 +27,7 @@ public class ProfileScript : MenuScene
     private void Start()
     {
         playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
-        playerName.font = LanguageManager.Instance.GetFont();
+        //playerName.font = LanguageManager.Instance.GetFont();
 
         //score.text = GameManager.Instance.MyPlayer.Score.ToString();
         levelFill.fillAmount = GameManager.Instance.MyPlayer.CurrentPogress;
