@@ -34,10 +34,16 @@ public class MultiEditableItems : EditableItem
 
     public override void ChangeItem(int index, float time)
     {
+        if (disableAnimation)
+        {
+            ChangeItem(index);
+            return;
+        }
+
         SetModified(index);
         foreach (var item in AllItems)
         {
-            item.ChangeItem(index);
+            item.ChangeItem(index,time);
         }
     }
 

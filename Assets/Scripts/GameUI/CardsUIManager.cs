@@ -213,8 +213,10 @@ public class CardsUIManager : MonoBehaviour
 
         DeckCard deckCard = new DeckCard(playedCard.gameObject, card);
 
-        playedCard.DOLocalMove(Vector3.zero, 0.5f);
-        playedCard.DORotate(new Vector3(0,0,Random.Range(-45,45)), 0.5f);
+        int offset = (playerIndex == 1 || playerIndex == 3) ?90:0;
+
+        playedCard.DOLocalMove(Vector3.zero + new Vector3(Random.Range(-10,10), Random.Range(-10, 10),0), 0.5f);
+        playedCard.DORotate(new Vector3(0,0,Random.Range(-40,40) + offset), 0.5f);
         playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
@@ -253,7 +255,7 @@ public class CardsUIManager : MonoBehaviour
         cardUI.transform.SetParent(DeckCardsPosition[0]);
         DeckCardsPosition[0].SetAsLastSibling();
 
-        cardUI.RectTransform.DOAnchorPos(Vector3.zero, 0.5f);
+        cardUI.RectTransform.DOAnchorPos(Vector3.zero + new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0), 0.5f);
         //    .OnComplete(() =>
         //{
         //    if (deckCards.Count > 1)
@@ -262,7 +264,7 @@ public class CardsUIManager : MonoBehaviour
         //    }
         //});
 
-        cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-45, 45)), 0.5f);
+        cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         cardUI.DisableButton();

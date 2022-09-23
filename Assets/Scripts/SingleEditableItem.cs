@@ -11,9 +11,6 @@ public class SingleEditableItem : EditableItem
     [SerializeField]
     Sprite[] varientSprites;
 
-    [SerializeField]
-    bool disableAnimation;
-
     public Sprite[] VarientSprites { get => varientSprites; }
 
     private void Awake()
@@ -53,7 +50,7 @@ public class SingleEditableItem : EditableItem
     {
         return varientSprites.Length;
     }
-
+    int type = 0;
     public override void ChangeItem(int index,float time)
     {
         SetModified(index);
@@ -63,10 +60,14 @@ public class SingleEditableItem : EditableItem
             sprite.sprite = varientSprites[index];
             return;
         }
-        transform.DOScale(0.7f, time * 2).SetEase(Ease.InOutCubic).OnComplete(() =>
+        
+        //transform.DOScale(0.9f, time);
+        transform.DOJump(transform.position,0.2f,1, time * 2).OnComplete(() =>
         {
             sprite.sprite = varientSprites[index];
-            transform.DOScale(1f, time).SetEase(Ease.Flash);
+            //transform.DOScale(1, time / 2);//.SetEase((Ease)type);//.SetLoops(2,LoopType.Yoyo);
+            //print((Ease)type);
+            //type++;
         });
     }
 }

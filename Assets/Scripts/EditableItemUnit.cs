@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class EditableItemUnit : MonoBehaviour
@@ -28,6 +29,22 @@ public class EditableItemUnit : MonoBehaviour
             return;
 
         sprite.sprite = varientSprites[index];
+    }
+
+    public void ChangeItem(int index, float time)
+    {
+        //SetModified(index);
+
+        //if (disableAnimation)
+        //{
+        //    sprite.sprite = varientSprites[index];
+        //    return;
+        //}
+
+        transform.DOJump(transform.position, 0.2f, 1, time * 2).OnComplete(() =>
+        {
+            sprite.sprite = varientSprites[index];
+        });
     }
 
     internal void Init()
