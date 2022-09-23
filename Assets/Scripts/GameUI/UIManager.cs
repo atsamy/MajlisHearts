@@ -19,8 +19,6 @@ public class UIManager : MonoBehaviour
     PassCardsPanel passCardsPanel;
     [SerializeField]
     DealResult DealFinishedPanel;
-    //[SerializeField]
-    //ResultPanel ResultPanel;
     [SerializeField]
     LevelPanel LevelPanel;
     [SerializeField]
@@ -73,8 +71,7 @@ public class UIManager : MonoBehaviour
 
     private void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
     {
-        //if (GameManager.Instance.EquippedItem.ContainsKey("TableTop"))
-        this.tableTop.sprite = tableTop;// Resources.Load<Sprite>("TableTop/" + GameManager.Instance.EquippedItem["TableTop"]);
+        this.tableTop.sprite = tableTop;
         cardsUIManager.SetCardBack(cardBack);
     }
 
@@ -126,7 +123,6 @@ public class UIManager : MonoBehaviour
 
         if (isGameOver)
         {
-
             DealFinishedPanel.ShowRound(game.Players,false,true, (rank) =>
                  {
                      if (GameManager.Instance.GameType != GameType.Single)
@@ -145,12 +141,6 @@ public class UIManager : MonoBehaviour
 
             return;
         }
-        //if (game.MyPlayer.Score < 6)
-        //{
-        //    // win effect
-        //    GameSFXManager.Instance.PlayClip("Win");
-        //}
-
         if (hostPlayer)
         {
             DealFinishedPanel.ShowRound(game.Players, false,false, (rank) =>

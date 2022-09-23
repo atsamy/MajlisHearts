@@ -214,14 +214,7 @@ public class CardsUIManager : MonoBehaviour
         DeckCard deckCard = new DeckCard(playedCard.gameObject, card);
 
         playedCard.DOLocalMove(Vector3.zero, 0.5f);
-        //.OnComplete(()=>
-        //{
-        //    if (deckCards.Count > 1)
-        //    {
-        //        ShowWinningCard();
-        //    }
-        //});
-
+        playedCard.DORotate(new Vector3(0,0,Random.Range(-45,45)), 0.5f);
         playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
@@ -269,7 +262,7 @@ public class CardsUIManager : MonoBehaviour
         //    }
         //});
 
-        cardUI.RectTransform.DORotate(Vector3.zero, 0.5f);
+        cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-45, 45)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         cardUI.DisableButton();
