@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArabicSupport;
 using UnityEngine.UI;
+using TMPro;
 
 public class FriendListItem : MonoBehaviour
 {
     public Toggle InviteToggle;
 
     [SerializeField]
-    Text playerName;
+    TextMeshProUGUI playerName;
     [SerializeField]
     Image avatar;
     [SerializeField]
-    Text statusText;
+    GameObject[] statusText;
     [SerializeField]
     Image statusImage;
     [SerializeField]
@@ -29,26 +30,28 @@ public class FriendListItem : MonoBehaviour
         ArabicFixerTool.useHinduNumbers = false;
 
         playerName.text = ArabicFixer.Fix(name,false,false);
-        playerName.font = LanguageManager.Instance.GetFont();
+        //playerName.font = LanguageManager.Instance.GetFont();
 
         this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
     }
 
     public void SetOnline()
     {
-        frameImage.sprite = frameSprites[1];
         statusImage.sprite = statusSprites[1];
 
-        statusText.text = "ONLINE";
+        statusText[0].SetActive(false);
+        statusText[1].SetActive(true);
+
         InviteToggle.interactable = true;
     }
 
     public void SetOffline()
     {
-        frameImage.sprite = frameSprites[0];
         statusImage.sprite = statusSprites[0];
 
-        statusText.text = "OFFLINE";
+        statusText[0].SetActive(true);
+        statusText[1].SetActive(false);
+
         InviteToggle.interactable = false;
     }
 }

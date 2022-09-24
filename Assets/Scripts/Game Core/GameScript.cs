@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
-    private const int FinishScore = 30;
+    private const int FinishScore = 100;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;

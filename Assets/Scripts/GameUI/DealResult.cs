@@ -23,39 +23,51 @@ public class DealResult : MonoBehaviour
     [SerializeField]
     GameObject Footer;
     [SerializeField]
-    Text buttonText;
+    TextMeshProUGUI buttonText;
     protected Action<int> PanelClosed;
     int rank = 0;
+    [SerializeField]
+    GameObject timerButton;
+    [SerializeField]
+    Image timerFill;
+    [SerializeField]
+    TextMeshProUGUI timerText;
+
+    //private void Start()
+    //{
+    //    StartCoroutine(CountNextRound(5));
+    //}
 
     public void ShowRound(Player[] players, bool inGame,bool gameOver, Action<int> OnPanelClosed)
     {
+        gameObject.SetActive(true);
+
         if (gameOver)
         {
+            Footer.SetActive(true);
             buttonText.text = LanguageManager.Instance.GetString("next");
+            timerButton.SetActive(false);
         }
         else if (inGame)
         {
-            buttonText.text = LanguageManager.Instance.GetString("close");
+            //Footer.SetActive(true);
+            //buttonText.text = LanguageManager.Instance.GetString("close");
+            timerButton.SetActive(false);
         }
         else
         {
-            buttonText.text = LanguageManager.Instance.GetString("nextround");
+            Footer.SetActive(false);
+            //buttonText.text = LanguageManager.Instance.GetString("nextround");
+            timerButton.SetActive(true);
+            StartCoroutine(CountNextRound(5));
         }
 
         bool isTeam = GameManager.Instance.IsTeam;
-
-        gameObject.SetActive(true);
 
         singlePlayersParent.SetActive(!isTeam);
         teamPlayersParent.SetActive(isTeam);
 
         PlayerDealResult[] currentPlayers = isTeam ? teamPlayers : singlePlayers;
-
-        //float leastScore = Mathf.Infinity;
-        //int highestScore = 0;
-        //int winnerIndex = 0;
-        //int loserIndex = 0;
-
         Player[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
 
         int rankIndex = 0;
@@ -83,8 +95,6 @@ public class DealResult : MonoBehaviour
                     rank = rankIndex;
                 }
             }
-
-            
         }
         else
         {
@@ -94,31 +104,39 @@ public class DealResult : MonoBehaviour
             currentPlayers[2].Set(players[(loser + 2) % 4], inGame);
             currentPlayers[1].Set(players[(loser + 1) % 4], inGame);
             currentPlayers[0].Set(players[(loser + 3) % 4], inGame);
-            //currentPlayers[1].SetWinner(true);
-            //for (int i = 0; i < players.Length; i++)
-            //{
-            //    currentPlayers[i].Set(players[i].Name, players[i].Avatar);
-            //    currentPlayers[i].SetScore(inGame, players[i].Score, players[i].TotalScore);
-            //    currentPlayers[i].SetWinner(false);
-
-            //    if (players[i].TotalScore < leastScore)
-            //    {
-            //        leastScore = players[i].TotalScore;
-            //        winnerIndex = i;
-            //    }
-
-            //    if (highestScore < players[i].TotalScore)
-            //    {
-            //        highestScore = players[i].TotalScore;
-            //        loserIndex = i;
-            //    }
-            //}
-
-
         }
 
         this.PanelClosed = OnPanelClosed;
-        Footer.SetActive(OnPanelClosed != null);
+    }
+
+    private IEnumerator CountNextRound(int v)
+    {
+        float timer = v;
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            int time = Mathf.CeilToInt(timer);
+            timerText.text = time.ToString();
+
+            if (time % 2 == 0)
+            {
+                timerFill.fillClockwise = false;
+                timerFill.fillAmount = (1 - (time - timer));
+            }
+            else
+            {
+                timerFill.fillClockwise = true;
+                timerFill.fillAmount = time - timer;
+            }
+            yield return null;
+        }
+
+        if (PanelClosed != null)
+        {
+            gameObject.SetActive(false);
+            PanelClosed?.Invoke(rank);
+        }
     }
 
     public void ShowInGame(Player[] players)

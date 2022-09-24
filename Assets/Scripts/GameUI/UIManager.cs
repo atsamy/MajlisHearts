@@ -169,6 +169,11 @@ public class UIManager : MonoBehaviour
         DealFinishedPanel.ShowInGame(game.Players);
     }
 
+    public void HideScores()
+    {
+        DealFinishedPanel.gameObject.SetActive(false);
+    }
+
     public void LeaveRoom()
     {
         if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)

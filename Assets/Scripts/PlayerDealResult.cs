@@ -9,7 +9,7 @@ public class PlayerDealResult : MonoBehaviour
     [SerializeField]
     Image playerAvatar;
     [SerializeField]
-    Text playerName;
+    TextMeshProUGUI playerName;
     [SerializeField]
     TextMeshProUGUI score;
     [SerializeField]
@@ -30,13 +30,11 @@ public class PlayerDealResult : MonoBehaviour
     public void Set(Player player, bool inGame)
     {
         playerName.text = ArabicFixer.Fix(player.Name, false, false);
-        playerName.font = LanguageManager.Instance.GetFont();
-
         playerAvatar.sprite = player.Avatar;
 
         if (inGame)
         {
-            this.score.text = player.Score.ToString();
+            this.score.text = player.TotalScore.ToString();
         }
         else
         {
