@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public class AIPlayer : Player
 {
+    public bool FakePlayer { private get; set; }
+
     public AIPlayer(int index) : base(index)
     {
         isPlayer = false;
@@ -18,7 +20,9 @@ public class AIPlayer : Player
 
     async void playCard(DealInfo info)
     {
-        await System.Threading.Tasks.Task.Delay(1000);
+        int dedduct = (3000 - OwnedCards.Count * 230);
+        int time = FakePlayer ? Random.Range(1000, 4000 - dedduct) : 1000;
+        await Task.Delay(time);
 
         int hand = info.CardsOntable.Count;
 

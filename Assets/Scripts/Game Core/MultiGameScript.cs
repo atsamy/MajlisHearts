@@ -14,7 +14,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     PunTurnManager turnManager;
     int passedCardsNo;
-    int playerNumbers;
 
     int lastIndex;
     int nextIndex;
@@ -42,7 +41,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         passedCardsNo = 0;
         Players = new Player[4];
-        playerNumbers = PhotonNetwork.PlayerList.Length;
+        //playerNumbers = PhotonNetwork.PlayerList.Length;
 
         lookUpActors = new Dictionary<int, int>();
         //Dictionary<int, string> lookUpAvatar = new Dictionary<int, string>();
@@ -108,6 +107,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     Players[i] = new AIPlayer(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
+
+                    if (GameManager.Instance.GameType == GameType.Online)
+                        ((AIPlayer)Players[i]).FakePlayer = true;
                 }
             }
             else

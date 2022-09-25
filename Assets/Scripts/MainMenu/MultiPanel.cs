@@ -151,50 +151,8 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             {
                 JoinOrCreateRoom();
             }
-            //JoinRoomButton.interactable = true;
         }
     }
-
-    //IEnumerator TimeOut()
-    //{
-    //    for (int i = 0; i < 15; i++)
-    //    {
-    //        Debug.Log(i);
-    //        yield return new WaitForSeconds(1);
-    //    }
-
-    //    if (!gameReady)
-    //    {
-    //        gameReady = true;
-    //        BackButton.SetActive(false);
-
-    //        if (PhotonNetwork.PlayerList.Length > 1)
-    //        {
-    //            Debug.Log("Start game with " + PhotonNetwork.PlayerList.Length + " players");
-
-    //            string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
-
-    //            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-    //            PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
-    //        }
-    //        else
-    //        {
-    //            PhotonNetwork.Disconnect();
-    //            PhotonNetwork.RemoveCallbackTarget(this);
-
-    //            int time = 3;
-    //            while (time > 0)
-    //            {
-    //                gameInfoTop.text = time.ToString();
-    //                yield return new WaitForSeconds(1);
-    //                time -= 1;
-    //            }
-
-    //            GameManager.Instance.GameType = GameType.Fake;
-    //            SceneManager.LoadScene(2);
-    //        }
-    //    }
-    //}
 
     public void OnJoinedRoom()
     {
@@ -215,10 +173,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
             AddAiPlayers();
         }
-        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        //{
-        //    CreateNewPlayer(PhotonNetwork.PlayerList[i]);
-        //}
     }
 
     private void CreateNewPlayer(PlayerInfo player,bool IsLocal, bool IsHost)
@@ -278,8 +232,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             { "bet", GameManager.Instance.Bet },
             { "type", gameType}
         };
-        //print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
-
         RoomOptions roomOptions = new RoomOptions()
         {
             IsOpen = true,
@@ -287,7 +239,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             CustomRoomProperties = roomProperties,
             MaxPlayers = 4,
         };
-
         roomOptions.CustomRoomPropertiesForLobby = new string[]
         {
             "bet",
@@ -324,8 +275,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
                 Avatar = newPlayer.CustomProperties["avatar"].ToString(),
                 Name = newPlayer.NickName
             };
-
-            //playersOrder[currentIndex] = newPlayer.NickName;
             playerInfos.Add(newPlayerInfo);
 
             Wrapper<PlayerInfo> wrapper = new Wrapper<PlayerInfo>();
@@ -402,13 +351,12 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     public void OnCreatedRoom()
     {
         Debug.Log("room created");
-
-        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-        //entry.Set(GameManager.Instance.MyPlayer.Avatar, GameManager.Instance.MyPlayer.Name, true, true);
     }
 
     async void AddAiPlayers()
     {
+        List<int> addedAI = new List<int>();
+
         for (int i = 0; i < 3; i++)
         {
             await System.Threading.Tasks.Task.Delay(Random.Range(8000 - i, 10000 - i));
@@ -416,18 +364,21 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             if (playerInfos.Count < 4 && !skipCreateAI)
             {
                 PlayerInfo newPlayer = new PlayerInfo();
-
+                int newIndex = 0;
                 do
                 {
-                    newPlayer.Name = aiNames[Random.Range(0, aiNames.Length)];
-                    newPlayer.Avatar = "Avatar" + Random.Range(0, 6);
-                    newPlayer.Points = GameManager.Instance.MyPlayer.Points;
+                    newIndex = Random.Range(0, aiNames.Length);
                 }
-                while (playerInfos.Any(a => a.Name == newPlayer.Name));
+                while (addedAI.Contains(newIndex));
+
+                addedAI.Add(newIndex);
+                string[] aiData = aiNames[newIndex].Split("-");
+
+                newPlayer.Name = aiData[0];
+                newPlayer.Avatar = "Avatar" + aiData[1];
+                newPlayer.Points = GameManager.Instance.MyPlayer.Points;
 
                 playerInfos.Add(newPlayer);
-                //playersOrder[currentIndex] = newPlayer.Name;
-                //currentIndex++;
                 CreateNewPlayer(newPlayer, false, false);
                 string data = JsonUtility.ToJson(newPlayer);
                 RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
