@@ -263,7 +263,7 @@ public class CardsUIManager : MonoBehaviour
         //        ShowWinningCard();
         //    }
         //});
-
+        cardUI.RectTransform.DOSizeDelta(new Vector2(140, 186.7f), 0.5f);
         cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
