@@ -7,6 +7,8 @@ public class PlayerCardsLayout : MonoBehaviour
 {
     [SerializeField]
     int spacing;
+    [SerializeField]
+    float rotationFactor = 2;
 
     public void SetLocations()
     {
@@ -18,7 +20,7 @@ public class PlayerCardsLayout : MonoBehaviour
 
             float y = Mathf.Abs(location) * - (2 + Mathf.Abs(location));
             float x = location * spacing;
-            float rot = location * -2;
+            float rot = location * -rotationFactor;
 
             transform.GetChild(i).DOLocalMove(new Vector3(x, y, 0),0.15f);
             transform.GetChild(i).DORotate(new Vector3(0, 0, rot), 0.15f);

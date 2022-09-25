@@ -84,7 +84,7 @@ public class CardsUIManager : MonoBehaviour
     {
         this.cardBack = new GameObject();
         this.cardBack.AddComponent<Image>().sprite = cardBack;
-        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(140, 186.7f);
+        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(143, 208f);
     }
 
     public void OrganizeCards()
@@ -122,16 +122,13 @@ public class CardsUIManager : MonoBehaviour
                 MainPlayerCard(item);
             });
 
-            //Debug.Log(item.CardInfo);
-
-            //bug here
             item.SetInteractable(false);
         }
 
         for (int i = 0; i < 3; i++)
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
-            newCard.transform.localPosition = new Vector3(i * 150 - 150,300,0);
+            newCard.transform.localPosition = new Vector3(i * 230 - 230,400,0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
 
@@ -263,7 +260,7 @@ public class CardsUIManager : MonoBehaviour
         //        ShowWinningCard();
         //    }
         //});
-        cardUI.RectTransform.DOSizeDelta(new Vector2(140, 186.7f), 0.5f);
+        cardUI.RectTransform.DOSizeDelta(new Vector2(143, 208), 0.5f);
         cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
