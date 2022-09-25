@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon;
+using System.Linq;
 //using photon;
 
 public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
@@ -24,20 +25,21 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     GameObject footer;
 
     bool IsconnectedToMaster;
-    bool gameReady;
-
-    bool createRoomWhenReady;
     public GameObject BackButton;
     public Text InfoText;
 
-    string PrivateRoomName;
     const int beginGame = 25;
+    const int AiAdded = 26;
+    const int sendAllPlayers = 27;
+
     bool roomCreated;
 
     public int GameEntryFee = 50;
-
+    bool skipCreateAI;
     int currentIndex;
-    //int gameCost;
+    List<PlayerInfo> playerInfos;
+    string[] aiNames;
+    public TextAsset Names;
 
     public void Close()
     {
@@ -83,7 +85,10 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         MenuManager.Instance.CloseMain();
         SFXManager.Instance.PlayClip("Select");
 
-        
+        string[] playersOrder = new string[4];
+        playerInfos = new List<PlayerInfo>();
+
+        aiNames = Names.text.Split("\n");
 
         multiOptionsPanel.Show((cost,type)=>
         {
@@ -150,64 +155,91 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         }
     }
 
-    IEnumerator TimeOut()
-    {
-        for (int i = 0; i < 15; i++)
-        {
-            Debug.Log(i);
-            yield return new WaitForSeconds(1);
-        }
+    //IEnumerator TimeOut()
+    //{
+    //    for (int i = 0; i < 15; i++)
+    //    {
+    //        Debug.Log(i);
+    //        yield return new WaitForSeconds(1);
+    //    }
 
-        if (!gameReady)
-        {
-            gameReady = true;
-            BackButton.SetActive(false);
+    //    if (!gameReady)
+    //    {
+    //        gameReady = true;
+    //        BackButton.SetActive(false);
 
-            if (PhotonNetwork.PlayerList.Length > 1)
-            {
-                Debug.Log("Start game with " + PhotonNetwork.PlayerList.Length + " players");
+    //        if (PhotonNetwork.PlayerList.Length > 1)
+    //        {
+    //            Debug.Log("Start game with " + PhotonNetwork.PlayerList.Length + " players");
 
-                string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
+    //            string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
 
-                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
-            }
-            else
-            {
-                PhotonNetwork.Disconnect();
-                PhotonNetwork.RemoveCallbackTarget(this);
+    //            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+    //            PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
+    //        }
+    //        else
+    //        {
+    //            PhotonNetwork.Disconnect();
+    //            PhotonNetwork.RemoveCallbackTarget(this);
 
-                int time = 3;
-                while (time > 0)
-                {
-                    gameInfoTop.text = time.ToString();
-                    yield return new WaitForSeconds(1);
-                    time -= 1;
-                }
+    //            int time = 3;
+    //            while (time > 0)
+    //            {
+    //                gameInfoTop.text = time.ToString();
+    //                yield return new WaitForSeconds(1);
+    //                time -= 1;
+    //            }
 
-                GameManager.Instance.GameType = GameType.Fake;
-                SceneManager.LoadScene(2);
-            }
-        }
-    }
+    //            GameManager.Instance.GameType = GameType.Fake;
+    //            SceneManager.LoadScene(2);
+    //        }
+    //    }
+    //}
 
     public void OnJoinedRoom()
     {
         Debug.Log("joined room");
 
-
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            CreateNewPlayer(PhotonNetwork.PlayerList[i]);
+            PlayerInfo newPlayer = new PlayerInfo()
+            {
+                Name = GameManager.Instance.MyPlayer.Name,
+                Avatar = GameManager.Instance.MyPlayer.Avatar,
+                Points = GameManager.Instance.MyPlayer.Points
+            };
+
+
+            playerInfos.Add(newPlayer);
+            CreateNewPlayer(newPlayer, true, true);
+
+            AddAiPlayers();
         }
+        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        //{
+        //    CreateNewPlayer(PhotonNetwork.PlayerList[i]);
+        //}
     }
 
-    private void CreateNewPlayer(Photon.Realtime.Player player)
+    private void CreateNewPlayer(PlayerInfo player,bool IsLocal, bool IsHost)
     {
-        if (!player.IsLocal)
-            AvatarManager.Instance.SetPlayerAvatar(player.NickName, player.CustomProperties["avatar"].ToString());
-        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-        playerEntries[currentIndex].Set(player.NickName, player.IsLocal, player.IsMasterClient);
+        if (!IsLocal)
+            AvatarManager.Instance.SetPlayerAvatar(player.Name, player.Avatar);
+
+        playerEntries[currentIndex].Set(player.Name, IsLocal, IsHost);
+
+        currentIndex ++;
+    }
+
+    private void CreateAllPlayer(PlayerInfo[] players)
+    {
+        currentIndex = 0;
+        for (int i = 0; i < players.Length; i++)
+        {
+            //playersOrder[i] = players[i].Name;
+            CreateNewPlayer(players[i], players[i].Name == GameManager.Instance.MyPlayer.Name,
+                players[i].Name == PhotonNetwork.MasterClient.NickName);
+        }
     }
 
     public void OnConnectedToMaster()
@@ -236,7 +268,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void JoinOrCreateRoom()
     {
-        SFXManager.Instance.PlayClip("Select");
+        //SFXManager.Instance.PlayClip("Select");
 
         PhotonNetwork.NickName = GameManager.Instance.MyPlayer.Name;
         PhotonNetwork.AuthValues.UserId = GameManager.Instance.MyPlayer.Name;
@@ -246,7 +278,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             { "bet", GameManager.Instance.Bet },
             { "type", gameType}
         };
-
         //print(betSelection.GroupIndex + " " + typeSelection.GroupIndex);
 
         RoomOptions roomOptions = new RoomOptions()
@@ -270,10 +301,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     IEnumerator StartGameIn(int time)
     {
         BackButton.SetActive(false);
-
-        gameReady = true;
-
-
         while (time > 0)
         {
             gameInfoTop.text = time.ToString();//LanguageManager.Instance.getString("startafter") + " " + time;
@@ -286,36 +313,61 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
+        //InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
+
         if (PhotonNetwork.IsMasterClient)
         {
-            footer.SetActive(true);
+            skipCreateAI = true;
+
+            PlayerInfo newPlayerInfo = new PlayerInfo()
+            {
+                Avatar = newPlayer.CustomProperties["avatar"].ToString(),
+                Name = newPlayer.NickName
+            };
+
+            //playersOrder[currentIndex] = newPlayer.NickName;
+            playerInfos.Add(newPlayerInfo);
+
+            Wrapper<PlayerInfo> wrapper = new Wrapper<PlayerInfo>();
+            wrapper.array = playerInfos.ToArray();
+            string data = JsonUtility.ToJson(wrapper);
+
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+            PhotonNetwork.RaiseEvent(sendAllPlayers, data, eventOptionsCards, SendOptions.SendReliable);
+
+            CreateNewPlayer(newPlayerInfo,false,false);
+
+            if(playerInfos.Count == 4)
+                SendGameStartEvent();
         }
-
-        InfoText.text = PhotonNetwork.PlayerList.Length + " Players";
-
-        CreateNewPlayer(newPlayer);
-        //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
-        //entry.Set(newPlayer.NickName, false, false);
+        
     }
+
+
 
     private void StartGame()
     {
+        FadeScreen.Instance.FadeIn(2, () =>
+        {
+            GameManager.Instance.DeductCurrency(GameManager.Instance.Bet);
 
-        GameManager.Instance.DeductCurrency(GameManager.Instance.Bet);
-
-        PhotonNetwork.RemoveCallbackTarget(this);
-        GameManager.Instance.GameType = GameType.Online;
-        SceneManager.LoadScene(2);
+            PhotonNetwork.RemoveCallbackTarget(this);
+            GameManager.Instance.GameType = GameType.Online;
+            SceneManager.LoadScene(2);
+        });
     }
 
     public void SendGameStartEvent()
     {
-        string data = GameManager.Instance.EquippedItem["TableTop"] + ":" + GameManager.Instance.EquippedItem["CardBack"];
+        string[] playersOrder = new string[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            playersOrder[i] = playerInfos[i].Name;
+        }
 
         RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(beginGame, data, eventOptionsCards, SendOptions.SendReliable);
-
-        FadeScreen.Instance.FadeIn(2, null);
+        PhotonNetwork.RaiseEvent(beginGame, playersOrder, eventOptionsCards, SendOptions.SendReliable);
     }
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
@@ -351,14 +403,46 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
         Debug.Log("room created");
 
-        PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] =
-            GameManager.Instance.EquippedItem["TableTop"];
-
-        PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] =
-            GameManager.Instance.EquippedItem["CardBack"];
-
         //Multiplayer entry = Instantiate(playerEntry, playersContent).GetComponent<Multiplayer>();
         //entry.Set(GameManager.Instance.MyPlayer.Avatar, GameManager.Instance.MyPlayer.Name, true, true);
+    }
+
+    async void AddAiPlayers()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            await System.Threading.Tasks.Task.Delay(Random.Range(8000 - i, 10000 - i));
+
+            if (playerInfos.Count < 4 && !skipCreateAI)
+            {
+                PlayerInfo newPlayer = new PlayerInfo();
+
+                do
+                {
+                    newPlayer.Name = aiNames[Random.Range(0, aiNames.Length)];
+                    newPlayer.Avatar = "Avatar" + Random.Range(0, 6);
+                    newPlayer.Points = GameManager.Instance.MyPlayer.Points;
+                }
+                while (playerInfos.Any(a => a.Name == newPlayer.Name));
+
+                playerInfos.Add(newPlayer);
+                //playersOrder[currentIndex] = newPlayer.Name;
+                //currentIndex++;
+                CreateNewPlayer(newPlayer, false, false);
+                string data = JsonUtility.ToJson(newPlayer);
+                RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+                PhotonNetwork.RaiseEvent(AiAdded, data, eventOptionsCards, SendOptions.SendReliable);
+
+                if (playerInfos.Count == 4)
+                {
+                    SendGameStartEvent();
+                    break;
+                }
+            }
+
+            skipCreateAI = false;
+        }
+
     }
 
     public void OnCreateRoomFailed(short returnCode, string message)
@@ -413,14 +497,29 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void OnEvent(EventData photonEvent)
     {
-        if (photonEvent.Code == beginGame)
+        switch (photonEvent.Code)
         {
-            string[] data = photonEvent.CustomData.ToString().Split(':');
+            case beginGame:
+                {
+                    string[] data = (string[])photonEvent.CustomData;
+                    PhotonNetwork.CurrentRoom.CustomProperties["players"] = data;
 
-            PhotonNetwork.CurrentRoom.CustomProperties["TableTop"] = data[0];
-            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"] = data[1];
-
-            StartCoroutine(StartGameIn(3));
+                    StartCoroutine(StartGameIn(3));
+                    break;
+                }
+            case AiAdded:
+                {
+                    PlayerInfo data = JsonUtility.FromJson<PlayerInfo>(photonEvent.CustomData.ToString());
+                    //playersOrder[currentIndex] = data.Name;
+                    CreateNewPlayer(data, false, false);
+                    break;
+                }
+            case sendAllPlayers:
+                {
+                    Wrapper<PlayerInfo> data = JsonUtility.FromJson<Wrapper<PlayerInfo>>(photonEvent.CustomData.ToString());
+                    CreateAllPlayer(data.array);
+                    break;
+                }
         }
     }
 }

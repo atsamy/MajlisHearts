@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public event Action<int> OnCurrencyChanged;
 
-    //[HideInInspector]
-    //public List<InventoryItem> Customization;
     [HideInInspector]
     public GameType GameType;
     [HideInInspector]

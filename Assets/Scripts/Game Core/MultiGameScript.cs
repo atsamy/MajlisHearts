@@ -49,7 +49,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         string[] playersOrder;
 
-        if (GameManager.Instance.IsTeam && GameManager.Instance.GameType == GameType.Friends)
+        if (GameManager.Instance.IsTeam && GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
         {
             playersOrder = (string[])PhotonNetwork.CurrentRoom.CustomProperties["players"];
 
@@ -60,7 +60,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     if (playersOrder[i] == PhotonNetwork.PlayerList[j].NickName)
                     {
                         lookUpActors.Add(i, PhotonNetwork.PlayerList[j].ActorNumber);
-                        //lookUpAvatar.Add(i, PhotonNetwork.PlayerList[j].CustomProperties["avatar"].ToString());
                         break;
                     }
                 }
@@ -80,7 +79,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 else
                 {
-                    playersOrder[i] = "AI " + i;
+                    playersOrder[i] = playersOrder[i];
                     //lookUpActors.Add(i, i + 1);
                     //lookUpAvatar.Add(i, "default");
                 }
@@ -107,8 +106,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 else
                 {
                     Players[i] = new AIPlayer(i);
-                    Players[i].Name = "AI " + i;
-                    Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
+                    Players[i].Name = playersOrder[i];
+                    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
                 }
             }
             else
@@ -132,7 +131,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 else
                 {
-                    Players[i].Name = "AI" + i;
+                    Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
                 }
             }
@@ -154,8 +153,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         if (PhotonNetwork.IsMasterClient)
             StartCoroutine(WaitForOthers());
 
-        SetEnvironment(PhotonNetwork.CurrentRoom.CustomProperties["TableTop"].ToString(),
-            PhotonNetwork.CurrentRoom.CustomProperties["CardBack"].ToString());
+        if (GameManager.Instance.GameType == GameType.Friends)
+        {
+            SetEnvironment(PhotonNetwork.CurrentRoom.CustomProperties["TableTop"].ToString(),
+                PhotonNetwork.CurrentRoom.CustomProperties["CardBack"].ToString());
+        }
+        else
+        {
+            SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
+        }
     }
 
     private void MainPlayerTurn(DealInfo info)
