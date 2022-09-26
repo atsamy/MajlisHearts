@@ -6,7 +6,6 @@ public abstract class MenuScene : MonoBehaviour
     public virtual void Open()
     {
         gameObject.SetActive(true);
-        MenuManager.Instance.HideMain(false,false);
         SFXManager.Instance.PlayClip("Open");
     }
     public virtual void Close()

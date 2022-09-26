@@ -27,8 +27,12 @@ public class MainPanelScript : MonoBehaviour
     TextMeshProUGUI userNameText;
     [SerializeField]
     Image avatar;
+    [SerializeField]
+    MenuScene Profile;
 
     RectTransform coinsRect;
+
+    public bool IsOnMain { get; private set; }
 
     private void Awake()
     {
@@ -42,6 +46,7 @@ public class MainPanelScript : MonoBehaviour
         userNameText.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name, false, false);
 
         GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
+        IsOnMain = true;
     }
 
     private void OnCurrencyChanged(int value)
@@ -72,6 +77,8 @@ public class MainPanelScript : MonoBehaviour
         {
             gems.SetActive(false);
         }
+
+        IsOnMain = false;
     }
 
     public void ShowHeader()
@@ -89,6 +96,13 @@ public class MainPanelScript : MonoBehaviour
         }
 
         gems.SetActive(true);
+        IsOnMain = true;
+    }
+
+    public void OpenProfile()
+    {
+        MenuManager.Instance.HideMain(true, true);
+        Profile.Open();
     }
 
     private void OnDisable()

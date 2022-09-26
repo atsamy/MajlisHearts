@@ -34,6 +34,9 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     private void OnMouseDown()
     {
+        if (!MenuManager.Instance.MainPanel.IsOnMain)
+            return;
+
         if (counter == 1)
         {
             if (modified)

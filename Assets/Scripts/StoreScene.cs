@@ -52,13 +52,14 @@ public class StoreScene : MenuScene
     public void Open(int index)
     {
         Open();
+        MenuManager.Instance.HideMain(false, false);
         TabPressed(index);
     }
 
     public override void Open()
     {
         base.Open();
-
+        MenuManager.Instance.HideMain(false, false);
         Purchaser.Instance.GetAllPrices((prices) =>
         {
             for (int i = 0; i < CurrencyStoreItems.Length; i++)

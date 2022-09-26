@@ -58,6 +58,7 @@ public class MenuManager : MonoBehaviour
     {
         MainPanel.HideHeader(true,true);
         SettingsPanel.Open();
+        HideMain(true, true);
     }
 
     public void OpenMeeting(string roomName, bool isHost)

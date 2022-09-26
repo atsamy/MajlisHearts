@@ -1,259 +1,259 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
-//using System.Text;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using ExitGames.Client.Photon;
+﻿//using Photon.Pun;
+//using Photon.Realtime;
+//using System.Collections;
+//using System.Collections.Generic;
+////using System.Text;
+//using UnityEngine;
+//using UnityEngine.SceneManagement;
+//using UnityEngine.UI;
+//using ExitGames.Client.Photon;
 
-public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks
-{
-    public GameObject frinedPrefab;
-    public GridLayoutGroup Grid;
-    //public RequestInfo requestInfo;
+//public class ConnectScreen : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks
+//{
+//    public GameObject frinedPrefab;
+//    public GridLayoutGroup Grid;
+//    //public RequestInfo requestInfo;
 
-    //public RoomPlayer player1;
-    //public RoomPlayer player2;
+//    //public RoomPlayer player1;
+//    //public RoomPlayer player2;
 
-    public GameObject RoomScreen;
-    //bool connectToRoom;
-    public Text gameInfo;
+//    public GameObject RoomScreen;
+//    //bool connectToRoom;
+//    public Text gameInfo;
 
-    //private IEnumerator waitAndSeeCo;
+//    //private IEnumerator waitAndSeeCo;
 
-    public Toggle toggle;
-    //public CustomizeData otherCar;
-    public GameObject Facebook;
+//    public Toggle toggle;
+//    //public CustomizeData otherCar;
+//    public GameObject Facebook;
 
-    public bool IsconnectedToMaster;
-    public bool gameReady;
+//    public bool IsconnectedToMaster;
+//    public bool gameReady;
 
-    string roomName;
-    int RaceIndex = 0;
-    bool createRoomWhenReady;
+//    string roomName;
+//    int RaceIndex = 0;
+//    bool createRoomWhenReady;
 
-    public override void Close()
-    {
-        RoomScreen.SetActive(false);
+//    public override void Close()
+//    {
+//        RoomScreen.SetActive(false);
 
-        PhotonNetwork.RemoveCallbackTarget(this);
+//        PhotonNetwork.RemoveCallbackTarget(this);
 
-        if (PhotonNetwork.IsConnected)
-            PhotonNetwork.Disconnect();
-    }
+//        if (PhotonNetwork.IsConnected)
+//            PhotonNetwork.Disconnect();
+//    }
 
 
-    public override void Open()
-    {
-        base.Open();
+//    public override void Open()
+//    {
+//        base.Open();
 
-        PhotonNetwork.AddCallbackTarget(this);
+//        PhotonNetwork.AddCallbackTarget(this);
 
-        if (!PhotonNetwork.IsConnected)
-            PhotonNetwork.ConnectUsingSettings();
-    }
+//        if (!PhotonNetwork.IsConnected)
+//            PhotonNetwork.ConnectUsingSettings();
+//    }
 
-    public void OpenRoom()
-    {
+//    public void OpenRoom()
+//    {
 
-    }
+//    }
 
-    public void CreateRoom()
-    {
-        RoomOptions options = new RoomOptions() { IsVisible = true, MaxPlayers = 2 };
+//    public void CreateRoom()
+//    {
+//        RoomOptions options = new RoomOptions() { IsVisible = true, MaxPlayers = 2 };
 
-        int roomIndex = Random.Range(1, 7);
+//        int roomIndex = Random.Range(1, 7);
 
-        string RoomName = Random.Range(0, 10000).ToString("0000");
+//        string RoomName = Random.Range(0, 10000).ToString("0000");
 
-        PhotonNetwork.CreateRoom(RoomName, options, null);
+//        PhotonNetwork.CreateRoom(RoomName, options, null);
 
-        gameInfo.text = "Created Room";
-    }
+//        gameInfo.text = "Created Room";
+//    }
 
-    internal void HostReady(string roomName, int raceIndex)
-    {
-        this.roomName = roomName;
-        this.RaceIndex = raceIndex;
+//    internal void HostReady(string roomName, int raceIndex)
+//    {
+//        this.roomName = roomName;
+//        this.RaceIndex = raceIndex;
 
-        if (IsconnectedToMaster)
-        {
-            print("connected");
-            print(roomName);
-            PhotonNetwork.JoinRoom(roomName);
-        }
-        else
-        {
-            print("not connected");
-            //connectToRoom = true;
-        }
+//        if (IsconnectedToMaster)
+//        {
+//            print("connected");
+//            print(roomName);
+//            PhotonNetwork.JoinRoom(roomName);
+//        }
+//        else
+//        {
+//            print("not connected");
+//            //connectToRoom = true;
+//        }
 
-        StartCoroutine(TimeOut());
-    }
+//        StartCoroutine(TimeOut());
+//    }
 
-    IEnumerator TimeOut()
-    {
-        yield return new WaitForSeconds(10);
+//    IEnumerator TimeOut()
+//    {
+//        yield return new WaitForSeconds(10);
 
-        if (!gameReady)
-        {
-            if (PhotonNetwork.CurrentRoom != null)
-                PhotonNetwork.LeaveRoom();
-        }
-    }
+//        if (!gameReady)
+//        {
+//            if (PhotonNetwork.CurrentRoom != null)
+//                PhotonNetwork.LeaveRoom();
+//        }
+//    }
 
-    public void OnJoinedRoom()
-    {
-        Debug.Log("joined room");
+//    public void OnJoinedRoom()
+//    {
+//        Debug.Log("joined room");
 
-        if (PhotonNetwork.PlayerList.Length == 2)
-        {
-            StartCoroutine(StartGameIn(3));
-        }
-        else
-        {
-            //ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
+//        if (PhotonNetwork.PlayerList.Length == 2)
+//        {
+//            StartCoroutine(StartGameIn(3));
+//        }
+//        else
+//        {
+//            //ExitGames.Client.Photon.Hashtable prop = new ExitGames.Client.Photon.Hashtable();
 
-            //GameManager.Instance.RouteIndex = Random.Range(1, 7);
-            //prop.Add("Index", GameManager.Instance.RouteIndex);
+//            //GameManager.Instance.RouteIndex = Random.Range(1, 7);
+//            //prop.Add("Index", GameManager.Instance.RouteIndex);
 
             
-            //PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
-        }
-        gameInfo.text = "Joined Room";
-    }
+//            //PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
+//        }
+//        gameInfo.text = "Joined Room";
+//    }
 
-    public void OnConnectedToMaster()
-    {
-        Debug.Log("OnConnectedToMaster() was called by PUN");
+//    public void OnConnectedToMaster()
+//    {
+//        Debug.Log("OnConnectedToMaster() was called by PUN");
 
-        gameInfo.text = "Connected to Master";
+//        gameInfo.text = "Connected to Master";
 
-        //RoomOptions options = new RoomOptions() { IsVisible = true, MaxPlayers = 2 };
+//        //RoomOptions options = new RoomOptions() { IsVisible = true, MaxPlayers = 2 };
 
-        //string RoomName = UnityEngine.Random.Range(0, 10000).ToString("0000");
+//        //string RoomName = UnityEngine.Random.Range(0, 10000).ToString("0000");
 
-        //PhotonNetwork.JoinOrCreateRoom(RoomName, options, null);
+//        //PhotonNetwork.JoinOrCreateRoom(RoomName, options, null);
 
-        PhotonNetwork.JoinRandomRoom();
-    }
+//        PhotonNetwork.JoinRandomRoom();
+//    }
 
-    //void OnPhotonRandomJoinFailed()
-    //{
-    //    PhotonNetwork.CreateRoom(null);
-    //}
+//    //void OnPhotonRandomJoinFailed()
+//    //{
+//    //    PhotonNetwork.CreateRoom(null);
+//    //}
 
-    IEnumerator StartGameIn(int time)
-    {
-        gameReady = true;
+//    IEnumerator StartGameIn(int time)
+//    {
+//        gameReady = true;
 
-        while (time > 0)
-        {
-            //gameInfo.text = LanguageManager.Instance.getString("startafter") + " " + time;
-            yield return new WaitForSeconds(1);
-            time -= 1;
-        }
+//        while (time > 0)
+//        {
+//            //gameInfo.text = LanguageManager.Instance.getString("startafter") + " " + time;
+//            yield return new WaitForSeconds(1);
+//            time -= 1;
+//        }
 
-        SceneManager.LoadScene(2);
-    }
+//        SceneManager.LoadScene(2);
+//    }
 
-    public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        if (PhotonNetwork.PlayerList.Length == 2)
-            StartCoroutine(StartGameIn(3));
+//    public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+//    {
+//        if (PhotonNetwork.PlayerList.Length == 2)
+//            StartCoroutine(StartGameIn(3));
         
-    }
+//    }
 
-    public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
+//    public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+//    {
         
-    }
+//    }
 
-    public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
-    {
+//    public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+//    {
         
-    }
+//    }
 
-    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    {
+//    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+//    {
         
-    }
+//    }
 
-    public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
-    {
+//    public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
+//    {
         
-    }
+//    }
 
-    /// <summary>
-    /// Match Making 
-    /// </summary>
-    /// <param name="friendList"></param>
+//    /// <summary>
+//    /// Match Making 
+//    /// </summary>
+//    /// <param name="friendList"></param>
 
-    public void OnFriendListUpdate(List<FriendInfo> friendList)
-    {
+//    public void OnFriendListUpdate(List<FriendInfo> friendList)
+//    {
         
-    }
+//    }
 
-    public void OnCreatedRoom()
-    {
-        gameInfo.text = "Created Room";
+//    public void OnCreatedRoom()
+//    {
+//        gameInfo.text = "Created Room";
         
-    }
+//    }
 
-    public void OnCreateRoomFailed(short returnCode, string message)
-    {
+//    public void OnCreateRoomFailed(short returnCode, string message)
+//    {
         
-        Debug.Log("Create Room Failed " + message);
-    }
+//        Debug.Log("Create Room Failed " + message);
+//    }
 
-    public void OnJoinRoomFailed(short returnCode, string message)
-    {
+//    public void OnJoinRoomFailed(short returnCode, string message)
+//    {
         
-        Debug.Log("Join Room Failed " + message);
-    }
+//        Debug.Log("Join Room Failed " + message);
+//    }
 
-    public void OnJoinRandomFailed(short returnCode, string message)
-    {
+//    public void OnJoinRandomFailed(short returnCode, string message)
+//    {
         
-        Debug.Log("Join Random Failed " + message);
+//        Debug.Log("Join Random Failed " + message);
 
-        CreateRoom();
-    }
+//        CreateRoom();
+//    }
 
-    public void OnLeftRoom()
-    {
+//    public void OnLeftRoom()
+//    {
         
-    }
+//    }
 
-    /// <summary>
-    /// connection call backs
-    /// </summary>
+//    /// <summary>
+//    /// connection call backs
+//    /// </summary>
 
-    public void OnConnected()
-    {
+//    public void OnConnected()
+//    {
         
-    }
+//    }
 
-    public void OnDisconnected(DisconnectCause cause)
-    {
+//    public void OnDisconnected(DisconnectCause cause)
+//    {
         
-    }
+//    }
 
-    public void OnRegionListReceived(RegionHandler regionHandler)
-    {
+//    public void OnRegionListReceived(RegionHandler regionHandler)
+//    {
         
-    }
+//    }
 
-    public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
-    {
+//    public void OnCustomAuthenticationResponse(Dictionary<string, object> data)
+//    {
         
-    }
+//    }
 
-    public void OnCustomAuthenticationFailed(string debugMessage)
-    {
+//    public void OnCustomAuthenticationFailed(string debugMessage)
+//    {
         
-    }
+//    }
 
-}
+//}
