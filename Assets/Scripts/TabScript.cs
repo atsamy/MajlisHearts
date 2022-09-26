@@ -11,13 +11,15 @@ public class TabScript : MonoBehaviour
     // Start is called before the first frame update
     //Image image;
     //[SerializeField]
-    TextMeshProUGUI text;
+    MaskableGraphic text;
     Button button;
 
     void Awake()
     {
         //image = GetComponent<Image>();
-        text = GetComponentInChildren<TextMeshProUGUI>();
+        if ((text = GetComponentInChildren<TextMeshProUGUI>()) == null)
+            text = GetComponent<Text>();
+
         button = GetComponent<Button>();
     }
 

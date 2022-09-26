@@ -45,7 +45,7 @@ public class StoreScene : MenuScene
         avatarContent.itemEquipped += (item) =>
         {
             GameManager.Instance.SaveAvatar(item);
-            MenuManager.Instance.Header.SetAvatar();
+            MenuManager.Instance.MainPanel.SetAvatar();
         };
     }
 

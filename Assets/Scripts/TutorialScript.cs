@@ -222,7 +222,7 @@ public class TutorialScript : MonoBehaviour
                     characterPanel.SetActive(false);
                     return;
                 case 15:
-                    MenuManager.Instance.OpenMain();
+                    MenuManager.Instance.ShowMain();
 
                     originalParent = settingsBtn.parent;
                     settingsBtn.parent = parent;

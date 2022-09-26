@@ -74,7 +74,7 @@ public class ItemSelectPanel : MonoBehaviour
     {
         MenuManager.Instance.CameraHover.Unlock();
         editableItem.ResetToOriginal();
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
         gameObject.SetActive(false);
 
         SFXManager.Instance.PlayClip("Close");

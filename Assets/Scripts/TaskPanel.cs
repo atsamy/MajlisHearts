@@ -3,18 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class TaskPanel : MonoBehaviour
 {
     //[SerializeField]
     //Transform content;
     [SerializeField]
-    TaskItemScript taskItem;
+    Image taskImage;
+    [SerializeField]
+    TextMeshProUGUI taskDesc;
+    [SerializeField]
+    TextMeshProUGUI costText;
     [SerializeField]
     GameObject taskPanel;
     [SerializeField]
     ItemSelectPanel editPanel;
 
+    TaskData currentTask;
     //bool isNew;
     //[SerializeField]
     //CameraHover cameraHover;
@@ -32,7 +39,7 @@ public class TaskPanel : MonoBehaviour
             return;
 
         //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
-        TaskData currentTask = TasksManager.Instance.CurrentTask;
+        currentTask = TasksManager.Instance.CurrentTask;
 
         string taskName = LanguageManager.Instance.GetString(currentTask.ActionName);
 
@@ -85,18 +92,16 @@ public class TaskPanel : MonoBehaviour
             taskSprite = editableItem.GetTaskIcon();
         }
 
-        taskItem.Set(taskName, currentTask.Cost, taskSprite, () =>
-        {
-            MajlisScript.Instance.ExecuteTask(currentTask);
-        });
-
+        taskImage.sprite = taskSprite;
+        taskDesc.text = taskName;
+        costText.text = currentTask.Cost.ToString();
         currentCost = currentTask.Cost;
     }
 
     public void Open()
     {
         taskPanel.SetActive(true);
-        MenuManager.Instance.CloseMain();
+        MenuManager.Instance.HideMain(false,true);
 
         SFXManager.Instance.PlayClip("Open");
     }
@@ -104,7 +109,7 @@ public class TaskPanel : MonoBehaviour
     public void Close()
     {
         ClosePanel();
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
     }
 
     public void ClosePanel()
@@ -138,10 +143,10 @@ public class TaskPanel : MonoBehaviour
             TaskDone(task,isNew);
             taskFinished?.Invoke();
             //save edit
-            MenuManager.Instance.OpenMain();
+            MenuManager.Instance.ShowMain();
         }, () => 
         {
-            MenuManager.Instance.OpenMain();
+            MenuManager.Instance.ShowMain();
         });
     }
 
@@ -149,7 +154,7 @@ public class TaskPanel : MonoBehaviour
     {
         MenuManager.Instance.CameraHover.Unlock();
         TasksManager.Instance.TaskFinished(task,isNew);
-        taskItem.gameObject.SetActive(false);
+        //taskItem.gameObject.SetActive(false);
 
         if (isNew)
         {
@@ -157,5 +162,10 @@ public class TaskPanel : MonoBehaviour
         }
         //Destroy(taskItem.gameObject);
         InitTask();
+    }
+
+    public void ExcuteTask()
+    {
+        MajlisScript.Instance.ExecuteTask(currentTask);
     }
 }

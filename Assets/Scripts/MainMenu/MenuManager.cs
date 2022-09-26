@@ -11,11 +11,9 @@ public class MenuManager : MonoBehaviour
     public static MenuManager Instance;
     public CameraHover CameraHover;
     public GameObject GameModePanel;
-    public GameObject MainUI;
-    public ChangeNumber currencyText;
     public SettingsPanel SettingsPanel;
     public StoreScene StoreScene;
-    public HeaderScript Header;
+    public MainPanelScript MainPanel;
     public MeetingPanel meetingPanel;
     public Popup InvitePopup;
 
@@ -35,21 +33,14 @@ public class MenuManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(GameManager.Instance.MyPlayer.Avatar))
         {
-            Header.SetAvatar();
+            MainPanel.SetAvatar();
         }
-
-        GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
     }
 
     void ClaimDailyReward(int day)
     {
         GameManager.Instance.AddCurrency(DailyRewards.instance.GetReward(day).reward);
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
     }
 
     public void StartSingleGame()
@@ -65,14 +56,14 @@ public class MenuManager : MonoBehaviour
 
     public void OpenSettings()
     {
-        MainUI.SetActive(false);
+        MainPanel.HideHeader(true,true);
         SettingsPanel.Open();
     }
 
     public void OpenMeeting(string roomName, bool isHost)
     {
         meetingPanel.Open(roomName, isHost);
-        MainUI.SetActive(false);
+        MainPanel.HideHeader(false, false);
     }
 
     internal void ShowInvitePopup(string sender, string message)
@@ -95,30 +86,25 @@ public class MenuManager : MonoBehaviour
 
     public void OpenGameMode()
     {
-        MainUI.SetActive(false);
+        MainPanel.HideHeader(true,false);
         SFXManager.Instance.PlayClip("Open");
         GameModePanel.SetActive(true);
     }
 
     public void CloseGameMode()
     {
-        MainUI.SetActive(true);
+        MainPanel.ShowHeader();
         SFXManager.Instance.PlayClip("Close");
         GameModePanel.SetActive(false);
     }
 
-    public void OpenMain()
+    public void ShowMain()
     {
-        MainUI.SetActive(true);
+        MainPanel.ShowHeader();
     }
 
-    public void CloseMain()
+    public void HideMain(bool hideGems,bool hideCoins)
     {
-        MainUI.SetActive(false);
-    }
-
-    void OnCurrencyChanged(int value)
-    {
-        currencyText.Change(value);
+        MainPanel.HideHeader(hideGems,hideCoins);
     }
 }

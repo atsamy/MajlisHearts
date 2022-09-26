@@ -51,7 +51,7 @@ public class SettingsPanel : MenuScene
 
     public override void Close()
     {
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
         base.Close();
     }
 }

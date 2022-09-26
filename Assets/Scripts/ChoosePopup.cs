@@ -27,6 +27,6 @@ public class ChoosePopup : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
     }
 }

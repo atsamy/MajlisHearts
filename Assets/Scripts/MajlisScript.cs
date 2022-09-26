@@ -124,6 +124,7 @@ public class MajlisScript : MonoBehaviour
         }
         else
         {
+            MenuManager.Instance.HideMain(false, true);
             //StartCoroutine(OpenEditPanel(editableItem,task,isNew));
             taskPanel.OpenEditPanel(editableItem, task, TaskFinished, index,isNew);
         }
@@ -146,7 +147,7 @@ public class MajlisScript : MonoBehaviour
         {
             oldItems.Clean(()=>
             {
-                MenuManager.Instance.OpenMain();
+                MenuManager.Instance.ShowMain();
                 TaskFinished?.Invoke();
             });
         });
@@ -166,7 +167,7 @@ public class MajlisScript : MonoBehaviour
 
         cameraHover.GoToLocation(editableItem.transform, () =>
         {
-            MenuManager.Instance.OpenMain();
+            MenuManager.Instance.ShowMain();
             //taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
             editableItem.ChangeItem(0);
             TaskFinished?.Invoke();

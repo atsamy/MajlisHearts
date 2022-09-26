@@ -54,7 +54,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         WaitPanel.SetActive(false);
         multiOptionsPanel.gameObject.SetActive(false);
 
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
 
         roomCreated = false;
         readyToJoin = false;
@@ -68,7 +68,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     public void ClosePopup()
     {
         multiOptionsPanel.gameObject.SetActive(false);
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
     }
 
     IEnumerator Shuffle()
@@ -82,7 +82,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void Open()
     {
-        MenuManager.Instance.CloseMain();
+        //MenuManager.Instance.HideMain(true,true);
         SFXManager.Instance.PlayClip("Select");
 
         string[] playersOrder = new string[4];
@@ -99,7 +99,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
                     MenuManager.Instance.OpenStore(0);
                 },()=>
                 {
-                    MenuManager.Instance.OpenMain();
+                    MenuManager.Instance.ShowMain();
                 });
 
                 return;

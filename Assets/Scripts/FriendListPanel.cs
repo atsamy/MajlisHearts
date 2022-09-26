@@ -114,7 +114,7 @@ public class FriendListPanel : MonoBehaviour
 
     public void Close()
     {
-        MenuManager.Instance.OpenMain();
+        MenuManager.Instance.ShowMain();
         friendListPanel.gameObject.SetActive(false);
     }
 
