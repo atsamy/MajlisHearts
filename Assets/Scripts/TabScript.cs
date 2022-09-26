@@ -18,7 +18,7 @@ public class TabScript : MonoBehaviour
     {
         //image = GetComponent<Image>();
         if ((text = GetComponentInChildren<TextMeshProUGUI>()) == null)
-            text = GetComponent<Text>();
+            text = GetComponentInChildren<Text>();
 
         button = GetComponent<Button>();
     }
