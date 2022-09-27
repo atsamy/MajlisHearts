@@ -10,10 +10,10 @@ public class StoreScene : MenuScene
     public StoreItem[] CurrencyStoreItems;
     public StoreItem WatchVideoBtn;
 
-    //[SerializeField]
-    //TextMeshProUGUI coinsText;
+    [SerializeField]
+    Transform arrow;
     //public int[] SCValues;
-    
+
     public GameObject Loading;
 
     [SerializeField]
@@ -89,6 +89,8 @@ public class StoreScene : MenuScene
         {
             ContentPanels[i].SetActive(index == i);
         }
+
+        arrow.transform.position = Tabs[index].transform.position + Vector3.down * 75;
     }
 }
 

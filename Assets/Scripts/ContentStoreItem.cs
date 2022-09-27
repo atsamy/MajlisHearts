@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class ContentStoreItem : StoreItem
 {
     [HideInInspector]
     public int Price;
-
     [SerializeField]
-    Text itemName;
+    TextMeshProUGUI itemName;
+    [SerializeField]
+    GameObject costParent;
+    [SerializeField]
+    TextMeshProUGUI costText;
 
     Action<int> equipAction;
     public void Set(int cost,string itemName, Sprite itemSprite, int index,bool owned,bool equipped, Action<int> buyAction, Action<int> equipAction)
@@ -32,7 +35,10 @@ public class ContentStoreItem : StoreItem
         else
         {
             Price = cost;
-            this.Cost.text = cost.ToString();
+            Cost.gameObject.SetActive(false);
+            costParent.SetActive(true);
+            costText.text = cost.ToString();
+            //this.Cost.text = cost.ToString();
             purchaseAction = buyAction;
         }
 
@@ -44,11 +50,13 @@ public class ContentStoreItem : StoreItem
         purchaseAction = equipAction;
         purchaseBtn.interactable = true;
         Cost.text = LanguageManager.Instance.GetString("owned");
+        costParent.SetActive(false);
     }
 
     public void Equiped()
     {
         Cost.text = LanguageManager.Instance.GetString("equipped");
         purchaseBtn.interactable = false;
+        costParent.SetActive(false);
     }
 }
