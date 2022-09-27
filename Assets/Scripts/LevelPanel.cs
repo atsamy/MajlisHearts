@@ -104,8 +104,8 @@ public class LevelPanel : MonoBehaviour
             totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))) + "/" + nextLevelPoints; ;
             newPoints.text = (Mathf.Round(points * (1 - (timer / time)))).ToString();
 
-            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Currency,
-                GameManager.Instance.Currency + reward, time)) + " + " +
+            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Coins,
+                GameManager.Instance.Coins + reward, time)) + " + " +
                 Mathf.Round(Mathf.Lerp(reward, 0, timer));
 
             timer += Time.deltaTime;

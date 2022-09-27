@@ -19,6 +19,10 @@ public class LanguageSetter : MonoBehaviour
     public void SetText()
     {
         Text text = GetComponent<Text>();
+
+        if (text == null)
+            Debug.Log(name);
+
         text.text = LanguageManager.Instance.GetString(name);
         text.font = LanguageManager.Instance.GetFont();
 

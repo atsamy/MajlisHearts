@@ -9,33 +9,43 @@ public class MuliGameOptions : MonoBehaviour
 {
     [SerializeField]
     TextMeshProUGUI prize;
-
     [SerializeField]
     TextMeshProUGUI entry;
-
+    [SerializeField]
+    TextMeshProUGUI startGameText;
     [SerializeField]
     Button increaseBtn;
-
     [SerializeField]
     Button decreaseBtn;
-
     [SerializeField]
     SelectGroup typeGroup;
+    [SerializeField]
+    MultiPanel multiPanel;
 
     public int[] EntryFees;
 
     Action<int,int> selectAction;
 
     int entryIndex;
+    int gameType;
 
-    public void Show(Action<int,int> onSelected)
+    public void OpenMultiGame()
     {
         entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
         SetText();
-
+        this.gameType = 0;
+        startGameText.text = LanguageManager.Instance.GetString("startgame");
         gameObject.SetActive(true);
+    }
 
-        selectAction = onSelected;
+    public void OpenFriendGame(Action<int, int> selectAction)
+    {
+        entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
+        SetText();
+        this.gameType = 1;
+        startGameText.text = LanguageManager.Instance.GetString("continue");
+        gameObject.SetActive(true);
+        this.selectAction = selectAction;
     }
 
     private void SetText()
@@ -65,7 +75,10 @@ public class MuliGameOptions : MonoBehaviour
 
     public void StartGame()
     {
-        if (EntryFees[entryIndex] > GameManager.Instance.Currency)
+        gameObject.SetActive(false);
+        MenuManager.Instance.HideMain(true, true);
+
+        if (EntryFees[entryIndex] > GameManager.Instance.Coins)
         {
             MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
             {
@@ -74,7 +87,14 @@ public class MuliGameOptions : MonoBehaviour
             return;
         }
 
-        selectAction?.Invoke(EntryFees[entryIndex], typeGroup.GroupIndex);
+        if (gameType == 0)
+        {
+            multiPanel.Open(EntryFees[entryIndex], typeGroup.GroupIndex);
+        }
+        else
+        {
+            selectAction?.Invoke(EntryFees[entryIndex], typeGroup.GroupIndex);
+        }
     }
 
 }

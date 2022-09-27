@@ -28,6 +28,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     string[] playersOrder;
 
+    int entryFee;
+
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -61,12 +63,13 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         }
     }
 
-    public void Open(string roomName, bool isHost)
+    public void Open(string roomName, int entryfee, bool isHost)
     {
         gameObject.SetActive(true);
 
         this.roomName = roomName;
         this.isHost = isHost;
+        this.entryFee = entryfee;
 
         playersOrder = new string[4];
 

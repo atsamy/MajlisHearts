@@ -369,12 +369,12 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    public void AddCurrency(int value, Action<bool> result)
+    public void AddCurrency(string code, int value, Action<bool> result)
     {
         PlayFabClientAPI.AddUserVirtualCurrency(
             new AddUserVirtualCurrencyRequest()
             {
-                VirtualCurrency = "SC",
+                VirtualCurrency = code,
                 Amount = value
             },
             (res) =>
@@ -390,13 +390,13 @@ public class PlayfabManager : MonoBehaviour
         );
     }
 
-    public void DeductCurrency(int value, Action<bool> result)
+    public void DeductCurrency(string code, int value, Action<bool> result)
     {
 
         PlayFabClientAPI.SubtractUserVirtualCurrency(
             new SubtractUserVirtualCurrencyRequest()
             {
-                VirtualCurrency = "SC",
+                VirtualCurrency = code,
                 Amount = value
             },
             (res) =>

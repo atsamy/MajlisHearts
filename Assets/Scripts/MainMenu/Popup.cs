@@ -11,7 +11,7 @@ public class Popup : MonoBehaviour
     public Action OKPressed;
     public Action ClosePressed;
 
-    public Text Message;
+    public TextMeshProUGUI Message;
 
     //public Message[] Messages;
 
@@ -27,7 +27,7 @@ public class Popup : MonoBehaviour
     {
         Show(OnOKPressed);
         Message.text = LanguageManager.Instance.GetString(code);
-        Message.font = LanguageManager.Instance.GetFont();
+        //Message.font = LanguageManager.Instance.GetFont();
     }
 
     public void ShowWithMessage(string message, Action OnOKPressed = null)

@@ -33,11 +33,7 @@ public class StoreScene : MenuScene
                 if (result)
                 {
                     SFXManager.Instance.PlayClip("Coins");
-                    PlayfabManager.instance.AddCurrency(50, (result) =>
-                    {
-                        print("add currency: " + result);
-                    });
-                    GameManager.Instance.AddCurrency(Purchaser.Instance.HCAmount[index]);
+                    GameManager.Instance.AddCoins(Purchaser.Instance.HCAmount[index]);
                 }
             });
         });
@@ -67,11 +63,7 @@ public class StoreScene : MenuScene
                 CurrencyStoreItems[i].Set(prices[i], Purchaser.Instance.HCAmount[i], i, (index) =>
                 {
                     SFXManager.Instance.PlayClip("Coins");
-                    PlayfabManager.instance.AddCurrency(Purchaser.Instance.HCAmount[index], (result) =>
-                     {
-                         print("add currency: " + result);
-                     });
-                    GameManager.Instance.AddCurrency(Purchaser.Instance.HCAmount[index]);
+                    GameManager.Instance.AddCoins(Purchaser.Instance.HCAmount[index]);
                     //SFXManager.Instance.PlayClip("Buy");
                 });
             }

@@ -10,7 +10,8 @@ using NiobiumStudios;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public event Action<int> OnCurrencyChanged;
+    public event Action<int> OnCoinsChanged;
+    public event Action<int> OnGemsChanged;
 
     [HideInInspector]
     public GameType GameType;
@@ -19,7 +20,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public bool IsTeam;
     [HideInInspector]
-    public int Currency;
+    public int Coins;
+    [HideInInspector]
+    public int Gems;
     [HideInInspector]
     public List<InventoryItem> Inventory;
 
@@ -51,20 +54,45 @@ public class GameManager : MonoBehaviour
         EquippedItem = new Dictionary<string, string>();
     }
 
-    public void DeductCurrency(int value)
+    public void DeductCoins(int value)
     {
-        Currency -= value;
-        OnCurrencyChanged?.Invoke(Currency);
-        PlayfabManager.instance.DeductCurrency(value,(result)=>
+        Coins -= value;
+        OnCoinsChanged?.Invoke(Coins);
+        PlayfabManager.instance.DeductCurrency("SC",value,(result)=>
         {
 
         });
     }
 
-    public void AddCurrency(int value)
+    public void AddCoins(int value)
     {
-        Currency += value;
-        OnCurrencyChanged?.Invoke(Currency);
+        Coins += value;
+        OnCoinsChanged?.Invoke(Coins);
+
+        PlayfabManager.instance.AddCurrency("SC", value, (result) =>
+        {
+            print("add coins: " + result);
+        });
+    }
+
+    public void DeductGems(int value)
+    {
+        Gems -= value;
+        OnGemsChanged?.Invoke(Gems);
+        PlayfabManager.instance.DeductCurrency("HC",value, (result) =>
+        {
+
+        });
+    }
+
+    public void AddGems(int value)
+    {
+        Gems += value;
+        OnGemsChanged?.Invoke(Gems);
+        PlayfabManager.instance.AddCurrency("HC", value, (result) =>
+        {
+            print("add gems: " + result);
+        });
     }
 
     public bool HasInInventory(string category, string id)
@@ -93,8 +121,7 @@ public class GameManager : MonoBehaviour
     public int GetRewardAndSave(int rank)
     {
         int reward = GetReward(rank);
-        AddCurrency(reward);
-        PlayfabManager.instance.AddCurrency(reward, null);
+        AddCoins(reward);
 
         return reward;
     }

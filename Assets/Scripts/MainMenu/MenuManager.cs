@@ -15,7 +15,7 @@ public class MenuManager : MonoBehaviour
     public StoreScene StoreScene;
     public MainPanelScript MainPanel;
     public MeetingPanel meetingPanel;
-    public Popup InvitePopup;
+    public InvitePopup InvitePopup;
 
     internal void OpenStore(int index)
     {
@@ -40,7 +40,7 @@ public class MenuManager : MonoBehaviour
 
     void ClaimDailyReward(int day)
     {
-        GameManager.Instance.AddCurrency(DailyRewards.instance.GetReward(day).reward);
+        GameManager.Instance.AddCoins(DailyRewards.instance.GetReward(day).reward);
     }
 
     public void StartSingleGame()
@@ -61,9 +61,9 @@ public class MenuManager : MonoBehaviour
         HideMain(true, true);
     }
 
-    public void OpenMeeting(string roomName, bool isHost)
+    public void OpenMeeting(string roomName,int entryfee, bool isHost)
     {
-        meetingPanel.Open(roomName, isHost);
+        meetingPanel.Open(roomName,entryfee, isHost);
         MainPanel.HideHeader(false, false);
     }
 
@@ -74,14 +74,14 @@ public class MenuManager : MonoBehaviour
         string invitationMessage = (isArabic ? "" : " <color=green>" + ArabicFixer.Fix(sender) + "</color> ") +
             LanguageManager.Instance.GetString("invitationmessage") +
             (isArabic ? " <color=green>" + ArabicFixer.Fix(sender) + "</color> " : "");
+        string[] inviteOptions = message.Split(':');
+        int cost = int.Parse(inviteOptions[3]);
 
-        InvitePopup.ShowWithMessage(invitationMessage, () =>
+        InvitePopup.Show(invitationMessage, cost, () =>
          {
-             string[] inviteOptions = message.Split(':');
-
              GameManager.Instance.IsTeam = (inviteOptions[2] == "team");
              ChatManager.Instance.SubscribeToChannel(inviteOptions[1]);
-             OpenMeeting(inviteOptions[1], false);
+             OpenMeeting(inviteOptions[1],cost, false);
          });
     }
 

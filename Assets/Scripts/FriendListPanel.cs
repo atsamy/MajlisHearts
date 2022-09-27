@@ -20,7 +20,7 @@ public class FriendListPanel : MonoBehaviour
     [SerializeField]
     Text friendName;
     [SerializeField]
-    ChoosePopup selectTypePopup;
+    MuliGameOptions gameOptions;
 
     string[] ids;
 
@@ -118,10 +118,6 @@ public class FriendListPanel : MonoBehaviour
         friendListPanel.gameObject.SetActive(false);
     }
 
-    public void OnDisconnected()
-    {
-
-    }
     public void SendInvite()
     {
         bool isPlayersSelected = false;
@@ -143,7 +139,7 @@ public class FriendListPanel : MonoBehaviour
             return;
         }
 
-        selectTypePopup.Show(LanguageManager.Instance.GetString("choosemode"),(type) =>
+        gameOptions.OpenFriendGame((cost, type) =>
         {
             string roomName = Random.Range(0, 10000).ToString("0000");
             string gameType = type == 0 ? "single" : "team";
@@ -153,7 +149,7 @@ public class FriendListPanel : MonoBehaviour
                 if (item.Value.InviteToggle.isOn)
                 {
                     isPlayersSelected = true;
-                    ChatManager.Instance.SendPrivateMessage(item.Key, "invite:" + roomName + ":" + gameType);
+                    ChatManager.Instance.SendPrivateMessage(item.Key, "invite:" + roomName + ":" + gameType + ":" + cost);
                 }
             }
 
@@ -162,7 +158,7 @@ public class FriendListPanel : MonoBehaviour
             friendListPanel.gameObject.SetActive(false);
             //gameObject.SetActive(false);
 
-            MenuManager.Instance.OpenMeeting(roomName, true);
+            MenuManager.Instance.OpenMeeting(roomName, cost, true);
 
             ChatManager.Instance.SubscribeToChannel(roomName);
             ChatManager.OnPlayerStatusUpdate -= ChatManager_OnPlayerStatusUpdate;

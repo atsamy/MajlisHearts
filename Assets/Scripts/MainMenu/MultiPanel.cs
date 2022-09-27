@@ -14,12 +14,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     public Text gameInfoTop;
     int gameType = 0;
     [SerializeField]
-    MuliGameOptions multiOptionsPanel;
-    [SerializeField]
-    GameObject WaitPanel;
-    //[SerializeField]
-    //Transform playersContent;
-    [SerializeField]
     Multiplayer[] playerEntries;
     [SerializeField]
     GameObject footer;
@@ -51,8 +45,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         IsconnectedToMaster = false;
 
-        WaitPanel.SetActive(false);
-        multiOptionsPanel.gameObject.SetActive(false);
+        gameObject.SetActive(false);
 
         MenuManager.Instance.ShowMain();
 
@@ -65,12 +58,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         }
     }
 
-    public void ClosePopup()
-    {
-        multiOptionsPanel.gameObject.SetActive(false);
-        MenuManager.Instance.ShowMain();
-    }
-
     IEnumerator Shuffle()
     {
         while (!roomCreated)
@@ -80,46 +67,36 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         }
     }
 
-    public void Open()
+    public void Open(int cost, int type)
     {
         //MenuManager.Instance.HideMain(true,true);
         SFXManager.Instance.PlayClip("Select");
+        gameObject.SetActive(true);
 
         string[] playersOrder = new string[4];
         playerInfos = new List<PlayerInfo>();
 
         aiNames = Names.text.Split("\n");
 
-        multiOptionsPanel.Show((cost,type)=>
+        //multiOptionsPanel.Show((cost,type)=>
+        //{
+
+
+        GameManager.Instance.Bet = cost;
+        gameType = type;
+        GameManager.Instance.IsTeam = (gameType == 1);
+
+        //WaitPanel.SetActive(true);
+
+        if (IsconnectedToMaster)
         {
-            if (GameManager.Instance.Currency < cost)
-            {
-                MenuManager.Instance.Popup.ShowWithCode("nocoins", ()=>
-                {
-                    MenuManager.Instance.OpenStore(0);
-                },()=>
-                {
-                    MenuManager.Instance.ShowMain();
-                });
-
-                return;
-            }
-
-            GameManager.Instance.Bet = cost;
-            gameType = type;
-            GameManager.Instance.IsTeam = (gameType == 1);
-
-            WaitPanel.SetActive(true);
-
-            if (IsconnectedToMaster)
-            {
-                JoinOrCreateRoom();
-            }
-            else
-            {
-                readyToJoin = true;
-            }
-        });
+            JoinOrCreateRoom();
+        }
+        else
+        {
+            readyToJoin = true;
+        }
+        //});
 
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
@@ -175,14 +152,14 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         }
     }
 
-    private void CreateNewPlayer(PlayerInfo player,bool IsLocal, bool IsHost)
+    private void CreateNewPlayer(PlayerInfo player, bool IsLocal, bool IsHost)
     {
         if (!IsLocal)
             AvatarManager.Instance.SetPlayerAvatar(player.Name, player.Avatar);
 
         playerEntries[currentIndex].Set(player.Name, IsLocal, IsHost);
 
-        currentIndex ++;
+        currentIndex++;
     }
 
     private void CreateAllPlayer(PlayerInfo[] players)
@@ -284,12 +261,12 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
             RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
             PhotonNetwork.RaiseEvent(sendAllPlayers, data, eventOptionsCards, SendOptions.SendReliable);
 
-            CreateNewPlayer(newPlayerInfo,false,false);
+            CreateNewPlayer(newPlayerInfo, false, false);
 
-            if(playerInfos.Count == 4)
+            if (playerInfos.Count == 4)
                 SendGameStartEvent();
         }
-        
+
     }
 
 
@@ -298,7 +275,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
         FadeScreen.Instance.FadeIn(2, () =>
         {
-            GameManager.Instance.DeductCurrency(GameManager.Instance.Bet);
+            GameManager.Instance.DeductCoins(GameManager.Instance.Bet);
 
             PhotonNetwork.RemoveCallbackTarget(this);
             GameManager.Instance.GameType = GameType.Online;

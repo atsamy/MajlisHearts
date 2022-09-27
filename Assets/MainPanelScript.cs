@@ -41,17 +41,25 @@ public class MainPanelScript : MonoBehaviour
 
     void Start()
     {
-        coinsText.setNumber(GameManager.Instance.Currency);
+        coinsText.setNumber(GameManager.Instance.Coins);
+        gemsText.setNumber(GameManager.Instance.Gems);
+
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         userNameText.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name, false, false);
 
-        GameManager.Instance.OnCurrencyChanged += OnCurrencyChanged;
+        GameManager.Instance.OnCoinsChanged += OnCurrencyChanged;
+        GameManager.Instance.OnGemsChanged += OnGemsChanged;
         IsOnMain = true;
     }
 
     private void OnCurrencyChanged(int value)
     {
         coinsText.Change(value);
+    }
+
+    private void OnGemsChanged(int value)
+    {
+        gemsText.Change(value);
     }
 
     public void SetAvatar()
@@ -107,6 +115,7 @@ public class MainPanelScript : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnCurrencyChanged -= OnCurrencyChanged;
+        GameManager.Instance.OnCoinsChanged -= OnCurrencyChanged;
+        GameManager.Instance.OnGemsChanged -= OnGemsChanged;
     }
 }

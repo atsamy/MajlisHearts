@@ -190,7 +190,8 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnInventoryReturned(Dictionary<string, int> currency, List<ItemInstance> inventory)
     {
-        GameManager.Instance.Currency = currency["SC"];
+        GameManager.Instance.Coins = currency["SC"];
+        GameManager.Instance.Gems = currency["HC"];
         GameManager.Instance.Inventory = new List<InventoryItem>();
 
         foreach (var item in inventory)

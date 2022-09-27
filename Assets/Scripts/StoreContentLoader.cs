@@ -52,7 +52,7 @@ public class StoreContentLoader : MonoBehaviour
                {
                    print(catalogueItems[index].Price);
 
-                   if (catalogueItems[index].Price > GameManager.Instance.Currency)
+                   if (catalogueItems[index].Price > GameManager.Instance.Coins)
                    {
                        MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
                        {
@@ -65,7 +65,7 @@ public class StoreContentLoader : MonoBehaviour
                        SFXManager.Instance.PlayClip("Buy");
 
                        PlayfabManager.instance.AddItemToInventory(catalogueItems[index]);
-                       GameManager.Instance.DeductCurrency(catalogueItems[index].Price);
+                       GameManager.Instance.DeductCoins(catalogueItems[index].Price);
                     //SetContentButtons();
                     GameManager.Instance.Inventory.Add(new InventoryItem(catalogueItems[index].ItemClass, catalogueItems[index].ID));
                        EquibNewItem(category, storeItem, catalogueItems[index].ID);

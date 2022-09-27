@@ -158,7 +158,7 @@ public class TaskPanel : MonoBehaviour
 
         if (isNew)
         {
-            GameManager.Instance.DeductCurrency(currentCost);
+            GameManager.Instance.DeductGems(currentCost);
         }
         //Destroy(taskItem.gameObject);
         InitTask();

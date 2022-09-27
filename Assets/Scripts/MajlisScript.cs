@@ -88,7 +88,7 @@ public class MajlisScript : MonoBehaviour
 
     public void ExecuteTask(TaskData task)
     {
-        if (task.Cost > GameManager.Instance.Currency)
+        if (task.Cost > GameManager.Instance.Coins)
         {
             MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
             {
