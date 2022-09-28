@@ -44,7 +44,7 @@ public class AvatarManager : MonoBehaviour
 
         if (savedPlayers.ContainsKey(name))
             return savedPlayers[name];
-        else if (name.Contains("AI"))
+        else if (name.Contains("AI") || name == "empty")
             return RobotAvatar;
         else
             return null;

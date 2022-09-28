@@ -28,7 +28,7 @@ public class MultiEditableTypeItems : EditableItem
 
     public override void ChangeItem(int index)
     {
-        SetModified(index);
+        //SetModified(index);
         foreach (var item in AllItems)
         {
             item.ChangeItem(index);
@@ -43,7 +43,7 @@ public class MultiEditableTypeItems : EditableItem
             return;
         }
 
-        SetModified(index);
+        //SetModified(index);
         foreach (var item in AllItems)
         {
             item.ChangeItem(index, time);
@@ -59,11 +59,12 @@ public class MultiEditableTypeItems : EditableItem
         }
     }
 
-    public override void SetOriginal()
+    public override void SetModified(int index)
     {
+        base.SetModified(index);
         foreach (var item in AllItems)
         {
-            item.SetOriginal();
+            item.SetModified(index);
         }
     }
 }

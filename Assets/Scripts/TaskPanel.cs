@@ -22,10 +22,6 @@ public class TaskPanel : MonoBehaviour
     ItemSelectPanel editPanel;
 
     TaskData currentTask;
-    //bool isNew;
-    //[SerializeField]
-    //CameraHover cameraHover;
-    //TaskItemScript currentTaskItem;
     int currentCost;
 
     private void Awake()
@@ -132,7 +128,7 @@ public class TaskPanel : MonoBehaviour
                 TargetItem = taskData.TargetItem,
                 SelectedIndex = index
             };
-
+            editableItem.SetModified(index);
             Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
 
             foreach (var item in colliders)

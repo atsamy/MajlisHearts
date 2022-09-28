@@ -288,10 +288,13 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         AddBots();
 
         yield return new WaitForSeconds(3);
-        
+
+        GameManager.Instance.DeductCoins(entryFee);
+        GameManager.Instance.Bet = entryFee;
+        GameManager.Instance.GameType = GameType.Friends;
+
         FadeScreen.Instance.FadeIn(2, () => 
         {
-            GameManager.Instance.GameType = GameType.Friends;
             SceneManager.LoadScene(2);
         });
     }

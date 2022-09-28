@@ -8,8 +8,10 @@ public class EditableItemUnit : MonoBehaviour
 {
     SpriteRenderer sprite;
     Sprite originalSprite;
+    Sprite modifiedSprite;
     [SerializeField]
     Sprite[] varientSprites;
+    bool modified;
 
     public int VarientCount => varientSprites.Length;
 
@@ -23,6 +25,11 @@ public class EditableItemUnit : MonoBehaviour
         sprite.sprite = originalSprite;
     }
 
+    internal virtual void Reset()
+    {
+        sprite.sprite = modified?modifiedSprite:originalSprite;
+    }
+
     internal virtual void ChangeItem(int index)
     {
         if (index >= varientSprites.Length)
@@ -33,14 +40,6 @@ public class EditableItemUnit : MonoBehaviour
 
     public void ChangeItem(int index, float time)
     {
-        //SetModified(index);
-
-        //if (disableAnimation)
-        //{
-        //    sprite.sprite = varientSprites[index];
-        //    return;
-        //}
-
         transform.DOJump(transform.position, 0.2f, 1, time * 2).OnComplete(() =>
         {
             sprite.sprite = varientSprites[index];
@@ -56,8 +55,9 @@ public class EditableItemUnit : MonoBehaviour
         }
     }
 
-    internal void SetOriginal()
+    internal void SetModified()
     {
-        originalSprite = sprite.sprite;
+        modified = true;
+        modifiedSprite = sprite.sprite;
     }
 }

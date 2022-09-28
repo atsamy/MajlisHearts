@@ -8,7 +8,7 @@ public class MultipleEditableObject : EditableItem
     int originalIndex = -1;
     public override void ChangeItem(int index)
     {
-        SetModified(index);
+        //SetModified(index);
         for (int i = 0; i < Objects.Length; i++)
         {
             Objects[i].SetActive(i == index);
@@ -21,6 +21,14 @@ public class MultipleEditableObject : EditableItem
     }
 
     public override void ResetToOriginal()
+    {
+        for (int i = 0; i < Objects.Length; i++)
+        {
+            Objects[i].SetActive(false);
+        }
+    }
+
+    public override void Reset()
     {
         for (int i = 0; i < Objects.Length; i++)
         {
@@ -38,8 +46,9 @@ public class MultipleEditableObject : EditableItem
         originalIndex = -1;
     }
 
-    public override void SetOriginal()
+    public override void SetModified(int index)
     {
         originalIndex = selectedIndex;
+        base.SetModified(index);
     }
 }

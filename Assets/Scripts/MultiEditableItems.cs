@@ -15,6 +15,15 @@ public class MultiEditableItems : EditableItem
             item.ResetToOriginal();
         }
     }
+
+    public override void Reset()
+    {
+        foreach (var item in AllItems)
+        {
+            item.Reset();
+        }
+    }
+
     public override int GetVarientsCount()
     {
         if (AllItems.Length == 0)
@@ -25,7 +34,7 @@ public class MultiEditableItems : EditableItem
 
     public override void ChangeItem(int index)
     {
-        SetModified(index);
+        //SetModified(index);
         foreach (var item in AllItems)
         {
             item.ChangeItem(index);
@@ -40,7 +49,7 @@ public class MultiEditableItems : EditableItem
             return;
         }
 
-        SetModified(index);
+        //SetModified(index);
         foreach (var item in AllItems)
         {
             item.ChangeItem(index,time);
@@ -55,12 +64,18 @@ public class MultiEditableItems : EditableItem
             item.Init();
         }
     }
-
-    public override void SetOriginal()
+    public override void SetModified(int index)
     {
+        base.SetModified(index);
+
         foreach (var item in AllItems)
         {
-            item.SetOriginal();
+            item.SetModified();
         }
     }
+
+    //public override void SetOriginal()
+    //{
+
+    //}
 }

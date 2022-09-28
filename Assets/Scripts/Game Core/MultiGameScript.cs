@@ -78,7 +78,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 else
                 {
-                    playersOrder[i] = playersOrder[i];
+                    playersOrder[i] = "AI";
                     //lookUpActors.Add(i, i + 1);
                     //lookUpAvatar.Add(i, "default");
                 }

@@ -25,7 +25,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
     protected bool disableAnimation;
     //public bool Modified { set => modified = value; }
 
-    bool modified;
+    protected bool modified;
 
     private void Awake()
     {
@@ -70,6 +70,11 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     }
 
+    public virtual void Reset()
+    {
+
+    }
+
     public virtual int GetVarientsCount()
     {
         return 0;
@@ -85,12 +90,12 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     }
 
-    public virtual void SetOriginal()
-    {
+    //public virtual void SetOriginal()
+    //{
 
-    }
+    //}
 
-    protected void SetModified(int index)
+    public virtual void SetModified(int index)
     {
         selectedIndex = index;
         modified = true;

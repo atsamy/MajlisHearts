@@ -44,15 +44,8 @@ public class ItemSelectPanel : MonoBehaviour
     public void Select(int index)
     {
         selectedIndex = index;
+        editableItem.ChangeItem(index, 0.2f);
 
-        if (editableItem is MultiEditableTypeItems)
-        {
-            ((MultiEditableTypeItems)editableItem).ChangeItem(index, 0.2f);
-        }
-        else
-        {
-            editableItem.ChangeItem(index, 0.2f);
-        }
 
         for (int i = 0; i < 3; i++)
         {
@@ -66,14 +59,14 @@ public class ItemSelectPanel : MonoBehaviour
     {
         confirmed?.Invoke(selectedIndex);
         gameObject.SetActive(false);
-        editableItem.SetOriginal();
+        //editableItem.SetOriginal();
         SFXManager.Instance.PlayClip("Confirm");
     }
 
     public void Close()
     {
         MenuManager.Instance.CameraHover.Unlock();
-        editableItem.ResetToOriginal();
+        editableItem.Reset();
         MenuManager.Instance.ShowMain();
         gameObject.SetActive(false);
 

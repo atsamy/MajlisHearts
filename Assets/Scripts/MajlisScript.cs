@@ -25,11 +25,11 @@ public class MajlisScript : MonoBehaviour
         AdjustMajlis(TasksManager.Instance.FinishedTasks);
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.R))
-    //        ResetTask(TasksManager.Instance.FinishedTasks);
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+            ResetTask();
+    }
 
     public void AdjustMajlis(List<FinishedTask> finishedTasks)
     {
@@ -43,8 +43,7 @@ public class MajlisScript : MonoBehaviour
                 case ActionType.Change:
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
                     editableItem.ChangeItem(task.SelectedIndex);
-                    editableItem.SetOriginal();
-
+                    editableItem.SetModified(task.SelectedIndex);
                     Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
 
                     foreach (var item in colliders)
@@ -55,6 +54,7 @@ public class MajlisScript : MonoBehaviour
                 case ActionType.Add:
                     EditableItem fixItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
                     fixItem.ChangeItem(0);
+                    //fixItem.SetModified(0);
                     break;
             }
         }

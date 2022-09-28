@@ -8,7 +8,7 @@ public class TilableEditableItem : SingleEditableItem
 
     public override void ChangeItem(int index)
     {
-        SetModified(index);
+        //SetModified(index);
         foreach (var item in allTiles)
         {
             item.sprite = VarientSprites[index];
@@ -17,7 +17,7 @@ public class TilableEditableItem : SingleEditableItem
 
     public override void ChangeItem(int index, float time)
     {
-        SetModified(index);
+        //SetModified(index);
         ChangeItem(index);
     }
 
@@ -29,9 +29,19 @@ public class TilableEditableItem : SingleEditableItem
         }
     }
 
-    public override void SetOriginal()
+    public override void Reset()
     {
-        originalSprite = allTiles[0].sprite;
+        foreach (var item in allTiles)
+        {
+            item.sprite = modified?modifiedSprite:originalSprite;
+        }
+    }
+
+    public override void SetModified(int index)
+    {
+        selectedIndex = index;
+        modified = true;
+        modifiedSprite = allTiles[0].sprite;
     }
 
     public override void Init()
