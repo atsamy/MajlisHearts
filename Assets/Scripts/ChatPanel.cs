@@ -12,6 +12,8 @@ public class ChatPanel : MonoBehaviour
     GameObject messagePrefab;
     [SerializeField]
     Transform Content;
+
+    bool toggleMessageColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,8 @@ public class ChatPanel : MonoBehaviour
             Destroy(Content.GetChild(0));
         }
         MessageScript messageObj = Instantiate(messagePrefab, Content).GetComponent<MessageScript>();
-        messageObj.Set(sender , message);
+        toggleMessageColor = !toggleMessageColor;
+        messageObj.Set(sender , message, toggleMessageColor);
     }
 
     public void SendMessage()

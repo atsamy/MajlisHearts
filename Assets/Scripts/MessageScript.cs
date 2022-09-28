@@ -1,32 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 using UnityEngine.UI;
 using ArabicSupport;
 
 public class MessageScript : MonoBehaviour
 {
     [SerializeField]
-    Text playerName;
+    TextMeshProUGUI playerName;
     [SerializeField]
-    Text message;
+    TextMeshProUGUI message;
     [SerializeField]
     Image avatar;
 
-    public void Set(string name,string message)
+    public void Set(string name,string message,bool toggleMessageColor)
     {
         print(message);
         playerName.text = ArabicFixer.Fix(name,false,false);
-        playerName.font = LanguageManager.Instance.GetFont();
         this.message.text = ArabicFixer.Fix(message);
-        this.message.font = LanguageManager.Instance.GetFont();
 
         this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
+        GetComponent<Image>().enabled = toggleMessageColor;
 
         if (LanguageManager.Instance.CurrentLanguage == Language.Arabic)
         {
-            this.message.alignment = TextAnchor.UpperRight;
+            this.message.alignment = TextAlignmentOptions.TopRight;
         }
     }
 }

@@ -5,6 +5,7 @@ using ArabicSupport;
 using System;
 using TMPro;
 using NiobiumStudios;
+using System.Collections;
 
 public class MenuManager : MonoBehaviour
 {
@@ -36,6 +37,25 @@ public class MenuManager : MonoBehaviour
             MainPanel.SetAvatar();
         }
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
+
+        ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
+    }
+
+    private void ChatManager_OnGotPrivateMessage(string sender, string message)
+    {
+        if (message.ToString() == "decline")
+        {
+            meetingPanel.FriendDeclined(sender);
+        }
+        else if (message.ToString() == "timeout")
+        {
+            meetingPanel.FriendTimedOut(sender);
+        }
+        else
+        {
+            if (sender != GameManager.Instance.MyPlayer.Name)
+                ShowInvitePopup(sender, message.ToString());
+        }
     }
 
     void ClaimDailyReward(int day)
@@ -61,9 +81,15 @@ public class MenuManager : MonoBehaviour
         HideMain(true, true);
     }
 
-    public void OpenMeeting(string roomName,int entryfee, bool isHost)
+    public void OpenMeeting(string roomName,int entryfee, System.Collections.Generic.List<PlayerInfo> players)
     {
-        meetingPanel.Open(roomName,entryfee, isHost);
+        meetingPanel.Open(roomName,entryfee, players);
+        MainPanel.HideHeader(true, true);
+    }
+
+    public void OpenMeeting(string roomName, int entryfee)
+    {
+        meetingPanel.Open(roomName, entryfee);
         MainPanel.HideHeader(true, true);
     }
 
@@ -77,12 +103,26 @@ public class MenuManager : MonoBehaviour
         string[] inviteOptions = message.Split(':');
         int cost = int.Parse(inviteOptions[3]);
 
+        Coroutine waitforResponse = StartCoroutine(SendTimedOut(sender)); 
+
         InvitePopup.Show(invitationMessage, cost, () =>
          {
+             StopCoroutine(waitforResponse);
              GameManager.Instance.IsTeam = (inviteOptions[2] == "team");
              ChatManager.Instance.SubscribeToChannel(inviteOptions[1]);
-             OpenMeeting(inviteOptions[1],cost, false);
+             OpenMeeting(inviteOptions[1],cost);
+         },()=>
+         {
+             StopCoroutine(waitforResponse);
+             ChatManager.Instance.SendPrivateMessage(sender, "decline");
          });
+    }
+
+    IEnumerator SendTimedOut(string sender)
+    {
+        yield return new WaitForSeconds(10);
+        ChatManager.Instance.SendPrivateMessage(sender, "timeout");
+        InvitePopup.gameObject.SetActive(false);
     }
 
     public void OpenGameMode()

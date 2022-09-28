@@ -9,9 +9,9 @@ public class InvitePopup : Popup
     [SerializeField]
     TextMeshProUGUI Cost;
 
-    public void Show(string message,int cost,Action OKPressed)
+    public void Show(string message,int cost,Action acceptPressed,Action declinePressed)
     {
-        ShowWithMessage(message, OKPressed);
+        ShowWithMessage(message, acceptPressed, declinePressed);
         this.Cost.text = cost.ToString();
     }
 }

@@ -22,6 +22,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public delegate void GotMessage(string sender, string message);
     public static event GotMessage OnGotMessage;
 
+    public delegate void GotPrivateMessage(string sender, string message);
+    public static event GotPrivateMessage OnGotPrivateMessage;
+
 
     private void Awake()
     {
@@ -103,8 +106,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-        if (sender != GameManager.Instance.MyPlayer.Name)
-            MenuManager.Instance.ShowInvitePopup(sender, message.ToString());
+        OnGotPrivateMessage?.Invoke(sender, message.ToString());
     }
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)

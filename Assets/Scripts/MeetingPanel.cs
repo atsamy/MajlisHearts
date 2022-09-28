@@ -19,12 +19,19 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     [SerializeField]
     GameObject shuffleSeatsButton;
     [SerializeField]
+    GameObject chatPanel;
+    [SerializeField]
+    GameObject friendsStatusParent;
+    [SerializeField]
+    FriendStatus[] friendsStatus;
+    [SerializeField]
     Image[] avatars;
-    //[SerializeField]
-    //GameObject[] avatarFrames;
+
+    List<playerStatus> playersStatuse;
 
     const int startGameCode = 1;
     const int shuffleCode = 2;
+    const int playersStatusMessage = 3;
 
     string[] playersOrder;
 
@@ -63,27 +70,92 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         }
     }
 
-    public void Open(string roomName, int entryfee, bool isHost)
+    internal void FriendDeclined(string sender)
+    {
+        friendsStatus.First(a => a.PlayerName == sender).ChangeStatus("declined");
+        playersStatuse.Find(a => a.playerName == sender).Status = "declined";
+        SendPlayerStatusChange();
+
+        CheckForPlayers();
+    }
+
+    internal void FriendTimedOut(string sender)
+    {
+        friendsStatus.First(a => a.PlayerName == sender).ChangeStatus("timedOut");
+        playersStatuse.Find(a => a.playerName == sender).Status = "timedOut";
+        SendPlayerStatusChange();
+
+        CheckForPlayers();
+    }
+
+    public void CheckForPlayers()
+    {
+        bool stillWaiting = false;
+        bool playerReady = false;
+
+        for (int i = 1; i < playersStatuse.Count; i++)
+        {
+            if (playersStatuse[i].Status == "waiting")
+                stillWaiting = true;
+            else if (playersStatuse[i].Status == "ready")
+                playerReady = true;
+        }
+
+        if (!stillWaiting && playerReady)
+        {
+            startGameButton.SetActive(true);
+
+            if (GameManager.Instance.IsTeam)
+            {
+                shuffleSeatsButton.SetActive(true);
+            }
+        }
+    }
+
+    public void Open(string roomName, int entryfee)
     {
         gameObject.SetActive(true);
-
         this.roomName = roomName;
-        this.isHost = isHost;
+        isHost = false;
         this.entryFee = entryfee;
-
         playersOrder = new string[4];
+    }
 
-        if (isHost)
+    public void Open(string roomName, int entryfee, List<PlayerInfo> players)
+    {
+        Open(roomName, entryfee);
+        isHost = true;
+
+        playersOrder[0] = GameManager.Instance.MyPlayer.Name;
+
+        for (int i = 1; i < playersOrder.Length; i++)
         {
-            playersOrder[0] = GameManager.Instance.MyPlayer.Name;
-
-            for (int i = 1; i < playersOrder.Length; i++)
-            {
-                playersOrder[i] = "empty";
-            }
-
-            return;
+            playersOrder[i] = "empty";
         }
+
+        playersStatuse = new List<playerStatus>();
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            friendsStatus[i].Set(players[i].Name, players[i].Avatar, 0, i == 0 ? "ready" : "waiting");
+            playersStatuse.Add(new playerStatus()
+            {
+                playerName = players[i].Name,
+                Avatar = players[i].Avatar,
+                Status = i == 0 ? "ready" : "waiting"
+            });
+        }
+
+
+    }
+
+    public void ToggleChatPanel()
+    {
+        chatPanel.SetActive(!chatPanel.activeSelf);
+    }
+    public void TogglePlayersStatus()
+    {
+        friendsStatusParent.SetActive(!friendsStatusParent.activeSelf);
     }
 
     void Connected()
@@ -157,16 +229,33 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         if (isHost && PhotonNetwork.PlayerList.Length > 1)
         {
-            startGameButton.SetActive(true);
+            //startGameButton.SetActive(true);
 
-            if(GameManager.Instance.IsTeam)
-                shuffleSeatsButton.SetActive(true);
+            //if (GameManager.Instance.IsTeam)
+            //    shuffleSeatsButton.SetActive(true);
 
             playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
             PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
+
+            friendsStatus.First(a => a.PlayerName == newPlayer.NickName).ChangeStatus("ready");
+            playersStatuse.Find(a => a.playerName == newPlayer.NickName).Status = "ready";
+
+            SendPlayerStatusChange();
+            CheckForPlayers();
         }
 
         CreateAvatar(newPlayer);
+    }
+
+    private void SendPlayerStatusChange()
+    {
+        Wrapper<playerStatus> wrapper = new Wrapper<playerStatus>();
+        wrapper.array = playersStatuse.ToArray();
+
+        string data = JsonUtility.ToJson(wrapper);
+
+        RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(playersStatusMessage, data, eventOptionsCards, SendOptions.SendReliable);
     }
 
     public void Shuffle()
@@ -281,8 +370,21 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             case shuffleCode:
                 RearragePlayers((string[])photonEvent.CustomData);
                 break;
+            case playersStatusMessage:
+                playerStatus[] data = JsonUtility.FromJson<Wrapper<playerStatus>>(photonEvent.CustomData.ToString()).array;
+                AdjustPlayerStatus(data);
+                break;
         }
     }
+
+    private void AdjustPlayerStatus(playerStatus[] customData)
+    {
+        for (int i = 0; i < customData.Length; i++)
+        {
+            friendsStatus[i].Set(customData[i]);
+        }
+    }
+
     IEnumerator StartGameRoutine()
     {
         AddBots();
@@ -293,7 +395,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         GameManager.Instance.Bet = entryFee;
         GameManager.Instance.GameType = GameType.Friends;
 
-        FadeScreen.Instance.FadeIn(2, () => 
+        FadeScreen.Instance.FadeIn(2, () =>
         {
             SceneManager.LoadScene(2);
         });
@@ -308,7 +410,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         if (playerSprite == null)
         {
-            AvatarManager.Instance.SetPlayerAvatar(newPlayer.NickName,newPlayer.CustomProperties["avatar"].ToString());
+            AvatarManager.Instance.SetPlayerAvatar(newPlayer.NickName, newPlayer.CustomProperties["avatar"].ToString());
         }
 
         avatars[newPlayer.ActorNumber - 1].transform.parent.gameObject.SetActive(true);
@@ -333,4 +435,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         base.Close();
         PhotonNetwork.LeaveRoom();
     }
+}
+
+[Serializable]
+public class playerStatus
+{
+    public string playerName;
+    public string Avatar;
+    public string Status;
 }
