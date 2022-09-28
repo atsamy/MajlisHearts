@@ -512,7 +512,6 @@ GameObject:
   - component: {fileID: 6824291895240851739}
   - component: {fileID: 6824291895240851737}
   - component: {fileID: 6824291895240851736}
-  - component: {fileID: 7316701816696653734}
   - component: {fileID: 790606031988721181}
   m_Layer: 5
   m_Name: PlayerStatus
@@ -582,26 +581,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7316701816696653734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6824291895240851738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f52e97db11156e4d8e22b0f4b7a96fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveAnimations:
-  - Duration: 0.25
-    Reverse: 0
-    StartAfter: 0
-    Start: {x: 300, y: 0, z: 0}
-  ScaleAnimation: []
-  ColorAnimation: []
-  PlayOnEnable: 1
 --- !u!114 &790606031988721181
 MonoBehaviour:
   m_ObjectHideFlags: 0

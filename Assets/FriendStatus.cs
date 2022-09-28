@@ -53,12 +53,11 @@ public class FriendStatus : MonoBehaviour
 
     internal void Set(playerStatus playerStatus)
     {
-        playerNameText.text = LanguageManager.Instance.GetString(playerStatus.playerName);
-        //levelText.text = level.ToString();
+        playerNameText.text = ArabicFixer.Fix(playerStatus.playerName);
         statusText.text = LanguageManager.Instance.GetString(playerStatus.Status);
 
         AvatarManager.Instance.SetPlayerAvatar(playerStatus.playerName, playerStatus.Avatar);
-        this.avatar.sprite = AvatarManager.Instance.GetAvatarSprite(playerStatus.playerName);
+        this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(playerStatus.playerName);
         PlayerName = playerStatus.playerName;
 
         if (playerStatus.Status == "waiting")
@@ -69,5 +68,10 @@ public class FriendStatus : MonoBehaviour
         {
             statusText.fontMaterial = declinedMaterial;
         }
+    }
+
+    public void SetLanguage()
+    {
+        statusText.text = LanguageManager.Instance.GetString("ready");
     }
 }

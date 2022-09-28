@@ -26,6 +26,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     FriendStatus[] friendsStatus;
     [SerializeField]
     Image[] avatars;
+    [SerializeField]
+    Button toggleStatusBtn;
 
     List<playerStatus> playersStatuse;
 
@@ -135,17 +137,27 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         playersStatuse = new List<playerStatus>();
 
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < 4; i++)
         {
-            friendsStatus[i].Set(players[i].Name, players[i].Avatar, 0, i == 0 ? "ready" : "waiting");
-            playersStatuse.Add(new playerStatus()
+            if (i < players.Count)
             {
-                playerName = players[i].Name,
-                Avatar = players[i].Avatar,
-                Status = i == 0 ? "ready" : "waiting"
-            });
+                friendsStatus[i].Set(players[i].Name, players[i].Avatar, 0, i == 0 ? "ready" : "waiting");
+                playersStatuse.Add(new playerStatus()
+                {
+                    playerName = players[i].Name,
+                    Avatar = players[i].Avatar,
+                    Status = i == 0 ? "ready" : "waiting"
+                });
+            }
+            else
+            {
+                friendsStatus[i].SetLanguage();
+            }
         }
 
+
+        TogglePlayersStatus();
+        toggleStatusBtn.interactable = true;
 
     }
 
@@ -379,10 +391,16 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     private void AdjustPlayerStatus(playerStatus[] customData)
     {
-        for (int i = 0; i < customData.Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            friendsStatus[i].Set(customData[i]);
+            if (i < customData.Length)
+                friendsStatus[i].Set(customData[i]);
+            else
+                friendsStatus[i].SetLanguage();
         }
+
+        TogglePlayersStatus();
+        toggleStatusBtn.interactable = true;
     }
 
     IEnumerator StartGameRoutine()

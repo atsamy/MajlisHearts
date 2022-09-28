@@ -14,20 +14,36 @@ public class Multiplayer : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI playerName;
     [SerializeField]
-    GameObject[] label;
+    TextMeshProUGUI status;
+    [SerializeField]
+    Material readyMaterial;
+    [SerializeField]
+    Material hostMaterial;
     [SerializeField]
     Sprite[] frameSprites;
 
+    private void Start()
+    {
+        status.text = LanguageManager.Instance.GetString("waiting");
+    }
 
     public void Set(string name, bool isMe, bool isHost)
     {
         playerName.text = ArabicFixer.Fix(name,false,false);
         gameObject.SetActive(true);
-        //playerName.font = LanguageManager.Instance.GetFont();
 
         playerFrame.sprite = frameSprites[isMe ? 0 : 1];
-        label[isHost ? 0 : 1].SetActive(true);
-        label[isHost ? 1 : 0].SetActive(false);
+
+        if (isHost)
+        {
+            status.text = LanguageManager.Instance.GetString("host");
+            status.fontMaterial = hostMaterial;
+        }
+        else
+        {
+            status.text = LanguageManager.Instance.GetString("ready");
+            status.fontMaterial = readyMaterial;
+        }
 
         playerAvatar.sprite = isMe ? AvatarManager.Instance.playerAvatar : AvatarManager.Instance.GetPlayerAvatar(name);
     }

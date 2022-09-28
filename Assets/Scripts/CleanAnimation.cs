@@ -14,7 +14,7 @@ public class CleanAnimation : MonoBehaviour,IJsonTask
 
     public void Clean(Action taskFinished)
     {
-        SFXManager.Instance.PlayClip("Clean");
+        
 
         if (transform.childCount > 0)
         {
@@ -22,6 +22,7 @@ public class CleanAnimation : MonoBehaviour,IJsonTask
         }
         else
         {
+            SFXManager.Instance.PlayClip("Woosh");
             transform.DOScale(0, 0.5f).SetEase(Ease.InOutCubic).OnComplete(()=>
             {
                 taskFinished?.Invoke();
@@ -33,6 +34,7 @@ public class CleanAnimation : MonoBehaviour,IJsonTask
     {
         foreach (Transform item in transform)
         {
+            SFXManager.Instance.PlayClip("Woosh");
             item.DOScale(0, 0.5f).SetEase(Ease.InOutCubic);
             yield return new WaitForSeconds(0.2f);
         }

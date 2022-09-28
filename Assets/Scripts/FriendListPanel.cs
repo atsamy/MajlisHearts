@@ -123,7 +123,7 @@ public class FriendListPanel : MonoBehaviour
     public void SendInvite()
     {
         bool isPlayersSelected = false;
-
+        friendListPanel.SetActive(false);
 
         foreach (var item in friendsList)
         {
@@ -168,7 +168,7 @@ public class FriendListPanel : MonoBehaviour
 
             GameManager.Instance.IsTeam = (type == 1);
 
-            friendListPanel.gameObject.SetActive(false);
+            //friendListPanel.gameObject.SetActive(false);
             //gameObject.SetActive(false);
 
             MenuManager.Instance.OpenMeeting(roomName, cost, PlayersInvited);

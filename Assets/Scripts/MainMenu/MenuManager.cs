@@ -25,6 +25,8 @@ public class MenuManager : MonoBehaviour
 
     public Popup Popup;
 
+    public MenuScene CurrentScene { get; internal set; }
+
     private void Awake()
     {
         Instance = this;
@@ -107,6 +109,7 @@ public class MenuManager : MonoBehaviour
 
         InvitePopup.Show(invitationMessage, cost, () =>
          {
+             CloseCurrentScene();
              StopCoroutine(waitforResponse);
              GameManager.Instance.IsTeam = (inviteOptions[2] == "team");
              ChatManager.Instance.SubscribeToChannel(inviteOptions[1]);
@@ -147,5 +150,14 @@ public class MenuManager : MonoBehaviour
     public void HideMain(bool hideGems,bool hideCoins)
     {
         MainPanel.HideHeader(hideGems,hideCoins);
+    }
+
+    public void CloseCurrentScene()
+    {
+        if (CurrentScene != null)
+        {
+            CurrentScene.gameObject.SetActive(false);
+            CurrentScene = null;
+        }
     }
 }

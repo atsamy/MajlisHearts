@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class StoreScene : MenuScene
 {
@@ -12,13 +13,18 @@ public class StoreScene : MenuScene
 
     [SerializeField]
     Transform arrow;
+    [SerializeField]
+    ScrollRect storesItems;
     //public int[] SCValues;
 
     public GameObject Loading;
 
     [SerializeField]
     StoreContentLoader avatarContent;
-
+    private void OnEnable()
+    {
+        storesItems.content.localPosition = new Vector3(-2, 0);
+    }
     void Start()
     {
         //for (int i = 0; i < Tabs.Length; i++)
