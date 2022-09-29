@@ -212,7 +212,7 @@ public class GameScript : MonoBehaviour
 
     public void SetTrickFinished(int winningHand)
     {
-        GameSFXManager.Instance.PlayClipRandom("CardDraw");
+        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("CardDraw");
         OnTrickFinished?.Invoke(winningHand);
     }
 

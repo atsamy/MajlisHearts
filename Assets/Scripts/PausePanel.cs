@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class PausePanel : MonoBehaviour
 {
+    [SerializeField]
+    Popup confirmExitPopup;
+
     public void Show()
     {
         gameObject.SetActive(true);
@@ -19,13 +22,31 @@ public class PausePanel : MonoBehaviour
 
     public void BackToMajlis()
     {
-        UIManager.Instance.LeaveRoom();
-        FadeScreen.Instance.FadeIn(2, () => 
+        if (GameManager.Instance.GameType == GameType.Single)
+        {
+            Exit();
+        }
+        else
+        {
+            confirmExitPopup.ShowWithCode("confirmexitmessage", () =>
+            {
+                UIManager.Instance.LeaveRoom();
+                Exit();
+            }, () =>
+            {
+                Continue();
+            });
+        }
+    }
+
+    private void Exit()
+    {
+        FadeScreen.Instance.FadeIn(2, () =>
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(1);
         });
-        
+
         GameSFXManager.Instance.PlayClip("Click");
     }
 }

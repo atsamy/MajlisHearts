@@ -17,10 +17,10 @@ public class Popup : MonoBehaviour
 
     void Show(Action OnOKPressed)
     {
-        SFXManager.Instance.PlayClip("Popup");
         gameObject.SetActive(true);
         OKPressed = OnOKPressed;
         ClosePressed = null;
+        SFXManager.Instance.PlayClip("Popup");
     }
 
     public void ShowWithCode(string code, Action OnOKPressed = null)

@@ -8,7 +8,7 @@ public class GameSFXManager : SFXManager
     //public List<AudioSource> Sources3D;
     //private int curAS3D;
 
-    public new static GameSFXManager Instance;
+    //public new static GameSFXManager Instance;
 
     public MultiSoundEffect[] MultiSoundEffects;
     // Start is called before the first frame update
@@ -20,10 +20,10 @@ public class GameSFXManager : SFXManager
         Ambient.mute = Muted;
     }
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    //void Awake()
+    //{
+    //    //Instance = this;
+    //}
 
     public void PlayClipRandom(string code)
     {

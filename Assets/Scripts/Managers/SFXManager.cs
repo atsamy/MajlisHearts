@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-public class SFXManager : MonoBehaviour
+public class SFXManager : Singleton<SFXManager>
 {
-    public static SFXManager Instance;
-
     public AudioSource Music;
     public AudioSource Ambient;
 
@@ -26,10 +24,7 @@ public class SFXManager : MonoBehaviour
 
     public SFXToggled OnSFXToggled;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+
     protected void Start()
     {
         Mute(PlayerPrefs.GetInt("SFX", 1) == 0);
@@ -85,6 +80,12 @@ public class SFXManager : MonoBehaviour
     }
     public void PlayClip(string code)
     {
+        if (!SoundEffects.Any(a => a.Code == code))
+        {
+            Debug.Log("sound " + code + " doesn't exit!");
+            return;
+        }
+
         SoundEffect current = SoundEffects.First(a => a.Code == code);
         Sources[curAS].volume = current.Volume;
         Sources[curAS].clip = current.Clip;

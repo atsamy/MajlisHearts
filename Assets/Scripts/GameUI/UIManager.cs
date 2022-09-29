@@ -216,7 +216,7 @@ public class UIManager : MonoBehaviour
 
     internal bool AddCard(CardUI card)
     {
-        GameSFXManager.Instance.PlayClipRandom("Card");
+        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("Card");
         return passCardsPanel.AddCard(card);
     }
 
@@ -231,7 +231,7 @@ public class UIManager : MonoBehaviour
 
         int index = CorrectIndex(winningHand);
         cardsUIManager.RemoveCards(index);
-        GameSFXManager.Instance.PlayClipRandom("CardDraw");
+        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("CardDraw");
     }
 
     public void SetScore()
@@ -260,7 +260,7 @@ public class UIManager : MonoBehaviour
 
     internal void RemoveCard(CardUI cardUI)
     {
-        GameSFXManager.Instance.PlayClipRandom("Card");
+        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("Card");
         passCardsPanel.RemoveCard(cardUI);
     }
 
@@ -283,7 +283,7 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnCardReady(int playerIndex, Card card)
     {
-        GameSFXManager.Instance.PlayClipRandom("Card");
+        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("Card");
         int index = CorrectIndex(playerIndex);
 
         if (GameManager.Instance.GameType != GameType.Single)
