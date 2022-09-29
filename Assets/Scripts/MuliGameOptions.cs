@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 
-public class MuliGameOptions : MonoBehaviour
+public class MuliGameOptions : MenuScene
 {
     [SerializeField]
     TextMeshProUGUI prize;
@@ -33,9 +33,9 @@ public class MuliGameOptions : MonoBehaviour
     {
         entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
         SetText();
-        this.gameType = 0;
+        gameType = 0;
         startGameText.text = LanguageManager.Instance.GetString("startgame");
-        gameObject.SetActive(true);
+        base.Open();
     }
 
     public void OpenFriendGame(Action<int, int> selectAction)
@@ -44,8 +44,8 @@ public class MuliGameOptions : MonoBehaviour
         SetText();
         this.gameType = 1;
         startGameText.text = LanguageManager.Instance.GetString("continue");
-        gameObject.SetActive(true);
         this.selectAction = selectAction;
+        base.Open();
     }
 
     private void SetText()

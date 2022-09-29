@@ -8,7 +8,7 @@ using System.Linq;
 public class FriendListPanel : MonoBehaviour
 {
     [SerializeField]
-    GameObject friendListPanel;
+    MenuScene friendListPanel;
     [SerializeField]
     GameObject friendItem;
     [SerializeField]
@@ -81,8 +81,9 @@ public class FriendListPanel : MonoBehaviour
 
     public void Show()
     {
-        SFXManager.Instance.PlayClip("Select");
-        friendListPanel.gameObject.SetActive(true);
+        //SFXManager.Instance.PlayClip("Select");
+        friendListPanel.Open();
+        //MenuManager.Instance.CurrentScene = friendListPanel.gameObject;
     }
 
     public void OpenAddPanel()
@@ -116,14 +117,13 @@ public class FriendListPanel : MonoBehaviour
 
     public void Close()
     {
-        MenuManager.Instance.ShowMain();
-        friendListPanel.gameObject.SetActive(false);
+        friendListPanel.Close();
     }
 
     public void SendInvite()
     {
         bool isPlayersSelected = false;
-        friendListPanel.SetActive(false);
+        friendListPanel.gameObject.SetActive(false);
 
         foreach (var item in friendsList)
         {
@@ -160,17 +160,11 @@ public class FriendListPanel : MonoBehaviour
                     {
                         Name = item.Key,
                         Avatar = friendsInfo[item.Key]
-                    }) ;
+                    });
                 }
             }
 
-            
-
             GameManager.Instance.IsTeam = (type == 1);
-
-            //friendListPanel.gameObject.SetActive(false);
-            //gameObject.SetActive(false);
-
             MenuManager.Instance.OpenMeeting(roomName, cost, PlayersInvited);
 
             ChatManager.Instance.SubscribeToChannel(roomName);

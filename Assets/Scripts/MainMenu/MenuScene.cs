@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class MenuScene : MonoBehaviour
+public class MenuScene : MonoBehaviour
 {
     public virtual void Open()
     {
@@ -14,7 +14,6 @@ public abstract class MenuScene : MonoBehaviour
         gameObject.SetActive(false);
         MenuManager.Instance.ShowMain();
         SFXManager.Instance.PlayClip("Close");
+        MenuManager.Instance.CurrentScene = null;
     }
-
-    //public MenuScene PreviousMenu;
 }

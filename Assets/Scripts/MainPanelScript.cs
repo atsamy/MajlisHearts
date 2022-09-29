@@ -101,6 +101,7 @@ public class MainPanelScript : MonoBehaviour
         else
         {
             coins.SetActive(true);
+            coinsRect.anchoredPosition = new Vector2(900, -105);
         }
 
         gems.SetActive(true);

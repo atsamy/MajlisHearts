@@ -40,7 +40,8 @@ namespace NiobiumStudios
         public Color colorClaim;            // The Color of the background when claimed
         private Color colorUnclaimed;       // The Color of the background when not claimed
 
-        public GameObject Data;
+        //public GameObject Data;
+        public GameObject Claimed;
 
         [Header("Internal")]
         public int day;
@@ -97,7 +98,8 @@ namespace NiobiumStudios
                     break;
                 case DailyRewardState.CLAIMED:
                     imageRewardBackground.sprite = claimedSprite;
-                    Data.SetActive(false);
+                    textReward.gameObject.SetActive(false);
+                    Claimed.SetActive(true);
                     break;
             }
         }

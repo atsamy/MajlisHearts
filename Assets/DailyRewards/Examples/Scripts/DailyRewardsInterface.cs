@@ -38,7 +38,7 @@ namespace NiobiumStudios
         public Button buttonClose;                  // Close Button
         public Button buttonCloseWindow;            // Close Button on the upper right corner
         public Text textTimeDue;                    // Text showing how long until the next claim
-        public GridLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
+        public HorizontalLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
         //public ScrollRect scrollRect;               // The Scroll Rect
 
         private bool readyToClaim;                  // Update flag
@@ -73,18 +73,21 @@ namespace NiobiumStudios
 				var keepOpen = dailyRewards.keepOpen;
                 panelReward.SetActive(false);
                 canvas.gameObject.SetActive(keepOpen);
+                MenuManager.Instance.ShowMain();
             });
 
             buttonClose.onClick.AddListener(() =>
             {
                 SFXManager.Instance.PlayClip("Close");
                 canvas.gameObject.SetActive(false);
+                MenuManager.Instance.ShowMain();
             });
 
             buttonCloseWindow.onClick.AddListener(() =>
             {
                 SFXManager.Instance.PlayClip("Close");
                 canvas.gameObject.SetActive(false);
+                MenuManager.Instance.ShowMain();
             });
 
             // Simulates the next Day
@@ -275,6 +278,10 @@ namespace NiobiumStudios
                 UpdateUI();
                 canvas.gameObject.SetActive((showWhenNotAvailable ||  isRewardAvailable) && TutorialScript.IsTutorialDone);
 
+                if (canvas.gameObject.activeSelf)
+                {
+                    MenuManager.Instance.HideMain(false, false);
+                }
                 //SnapToReward();
                 CheckTimeDifference();
             }

@@ -143,10 +143,10 @@ public class GameManager : MonoBehaviour
 
     int GetGems(int rank) => rank switch
     {
-        0 => 15,
+        0 => 12,
         1 => 10,
-        2 => 5,
-        _ => 0
+        2 => 8,
+        _ => 6
     };
 
     public void EquipItem(string itemName, string itemID)

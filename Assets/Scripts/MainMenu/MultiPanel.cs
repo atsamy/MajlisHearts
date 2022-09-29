@@ -9,7 +9,7 @@ using ExitGames.Client.Photon;
 using System.Linq;
 //using photon;
 
-public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
+public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IConnectionCallbacks, IOnEventCallback
 {
     public Text gameInfoTop;
     int gameType = 0;
@@ -35,7 +35,7 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     string[] aiNames;
     public TextAsset Names;
 
-    public void Close()
+    public override void Close()
     {
         SFXManager.Instance.PlayClip("Close");
         PhotonNetwork.RemoveCallbackTarget(this);
@@ -45,17 +45,10 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
         IsconnectedToMaster = false;
 
-        gameObject.SetActive(false);
-
-        MenuManager.Instance.ShowMain();
-
         roomCreated = false;
         readyToJoin = false;
 
-        foreach (Multiplayer item in playerEntries)
-        {
-            item.gameObject.SetActive(false);
-        }
+        base.Close();
     }
 
     IEnumerator Shuffle()
@@ -69,24 +62,17 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
 
     public void Open(int cost, int type)
     {
-        //MenuManager.Instance.HideMain(true,true);
-        SFXManager.Instance.PlayClip("Select");
-        gameObject.SetActive(true);
-
+        base.Open();
+        //SFXManager.Instance.PlayClip("Select");
         string[] playersOrder = new string[4];
         playerInfos = new List<PlayerInfo>();
 
         aiNames = Names.text.Split("\n");
 
-        //multiOptionsPanel.Show((cost,type)=>
-        //{
-
 
         GameManager.Instance.Bet = cost;
         gameType = type;
         GameManager.Instance.IsTeam = (gameType == 1);
-
-        //WaitPanel.SetActive(true);
 
         if (IsconnectedToMaster)
         {
@@ -96,7 +82,6 @@ public class MultiPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
         {
             readyToJoin = true;
         }
-        //});
 
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
