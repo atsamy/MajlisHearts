@@ -126,10 +126,26 @@ public class GameManager : MonoBehaviour
         return reward;
     }
 
+    public int GetGemsAndSave(int rank)
+    {
+        int gems = GetGems(rank);
+        AddGems(gems);
+
+        return gems;
+    }
+
     int GetReward(int rank) => rank switch
     {
         0 => GameManager.Instance.Bet * 2,
         1 => GameManager.Instance.Bet * (GameManager.Instance.IsTeam ? 2 : 1),
+        _ => 0
+    };
+
+    int GetGems(int rank) => rank switch
+    {
+        0 => 15,
+        1 => 10,
+        2 => 5,
         _ => 0
     };
 

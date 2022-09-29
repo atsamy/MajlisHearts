@@ -6,10 +6,6 @@ using System;
 
 public class MainPlayer : Player
 {
-    public delegate void PlayerTurn(DealInfo info);
-    public PlayerTurn OnPlayerTurn;
-
-
     public delegate void WaitPassCards();
     public event WaitPassCards OnWaitPassCards;
 
@@ -40,7 +36,6 @@ public class MainPlayer : Player
 
     public override void SetTurn(DealInfo info)
     {
-        OnPlayerTurn?.Invoke(info);
         base.SetTurn(info);
     }
 

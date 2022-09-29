@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using ArabicSupport;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 
 public class PlayerDetails : MonoBehaviour
 {
     [SerializeField]
     Image avatarImage;
     [SerializeField]
-    Text scoreText;
+    TextMeshProUGUI scoreText;
     [SerializeField]
-    Text nameText;
+    TextMeshProUGUI nameText;
     [SerializeField]
-    Text levelText;
+    TextMeshProUGUI levelText;
     [SerializeField]
     GameObject[] DoubleCards;
+    [SerializeField]
+    Image timerFill;
+    [SerializeField]
+    TextMeshProUGUI timerText;
+
+    Coroutine timerRoutine;
+
     public void SetPlayer(Sprite avatar, string name, int level)
     {
         if (avatar != null)
@@ -39,5 +48,33 @@ public class PlayerDetails : MonoBehaviour
     public void HideDouble(int index)
     {
         DoubleCards[index].SetActive(false);
+    }
+
+    public void StartTimer(int timer)
+    {
+        timerRoutine = StartCoroutine(TimerRoutine(timer));
+    }
+
+    public void StopTimer()
+    {
+        StopCoroutine(timerRoutine);
+        timerFill.DOFillAmount(0, 0.15f);
+        timerText.text = "";
+    }
+
+    IEnumerator TimerRoutine(float time)
+    {
+        float timer = time;
+
+
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            timerFill.fillAmount = timer / time;
+            timerText.text = Mathf.Round(timer).ToString();
+            yield return null;
+        }
+
+        timerText.text = "";
     }
 }

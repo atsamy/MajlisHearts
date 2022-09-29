@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
-    private const int FinishScore = 100;
+    private const int FinishScore = 30;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -101,7 +101,7 @@ public class GameScript : MonoBehaviour
 
     }
 
-    private void MainPlayerTurn(DealInfo info)
+    private void MainPlayerTurn(int index, DealInfo info)
     {
         playerTimer = StartCoroutine(StartTimer());
     }

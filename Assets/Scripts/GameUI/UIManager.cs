@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
                  {
                      if (GameManager.Instance.GameType != GameType.Single)
                      {
-                         LevelPanel.Open(rank, () =>
+                         LevelPanel.Open(rank,game.MyPlayer.TotalScore, () =>
                          {
                              GoToMainMenu();
                          });
@@ -266,9 +266,6 @@ public class UIManager : MonoBehaviour
 
     private int CorrectIndex(int index)
     {
-        //int correctedIndex = index + game.MainPlayerIndex;
-        //correctedIndex %= 4;
-
         int correctedIndex = index - game.MainPlayerIndex;
         correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
 
@@ -280,18 +277,35 @@ public class UIManager : MonoBehaviour
         foreach (var player in players)
         {
             player.OnCardReady += Player_OnCardReady;
+            player.OnPlayerTurn += Player_OnPlayerTurn;
         }
     }
 
     private void Player_OnCardReady(int playerIndex, Card card)
     {
         GameSFXManager.Instance.PlayClipRandom("Card");
+        int index = CorrectIndex(playerIndex);
 
+        if (GameManager.Instance.GameType != GameType.Single)
+        {
+            cardsUIManager.StopTimer(index);
+        }
         if (playerIndex != game.MainPlayerIndex)
         {
-            int index = CorrectIndex(playerIndex);
-
             cardsUIManager.CardsPlayed(index, card);
+        }
+    }
+
+    private void Player_OnPlayerTurn(int playerIndex, DealInfo info)
+    {
+        if (GameManager.Instance.GameType != GameType.Single)
+        {
+            int index = CorrectIndex(playerIndex);
+            cardsUIManager.WaitPlayer(index);
+        }
+        if (playerIndex == game.MainPlayerIndex)
+        {
+            cardsUIManager.SetPlayableCards(info, mainPlayer);
         }
     }
 
@@ -340,7 +354,6 @@ public class UIManager : MonoBehaviour
         if (!init)
         {
             mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
-            mainPlayer.OnPlayerTurn += PlayerTurn;
             mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
             mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
             mainPlayer.WaitOthers += MainPlayer_WaitOthers;
@@ -378,11 +391,6 @@ public class UIManager : MonoBehaviour
         {
             PassCards(cards);
         });
-    }
-
-    public void PlayerTurn(DealInfo info)
-    {
-        cardsUIManager.SetPlayableCards(info, mainPlayer);
     }
 
     public void OnDisable()

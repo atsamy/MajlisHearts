@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5850240089545609134
 RectTransform:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 56abb55029ca519439479ff49cd2307d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9ce17843695f8443bbb2d6440bde5f89, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -458,8 +458,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.2, y: 11.2}
-  m_SizeDelta: {x: 193.1673, y: 261.8135}
+  m_AnchoredPosition: {x: 4, y: 0.000022531}
+  m_SizeDelta: {x: 236.0285, y: 258.0872}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2673288358356317266
 CanvasRenderer:
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 657d90f1ab8471347b5e255cabab38ed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9d1b085e2a50444168c3598a0ccc6cbc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -823,7 +823,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.4221, y: -177.3058}
+  m_AnchoredPosition: {x: 1.4221, y: -175}
   m_SizeDelta: {x: 171.5081, y: 60.9307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5904818464815950245
@@ -966,18 +966,9 @@ MonoBehaviour:
   playerName: {fileID: 1419796559704390684}
   score: {fileID: 8251814152886170277}
   addedScore: {fileID: 7202784948282846608}
-  scoreFrame: {fileID: 5904818464815950250}
-  playerFrame: {fileID: 8103486323495848984}
-  winFrame: {fileID: 8796335217314141507}
   teamBadge:
   - {fileID: 2676758683636966906}
   - {fileID: 2944553299028362578}
-  scoreFrames:
-  - {fileID: 21300000, guid: a325f87d7e1ba774b8aaa82cc508612c, type: 3}
-  - {fileID: 21300000, guid: 7c56c33cb9a5e4a40bb3cc49c6b8a5a3, type: 3}
-  avatarFrames:
-  - {fileID: 21300000, guid: 56abb55029ca519439479ff49cd2307d, type: 3}
-  - {fileID: 21300000, guid: 20c78378bd0d54e458589171b566deee, type: 3}
 --- !u!1 &6684348528282989187
 GameObject:
   m_ObjectHideFlags: 0

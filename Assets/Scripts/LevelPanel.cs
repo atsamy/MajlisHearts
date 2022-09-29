@@ -14,17 +14,23 @@ public class LevelPanel : MonoBehaviour
     [SerializeField]
     Image newLevelProgress;
 
+    [SerializeField]
+    TextMeshProUGUI gemsText;
+
+    [SerializeField]
+    TextMeshProUGUI newGemsText;
+
+    [SerializeField]
+    TextMeshProUGUI scoreText;
+
     //[SerializeField]
-    //GameObject Reward;
-
-    [SerializeField]
-    TextMeshProUGUI totalPoints;
-
-    [SerializeField]
-    TextMeshProUGUI newPoints;
+    //TextMeshProUGUI newPoints;
 
     [SerializeField]
     TextMeshProUGUI coinsText;
+
+    [SerializeField]
+    TextMeshProUGUI newCoinsText;
 
     [SerializeField]
     TextMeshProUGUI levelText;
@@ -38,20 +44,22 @@ public class LevelPanel : MonoBehaviour
     int nextLevelPoints = 1;
     Action nextPressed;
 
-    public void Open(int rank, Action next)
+    public void Open(int rank,int totalScore, Action next)
     {
         nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
 
         nextPressed = next;
 
+        scoreText.text = totalScore.ToString();
+
         gameObject.SetActive(true);
         //this.nextPressed = nextPressed;
         int startPoints = GameManager.Instance.MyPlayer.Points;
-        totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
+        //totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
 
         int score = GetScore(rank);
 
-        newPoints.text = score + "+";
+        //newPoints.text = score + "+";
 
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         float currentProgress = GameManager.Instance.MyPlayer.CurrentPogress;
@@ -59,11 +67,12 @@ public class LevelPanel : MonoBehaviour
         newLevelProgress.fillAmount = currentProgress;
 
 
-        GameSFXManager.Instance.PlayClip("Count");
+
 
         int reward = GameManager.Instance.GetRewardAndSave(rank);
+        int gems = GameManager.Instance.GetGemsAndSave(rank);
 
-        StartCoroutine(CountNumbers(startPoints, score, reward, 1f));
+        StartCoroutine(CountNumbers(gems, reward, 1f));
 
         float progress = GameManager.Instance.AddPoints(score);
         float totalProgress = MathF.Min(1, currentProgress + progress);
@@ -72,7 +81,6 @@ public class LevelPanel : MonoBehaviour
         newLevelProgress.DOFillAmount(totalProgress, 1f).OnComplete(() =>
         {
             levelProgress.DOFillAmount(totalProgress, 0.2f);
-                //celebrate
             if (isNewLevel)
             {
                 StartCoroutine(ShowLevelUp());
@@ -82,7 +90,6 @@ public class LevelPanel : MonoBehaviour
                 nextButton.SetActive(true);
             }
         });
-
     }
 
     private IEnumerator ShowLevelUp()
@@ -94,26 +101,31 @@ public class LevelPanel : MonoBehaviour
         nextButton.SetActive(true);
     }
 
-    public IEnumerator CountNumbers(int startPoints, int points, int reward, float time)
+    public IEnumerator CountNumbers(int gems, int reward, float time)
     {
         float timer = 0;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
+        GameSFXManager.Instance.PlayClip("Count");
 
         while (timer < time)
         {
-            totalPoints.text = (Mathf.Round(startPoints + (points * (timer / time)))) + "/" + nextLevelPoints; ;
-            newPoints.text = (Mathf.Round(points * (1 - (timer / time)))).ToString();
+            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Coins - reward,
+                GameManager.Instance.Coins, time)).ToString();
+            newCoinsText.text = "+ " + Mathf.Round(Mathf.Lerp(reward,0, time)).ToString();
 
-            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Coins,
-                GameManager.Instance.Coins + reward, time)) + " + " +
-                Mathf.Round(Mathf.Lerp(reward, 0, timer));
+            gemsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Gems - gems,
+                GameManager.Instance.Gems, time)).ToString();
+            newGemsText.text = "+ " + Mathf.Round(Mathf.Lerp(gems, 0, time)).ToString();
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        totalPoints.text = (startPoints + points) + "/" + nextLevelPoints;
-        newPoints.text = "0";
+        coinsText.text = GameManager.Instance.Coins.ToString();
+        gemsText.text = GameManager.Instance.Gems.ToString();
+
+        newCoinsText.text = "+ 0";
+        newGemsText.text = "+ 0";
 
 
     }

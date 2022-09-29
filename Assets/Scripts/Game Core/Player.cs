@@ -24,6 +24,9 @@ public class Player
 
     public string Name;
 
+    public delegate void PlayerTurn(int index,DealInfo info);
+    public PlayerTurn OnPlayerTurn;
+
     public delegate void PassCardsReady(int playerIndex, List<Card> cards);
     public PassCardsReady OnPassCardsReady;
 
@@ -137,7 +140,7 @@ public class Player
 
     public virtual void SetTurn(DealInfo info)
     {
-        
+        OnPlayerTurn?.Invoke(index,info);
     }
 
     public bool HasShape(CardShape shape)

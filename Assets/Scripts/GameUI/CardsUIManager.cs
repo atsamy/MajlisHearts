@@ -56,6 +56,16 @@ public class CardsUIManager : MonoBehaviour
         deckCards = new List<DeckCard>();
     }
 
+    public void WaitPlayer(int index)
+    {
+        playersDetails[index].StartTimer(10);
+    }
+
+    public void StopTimer(int index)
+    {
+        playersDetails[index].StopTimer();
+    }
+
     public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
     {
         playerCardsUI = new List<CardUI>();

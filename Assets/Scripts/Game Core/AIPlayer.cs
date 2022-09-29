@@ -15,6 +15,7 @@ public class AIPlayer : Player
 
     public override void SetTurn(DealInfo info)
     {
+        base.SetTurn(info);
         playCard(info);
     }
 

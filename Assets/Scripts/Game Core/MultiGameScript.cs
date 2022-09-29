@@ -166,7 +166,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    private void MainPlayerTurn(DealInfo info)
+    private void MainPlayerTurn(int index,DealInfo info)
     {
         playerTimer = StartCoroutine(StartTimer());
     }
