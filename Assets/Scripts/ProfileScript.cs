@@ -30,8 +30,8 @@ public class ProfileScript : MenuScene
         //playerName.font = LanguageManager.Instance.GetFont();
 
         //score.text = GameManager.Instance.MyPlayer.Score.ToString();
-        levelFill.fillAmount = GameManager.Instance.MyPlayer.CurrentPogress;
-        level.text = GameManager.Instance.MyPlayer.Level.ToString();
+
+        //level.text = GameManager.Instance.MyPlayer.Level.ToString();
     }
 
     private void OnEnable()

@@ -29,6 +29,8 @@ public class MainPanelScript : MonoBehaviour
     Image avatar;
     [SerializeField]
     MenuScene Profile;
+    [SerializeField]
+    Image fillLevel;
 
     RectTransform coinsRect;
 
@@ -37,6 +39,11 @@ public class MainPanelScript : MonoBehaviour
     private void Awake()
     {
         coinsRect = coins.GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        fillLevel.fillAmount = (GameManager.Instance.MyPlayer.CurrentPogress + 1) / 2;
     }
 
     void Start()
