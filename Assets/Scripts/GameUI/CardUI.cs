@@ -42,7 +42,7 @@ public class CardUI : MonoBehaviour
 
     public void Pressed()
     {
-        //OnPressed?.Invoke(CardInfo);
+        OnPressed?.Invoke(CardInfo);
     }
 
     public void PointerDown()

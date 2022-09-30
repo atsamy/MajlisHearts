@@ -371,15 +371,15 @@ public class CardsUIManager : MonoBehaviour
             return false;
         if (trickInfo.TrickShape != card.Shape && player.HasShape(trickInfo.TrickShape) && !firstHand)
             return false;
-        if (trickInfo.roundNumber == 0)
-        {
-            if (card.Shape == CardShape.Heart)
-                return false;
-            if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
-                return false;
-        }
-        if (!trickInfo.heartBroken && card.Shape == CardShape.Heart && firstHand && !player.HasOnlyHearts())
-            return false;
+        //if (trickInfo.roundNumber == 0)
+        //{
+        //    if (card.Shape == CardShape.Heart)
+        //        return false;
+        //    if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
+        //        return false;
+        //}
+        //if (!trickInfo.heartBroken && card.Shape == CardShape.Heart && firstHand && !player.HasOnlyHearts())
+        //    return false;
 
         return true;
     }

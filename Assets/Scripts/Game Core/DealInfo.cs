@@ -6,7 +6,7 @@ using UnityEngine;
 public class DealInfo
 {
     public CardShape TrickShape;
-    public bool heartBroken;
+    //public bool heartBroken;
     public int roundNumber;
     public Dictionary<CardShape, int> ShapesOnGround;
     public List<Card> CardsDrawn;
@@ -18,7 +18,7 @@ public class DealInfo
     public DealInfo()
     {
         TrickShape = CardShape.Club;
-        heartBroken = false;
+        //heartBroken = false;
         roundNumber = 0;
 
         ShapesOnGround = new Dictionary<CardShape, int>();

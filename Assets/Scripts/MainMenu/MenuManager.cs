@@ -18,6 +18,8 @@ public class MenuManager : MonoBehaviour
     public MeetingPanel meetingPanel;
     public InvitePopup InvitePopup;
 
+    public Image timerFill;
+
     internal void OpenStore(int index)
     {
         StoreScene.Open(index);

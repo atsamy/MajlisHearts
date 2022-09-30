@@ -53,15 +53,15 @@ public class AIPlayer : Player
                 bool isTeamPlayer = checkIfTeamPlayer(info,hand);
 
 
-                if (OwnedCards.Contains(Card.QueenOfSpades) && info.roundNumber != 0 && !isTeamPlayer)
+                if (OwnedCards.Contains(Card.QueenOfSpades))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(Card.QueenOfSpades);
                 }
-                else if (OwnedCards.Contains(Card.TenOfDiamonds) && info.roundNumber != 0 && !isTeamPlayer)
+                else if (OwnedCards.Contains(Card.TenOfDiamonds))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(Card.TenOfDiamonds);
                 }
-                else if (specificShape.Count > 0 && info.roundNumber != 0 && !isTeamPlayer)
+                else if (specificShape.Count > 0)// && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     ChooseCard(specificShape.Last());
                 }
@@ -224,8 +224,8 @@ public class AIPlayer : Player
 
         foreach (var item in OwnedCards)
         {
-            if (!info.heartBroken && item.Shape == CardShape.Heart && !HasOnlyHearts())
-                continue;
+            //if (!info.heartBroken && item.Shape == CardShape.Heart && !HasOnlyHearts())
+            //    continue;
 
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);

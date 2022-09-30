@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
-    private const int FinishScore = 30;
+    private const int FinishScore = 150;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -257,26 +257,26 @@ public class GameScript : MonoBehaviour
         return isGameOver;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            List<Card> cards = new List<Card>();
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.T))
+    //    {
+    //        List<Card> cards = new List<Card>();
 
-            for (int i = 0; i < 4; i++)
-            {
-                foreach (var item in Players[i].OwnedCards)
-                {
-                    if (!cards.Contains(item))
-                        cards.Add(item);
-                    else
-                    {
-                        Debug.Log("dublicate card: " + item.ToString());
-                    }
-                }
-            }
-        }
-    }
+    //        for (int i = 0; i < 4; i++)
+    //        {
+    //            foreach (var item in Players[i].OwnedCards)
+    //            {
+    //                if (!cards.Contains(item))
+    //                    cards.Add(item);
+    //                else
+    //                {
+    //                    Debug.Log("dublicate card: " + item.ToString());
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     public void StartGame()
     {

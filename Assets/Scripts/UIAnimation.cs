@@ -68,9 +68,13 @@ public class AnimationBase
         await Task.Delay((int)(StartAfter * 100));
 
         if (Reverse)
+        {
             PlayReverse();
+        }
         else
+        {
             PlaySingle();
+        }
     }
     protected virtual void PlaySingle() { }
     protected virtual void PlayReverse() { }

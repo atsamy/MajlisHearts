@@ -15,10 +15,13 @@ public class LevelPanel : MonoBehaviour
     Image newLevelProgress;
 
     [SerializeField]
-    TextMeshProUGUI gemsText;
+    TextMeshProUGUI rankText;
 
     [SerializeField]
-    TextMeshProUGUI newGemsText;
+    TextMeshProUGUI gemsText;
+
+    //[SerializeField]
+    //TextMeshProUGUI newGemsText;
 
     [SerializeField]
     TextMeshProUGUI scoreText;
@@ -28,9 +31,6 @@ public class LevelPanel : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI coinsText;
-
-    [SerializeField]
-    TextMeshProUGUI newCoinsText;
 
     [SerializeField]
     TextMeshProUGUI levelText;
@@ -53,6 +53,23 @@ public class LevelPanel : MonoBehaviour
         scoreText.text = totalScore.ToString();
 
         gameObject.SetActive(true);
+
+        switch (rank)
+        {
+            case 0:
+                rankText.text = LanguageManager.Instance.GetString("1st");
+                break;
+            case 1:
+                rankText.text = LanguageManager.Instance.GetString("2nd");
+                break;
+            case 2:
+                rankText.text = LanguageManager.Instance.GetString("3rd");
+                break;
+            case 3:
+                rankText.text = LanguageManager.Instance.GetString("4th");
+                break;
+        }
+
         //this.nextPressed = nextPressed;
         int startPoints = GameManager.Instance.MyPlayer.Points;
         //totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
@@ -109,23 +126,21 @@ public class LevelPanel : MonoBehaviour
 
         while (timer < time)
         {
-            coinsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Coins - reward,
-                GameManager.Instance.Coins, time)).ToString();
-            newCoinsText.text = "+ " + Mathf.Round(Mathf.Lerp(reward,0, time)).ToString();
+            coinsText.text = Mathf.Round(Mathf.Lerp(0,reward, Mathf.Min(1f, time * 1.5f))).ToString();
+            //newCoinsText.text = "+ " + Mathf.Round(Mathf.Lerp(reward,0, time)).ToString();
 
-            gemsText.text = Mathf.Round(Mathf.Lerp(GameManager.Instance.Gems - gems,
-                GameManager.Instance.Gems, time)).ToString();
-            newGemsText.text = "+ " + Mathf.Round(Mathf.Lerp(gems, 0, time)).ToString();
+            gemsText.text = Mathf.Round(Mathf.Lerp(0,gems, Mathf.Max(0, time * 1.5f - 0.5f))).ToString();
+            //newGemsText.text = "+ " + Mathf.Round(Mathf.Lerp(gems, 0, time)).ToString();
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        coinsText.text = GameManager.Instance.Coins.ToString();
-        gemsText.text = GameManager.Instance.Gems.ToString();
+        coinsText.text = reward.ToString();
+        gemsText.text = gems.ToString();
 
-        newCoinsText.text = "+ 0";
-        newGemsText.text = "+ 0";
+        //newCoinsText.text = "+ 0";
+        //newGemsText.text = "+ 0";
 
 
     }

@@ -24,7 +24,7 @@ public class SettingsPanel : MenuScene
     public void SetLanguage(int languageIndex)
     {
         LanguageManager.Instance.SetLanguage((Language)languageIndex);
-        LanguageSetter[] languageSetters = GameObject.FindObjectsOfType<LanguageSetter>();
+        LanguageSetterTMP[] languageSetters = FindObjectsOfType<LanguageSetterTMP>();
 
         foreach (var item in languageSetters)
         {

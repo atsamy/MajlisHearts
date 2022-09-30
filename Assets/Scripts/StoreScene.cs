@@ -14,7 +14,9 @@ public class StoreScene : MenuScene
     [SerializeField]
     Transform arrow;
     [SerializeField]
-    ScrollRect storesItems;
+    ScrollRect[] storesItems;
+
+    ScrollRect currentScrollRect;
     //public int[] SCValues;
 
     public GameObject Loading;
@@ -23,7 +25,7 @@ public class StoreScene : MenuScene
     StoreContentLoader avatarContent;
     private void OnEnable()
     {
-        storesItems.content.localPosition = new Vector3(-2, 0);
+        currentScrollRect.content.localPosition = new Vector3(-2, 0);
     }
     void Start()
     {
@@ -53,6 +55,7 @@ public class StoreScene : MenuScene
 
     public void Open(int index)
     {
+        currentScrollRect = storesItems[index];
         Open();
         MenuManager.Instance.HideMain(false, false);
         TabPressed(index);

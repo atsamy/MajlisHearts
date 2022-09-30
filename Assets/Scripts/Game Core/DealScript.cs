@@ -70,8 +70,8 @@ public class DealScript
 
         cardsOnDeck.Add(playerIndex, card);
 
-        if (card.Shape == CardShape.Heart)
-            DealInfo.heartBroken = true;
+        //if (card.Shape == CardShape.Heart)
+        //    DealInfo.heartBroken = true;
 
         if (noOfCards == 1)
         {
@@ -115,8 +115,8 @@ public class DealScript
         //DealInfo.CardsDrawn.Add(card);
         DealInfo.ShapesOnGround[card.Shape]++;
 
-        if (card.Shape == CardShape.Heart)
-            DealInfo.heartBroken = true;
+        //if (card.Shape == CardShape.Heart)
+        //    DealInfo.heartBroken = true;
 
         if (cardsOnDeck.Count == 1)
         {

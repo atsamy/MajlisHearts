@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EditableItem : MonoBehaviour, IJsonTask
 {
     public string Code;
-    int counter = 0;
+    //int counter = 0;
 
     [SerializeField]
     Sprite[] varientIcons;
@@ -24,8 +24,11 @@ public class EditableItem : MonoBehaviour, IJsonTask
     [SerializeField]
     protected bool disableAnimation;
     //public bool Modified { set => modified = value; }
-
+    float timer = 0;
     protected bool modified;
+    bool mouseDown;
+
+    Vector3 clickPos;
 
     private void Awake()
     {
@@ -36,10 +39,31 @@ public class EditableItem : MonoBehaviour, IJsonTask
     {
         if (!MenuManager.Instance.MainPanel.IsOnMain)
             return;
+        mouseDown = true;
 
-        if (counter == 1)
+        clickPos = Input.mousePosition;
+        MenuManager.Instance.timerFill.transform.position = clickPos; //Camera.main.
+
+        StartCoroutine(resetTimer());
+    }
+
+    private void OnMouseUp()
+    {
+        mouseDown = false;
+    }
+
+
+    IEnumerator resetTimer()
+    {
+        timer = 1;
+        while (mouseDown)
         {
-            if (modified)
+            if (Vector3.Distance(Input.mousePosition, clickPos) > 5)
+                mouseDown = false;
+
+            timer -= Time.deltaTime;
+            MenuManager.Instance.timerFill.fillAmount = (1 - timer) / 1;
+            if (timer <= 0)
             {
                 TaskData task = new TaskData()
                 {
@@ -47,22 +71,15 @@ public class EditableItem : MonoBehaviour, IJsonTask
                     TargetItem = Code,
                     ActionType = ActionType.Change
                 };
-                MajlisScript.Instance.ShowEditableItem(task,false, selectedIndex);
+                MajlisScript.Instance.ShowEditableItem(task, false, selectedIndex);
+
+                mouseDown = false;
             }
-            //float itemPos = Camera.main.WorldToScreenPoint(transform.position).x / Screen.width;
-            //print(itemPos);
-            //EditorUI.Instance.ShowItems(Code, itemPos);
+
+            yield return null;
         }
-        else
-            counter = 1;
 
-        StartCoroutine(resetTimer());
-    }
-
-    IEnumerator resetTimer()
-    {
-        yield return new WaitForSeconds(0.5f);
-        counter = 0;
+        MenuManager.Instance.timerFill.fillAmount = 0;
     }
 
     public virtual void ResetToOriginal()
