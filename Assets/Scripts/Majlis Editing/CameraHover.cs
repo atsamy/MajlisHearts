@@ -84,6 +84,7 @@ public class CameraHover : MonoBehaviour
         locked = true;
         Vector3 tagetLocation = Location.position;
         tagetLocation.z = -20;
+        tagetLocation.y -= 1;
 
         transform.DOMove(tagetLocation, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() => 
         {

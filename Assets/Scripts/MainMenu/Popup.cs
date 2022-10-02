@@ -17,6 +17,7 @@ public class Popup : MonoBehaviour
 
     void Show(Action OnOKPressed)
     {
+        MenuManager.Instance.HideMain(true, true);
         gameObject.SetActive(true);
         OKPressed = OnOKPressed;
         ClosePressed = null;
@@ -50,14 +51,15 @@ public class Popup : MonoBehaviour
 
     public void Close()
     {
+        MenuManager.Instance.ShowMain();
         ClosePressed?.Invoke();
         gameObject.SetActive(false);
-
         SFXManager.Instance.PlayClip("Close");
     }
 
     public void OK()
     {
+        MenuManager.Instance.ShowMain();
         gameObject.SetActive(false);
         OKPressed?.Invoke();
         SFXManager.Instance.PlayClip("OK");

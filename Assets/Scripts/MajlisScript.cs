@@ -88,7 +88,7 @@ public class MajlisScript : MonoBehaviour
 
     public void ExecuteTask(TaskData task)
     {
-        if (task.Cost > GameManager.Instance.Coins)
+        if (task.Cost > GameManager.Instance.Gems)
         {
             MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
             {
@@ -171,6 +171,7 @@ public class MajlisScript : MonoBehaviour
             //taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
             editableItem.ChangeItem(0);
             TaskFinished?.Invoke();
+            SFXManager.Instance.PlayClip("Confirm");
         });
 
         taskPanel.ClosePanel();

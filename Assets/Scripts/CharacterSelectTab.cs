@@ -23,6 +23,6 @@ public class CharacterSelectTab : MonoBehaviour
     {
         print(name + " " + value);
         button.interactable = !value;
-        avatarFrame.sprite = avatarFrameSprites[value?1:0];
+        //avatarFrame.sprite = avatarFrameSprites[value?1:0];
     }
 }

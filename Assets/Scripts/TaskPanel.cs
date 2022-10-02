@@ -31,9 +31,6 @@ public class TaskPanel : MonoBehaviour
 
     private void InitTask()
     {
-        if (TasksManager.Instance.tasksCompleted)
-            return;
-
         //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
         currentTask = TasksManager.Instance.CurrentTask;
 
@@ -96,6 +93,11 @@ public class TaskPanel : MonoBehaviour
 
     public void Open()
     {
+        if (TasksManager.Instance.tasksCompleted)
+        {
+            MenuManager.Instance.Popup.ShowWithCode("taskdone");
+            return;
+        }
         taskPanel.SetActive(true);
         MenuManager.Instance.HideMain(false,true);
 
