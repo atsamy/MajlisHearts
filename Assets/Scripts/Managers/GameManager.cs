@@ -225,12 +225,20 @@ public class GameManager : MonoBehaviour
             AndroidNotificationCenter.CancelAllNotifications();
         }
     }
+
+    internal void SetMajlisName(string text)
+    {
+        MyPlayer.MajlisName = text;
+
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() { {"majlisName",text } });
+    }
 }
 
 [System.Serializable]
 public class PlayerInfo
 {
     public string Name;
+    public string MajlisName;
     public string Avatar;
     public int Points;
 

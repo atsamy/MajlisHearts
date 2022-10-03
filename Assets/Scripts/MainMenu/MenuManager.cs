@@ -132,6 +132,11 @@ public class MenuManager : MonoBehaviour
 
     public void OpenGameMode()
     {
+        if (!TutorialScript.IsTutorialDone)
+        {
+            MainPanel.HideHeader(true, true);
+            return;
+        }
         MainPanel.HideHeader(true,false);
         SFXManager.Instance.PlayClip("Open");
         GameModePanel.SetActive(true);

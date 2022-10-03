@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ArabicSupport;
+using TMPro;
+
 public class FixEntryText : MonoBehaviour
 {
     public Text text;

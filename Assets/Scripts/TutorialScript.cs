@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TutorialScript : MonoBehaviour
 {
@@ -45,6 +46,15 @@ public class TutorialScript : MonoBehaviour
     GameObject gameRules;
 
     [SerializeField]
+    GameObject majlisNamePanel;
+    [SerializeField]
+    InputField majlisNameText;
+    [SerializeField]
+    GameObject nameError;
+    [SerializeField]
+    GameObject GameModes;
+
+    [SerializeField]
     GameObject[] closeGamePanelBtns;
 
     int index = 0;
@@ -66,7 +76,8 @@ public class TutorialScript : MonoBehaviour
         if (!IsTutorialDone)
         {
             tutorial.SetActive(true);
-            text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
+            text.Play(LanguageManager.Instance.GetString("tutorial_" + index)
+                .Replace("{p}",GameManager.Instance.MyPlayer.Name));
         }
         else
         {
@@ -86,7 +97,12 @@ public class TutorialScript : MonoBehaviour
 
             switch (index)
             {
-                case 4:
+                case 5:
+                    majlisNamePanel.SetActive(true);
+                    characterPanel.SetActive(false);
+                    block = true;
+                    return;
+                case 8:
                     hand.gameObject.SetActive(true);
                     hand.position = todoButton.transform.position + Vector3.down * 145;
                     characterPanel.SetActive(false);
@@ -98,6 +114,7 @@ public class TutorialScript : MonoBehaviour
                     {
                         todoButton.transform.parent = originalParent;
 
+//                        GameModes.SetActive(true);
                         //fix this later
                         todoButton.onClick.RemoveAllListeners();
                         characterPanel.SetActive(true);
@@ -107,18 +124,15 @@ public class TutorialScript : MonoBehaviour
                         {
                             item.SetActive(false);
                         }
-                        //index++;
-                        //print(index);
 
                         block = false;
-                        //MenuManager.Instance.CloseMain();
-                        //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
                     });
+                    
                     return;
-
-                case 5:
-                    break;
-                case 6:
+                    //break;
+                //case 11:
+                //    break;
+                case 10:
                     bgBlock.SetActive(false);
                     hand.gameObject.SetActive(true);
                     hand.position = taskButton.transform.position + Vector3.down * 130;
@@ -128,6 +142,7 @@ public class TutorialScript : MonoBehaviour
 
                     taskButton.onClick.AddListener(() =>
                     {
+
                         hand.gameObject.SetActive(false);
                         MajlisScript.Instance.TaskFinished += () =>
                         {
@@ -139,7 +154,7 @@ public class TutorialScript : MonoBehaviour
                         };
                     });
                     return;
-                case 7:
+                case 11:
                     foreach (var item in closeToDo)
                     {
                         item.SetActive(true);
@@ -148,7 +163,7 @@ public class TutorialScript : MonoBehaviour
                     //PlayerPrefs.SetInt("tutorial", 2);
                     //finish tutorial
                     break;
-                case 8:
+                case 13:
                     hand.gameObject.SetActive(true);
                     hand.position = playButton.transform.position + Vector3.down * 155;
                     characterPanel.SetActive(false);
@@ -157,6 +172,8 @@ public class TutorialScript : MonoBehaviour
                     playButton.transform.parent = parent;
                     playButton.onClick.AddListener(() =>
                     {
+                        GameModes.SetActive(true);
+
                         playButton.transform.parent = originalParent;
 
                         originalParent = gameModePanel.transform.parent;
@@ -185,7 +202,7 @@ public class TutorialScript : MonoBehaviour
                     });
                     return;
 
-                case 10:
+                case 14:
                     gameModePanel.transform.parent = originalParent;
                     gameModePanel.transform.SetSiblingIndex(8);
 
@@ -195,33 +212,33 @@ public class TutorialScript : MonoBehaviour
                     pointer.gameObject.SetActive(true);
                     pointer.position = modeButtons[0].transform.position + Vector3.up * 10;
                     break;
-                case 11:
+                case 15:
                     modeButtons[0].transform.parent = originalParent;
                     originalParent = modeButtons[1].transform.parent;
                     modeButtons[1].transform.parent = parent;
 
                     pointer.position = modeButtons[1].transform.position + Vector3.up * 10;
                     break;
-                case 12:
+                case 16:
                     modeButtons[1].transform.parent = originalParent;
                     originalParent = modeButtons[2].transform.parent;
                     modeButtons[2].transform.parent = parent;
 
                     pointer.position = modeButtons[2].transform.position + Vector3.up * 10;
                     break;
-                case 13:
+                case 17:
                     modeButtons[2].transform.parent = originalParent;
 
                     gameModePanel.SetActive(false);
                     pointer.gameObject.SetActive(false);
                     break;
-                case 14:
-                    //gameModePanel.SetActive(true);
-                    block = true;
-                    gameRules.SetActive(true);
-                    characterPanel.SetActive(false);
-                    return;
-                case 15:
+                //case 17:
+                //    //gameModePanel.SetActive(true);
+                //    block = true;
+                //    gameRules.SetActive(true);
+                //    characterPanel.SetActive(false);
+                //    return;
+                case 18:
                     MenuManager.Instance.ShowMain();
 
                     originalParent = settingsBtn.parent;
@@ -233,7 +250,7 @@ public class TutorialScript : MonoBehaviour
                     hand.position = settingsBtn.transform.position + Vector3.down * 150;
                     // show pointer to settings
                     break;
-                case 16:
+                case 19:
                     foreach (var item in closeGamePanelBtns)
                     {
                         item.SetActive(true);
@@ -248,23 +265,10 @@ public class TutorialScript : MonoBehaviour
                     gameObject.SetActive(false);
 
                     IsTutorialDone = true;
-                    //PlayerPrefs.SetInt("tutorial", 1);
-                    //hand.gameObject.SetActive(true);
-                    //hand.position = modeButtons[2].transform.position + Vector3.left * 50;
-
-                    //gameModePanel.SetActive(true);
-
-                    //characterPanel.SetActive(false);
-                    //modeButtons[2].enabled = true;
-
-                    //modeButtons[2].onClick.AddListener(() =>
-                    //{
-                    //    //PlayerPrefs.SetInt("tutorial", 1);
-                    //});
-
                     return;
             }
-            text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
+            text.Play(LanguageManager.Instance.GetString("tutorial_" + index)
+                .Replace("{m}", GameManager.Instance.MyPlayer.MajlisName));
         }
     }
 
@@ -274,5 +278,18 @@ public class TutorialScript : MonoBehaviour
 
         characterPanel.SetActive(true);
         gameRules.SetActive(false);
+    }
+
+    public void SubmitMajlisName()
+    {
+        if (string.IsNullOrEmpty(majlisNameText.text) || majlisNameText.text.Length > 20)
+        {
+            nameError.SetActive(true);
+            return;
+        }
+        characterPanel.SetActive(true);
+        GameManager.Instance.SetMajlisName(majlisNameText.text);
+        majlisNamePanel.SetActive(false);
+        block = false;
     }
 }
