@@ -60,8 +60,10 @@ public class TypeText : MonoBehaviour
         while (index < content.Length)
         {
             index++;
-            text.text = content.Substring(0, index);
-
+            //if(LanguageManager.Instance.CurrentLanguage == Language.English)
+                text.text = content.Substring(0, index);
+            //else
+            //    text.text = content.Substring(content.Length - 1 - index, content.Length - 1);
 
             yield return new WaitForSeconds(0.02f);
         }
