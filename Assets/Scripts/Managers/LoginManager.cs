@@ -229,6 +229,9 @@ public class LoginManager : MonoBehaviour
                 case "TableTop":
                     GameManager.Instance.EquippedItem.Add("TableTop", item.Value.Value);
                     break;
+                case "majlisName":
+                    GameManager.Instance.MyPlayer.MajlisName = item.Value.Value;
+                    break;
                 //case "TaskIndex":
                 //    TasksManager.Instance.SetIndex(int.Parse(item.Value.Value));
                 //    break;
