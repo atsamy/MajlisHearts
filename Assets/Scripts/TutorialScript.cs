@@ -26,14 +26,18 @@ public class TutorialScript : MonoBehaviour
     GameObject[] closeToDo;
 
     [SerializeField]
-    Transform settingsBtn;
+    Button settingsBtn;
+    [SerializeField]
+    Button rulesBtn;
+    [SerializeField]
+    Button closeRulesBtn;
     //[SerializeField]
     //Transform taskPosition;
     [SerializeField]
     Button[] modeButtons;
 
-    [SerializeField]
-    GameObject gameModePanel;
+    //[SerializeField]
+    //GameObject gameModePanel;
 
     [SerializeField]
     Transform parent;
@@ -54,8 +58,8 @@ public class TutorialScript : MonoBehaviour
     [SerializeField]
     GameObject GameModes;
 
-    [SerializeField]
-    GameObject[] closeGamePanelBtns;
+    //[SerializeField]
+    //GameObject[] closeGamePanelBtns;
 
     int index = 0;
     public static bool IsTutorialDone
@@ -175,95 +179,56 @@ public class TutorialScript : MonoBehaviour
                         GameModes.SetActive(true);
 
                         playButton.transform.parent = originalParent;
-
-                        originalParent = gameModePanel.transform.parent;
-                        gameModePanel.transform.parent = parent;
                         playButton.onClick.RemoveAllListeners();
 
                         characterPanel.SetActive(true);
 
                         hand.gameObject.SetActive(false);
-
-                        foreach (var item in modeButtons)
-                        {
-                            item.enabled = false;
-                        }
-
-                        foreach (var item in closeGamePanelBtns)
-                        {
-                            item.SetActive(false);
-                        }
-                        //index++;
-                        //print(index);
-
                         block = false;
-
-                        //text.Play(LanguageManager.Instance.GetString("tutorial_" + index));
                     });
                     return;
 
                 case 14:
-                    gameModePanel.transform.parent = originalParent;
-                    gameModePanel.transform.SetSiblingIndex(8);
-
                     originalParent = modeButtons[0].transform.parent;
                     modeButtons[0].transform.parent = parent;
 
                     pointer.gameObject.SetActive(true);
-                    pointer.position = modeButtons[0].transform.position + Vector3.up * 10;
+                    pointer.position = modeButtons[0].transform.position;
                     break;
                 case 15:
                     modeButtons[0].transform.parent = originalParent;
                     originalParent = modeButtons[1].transform.parent;
                     modeButtons[1].transform.parent = parent;
 
-                    pointer.position = modeButtons[1].transform.position + Vector3.up * 10;
+                    pointer.position = modeButtons[1].transform.position;
                     break;
                 case 16:
                     modeButtons[1].transform.parent = originalParent;
                     originalParent = modeButtons[2].transform.parent;
                     modeButtons[2].transform.parent = parent;
 
-                    pointer.position = modeButtons[2].transform.position + Vector3.up * 10;
+                    pointer.position = modeButtons[2].transform.position;
                     break;
                 case 17:
                     modeButtons[2].transform.parent = originalParent;
-
-                    gameModePanel.SetActive(false);
+                    MenuManager.Instance.ShowMain();
+                    GameModes.SetActive(false);
                     pointer.gameObject.SetActive(false);
                     break;
-                //case 17:
-                //    //gameModePanel.SetActive(true);
-                //    block = true;
-                //    gameRules.SetActive(true);
-                //    characterPanel.SetActive(false);
-                //    return;
                 case 18:
-                    MenuManager.Instance.ShowMain();
+                    originalParent = settingsBtn.transform.parent;
+                    settingsBtn.transform.parent = parent;
 
-                    originalParent = settingsBtn.parent;
-                    settingsBtn.parent = parent;
-
-                    characterPanel.SetActive(true);
+                    characterPanel.SetActive(false);
 
                     hand.gameObject.SetActive(true);
                     hand.position = settingsBtn.transform.position + Vector3.down * 150;
-                    // show pointer to settings
-                    break;
-                case 19:
-                    foreach (var item in closeGamePanelBtns)
-                    {
-                        item.SetActive(true);
-                    }
+                    block = true;
 
-                    foreach (var item in modeButtons)
-                    {
-                        item.enabled = true;
-                    }
-                    settingsBtn.parent = originalParent;
-
+                    settingsBtn.onClick.AddListener(SettingsClicked);
+                    return;
+                case 20:
                     gameObject.SetActive(false);
-
                     IsTutorialDone = true;
                     return;
             }
@@ -277,7 +242,31 @@ public class TutorialScript : MonoBehaviour
         block = false;
 
         characterPanel.SetActive(true);
-        gameRules.SetActive(false);
+        closeRulesBtn.onClick.RemoveListener(RulesDone);
+    }
+
+    public void SettingsClicked()
+    {
+        settingsBtn.transform.parent = originalParent;
+
+        originalParent = rulesBtn.transform.parent;
+        rulesBtn.transform.parent = parent;
+
+        //characterPanel.SetActive(false);
+        settingsBtn.onClick.RemoveListener(SettingsClicked);
+
+        hand.position = rulesBtn.transform.position + Vector3.down * 150;
+        rulesBtn.onClick.AddListener(RulesClicked);
+    }
+
+    public void RulesClicked()
+    {
+        //originalParent = rulesBtn.transform.parent;
+        rulesBtn.transform.parent = originalParent;
+
+        rulesBtn.onClick.RemoveListener(RulesClicked);
+        closeRulesBtn.onClick.AddListener(RulesDone);
+        hand.gameObject.SetActive(false);
     }
 
     public void SubmitMajlisName()

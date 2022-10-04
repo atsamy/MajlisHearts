@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
-
+using DG.Tweening;
 //using UnityEngine.Analytics;
 
 public class LoginManager : MonoBehaviour
@@ -19,7 +19,8 @@ public class LoginManager : MonoBehaviour
 
     [SerializeField]
     Popup noConnection;
-
+    [SerializeField]
+    Image fillBar;
     PlayfabManager playfab;
     int loginValue;
 
@@ -103,6 +104,7 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnTitleDataReturned(Dictionary<string, string> titleData)
     {
+        fillBar.DOFillAmount(0.8f, 0.2f);
         foreach (var item in titleData)
         {
             if (item.Key == "Tasks")
@@ -115,6 +117,7 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnCatalogReturned(List<CatalogItem> catalogItems)
     {
+        fillBar.DOFillAmount(1f, 0.2f);
         Dictionary<string, List<CatalogueItem>> AllItems = new Dictionary<string, List<CatalogueItem>>();
 
         foreach (var item in catalogItems)
@@ -170,6 +173,7 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo,bool newUser)
     {
+        fillBar.DOFillAmount(0.2f, 0.2f);
         if (newUser)
         {
             this.newUser = true;
@@ -190,6 +194,7 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnInventoryReturned(Dictionary<string, int> currency, List<ItemInstance> inventory)
     {
+        fillBar.DOFillAmount(0.4f, 0.2f);
         GameManager.Instance.Coins = currency["SC"];
         GameManager.Instance.Gems = currency["HC"];
         GameManager.Instance.Inventory = new List<InventoryItem>();
@@ -204,6 +209,7 @@ public class LoginManager : MonoBehaviour
 
     private void Playfab_OnUserDataReturned(Dictionary<string, UserDataRecord> userData)
     {
+        fillBar.DOFillAmount(0.6f, 0.2f);
         //GameManager.Instance.Customization = new List<InventoryItem>();
         TasksManager.Instance.FinishedTasks = new List<FinishedTask>();
 

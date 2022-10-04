@@ -46,7 +46,7 @@ public class TasksManager : MonoBehaviour
         data.Add("Customization", JsonUtility.ToJson(wrappedCustomization));
 
         //toggle save data from here
-        //PlayfabManager.instance.SetPlayerData(data);
+        PlayfabManager.instance.SetPlayerData(data);
     }
 }
 

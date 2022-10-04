@@ -9,6 +9,8 @@ public class ProfileScript : MenuScene
 {
     [SerializeField]
     TextMeshProUGUI playerName;
+    [SerializeField]
+    TextMeshProUGUI majlisName;
     //[SerializeField]
     //TextMeshProUGUI score;
     [SerializeField]
@@ -27,11 +29,7 @@ public class ProfileScript : MenuScene
     private void Start()
     {
         playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
-        //playerName.font = LanguageManager.Instance.GetFont();
-
-        //score.text = GameManager.Instance.MyPlayer.Score.ToString();
-
-        //level.text = GameManager.Instance.MyPlayer.Level.ToString();
+        majlisName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.MajlisName, false, false);
     }
 
     private void OnEnable()
