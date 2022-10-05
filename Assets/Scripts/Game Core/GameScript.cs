@@ -103,7 +103,7 @@ public class GameScript : MonoBehaviour
 
     private void MainPlayerTurn(int index, DealInfo info)
     {
-        playerTimer = StartCoroutine(StartTimer());
+        //playerTimer = StartCoroutine(StartTimer());
     }
 
     protected IEnumerator StartTimer()

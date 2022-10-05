@@ -127,6 +127,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     Players[i] = new Player(i);
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
+                    Players[i].Name = playersOrder[i];
                 }
 
                 //if (lookUpActors.ContainsKey(i))

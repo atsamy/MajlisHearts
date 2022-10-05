@@ -31,7 +31,7 @@ public class TutorialScript : MonoBehaviour
     [SerializeField]
     Button rulesBtn;
     [SerializeField]
-    Button closeRulesBtn;
+    Button[] closeRulesBtn;
     //[SerializeField]
     //Transform taskPosition;
     [SerializeField]
@@ -243,7 +243,11 @@ public class TutorialScript : MonoBehaviour
         block = false;
 
         characterPanel.SetActive(true);
-        closeRulesBtn.onClick.RemoveListener(RulesDone);
+
+        for (int i = 0; i < closeRulesBtn.Length; i++)
+        {
+            closeRulesBtn[i].onClick.RemoveListener(RulesDone);
+        }
     }
 
     public void SettingsClicked()
@@ -266,7 +270,12 @@ public class TutorialScript : MonoBehaviour
         rulesBtn.transform.parent = originalParent;
 
         rulesBtn.onClick.RemoveListener(RulesClicked);
-        closeRulesBtn.onClick.AddListener(RulesDone);
+
+        for (int i = 0; i < closeRulesBtn.Length; i++)
+        {
+            closeRulesBtn[i].onClick.AddListener(RulesDone);
+        }
+
         hand.gameObject.SetActive(false);
     }
 
