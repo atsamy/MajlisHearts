@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using ArabicSupport;
 
 public class TutorialScript : MonoBehaviour
 {
@@ -81,7 +82,7 @@ public class TutorialScript : MonoBehaviour
         {
             tutorial.SetActive(true);
             text.Play(LanguageManager.Instance.GetString("tutorial_" + index)
-                .Replace("{p}",GameManager.Instance.MyPlayer.Name));
+                .Replace("{p}",ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name)));
         }
         else
         {
@@ -233,7 +234,7 @@ public class TutorialScript : MonoBehaviour
                     return;
             }
             text.Play(LanguageManager.Instance.GetString("tutorial_" + index)
-                .Replace("{m}", GameManager.Instance.MyPlayer.MajlisName));
+                .Replace("{m}", ArabicFixer.Fix(GameManager.Instance.MyPlayer.MajlisName)));
         }
     }
 

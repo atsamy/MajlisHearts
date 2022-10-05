@@ -56,7 +56,7 @@ public class DealResult : MonoBehaviour
         }
         else
         {
-            Footer.SetActive(false);
+            //Footer.SetActive(false);
             //buttonText.text = LanguageManager.Instance.GetString("nextround");
             timerButton.SetActive(true);
             StartCoroutine(CountNextRound(5));

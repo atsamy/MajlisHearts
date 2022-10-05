@@ -34,7 +34,12 @@ public class CardsUIManager : MonoBehaviour
 
     public void SetMainPlayer(MainPlayer mainPlayer)
     {
-        mainPlayer.OnForcePlay += () => { playableCards[Random.Range(0, playableCards.Count)].Pressed(); };
+        mainPlayer.OnForcePlay += () =>
+        {
+            playableCards[Random.Range(0, playableCards.Count)].Pressed();
+        };
+
+        playersDetails[0].SetPlayer(mainPlayer.Avatar,mainPlayer.Name,0);
     }
 
     private void Awake()

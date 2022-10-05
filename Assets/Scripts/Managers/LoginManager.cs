@@ -301,7 +301,8 @@ public class LoginManager : MonoBehaviour
                 {
                     GameManager.Instance.MyPlayer.Name = name;
                     //playfab.GetCatalog();
-                    playfab.GetTitleData();
+                    //playfab.GetTitleData();
+                    playfab.GetUserInventory();
                     //StartCoroutine(LoadYourAsyncScene());
                 }
                 else

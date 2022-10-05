@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using ArabicSupport;
 
 public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, IMatchmakingCallbacks, IOnEventCallback
 {
@@ -28,6 +30,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     Image[] avatars;
     [SerializeField]
     Button toggleStatusBtn;
+    [SerializeField]
+    TextMeshProUGUI majlisName;
 
     List<playerStatus> playersStatuse;
 
@@ -127,7 +131,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         Open(roomName, entryfee);
         isHost = true;
-
+        majlisName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.MajlisName);
         playersOrder[0] = GameManager.Instance.MyPlayer.Name;
 
         for (int i = 1; i < playersOrder.Length; i++)
@@ -187,6 +191,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
             roomOptions.CustomRoomProperties["TableTop"] = GameManager.Instance.EquippedItem["TableTop"];
             roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
+            roomOptions.CustomRoomProperties["MajlisName"] = GameManager.Instance.MyPlayer.MajlisName;
 
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
@@ -345,6 +350,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         List<FinishedTask> customization = JsonUtility.FromJson<Wrapper<FinishedTask>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
         MajlisScript.Instance.ResetTask();
         MajlisScript.Instance.AdjustMajlis(customization);
+
+        majlisName.text = ArabicFixer.Fix(PhotonNetwork.CurrentRoom.CustomProperties["MajlisName"].ToString());
 
         foreach (var item in PhotonNetwork.PlayerList)
         {

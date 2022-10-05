@@ -13,12 +13,14 @@ public class FriendListPanel : MonoBehaviour
     GameObject friendItem;
     [SerializeField]
     Transform content;
+    //[SerializeField]
+    //GameObject addFriendPanel;
     [SerializeField]
-    GameObject addFriendPanel;
+    InputField FriendNameEntry;
     [SerializeField]
     GameObject error;
-    [SerializeField]
-    Text friendName;
+    //[SerializeField]
+    //Text friendName;
     [SerializeField]
     MuliGameOptions gameOptions;
 
@@ -86,31 +88,30 @@ public class FriendListPanel : MonoBehaviour
         //MenuManager.Instance.CurrentScene = friendListPanel.gameObject;
     }
 
-    public void OpenAddPanel()
-    {
-        addFriendPanel.SetActive(true);
-    }
-
-    public void CloseAddPanel()
-    {
-        addFriendPanel.SetActive(false);
-    }
+    //public void OpenAddPanel()
+    //{
+    //    addFriendPanel.SetActive(true);
+    //}
 
     public void AddFriend()
     {
-        PlayfabManager.instance.AddFriend(friendName.text, (success) =>
+        if (string.IsNullOrEmpty(FriendNameEntry.text))
+            return;
+
+        PlayfabManager.instance.AddFriend(FriendNameEntry.text, (success) =>
         {
             if (success)
             {
-                friendName.text = "";
-                CloseAddPanel();
+                FriendNameEntry.text = "";
+                //CloseAddPanel();
                 //add friend
                 RemoveAllFriends();
                 AddAllFriends();
             }
             else
             {
-                error.SetActive(true);
+                MenuManager.Instance.Popup.ShowWithCode("nomatchname");
+                //error.SetActive(true);
             }
         });
     }

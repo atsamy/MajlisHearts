@@ -17,7 +17,7 @@ public class StoreItem : MonoBehaviour
     public void Set(string cost, int quantity, int index, Action<int> action)
     {
         this.Cost.text = cost;
-        ((Text)ItemValue).text = quantity.ToString();
+        ((TextMeshProUGUI)ItemValue).text = quantity.ToString();
 
         this.index = index;
         purchaseAction = action;

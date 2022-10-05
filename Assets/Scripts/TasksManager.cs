@@ -15,15 +15,11 @@ public class TasksManager : MonoBehaviour
 
     public TaskData CurrentTask { get => Tasks[FinishedTasks.Count]; }
     public bool tasksCompleted { get => FinishedTasks.Count >= Tasks.Length; }
+
     private void Awake()
     {
         Instance = this;
     }
-
-    //internal void SetIndex(int value)
-    //{
-    //    currentIndex = value;
-    //}
 
     public void TaskFinished(FinishedTask task,bool newTask)
     {
@@ -83,7 +79,7 @@ public enum ActionName
     Install = 4,
     Remove = 5,
     Hang = 6,
-    Lay
+    Lay = 7
 }
 
 public enum ActionType

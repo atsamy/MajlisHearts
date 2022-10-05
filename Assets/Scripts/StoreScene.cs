@@ -65,14 +65,15 @@ public class StoreScene : MenuScene
     {
         base.Open();
         MenuManager.Instance.HideMain(false, false);
-        Purchaser.Instance.GetAllPrices((prices) =>
+        Purchaser.Instance.GetAllPrices((prices,amounts) =>
         {
             for (int i = 0; i < CurrencyStoreItems.Length; i++)
             {
-                CurrencyStoreItems[i].Set(prices[i], Purchaser.Instance.HCAmount[i], i, (index) =>
+                //Debug.Log("item " + i + " price " + prices[i] + " amount " + amounts[i]);
+                CurrencyStoreItems[i].Set(prices[i], amounts[i], i, (index) =>
                 {
                     SFXManager.Instance.PlayClip("Coins");
-                    GameManager.Instance.AddCoins(Purchaser.Instance.HCAmount[index]);
+                    GameManager.Instance.AddCoins(amounts[index]);
                     //SFXManager.Instance.PlayClip("Buy");
                 });
             }

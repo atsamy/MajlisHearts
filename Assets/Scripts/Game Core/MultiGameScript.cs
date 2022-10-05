@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
-    public float TurnDuration = 40;
+    float turnDuration = 40;
 
     PunTurnManager turnManager;
     int passedCardsNo;
@@ -28,16 +28,18 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     const int checkDoubleCode = 46;
     const int messageCode = 47;
     const int recievedCardsCode = 48;
+    const int playerTurnCode = 49;
 
     public delegate void messageRecieved(int playerIndex, object message);
     public static messageRecieved OnMessageRecieved;
 
     Dictionary<int, int> lookUpActors;
+
     void Start()
     {
         turnManager = gameObject.AddComponent<PunTurnManager>();
         turnManager.TurnManagerListener = this;
-        turnManager.TurnDuration = TurnDuration;
+        turnManager.TurnDuration = turnDuration;
 
         passedCardsNo = 0;
         Players = new Player[4];
@@ -124,26 +126,28 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 else
                 {
                     Players[i] = new Player(i);
-                }
-
-                if (lookUpActors.ContainsKey(i))
-                {
-                    Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
                 }
-                else
-                {
-                    Players[i].Name = playersOrder[i];
-                    Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
-                }
+
+                //if (lookUpActors.ContainsKey(i))
+                //{
+                //    Players[i].Name = playersOrder[i];
+                //    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
+                //}
+                //else
+                //{
+                //    Players[i].Name = playersOrder[i];
+                //    Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
+                //}
             }
 
             Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             Players[i].OnDoubleCard += GameScript_OnDoubleCard;
+            Players[i].OnPlayerTurn += GameScript_OnPlayerTurn;
         }
 
-        myPlayer.OnPlayerTurn += MainPlayerTurn;
+        //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         Deal.SetPlayers(Players);
         Deal.OnEvent += Deal_OnEvent;
@@ -166,10 +170,23 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    private void MainPlayerTurn(int index,DealInfo info)
+    void GameScript_OnPlayerTurn(int index,DealInfo info)
     {
-        playerTimer = StartCoroutine(StartTimer());
+        if (index == MainPlayerIndex)
+        {
+            playerTimer = StartCoroutine(StartTimer());
+        }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+            PhotonNetwork.RaiseEvent(playerTurnCode, index, eventOptionsCards, SendOptions.SendReliable);
+        }
     }
+
+    //private void MainPlayerTurn(int index,DealInfo info)
+    //{
+    //    playerTimer = StartCoroutine(StartTimer());
+    //}
 
     private void GameScript_OnDoubleCard(Card card, bool value, int index)
     {
@@ -304,7 +321,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 else
                 {
-                    print("recieved my cards");
+                    //print("recieved my cards");
                     myPlayer.AddPassCards(passedCards);
 
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
@@ -335,7 +352,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int playerIndex;// = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 KeyValuePair<bool, Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData, out playerIndex);
                 Deal.DoubleCard(cardValue.Value, cardValue.Key);
-                print("double card index:" + playerIndex);
+                //print("double card index:" + playerIndex);
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
             case checkDoubleCode:
@@ -349,6 +366,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 break;
             case recievedCardsCode:
                 InrementPassedCards();
+                break;
+            case playerTurnCode:
+                int turnIndex = int.Parse(photonEvent.CustomData.ToString());
+
+                if (turnIndex != MainPlayerIndex)
+                    Players[turnIndex].SetTurn(Deal.DealInfo);
+
                 break;
         }
     }

@@ -90,9 +90,9 @@ public class MajlisScript : MonoBehaviour
     {
         if (task.Cost > GameManager.Instance.Gems)
         {
-            MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
+            MenuManager.Instance.Popup.ShowWithCode("nogems", () =>
             {
-                MenuManager.Instance.OpenStore(0);
+                //MenuManager.Instance.OpenStore(0);
             });
             return;
         }

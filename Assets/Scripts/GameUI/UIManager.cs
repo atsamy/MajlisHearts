@@ -283,7 +283,7 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnCardReady(int playerIndex, Card card)
     {
-        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("Card");
+        ((GameSFXManager)SFXManager.Instance).PlayClipRandom("Card");
         int index = CorrectIndex(playerIndex);
 
         if (GameManager.Instance.GameType != GameType.Single)
@@ -298,9 +298,11 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnPlayerTurn(int playerIndex, DealInfo info)
     {
+        print("player Index:" + playerIndex);
         if (GameManager.Instance.GameType != GameType.Single)
         {
             int index = CorrectIndex(playerIndex);
+            print(index);
             cardsUIManager.WaitPlayer(index);
         }
         if (playerIndex == game.MainPlayerIndex)
