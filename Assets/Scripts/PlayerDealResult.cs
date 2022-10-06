@@ -34,7 +34,7 @@ public class PlayerDealResult : MonoBehaviour
 
         //if (inGame)
         //{
-        score.text = player.TotalScore.ToString() + (inGame ? player.Score : 0);
+        score.text = (player.TotalScore + (inGame ? player.Score : 0)).ToString();
         //}
         //else
         //{
