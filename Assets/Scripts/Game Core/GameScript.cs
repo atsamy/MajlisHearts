@@ -178,10 +178,10 @@ public class GameScript : MonoBehaviour
     {
         Deal.GameScript_OnCardReady(playerIndex, card);
 
-        if (playerIndex == 0)
-        {
-            StopCoroutine(playerTimer);
-        }
+        //if (playerIndex == 0)
+        //{
+            //StopCoroutine(playerTimer);
+        //}
     }
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
@@ -212,7 +212,7 @@ public class GameScript : MonoBehaviour
 
     public void SetTrickFinished(int winningHand)
     {
-        ((GameSFXManager)GameSFXManager.Instance).PlayClipRandom("CardDraw");
+        GameSFXManager.Instance.PlayClipRandom("CardDraw");
         OnTrickFinished?.Invoke(winningHand);
     }
 

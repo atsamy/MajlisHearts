@@ -17,23 +17,18 @@ public class StoreScene : MenuScene
     ScrollRect[] storesItems;
 
     ScrollRect currentScrollRect;
-    //public int[] SCValues;
-
     public GameObject Loading;
 
     [SerializeField]
     StoreContentLoader avatarContent;
+
     private void OnEnable()
     {
         currentScrollRect.content.localPosition = new Vector3(-2, 0);
     }
+
     void Start()
     {
-        //for (int i = 0; i < Tabs.Length; i++)
-        //{
-        //    Tabs[i].Pressed(i == 0);
-        //}
-
         WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 50, 0, (index) =>
         {
             AdsManager.Instance.ShowRewardedAd((result)=>

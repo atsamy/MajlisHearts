@@ -28,6 +28,7 @@ public class PausePanel : MonoBehaviour
         }
         else
         {
+            SFXManager.Instance.PlayClip("Popup");
             confirmExitPopup.ShowWithCode("confirmexitmessage", () =>
             {
                 UIManager.Instance.LeaveRoom();

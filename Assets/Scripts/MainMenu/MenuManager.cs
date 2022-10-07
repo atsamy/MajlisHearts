@@ -25,7 +25,8 @@ public class MenuManager : MonoBehaviour
         StoreScene.Open(index);
     }
 
-    public Popup Popup;
+    [SerializeField]
+    Popup popup;
 
     public MenuScene CurrentScene { get; internal set; }
 
@@ -166,5 +167,20 @@ public class MenuManager : MonoBehaviour
             CurrentScene.gameObject.SetActive(false);
             CurrentScene = null;
         }
+    }
+
+    public void OpenPopup(string code,Action OnOkPressed = null,Action OnCancelPressed = null)
+    {
+        HideMain(true, true);
+        popup.ShowWithCode(code, ()=>
+        {
+            OnOkPressed?.Invoke();
+            SFXManager.Instance.PlayClip("OK");
+        }, ()=>
+        {
+            OnCancelPressed?.Invoke();
+            SFXManager.Instance.PlayClip("Close");
+        });
+        SFXManager.Instance.PlayClip("Popup");
     }
 }

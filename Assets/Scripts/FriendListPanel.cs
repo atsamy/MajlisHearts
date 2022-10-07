@@ -110,7 +110,7 @@ public class FriendListPanel : MonoBehaviour
             }
             else
             {
-                MenuManager.Instance.Popup.ShowWithCode("nomatchname");
+                MenuManager.Instance.OpenPopup("nomatchname");
                 //error.SetActive(true);
             }
         });
@@ -138,7 +138,7 @@ public class FriendListPanel : MonoBehaviour
         if (!isPlayersSelected)
         {
             //fix
-            MenuManager.Instance.Popup.ShowWithCode("choosefriends", null);
+            MenuManager.Instance.OpenPopup("choosefriends");
             return;
         }
 

@@ -95,7 +95,7 @@ public class TaskPanel : MonoBehaviour
     {
         if (TasksManager.Instance.tasksCompleted)
         {
-            MenuManager.Instance.Popup.ShowWithCode("taskdone");
+            MenuManager.Instance.OpenPopup("taskdone");
             return;
         }
         taskPanel.SetActive(true);

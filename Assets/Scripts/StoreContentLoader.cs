@@ -54,13 +54,13 @@ public class StoreContentLoader : MonoBehaviour
 
                    if (catalogueItems[index].Price > GameManager.Instance.Coins)
                    {
-                       MenuManager.Instance.Popup.ShowWithCode("nocoins", () =>
+                       MenuManager.Instance.OpenPopup("nocoins", () =>
                        {
                            transform.GetComponentInParent<StoreScene>().TabPressed(0);
                        });
                        return;
                    }
-                   MenuManager.Instance.Popup.ShowWithCode("confirmbuy", () =>
+                   MenuManager.Instance.OpenPopup("confirmbuy", () =>
                    {
                        SFXManager.Instance.PlayClip("Buy");
 

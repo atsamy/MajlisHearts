@@ -15,63 +15,48 @@ public class Popup : MonoBehaviour
 
     //public Message[] Messages;
 
-    void Show(Action OnOKPressed)
+    void Show(Action OnOKPressed = null,Action OnCanelPressed = null)
     {
-        if (MenuManager.Instance != null)
-            MenuManager.Instance.HideMain(true, true);
-
         gameObject.SetActive(true);
         OKPressed = OnOKPressed;
-        ClosePressed = null;
-
-        SFXManager.Instance.PlayClip("Popup");
+        ClosePressed = OnCanelPressed;
     }
 
-    public void ShowWithCode(string code, Action OnOKPressed = null)
-    {
-        Show(OnOKPressed);
-        Message.text = LanguageManager.Instance.GetString(code);
-        //Message.font = LanguageManager.Instance.GetFont();
-    }
+    //public void ShowWithCode(string code, Action OnOKPressed = null)
+    //{
+    //    Show(OnOKPressed);
+    //    Message.text = LanguageManager.Instance.GetString(code);
+    //    //Message.font = LanguageManager.Instance.GetFont();
+    //}
 
-    public void ShowWithMessage(string message, Action OnOKPressed = null)
+    //public void ShowWithMessage(string message, Action OnOKPressed = null)
+    //{
+    //    Show(OnOKPressed);
+    //    Message.text = message;
+    //}
+
+    public void ShowWithMessage(string message, Action OnOKPressed = null, Action OnClosePressed = null)
     {
-        Show(OnOKPressed);
+        Show(OnOKPressed,OnClosePressed);
         Message.text = message;
     }
 
-    public void ShowWithMessage(string message, Action OnOKPressed, Action OnClosePressed)
+    public void ShowWithCode(string code, Action OnOKPressed = null, Action OnClosePressed = null)
     {
-        ShowWithMessage(message, OnOKPressed);
-        ClosePressed = OnClosePressed;
-    }
-
-    public void ShowWithCode(string message, Action OnOKPressed, Action OnClosePressed)
-    {
-        ShowWithCode(message, OnOKPressed);
-        ClosePressed = OnClosePressed;
+        Show(OnOKPressed, OnClosePressed);
+        Message.text = LanguageManager.Instance.GetString(code);
     }
 
     public void Close()
     {
-        if (MenuManager.Instance != null)
-            MenuManager.Instance.ShowMain();
-
         ClosePressed?.Invoke();
         gameObject.SetActive(false);
-
-        SFXManager.Instance.PlayClip("Close");
     }
 
     public void OK()
     {
-        if (MenuManager.Instance != null)
-            MenuManager.Instance.ShowMain();
-
         gameObject.SetActive(false);
         OKPressed?.Invoke();
-
-        SFXManager.Instance.PlayClip("OK");
     }
 
 }

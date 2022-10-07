@@ -21,14 +21,19 @@ public class AIPlayer : Player
 
     async void playCard(DealInfo info)
     {
-        int dedduct = (3000 - OwnedCards.Count * 230);
-        int time = FakePlayer ? Random.Range(1000, 4000 - dedduct) : 1000;
-        await Task.Delay(time);
+        //int dedduct = (3000 - OwnedCards.Count * 230);
+        //int time = FakePlayer ? Random.Range(1000, 4000 - dedduct) : 1000;
+        //await Task.Delay(time);
+        if(!FakePlayer)
+            await Task.Delay(1000);
 
         int hand = info.CardsOntable.Count;
 
         if (hand == 0 && info.roundNumber == 0)
         {
+            if (FakePlayer)
+                await Task.Delay(600);
+
             ChooseCard(new Card(CardShape.Club, CardRank.Two));
             return;
         }
@@ -37,6 +42,9 @@ public class AIPlayer : Player
 
         if (hand == 0)
         {
+            if (FakePlayer)
+                await Task.Delay(Mathf.Max(800, OwnedCards.Count * Random.Range(250,300)));
+
             ChooseCard(ChooseFirstHand(info));
         }
         else
@@ -45,6 +53,8 @@ public class AIPlayer : Player
 
             if (specificShape.Count > 0)
             {
+                if (FakePlayer)
+                    await Task.Delay(Mathf.Max(800, specificShape.Count * Random.Range(300, 400)));
                 ChooseCard(ChooseSpecificShape(specificShape, info));
             }
             else
@@ -55,18 +65,26 @@ public class AIPlayer : Player
 
                 if (OwnedCards.Contains(Card.QueenOfSpades))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
+                    if (FakePlayer)
+                        await Task.Delay(Random.Range(800, 1200));
                     ChooseCard(Card.QueenOfSpades);
                 }
                 else if (OwnedCards.Contains(Card.TenOfDiamonds))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
+                    if (FakePlayer)
+                        await Task.Delay(Random.Range(800, 1200));
                     ChooseCard(Card.TenOfDiamonds);
                 }
                 else if (specificShape.Count > 0)// && info.roundNumber != 0 && !isTeamPlayer)
                 {
+                    if (FakePlayer)
+                        await Task.Delay(Random.Range(800, 1200));
                     ChooseCard(specificShape.Last());
                 }
                 else
                 {
+                    if (FakePlayer)
+                        await Task.Delay(Mathf.Max(800, OwnedCards.Count * Random.Range(200, 400)));
                     ChooseCard(ChooseRiskyCards(info));
                 }
             }
@@ -210,7 +228,6 @@ public class AIPlayer : Player
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);
         }
-
         //Debug.Log("AI Cards:"+ OwnedCards.Count + " " + AllCards.Count);
 
         AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -230,7 +247,6 @@ public class AIPlayer : Player
             int risk = GetRiskfactor(item, info);
             AllCards.Add(item, risk);
         }
-
         AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
         if (AllCards.Count == 0)
