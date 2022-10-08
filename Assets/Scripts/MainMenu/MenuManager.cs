@@ -133,7 +133,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenGameMode()
     {
-        if (!TutorialScript.IsTutorialDone)
+        if (!GameManager.Instance.IsTutorialDone)
         {
             MainPanel.HideHeader(true, true);
             return;

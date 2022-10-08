@@ -22,14 +22,19 @@ public class MajlisScript : MonoBehaviour
 
     private void Start()
     {
+        SetMyMajlis();
+    }
+
+    public void SetMyMajlis()
+    {
         AdjustMajlis(TasksManager.Instance.FinishedTasks);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-            ResetTask();
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.R))
+    //        ResetTask();
+    //}
 
     public void AdjustMajlis(List<FinishedTask> finishedTasks)
     {
@@ -60,9 +65,9 @@ public class MajlisScript : MonoBehaviour
         }
     }
 
-    public void ResetTask()
+    public void ResetTask(List<FinishedTask> tasks)
     {
-        foreach (var task in TasksManager.Instance.FinishedTasks)
+        foreach (var task in tasks)
         {
             switch (task.ActionType)
             {

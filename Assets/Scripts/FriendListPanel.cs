@@ -124,7 +124,6 @@ public class FriendListPanel : MonoBehaviour
     public void SendInvite()
     {
         bool isPlayersSelected = false;
-        friendListPanel.gameObject.SetActive(false);
 
         foreach (var item in friendsList)
         {
@@ -141,6 +140,8 @@ public class FriendListPanel : MonoBehaviour
             MenuManager.Instance.OpenPopup("choosefriends");
             return;
         }
+
+        friendListPanel.gameObject.SetActive(false);
 
         gameOptions.OpenFriendGame((cost, type) =>
         {

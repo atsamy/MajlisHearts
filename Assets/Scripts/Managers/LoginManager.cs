@@ -238,6 +238,9 @@ public class LoginManager : MonoBehaviour
                 case "Points":
                     GameManager.Instance.MyPlayer.Points = int.Parse(item.Value.Value);
                     break;
+                case "tutorial":
+                    GameManager.Instance.IsTutorialDone = true;
+                    break;
             }
         }
         playfab.GetTitleData();

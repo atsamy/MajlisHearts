@@ -320,7 +320,15 @@ public class UIManager : MonoBehaviour
     public void OpenEmojiPanel()
     {
         GameSFXManager.Instance.PlayClip("Click");
-        emojiPanel.SetActive(true);
+
+        if (!emojiPanel.activeSelf)
+        {
+            emojiPanel.SetActive(true);
+        }
+        else
+        {
+            emojiPanel.SetActive(false);
+        }
     }
 
     public void SendEmoji(int index)

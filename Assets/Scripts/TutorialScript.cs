@@ -63,11 +63,11 @@ public class TutorialScript : MonoBehaviour
     //GameObject[] closeGamePanelBtns;
 
     int index = 0;
-    public static bool IsTutorialDone
-    {
-        get => PlayerPrefs.GetInt("tutorial", 0) == 1;
-        set => PlayerPrefs.SetInt("tutorial", value ? 1 : 0);
-    }
+    //public static bool IsTutorialDone
+    //{
+    //    get => PlayerPrefs.GetInt("tutorial", 0) == 1;
+    //    set => PlayerPrefs.SetInt("tutorial", value ? 1 : 0);
+    //}
     Transform originalParent;
 
     bool block;
@@ -78,7 +78,7 @@ public class TutorialScript : MonoBehaviour
     {
         //tutorialIndex = PlayerPrefs.GetInt("tutorial", 0);
 
-        if (!IsTutorialDone)
+        if (!GameManager.Instance.IsTutorialDone)
         {
             tutorial.SetActive(true);
             text.Play(LanguageManager.Instance.GetString("tutorial_" + index)
@@ -230,7 +230,12 @@ public class TutorialScript : MonoBehaviour
                     return;
                 case 20:
                     gameObject.SetActive(false);
-                    IsTutorialDone = true;
+
+                    PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>()
+                    {
+                        { "tutorial" , "done" }
+                    });
+                    //IsTutorialDone = true;
                     return;
             }
             text.Play(LanguageManager.Instance.GetString("tutorial_" + index)

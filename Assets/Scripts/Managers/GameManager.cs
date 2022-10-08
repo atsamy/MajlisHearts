@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, List<CatalogueItem>> Catalog;
     [HideInInspector]
     public Dictionary<string, string> EquippedItem;
-
+    internal bool IsTutorialDone;
     public const float LevelFactor = 1000f;
 
     void Awake()

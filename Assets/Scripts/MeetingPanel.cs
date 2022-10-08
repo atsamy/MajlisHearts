@@ -41,6 +41,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     string[] playersOrder;
 
+    List<FinishedTask> roomCustomization;
+
     int entryFee;
 
     private void OnEnable()
@@ -347,9 +349,9 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         Debug.Log("Joined private room successfully");
 
         //apply new customization
-        List<FinishedTask> customization = JsonUtility.FromJson<Wrapper<FinishedTask>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
-        MajlisScript.Instance.ResetTask();
-        MajlisScript.Instance.AdjustMajlis(customization);
+        roomCustomization = JsonUtility.FromJson<Wrapper<FinishedTask>>(PhotonNetwork.CurrentRoom.CustomProperties["Customization"].ToString()).array.ToList();
+        MajlisScript.Instance.ResetTask(TasksManager.Instance.FinishedTasks);
+        MajlisScript.Instance.AdjustMajlis(roomCustomization);
 
         majlisName.text = ArabicFixer.Fix(PhotonNetwork.CurrentRoom.CustomProperties["MajlisName"].ToString());
 
@@ -457,6 +459,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public override void Close()
     {
+        if (!isHost)
+        {
+            MajlisScript.Instance.ResetTask(roomCustomization);
+            MajlisScript.Instance.SetMyMajlis();
+        }
+
         base.Close();
         PhotonNetwork.LeaveRoom();
     }

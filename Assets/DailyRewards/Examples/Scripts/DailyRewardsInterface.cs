@@ -276,7 +276,7 @@ namespace NiobiumStudios
                 var isRewardAvailable = dailyRewards.availableReward > 0;
 
                 UpdateUI();
-                canvas.gameObject.SetActive((showWhenNotAvailable ||  isRewardAvailable) && TutorialScript.IsTutorialDone);
+                canvas.gameObject.SetActive((showWhenNotAvailable ||  isRewardAvailable) && GameManager.Instance.IsTutorialDone);
 
                 if (canvas.gameObject.activeSelf)
                 {
