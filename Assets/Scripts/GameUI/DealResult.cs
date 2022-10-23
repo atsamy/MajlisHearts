@@ -88,6 +88,11 @@ public class DealResult : MonoBehaviour
 
                 }
 
+                if (!inGame)
+                {
+                    currentPlayers[i].PlayAnimation();
+                }
+
                 ranks[i].text = ranksText[rankIndex];
 
                 if (sortedPlayers[i] is MainPlayer)

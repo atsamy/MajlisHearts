@@ -45,6 +45,10 @@ public class PlayerDealResult : MonoBehaviour
         SetPlayer(player.Name == GameManager.Instance.MyPlayer.Name);
     }
 
+    public void PlayAnimation()
+    {
+        GetComponent<UIAnimation>().Play();
+    }
     //IEnumerator countScore(float startScore, float endScore)
     //{
     //    float timer = 1;

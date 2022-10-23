@@ -95,10 +95,7 @@ public class MajlisScript : MonoBehaviour
     {
         if (task.Cost > GameManager.Instance.Gems)
         {
-            MenuManager.Instance.OpenPopup("nogems", () =>
-            {
-                //MenuManager.Instance.OpenStore(0);
-            });
+            MenuManager.Instance.OpenPopup("nogems",true,false);
             return;
         }
 

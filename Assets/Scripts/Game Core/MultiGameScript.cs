@@ -542,7 +542,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (otherPlayer.ActorNumber == 1)
+        {
+            UIManager.Instance.HostLeft();
+        }
+        else if (PhotonNetwork.IsMasterClient)
         {
             int index = otherPlayer.ActorNumber - 1;
 
@@ -557,6 +561,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 aiPlayer.SetTurn(Deal.DealInfo);
             }
         }
+        //else
+        //{
+        //    if (otherPlayer.IsMasterClient)
+        //    {
+
+        //    }
+        //}
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)

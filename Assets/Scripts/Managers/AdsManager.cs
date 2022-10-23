@@ -25,7 +25,11 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
     {
         get
         {
-            return Advertisement.IsReady("rewardedVideo");
+#if UNITY_ANDROID
+            return Advertisement.IsReady("Rewarded_Android");
+#elif UNITY_IOS
+            return Advertisement.IsReady("Rewarded_iOS");
+#endif
         }
     }
 
@@ -54,9 +58,9 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
 
         //        rewardBasedVideo.OnAdLoaded += RewardBasedVideo_OnAdLoaded;
 #if UNITY_ANDROID
-        Advertisement.Initialize("3921385");
+        Advertisement.Initialize("4981388");
 #elif UNITY_IOS
-        Advertisement.Initialize("3921384");
+        Advertisement.Initialize("4981389");
 #endif
 
         Advertisement.AddListener(this);
@@ -161,13 +165,21 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
         {
             if (item == AdsNetwork.Unity)
             {
-                if (Advertisement.IsReady("rewardedVideo"))
+#if UNITY_ANDROID
+                if (Advertisement.IsReady("Rewarded_Android"))
                 {
-                    //var options = new ShowOptions { resultCallback = HandleShowResult };
                     FinishedVideo = HandleShowResult;
-                    Advertisement.Show("rewardedVideo");
+                    Advertisement.Show("Rewarded_Android");
                     break;
                 }
+#elif UNITY_IOS
+                if (Advertisement.IsReady("Rewarded_iOS"))
+                {
+                    FinishedVideo = HandleShowResult;
+                    Advertisement.Show("Rewarded_iOS");
+                    break;
+                }
+#endif
             }
             //else if (item == AdsNetwork.AdMob)
             //{

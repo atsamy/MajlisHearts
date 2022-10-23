@@ -75,8 +75,15 @@ public class PlayfabManager : MonoBehaviour
         var request = new LoginWithIOSDeviceIDRequest { DeviceId = SystemInfo.deviceUniqueIdentifier, CreateAccount = true };
 
         PlayFabClientAPI.LoginWithIOSDeviceID(request,
-            (result) => SetupSessionData(result),
-            (error) => Debug.Log("Login Error: " + error.ErrorMessage));
+            (result) => SetupSessionData((titleData) =>
+            {
+                OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
+            }),
+            (error) =>
+            {
+                Debug.Log("Login Error: " + error.ErrorMessage);
+                OnConnectionError?.Invoke(error.ErrorMessage);
+            });
 #endif
     }
 
@@ -103,6 +110,7 @@ public class PlayfabManager : MonoBehaviour
         }, (errorResult) =>
         {
             Debug.Log(errorResult.GenerateErrorReport());
+            DeviceLogin();
         });
     }
 

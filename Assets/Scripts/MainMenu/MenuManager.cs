@@ -169,9 +169,9 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void OpenPopup(string code,Action OnOkPressed = null,Action OnCancelPressed = null)
+    public void OpenPopup(string code, bool hideCoins = true, bool hideGems = true, Action OnOkPressed = null,Action OnCancelPressed = null)
     {
-        HideMain(true, true);
+        HideMain(hideGems, hideCoins);
         popup.ShowWithCode(code, ()=>
         {
             OnOkPressed?.Invoke();
@@ -183,4 +183,10 @@ public class MenuManager : MonoBehaviour
         });
         SFXManager.Instance.PlayClip("Popup");
     }
+
+    //public void OpenPopup(string code,bool hideCoins,bool hideGems, Action OnOkPressed = null, Action OnCancelPressed = null)
+    //{
+    //    HideMain(hideGems, hideCoins);
+    //    OpenPopup(code,OnOkPressed,OnCancelPressed);
+    //}
 }

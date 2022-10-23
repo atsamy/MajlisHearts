@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using ArabicSupport;
+using System;
 
 public class Multiplayer : MonoBehaviour
 {
@@ -20,11 +21,15 @@ public class Multiplayer : MonoBehaviour
     [SerializeField]
     Material hostMaterial;
     [SerializeField]
+    Material waitingMaterial;
+    Sprite defaultSprite;
+    [SerializeField]
     Sprite[] frameSprites;
 
     private void Start()
     {
         status.text = LanguageManager.Instance.GetString("waiting");
+        defaultSprite = playerAvatar.sprite;
     }
 
     public void Set(string name, bool isMe, bool isHost)
@@ -46,5 +51,13 @@ public class Multiplayer : MonoBehaviour
         }
 
         playerAvatar.sprite = isMe ? AvatarManager.Instance.playerAvatar : AvatarManager.Instance.GetPlayerAvatar(name);
+    }
+
+    internal void Reset()
+    {
+        status.text = LanguageManager.Instance.GetString("waiting");
+        status.fontMaterial = waitingMaterial;
+        playerAvatar.sprite = defaultSprite;
+        playerName.text = string.Empty;
     }
 }

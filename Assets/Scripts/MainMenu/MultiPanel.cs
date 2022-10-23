@@ -40,10 +40,12 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         SFXManager.Instance.PlayClip("Close");
         PhotonNetwork.RemoveCallbackTarget(this);
 
-        if (PhotonNetwork.IsConnected)
-            PhotonNetwork.Disconnect();
+        PhotonNetwork.LeaveRoom();
 
-        IsconnectedToMaster = false;
+        foreach (var item in playerEntries)
+        {
+            item.Reset();
+        }
 
         roomCreated = false;
         readyToJoin = false;
@@ -176,11 +178,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     }
 
     bool readyToJoin;
-
-    //public void ReadyToJoin()
-    //{
-    //    LoginPanel.SetActive(false);
-    //}
 
     public void JoinOrCreateRoom()
     {

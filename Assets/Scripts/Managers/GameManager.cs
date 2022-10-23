@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+#if UNITY_ANDROID
 using Unity.Notifications.Android;
+#elif UNITY_IOS
+using Unity.Notifications.iOS;
+#endif
 using NiobiumStudios;
 
 [DefaultExecutionOrder(-2)]
@@ -184,6 +188,7 @@ public class GameManager : MonoBehaviour
 
     public void OnApplicationFocus(bool focus)
     {
+        #if UNITY_ANDROID
         if (!focus)
         {
             AndroidNotificationChannel notificationChannel = new AndroidNotificationChannel()
@@ -224,6 +229,7 @@ public class GameManager : MonoBehaviour
         {
             AndroidNotificationCenter.CancelAllNotifications();
         }
+        #endif
     }
 
     internal void SetMajlisName(string text)

@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour
     Image tableTop;
     [SerializeField]
     GameObject scoresHolder;
+    [SerializeField]
+    Popup hostLeftPopup;
 
     MainPlayer mainPlayer;
 
@@ -298,7 +300,7 @@ public class UIManager : MonoBehaviour
 
     private void Player_OnPlayerTurn(int playerIndex, DealInfo info)
     {
-        print("player Index:" + playerIndex);
+        //print("player Index:" + playerIndex);
         if (GameManager.Instance.GameType != GameType.Single)
         {
             int index = CorrectIndex(playerIndex);
@@ -413,5 +415,13 @@ public class UIManager : MonoBehaviour
         waitingPanel.Show();
         mainPlayer.PassCards(selectedPassCards);
         //scoresHolder.SetActive(true);
+    }
+
+    internal void HostLeft()
+    {
+        hostLeftPopup.ShowWithCode("hostleftMessage", ()=>
+        {
+            GoToMainMenu();
+        });
     }
 }

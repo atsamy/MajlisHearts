@@ -30,7 +30,7 @@ public class StoreContentLoader : MonoBehaviour
 
     private void LoadCategory(string category)
     {
-        List<CatalogueItem> catalogueItems = GameManager.Instance.Catalog.First(a => a.Key == category).Value;
+        List<CatalogueItem> catalogueItems = GameManager.Instance.Catalog.First(a => a.Key == category).Value.OrderBy(a => a.Price).ToList();
         initContent = new List<ContentStoreItem>();
 
         for (int i = 0; i < catalogueItems.Count; i++)
@@ -54,13 +54,13 @@ public class StoreContentLoader : MonoBehaviour
 
                    if (catalogueItems[index].Price > GameManager.Instance.Coins)
                    {
-                       MenuManager.Instance.OpenPopup("nocoins", () =>
+                       MenuManager.Instance.OpenPopup("nocoins", false, false,() =>
                        {
                            transform.GetComponentInParent<StoreScene>().TabPressed(0);
                        });
                        return;
                    }
-                   MenuManager.Instance.OpenPopup("confirmbuy", () =>
+                   MenuManager.Instance.OpenPopup("confirmbuy",false,false, () =>
                    {
                        SFXManager.Instance.PlayClip("Buy");
 

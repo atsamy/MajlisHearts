@@ -235,6 +235,7 @@ public class TutorialScript : MonoBehaviour
                     {
                         { "tutorial" , "done" }
                     });
+                    GameManager.Instance.IsTutorialDone = true;
                     //IsTutorialDone = true;
                     return;
             }

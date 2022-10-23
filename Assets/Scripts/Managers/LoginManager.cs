@@ -72,7 +72,7 @@ public class LoginManager : MonoBehaviour
         
         loginValue = PlayerPrefs.GetInt("login", 0);
 
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        if (Application.platform == RuntimePlatform.Android)// || Application.platform == RuntimePlatform.IPhonePlayer)
         {
             InitPlayGames();
             AccountLogin();
@@ -187,6 +187,7 @@ public class LoginManager : MonoBehaviour
         else
         {
             GameManager.Instance.MyPlayer.Avatar = userInfo.AvatarUrl;
+            GameManager.Instance.EquippedItem.Add("Avatar", userInfo.AvatarUrl);
             GameManager.Instance.MyPlayer.Name = userInfo.DisplayName;
             playfab.GetUserInventory();
         }

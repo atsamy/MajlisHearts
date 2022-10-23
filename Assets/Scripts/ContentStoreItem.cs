@@ -47,6 +47,7 @@ public class ContentStoreItem : StoreItem
 
     public void Owned()
     {
+        Cost.gameObject.SetActive(true);
         purchaseAction = equipAction;
         purchaseBtn.interactable = true;
         Cost.text = LanguageManager.Instance.GetString("owned");
@@ -55,6 +56,7 @@ public class ContentStoreItem : StoreItem
 
     public void Equiped()
     {
+        Cost.gameObject.SetActive(true);
         Cost.text = LanguageManager.Instance.GetString("equipped");
         purchaseBtn.interactable = false;
         costParent.SetActive(false);

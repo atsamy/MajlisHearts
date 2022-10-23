@@ -29,14 +29,14 @@ public class StoreScene : MenuScene
 
     void Start()
     {
-        WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 50, 0, (index) =>
+        WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 100, 0, (index) =>
         {
             AdsManager.Instance.ShowRewardedAd((result)=>
             {
                 if (result)
                 {
                     SFXManager.Instance.PlayClip("Coins");
-                    GameManager.Instance.AddCoins(Purchaser.Instance.HCAmount[index]);
+                    GameManager.Instance.AddCoins(100);
                 }
             });
         });

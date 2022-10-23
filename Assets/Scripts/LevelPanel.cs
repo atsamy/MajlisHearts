@@ -5,14 +5,21 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using System;
+using ArabicSupport;
 
 public class LevelPanel : MonoBehaviour
 {
+    [SerializeField]
+    Image avatarImage;
+
     [SerializeField]
     Image levelProgress;
 
     [SerializeField]
     Image newLevelProgress;
+
+    [SerializeField]
+    TextMeshProUGUI playerName;
 
     [SerializeField]
     TextMeshProUGUI rankText;
@@ -46,13 +53,13 @@ public class LevelPanel : MonoBehaviour
 
     public void Open(int rank,int totalScore, Action next)
     {
+        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
         nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
-
         nextPressed = next;
-
         scoreText.text = totalScore.ToString();
-
         gameObject.SetActive(true);
+
+        avatarImage.sprite = AvatarManager.Instance.playerAvatar;
 
         switch (rank)
         {
@@ -83,13 +90,21 @@ public class LevelPanel : MonoBehaviour
         levelProgress.fillAmount = currentProgress;
         newLevelProgress.fillAmount = currentProgress;
 
-
-
+        if (rank == 0)
+        {
+            GameSFXManager.Instance.PlayClip("Win");
+        }
+        else
+        {
+            GameSFXManager.Instance.PlayClip("Lose");
+        }
 
         int reward = GameManager.Instance.GetRewardAndSave(rank);
         int gems = GameManager.Instance.GetGemsAndSave(rank);
 
-        StartCoroutine(CountNumbers(gems, reward, 1f));
+        coinsText.text = reward.ToString();
+        gemsText.text = gems.ToString();
+        //StartCoroutine(CountNumbers(gems, reward, 1f));
 
         float progress = GameManager.Instance.AddPoints(score);
         float totalProgress = MathF.Min(1, currentProgress + progress);

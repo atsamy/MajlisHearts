@@ -80,7 +80,7 @@ public class MuliGameOptions : MenuScene
 
         if (EntryFees[entryIndex] > GameManager.Instance.Coins)
         {
-            MenuManager.Instance.OpenPopup("nocoins", () =>
+            MenuManager.Instance.OpenPopup("nocoins",false,true, () =>
             {
                 MenuManager.Instance.OpenStore(0);
             });
