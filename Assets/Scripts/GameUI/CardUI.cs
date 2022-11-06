@@ -47,7 +47,7 @@ public class CardUI : MonoBehaviour
 
     public void PointerDown()
     {
-        if (!button.interactable)
+        if (!button.interactable || !button.enabled)
             return;
 
         offSet = transform.position - Input.mousePosition;
@@ -77,7 +77,7 @@ public class CardUI : MonoBehaviour
 
     public void PointerUp()
     {
-        if (!button.interactable)
+        if (!button.interactable || !button.enabled)
             return;
 
         drag = false;
@@ -101,5 +101,6 @@ public class CardUI : MonoBehaviour
     public void DisableButton()
     {
         button.enabled = false;
+        //button.interactable = false;
     }
 }

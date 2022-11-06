@@ -51,6 +51,8 @@ public class UIManager : MonoBehaviour
     GameObject emojiPanel;
     bool init;
 
+    bool gameOver;
+
     void Awake()
     {
         Instance = this;
@@ -94,7 +96,7 @@ public class UIManager : MonoBehaviour
     internal void SetDoubleCard(Card card, bool value)
     {
         if (doubleCardCount == 1)
-            waitingPanel.gameObject.SetActive(true);
+            waitingPanel.Show();
 
         mainPlayer.SetDoubleCard(card, value);
     }
@@ -122,7 +124,7 @@ public class UIManager : MonoBehaviour
         scoresHolder.SetActive(false);
         emojiButton.SetActive(false);
 
-
+        gameOver = isGameOver;
         if (isGameOver)
         {
             DealFinishedPanel.ShowRound(game.Players,false,true, (rank) =>
@@ -419,8 +421,12 @@ public class UIManager : MonoBehaviour
 
     internal void HostLeft()
     {
+        if (gameOver)
+            return;
+
         hostLeftPopup.ShowWithCode("hostleftMessage", ()=>
         {
+            GameManager.Instance.AddCoins(GameManager.Instance.Bet);
             GoToMainMenu();
         });
     }

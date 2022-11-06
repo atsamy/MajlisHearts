@@ -7,7 +7,7 @@ using System;
 
 public class CameraHover : MonoBehaviour
 {
-    Vector3 startPosition;
+    //Vector3 startPosition;
     bool locked;
 
     //Vector3 originalPosition;
@@ -18,8 +18,18 @@ public class CameraHover : MonoBehaviour
     [SerializeField]
     Vector2 maxBounds;
 
+    Vector3 prevPos;
+
+    Vector3 velocity;
+
     [SerializeField]
     float hoverSpeed = 5;
+    new Camera camera;
+
+    private void Start()
+    {
+        camera = GetComponent<Camera>();
+    }
 
     void LateUpdate()
     {
@@ -31,15 +41,32 @@ public class CameraHover : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            startPosition = Input.mousePosition;
+            prevPos = Input.mousePosition;
         }
         else if (Input.GetMouseButton(0))
         {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x - startPosition.x, Input.mousePosition.y - startPosition.y, 0);
-            transform.position += mousePosition.normalized * Time.deltaTime * hoverSpeed * Mathf.Clamp(mousePosition.sqrMagnitude / 100000,1,3);
- 
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x,minBounds.x, maxBounds.x),
-                Mathf.Clamp(transform.position.y,minBounds.y, maxBounds.y), -20);
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x - prevPos.x, Input.mousePosition.y - prevPos.y, 0);
+            float cameraHeight = camera.orthographicSize * 2 / Screen.height;
+            float cameraWidth = camera.orthographicSize * 2 * camera.aspect / Screen.width;
+            Vector3 moveDelta = new Vector3(mousePosition.x * cameraWidth, mousePosition.y * cameraHeight, 0);
+
+            transform.position -= moveDelta;
+            prevPos = Input.mousePosition;
+            velocity = mousePosition;
+
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, minBounds.x, maxBounds.x),
+                Mathf.Clamp(transform.position.y, minBounds.y, maxBounds.y), -20);
+        }
+        else
+        {
+            if (velocity.magnitude > 0.1f)
+            {
+                transform.position -= velocity * Time.deltaTime;
+                velocity -= velocity * Time.deltaTime * 5;
+
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x,minBounds.x,maxBounds.x),
+                    Mathf.Clamp(transform.position.y, minBounds.y, maxBounds.y), -20);
+            }
         }
     }
 

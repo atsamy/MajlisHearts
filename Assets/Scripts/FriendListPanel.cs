@@ -35,6 +35,8 @@ public class FriendListPanel : MonoBehaviour
         friendsList = new Dictionary<string, FriendListItem>();
 
         AddAllFriends();
+
+        //ChatManager.up
     }
 
     private void AddAllFriends()
@@ -45,6 +47,7 @@ public class FriendListPanel : MonoBehaviour
             //friendsInfo = friends;
             for (int i = 0; i < friends.Count; i++)
             {
+                //bug here
                 friendsInfo.Add(friends[i].Profile.DisplayName,friends[i].Profile.AvatarUrl);
                 print(friends[i].TitleDisplayName + " " + friends[i].Profile.AvatarUrl);
                 AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
@@ -66,6 +69,8 @@ public class FriendListPanel : MonoBehaviour
         {
             Destroy(content.GetChild(i).gameObject);
         }
+
+        friendsInfo.Clear();
     }
 
     private void ChatManager_OnPlayerStatusUpdate(string user, int status)

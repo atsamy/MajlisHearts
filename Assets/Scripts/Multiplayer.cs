@@ -26,6 +26,9 @@ public class Multiplayer : MonoBehaviour
     [SerializeField]
     Sprite[] frameSprites;
 
+    public string PlayerName { get; private set; }
+    public bool IsSet { get; private set; }
+
     private void Start()
     {
         status.text = LanguageManager.Instance.GetString("waiting");
@@ -34,6 +37,9 @@ public class Multiplayer : MonoBehaviour
 
     public void Set(string name, bool isMe, bool isHost)
     {
+        PlayerName = name;
+        IsSet = true;
+
         playerName.text = ArabicFixer.Fix(name,false,false);
         gameObject.SetActive(true);
 
@@ -59,5 +65,6 @@ public class Multiplayer : MonoBehaviour
         status.fontMaterial = waitingMaterial;
         playerAvatar.sprite = defaultSprite;
         playerName.text = string.Empty;
+        playerFrame.sprite = frameSprites[1];
     }
 }

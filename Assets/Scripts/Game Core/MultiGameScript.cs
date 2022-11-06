@@ -307,10 +307,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 if (PhotonNetwork.IsMasterClient)
                 {
                     int senderIndex = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
-
                     int recieverIndex = (senderIndex + 1) % 4;
-
-                    //print("reciever: " + recieverIndex + " senderIndex " + senderIndex);
 
                     if (Players[senderIndex].IsPlayer)
                     {
@@ -326,8 +323,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     //print("recieved my cards");
                     myPlayer.AddPassCards(passedCards);
 
-                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
-                    PhotonNetwork.RaiseEvent(recievedCardsCode, null, raiseEventOptions, SendOptions.SendReliable);
+                    //RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
+                    //PhotonNetwork.RaiseEvent(recievedCardsCode, null, raiseEventOptions, SendOptions.SendReliable);
                 }
                 break;
             case gameReadyCode:
@@ -366,9 +363,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 OnMessageRecieved?.Invoke(index, photonEvent.CustomData);
                 break;
-            case recievedCardsCode:
-                InrementPassedCards();
-                break;
+            //case recievedCardsCode:
+            //    InrementPassedCards();
+            //    break;
             case playerTurnCode:
                 int turnIndex = int.Parse(photonEvent.CustomData.ToString());
 
@@ -526,8 +523,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         else
         {
             Players[recieverIndex].AddPassCards(cards);
-            InrementPassedCards();
         }
+
+        InrementPassedCards();
     }
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)

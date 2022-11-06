@@ -26,7 +26,7 @@ public class TaskPanel : MonoBehaviour
 
     private void Awake()
     {
-        InitTask();
+        //InitTask();
     }
 
     private void InitTask()
@@ -93,6 +93,8 @@ public class TaskPanel : MonoBehaviour
 
     public void Open()
     {
+        InitTask();
+
         if (TasksManager.Instance.tasksCompleted)
         {
             MenuManager.Instance.OpenPopup("taskdone");

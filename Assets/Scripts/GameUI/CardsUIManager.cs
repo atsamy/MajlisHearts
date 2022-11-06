@@ -12,7 +12,7 @@ public class CardsUIManager : MonoBehaviour
 
     GameObject cardBack;
 
-    public Transform[] CardsHolder;
+    public PlayerCardsLayout[] CardsHolder;
     //[SerializeField]
     //PassCardsPanel passCardsPanel;
     [SerializeField]
@@ -27,8 +27,8 @@ public class CardsUIManager : MonoBehaviour
 
     [SerializeField]
     PlayerDetails[] playersDetails;
-    [SerializeField]
-    PlayerCardsLayout playerCards;
+
+    //PlayerCardsLayout playerCards;
 
     //Dictionary<Card, Sprite> cardSprites;
 
@@ -78,7 +78,7 @@ public class CardsUIManager : MonoBehaviour
 
         for (int i = 0; i < 13; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
+            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
@@ -111,12 +111,12 @@ public class CardsUIManager : MonoBehaviour
             playerCardsUI[i].transform.SetSiblingIndex(i);
         }
 
-        playerCards.SetLocations();
+        CardsHolder[0].SetLocations();
     }
 
     public void SetCardLocations()
     {
-        playerCards.SetLocations();
+        CardsHolder[0].SetLocations();
     }
 
     internal void AddDoubledCard(Card card, int index)
@@ -142,7 +142,7 @@ public class CardsUIManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0]);
+            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
             newCard.transform.localPosition = new Vector3(i * 230 - 230,400,0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
@@ -173,7 +173,7 @@ public class CardsUIManager : MonoBehaviour
             });
 
             cardUI.transform.rotation = Quaternion.identity;
-            playerCards.SetLocations();
+            CardsHolder[0].SetLocations();
         }
         else
         {
@@ -203,7 +203,7 @@ public class CardsUIManager : MonoBehaviour
     public void ReturnToStack(CardUI cardUI)
     {
         playerCardsUI.Add(cardUI);
-        cardUI.transform.SetParent(CardsHolder[0]);
+        cardUI.transform.SetParent(CardsHolder[0].transform);
         //selectedPassCards.Remove(cardUI.CardInfo);
         UIManager.Instance.RemoveCard(cardUI);
         cardUI.PassCard = false;
@@ -218,7 +218,9 @@ public class CardsUIManager : MonoBehaviour
     public void CardsPlayed(int playerIndex, Card card)
     {
         //bug here
-        Transform playedCard = CardsHolder[playerIndex].GetChild(Random.Range(0, CardsHolder[playerIndex].childCount));
+        Transform playedCard = CardsHolder[playerIndex].transform.GetChild(Random.Range(0, CardsHolder[playerIndex].transform.childCount));
+
+        CardsHolder[playerIndex].SetLocations();
 
         playedCard.SetParent(DeckCardsPosition[playerIndex]);
         DeckCardsPosition[playerIndex].SetAsLastSibling();
@@ -292,7 +294,7 @@ public class CardsUIManager : MonoBehaviour
         }
 
         RemoveDoubleIcon(cardUI.CardInfo, 0);
-        playerCards.SetLocations();
+        CardsHolder[0].SetLocations();
     }
 
     public void RemoveCards(int winningHand)
@@ -318,27 +320,29 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddCards()
     {
-        AddVerticalCards(CardsHolder[1], cardBack);
-        AddVerticalCards(CardsHolder[3], cardBack);
+        AddVerticalCards(CardsHolder[1], cardBack,90);
+        AddVerticalCards(CardsHolder[3], cardBack,-90);
         AddHorizontalCards(CardsHolder[2], cardBack);
     }
 
-    void AddVerticalCards(Transform parent, GameObject CardBack)
+    void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack,int rotation)
     {
+        parent.IsVertical = true;
         for (int i = 0; i < 13; i++)
         {
-            GameObject newCard = Instantiate(CardBack, parent);
+            GameObject newCard = Instantiate(CardBack, parent.transform);
             newCard.transform.localPosition = new Vector3(0, (i - 6) * Spacing);
-            newCard.transform.eulerAngles = new Vector3(0, 0, 90);
+            newCard.transform.eulerAngles = new Vector3(0, 0, rotation);
         }
     }
 
-    void AddHorizontalCards(Transform parent, GameObject CardBack)
+    void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack)
     {
         for (int i = 0; i < 13; i++)
         {
-            GameObject newCard = Instantiate(CardBack, parent);
+            GameObject newCard = Instantiate(CardBack, parent.transform);
             newCard.transform.localPosition = new Vector3((i - 6) * Spacing, 0);
+            newCard.transform.eulerAngles = new Vector3(0, 0, 180);
         }
     }
 

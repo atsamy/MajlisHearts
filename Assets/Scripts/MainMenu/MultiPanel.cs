@@ -26,14 +26,16 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     const int AiAdded = 26;
     const int sendAllPlayers = 27;
 
-    bool roomCreated;
-
+    bool readyToJoin;
+    Coroutine AIcoroutine;
     public int GameEntryFee = 50;
     bool skipCreateAI;
     int currentIndex;
     List<PlayerInfo> playerInfos;
     string[] aiNames;
     public TextAsset Names;
+
+    bool rejoinRoom;
 
     public override void Close()
     {
@@ -46,25 +48,33 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         {
             item.Reset();
         }
-
-        roomCreated = false;
         readyToJoin = false;
+
+        if (AIcoroutine != null)
+        {
+            StopCoroutine(AIcoroutine);
+        }
 
         base.Close();
     }
 
-    IEnumerator Shuffle()
+    public void Reconnect()
     {
-        while (!roomCreated)
+        PhotonNetwork.LeaveRoom();
+        foreach (var item in playerEntries)
         {
-            InfoText.text = Random.Range(0, 10000).ToString("0000");
-            yield return new WaitForSeconds(0.1f);
+            item.Reset();
         }
+        //readyToJoin = false;
+        currentIndex = 0;
+        rejoinRoom = true;
+        //Open(GameManager.Instance.Bet, gameType);
     }
 
     public void Open(int cost, int type)
     {
         base.Open();
+        currentIndex = 0;
         //SFXManager.Instance.PlayClip("Select");
         string[] playersOrder = new string[4];
         playerInfos = new List<PlayerInfo>();
@@ -135,7 +145,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             playerInfos.Add(newPlayer);
             CreateNewPlayer(newPlayer, true, true);
 
-            AddAiPlayers();
+            AIcoroutine = StartCoroutine(AddAiPlayers());
         }
     }
 
@@ -152,23 +162,29 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
     private void CreateAllPlayer(PlayerInfo[] players)
     {
         currentIndex = 0;
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < playerEntries.Length; i++)
         {
-            //playersOrder[i] = players[i].Name;
-            CreateNewPlayer(players[i], players[i].Name == GameManager.Instance.MyPlayer.Name,
+            if (players.Length > i)
+            {
+                //playersOrder[i] = players[i].Name;
+                CreateNewPlayer(players[i], players[i].Name == GameManager.Instance.MyPlayer.Name,
                 players[i].Name == PhotonNetwork.MasterClient.NickName);
+            }
+            else
+            {
+                playerEntries[i].Reset();
+            }
         }
     }
 
     public void OnConnectedToMaster()
     {
-        if (!IsconnectedToMaster)
+        Debug.Log("OnConnectedToMaster() was called by PUN");
+
+        if (!IsconnectedToMaster || rejoinRoom)
         {
-            Debug.Log("OnConnectedToMaster() was called by PUN");
-            print("Connected to Master");
-
             IsconnectedToMaster = true;
-
+            rejoinRoom = false;
             if (readyToJoin)
             {
                 JoinOrCreateRoom();
@@ -176,8 +192,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             //JoinRoomButton.interactable = true;
         }
     }
-
-    bool readyToJoin;
 
     public void JoinOrCreateRoom()
     {
@@ -236,12 +250,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
             };
             playerInfos.Add(newPlayerInfo);
 
-            Wrapper<PlayerInfo> wrapper = new Wrapper<PlayerInfo>();
-            wrapper.array = playerInfos.ToArray();
-            string data = JsonUtility.ToJson(wrapper);
-
-            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-            PhotonNetwork.RaiseEvent(sendAllPlayers, data, eventOptionsCards, SendOptions.SendReliable);
+            SendAllPlayersToOthers();
 
             CreateNewPlayer(newPlayerInfo, false, false);
 
@@ -251,7 +260,15 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     }
 
+    private void SendAllPlayersToOthers()
+    {
+        Wrapper<PlayerInfo> wrapper = new Wrapper<PlayerInfo>();
+        wrapper.array = playerInfos.ToArray();
+        string data = JsonUtility.ToJson(wrapper);
 
+        RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(sendAllPlayers, data, eventOptionsCards, SendOptions.SendReliable);
+    }
 
     private void StartGame()
     {
@@ -280,8 +297,42 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        //remove player
+        if (otherPlayer.ActorNumber == 1)
+        {
+            Reconnect();
+            //MenuManager.Instance.OpenPopup("hostleftmulti",false,false,()=>
+            //{
+            //    Reconnect();
+            //},()=>
+            //{
+            //    Close();
+            //});
+        }
+        else if (PhotonNetwork.IsMasterClient)
+        {
+            playerInfos.Remove(playerInfos.Find(a => a.Name == otherPlayer.NickName));
+
+            CreateAllPlayer(playerInfos.ToArray());
+            //SetAllPlayers();
+            SendAllPlayersToOthers();
+        }
     }
+
+    //private void SetAllPlayers()
+    //{
+    //    for (int i = 0; i < playerEntries.Length; i++)
+    //    {
+    //        if (playerInfos.Count > i)
+    //        {
+    //            playerEntries[i].Set(playerInfos[i].Name, playerInfos[i].Name == GameManager.Instance.MyPlayer.Name,
+    //                playerInfos[i].Name == PhotonNetwork.MasterClient.NickName);
+    //        }
+    //        else
+    //        {
+    //            playerEntries[i].Reset();
+    //        }
+    //    }
+    //}
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
@@ -295,7 +346,7 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-
+        print("master client switched");
     }
 
     /// <summary>
@@ -312,13 +363,14 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         Debug.Log("room created");
     }
 
-    async void AddAiPlayers()
+    IEnumerator AddAiPlayers()
     {
         List<int> addedAI = new List<int>();
 
         for (int i = 0; i < 3; i++)
         {
-            await System.Threading.Tasks.Task.Delay(Random.Range(8000 - i, 10000 - i));
+            yield return new WaitForSeconds(Random.Range(8f - i, 10f - i));
+            //await System.Threading.Tasks.Task.Delay(Random.Range(8000 - i, 10000 - i));
 
             if (playerInfos.Count < 4 && !skipCreateAI)
             {
@@ -362,7 +414,6 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnJoinRoomFailed(short returnCode, string message)
     {
-
         BackButton.SetActive(true);
         gameInfoTop.text = message;
 
@@ -377,14 +428,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void OnLeftRoom()
     {
-        //Connected();
-    }
 
-    void ResetText()
-    {
-        //showText = true;
     }
-
 
     public void OnConnected()
     {

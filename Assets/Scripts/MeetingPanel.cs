@@ -33,7 +33,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     [SerializeField]
     TextMeshProUGUI majlisName;
 
-    List<playerStatus> playersStatuse;
+    List<playerStatus> playersStatus;
 
     const int startGameCode = 1;
     const int shuffleCode = 2;
@@ -48,6 +48,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
+        ConnectToMaster();
     }
 
     private void OnDisable()
@@ -56,6 +57,11 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     }
 
     void Start()
+    {
+
+    }
+
+    private void ConnectToMaster()
     {
         if (!PhotonNetwork.IsConnectedAndReady)
         {
@@ -81,7 +87,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     internal void FriendDeclined(string sender)
     {
         friendsStatus.First(a => a.PlayerName == sender).ChangeStatus("declined");
-        playersStatuse.Find(a => a.playerName == sender).Status = "declined";
+        playersStatus.Find(a => a.playerName == sender).Status = "declined";
         SendPlayerStatusChange();
 
         CheckForPlayers();
@@ -90,7 +96,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     internal void FriendTimedOut(string sender)
     {
         friendsStatus.First(a => a.PlayerName == sender).ChangeStatus("timedOut");
-        playersStatuse.Find(a => a.playerName == sender).Status = "timedOut";
+        playersStatus.Find(a => a.playerName == sender).Status = "timedOut";
         SendPlayerStatusChange();
 
         CheckForPlayers();
@@ -101,11 +107,11 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         bool stillWaiting = false;
         bool playerReady = false;
 
-        for (int i = 1; i < playersStatuse.Count; i++)
+        for (int i = 1; i < playersStatus.Count; i++)
         {
-            if (playersStatuse[i].Status == "waiting")
+            if (playersStatus[i].Status == "waiting")
                 stillWaiting = true;
-            else if (playersStatuse[i].Status == "ready")
+            else if (playersStatus[i].Status == "ready")
                 playerReady = true;
         }
 
@@ -120,16 +126,24 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         }
     }
 
-    public void Open(string roomName, int entryfee)
+
+    public void OpenAsClient(string roomName, int entryfee)
+    {
+        isHost = false;
+        Open(roomName,entryfee);
+    }
+
+     void Open(string roomName, int entryfee)
     {
         gameObject.SetActive(true);
         this.roomName = roomName;
-        isHost = false;
         this.entryFee = entryfee;
         playersOrder = new string[4];
+
+        ConnectToMaster();
     }
 
-    public void Open(string roomName, int entryfee, List<PlayerInfo> players)
+    public void OpenAsHost(string roomName, int entryfee, List<PlayerInfo> players)
     {
         Open(roomName, entryfee);
         isHost = true;
@@ -141,14 +155,14 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             playersOrder[i] = "empty";
         }
 
-        playersStatuse = new List<playerStatus>();
+        playersStatus = new List<playerStatus>();
 
         for (int i = 0; i < 4; i++)
         {
             if (i < players.Count)
             {
                 friendsStatus[i].Set(players[i].Name, players[i].Avatar, 0, i == 0 ? "ready" : "waiting");
-                playersStatuse.Add(new playerStatus()
+                playersStatus.Add(new playerStatus()
                 {
                     playerName = players[i].Name,
                     Avatar = players[i].Avatar,
@@ -161,10 +175,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             }
         }
 
-
-        TogglePlayersStatus();
+        friendsStatusParent.SetActive(true);
         toggleStatusBtn.interactable = true;
-
     }
 
     public void ToggleChatPanel()
@@ -248,16 +260,11 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     {
         if (isHost && PhotonNetwork.PlayerList.Length > 1)
         {
-            //startGameButton.SetActive(true);
-
-            //if (GameManager.Instance.IsTeam)
-            //    shuffleSeatsButton.SetActive(true);
-
             playersOrder[newPlayer.ActorNumber - 1] = newPlayer.NickName;
             PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
 
             friendsStatus.First(a => a.PlayerName == newPlayer.NickName).ChangeStatus("ready");
-            playersStatuse.Find(a => a.playerName == newPlayer.NickName).Status = "ready";
+            playersStatus.Find(a => a.playerName == newPlayer.NickName).Status = "ready";
 
             SendPlayerStatusChange();
             CheckForPlayers();
@@ -269,7 +276,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     private void SendPlayerStatusChange()
     {
         Wrapper<playerStatus> wrapper = new Wrapper<playerStatus>();
-        wrapper.array = playersStatuse.ToArray();
+        wrapper.array = playersStatus.ToArray();
 
         string data = JsonUtility.ToJson(wrapper);
 
@@ -311,7 +318,52 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
+        if (otherPlayer.ActorNumber == 1)
+        {
+            MenuManager.Instance.OpenPopup("hostleftMajlis", false, false, () =>
+            {
+                Close();
+            }, () =>
+            {
+                Close();
+            });
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                //playerInfos.Remove(playerInfos.Find(a => a.Name == otherPlayer.NickName));
 
+                //CreateAllPlayer(playerInfos.ToArray());
+                //SetAllPlayers();
+                //SendAllPlayersToOthers();
+
+                for (int i = otherPlayer.ActorNumber - 1; i < 4; i++)
+                {
+                    if ((i + 1) < 4)
+                    {
+                        playersOrder[i] = playersOrder[i + 1];
+                        if(!string.IsNullOrEmpty(friendsStatus[i + 1].PlayerName))
+                            friendsStatus[i].Set(friendsStatus[i + 1].CurrentStatus);
+                        else
+                            friendsStatus[i].Reset();
+                    }
+                    else
+                    {
+                        playersOrder[i] = "empty";
+                        friendsStatus[i].Reset();
+                    }
+                }
+                PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
+
+                //friendsStatus.First(a => a.PlayerName == newPlayer.NickName).ChangeStatus("ready");
+                RearragePlayers(playersOrder);
+
+                playersStatus.Remove(playersStatus.Find(a => a.playerName == otherPlayer.NickName));
+                SendPlayerStatusChange();
+                //playersStatus.Find(a => a.playerName == newPlayer.NickName).Status = "ready";
+            }
+        }
     }
 
     public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -405,10 +457,24 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             if (i < customData.Length)
                 friendsStatus[i].Set(customData[i]);
             else
-                friendsStatus[i].SetLanguage();
+                friendsStatus[i].Reset();
         }
 
-        TogglePlayersStatus();
+        for (int i = 0; i < 4; i++)
+        {
+            if (customData.Length > i)
+            {
+                playersOrder[i] = customData[i].playerName;
+            }
+            else
+            {
+                playersOrder[i] = "empty";
+            }
+        }
+
+        RearragePlayers(playersOrder);
+        friendsStatusParent.SetActive(true);
+        //TogglePlayersStatus();
         toggleStatusBtn.interactable = true;
     }
 
@@ -467,6 +533,14 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
         base.Close();
         PhotonNetwork.LeaveRoom();
+
+        for (int i = 0; i < 4; i++)
+        {
+            friendsStatus[i].Reset();
+            avatars[i].transform.parent.gameObject.SetActive(false);
+        }
+        //PhotonNetwork.Disconnect();
+
     }
 }
 

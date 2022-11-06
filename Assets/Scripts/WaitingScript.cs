@@ -18,12 +18,18 @@ public class WaitingScript : MonoBehaviour
 
     public void Show()
     {
+        if (GameManager.Instance.GameType == GameType.Single)
+            return;
+
         gameObject.SetActive(true);
         shapeImage.sprite = shapeSprites[Random.Range(0, shapeSprites.Length)];
     }
 
     public void Hide()
     {
+        if (GameManager.Instance.GameType == GameType.Single)
+            return;
+
         gameObject.SetActive(false);
     }
 

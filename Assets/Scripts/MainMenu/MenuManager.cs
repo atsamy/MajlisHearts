@@ -88,13 +88,13 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMeeting(string roomName,int entryfee, System.Collections.Generic.List<PlayerInfo> players)
     {
-        meetingPanel.Open(roomName,entryfee, players);
+        meetingPanel.OpenAsHost(roomName,entryfee, players);
         MainPanel.HideHeader(true, true);
     }
 
     public void OpenMeeting(string roomName, int entryfee)
     {
-        meetingPanel.Open(roomName, entryfee);
+        meetingPanel.OpenAsClient(roomName, entryfee);
         MainPanel.HideHeader(true, true);
     }
 

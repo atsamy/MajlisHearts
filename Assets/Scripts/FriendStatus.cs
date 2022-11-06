@@ -24,6 +24,7 @@ public class FriendStatus : MonoBehaviour
     [SerializeField]
     Material waitingMaterial;
 
+    internal playerStatus CurrentStatus;
 
     public string PlayerName { get; private set; }
 
@@ -43,12 +44,19 @@ public class FriendStatus : MonoBehaviour
         {
             statusText.fontMaterial = waitingMaterial;
         }
+
+        CurrentStatus = new playerStatus();
+        CurrentStatus.Avatar = avatar;
+        CurrentStatus.playerName = playerName;
+        CurrentStatus.Status = status;
     }
 
     public void ChangeStatus(string status)
     {
         statusText.text = LanguageManager.Instance.GetString(status);
         statusText.fontMaterial = status == "ready" ? readyMaterial : declinedMaterial;
+
+        CurrentStatus.Status = status;
     }
 
     internal void Set(playerStatus playerStatus)
@@ -68,6 +76,18 @@ public class FriendStatus : MonoBehaviour
         {
             statusText.fontMaterial = declinedMaterial;
         }
+
+        CurrentStatus = playerStatus;
+    }
+
+    internal void Reset()
+    {
+        playerNameText.text = "Bot";
+        //levelText.text = level.ToString();
+        statusText.text = LanguageManager.Instance.GetString("ready");
+        this.avatar.sprite = AvatarManager.Instance.RobotAvatar;
+        PlayerName = "";
+        statusText.fontMaterial = readyMaterial;
     }
 
     public void SetLanguage()

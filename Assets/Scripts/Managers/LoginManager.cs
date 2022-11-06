@@ -25,6 +25,9 @@ public class LoginManager : MonoBehaviour
     int loginValue;
 
     bool newUser;
+
+    [SerializeField]
+    bool forceDeviceLogin;
     //public SplashLoading splashLoading;
     public Text Debug;
 
@@ -72,13 +75,15 @@ public class LoginManager : MonoBehaviour
         
         loginValue = PlayerPrefs.GetInt("login", 0);
 
-        if (Application.platform == RuntimePlatform.Android)// || Application.platform == RuntimePlatform.IPhonePlayer)
+        if (Application.platform == RuntimePlatform.Android && !forceDeviceLogin)// || Application.platform == RuntimePlatform.IPhonePlayer)
         {
+            print("device login");
             InitPlayGames();
             AccountLogin();
         }
         else
         {
+            print("account login");
             playfab.DeviceLogin();
         }
 
@@ -92,11 +97,10 @@ public class LoginManager : MonoBehaviour
         .AddOauthScope("profile")
         .RequestServerAuthCode(false)
         .Build();
-        PlayGamesPlatform.InitializeInstance(config);
 
+        PlayGamesPlatform.InitializeInstance(config);
         // recommended for debugging:
         PlayGamesPlatform.DebugLogEnabled = true;
-
         // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
 #endif
