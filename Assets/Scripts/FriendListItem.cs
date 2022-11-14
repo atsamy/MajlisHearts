@@ -4,6 +4,7 @@ using UnityEngine;
 using ArabicSupport;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class FriendListItem : MonoBehaviour
 {
@@ -23,20 +24,28 @@ public class FriendListItem : MonoBehaviour
     Sprite[] frameSprites;
     [SerializeField]
     Sprite[] statusSprites;
+    bool isComfirmed;
 
-
-    public void Set(string name)
+    public void Set(string name,bool isComfirmed)
     {
         ArabicFixerTool.useHinduNumbers = false;
-
         playerName.text = ArabicFixer.Fix(name,false,false);
-        //playerName.font = LanguageManager.Instance.GetFont();
-
         this.avatar.sprite = AvatarManager.Instance.GetPlayerAvatar(name);
+        this.isComfirmed = isComfirmed;
+
+        if (!isComfirmed)
+        {
+            for (int i = 0; i < statusText.Length; i++)
+            {
+                statusText[i].SetActive(i == 2);
+            }
+        }
     }
 
     public void SetOnline()
     {
+        if (!isComfirmed)
+            return;
         statusImage.sprite = statusSprites[1];
 
         statusText[0].SetActive(false);
@@ -47,11 +56,20 @@ public class FriendListItem : MonoBehaviour
 
     public void SetOffline()
     {
+        if (!isComfirmed)
+            return;
+
         statusImage.sprite = statusSprites[0];
 
         statusText[0].SetActive(true);
         statusText[1].SetActive(false);
 
         InviteToggle.interactable = false;
+    }
+
+    internal void Confirm()
+    {
+        isComfirmed = true;
+        SetOnline();
     }
 }

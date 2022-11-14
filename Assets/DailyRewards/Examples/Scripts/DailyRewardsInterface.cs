@@ -35,6 +35,7 @@ namespace NiobiumStudios
 
         [Header("Panel Reward")]
         public Button buttonClaim;                  // Claim Button
+        public Button buttonClaimVideo;                  // Claim Button
         public Button buttonClose;                  // Close Button
         public Button buttonCloseWindow;            // Close Button on the upper right corner
         public Text textTimeDue;                    // Text showing how long until the next claim
@@ -63,9 +64,28 @@ namespace NiobiumStudios
 
             buttonClaim.onClick.AddListener(() =>
             {
-				dailyRewards.ClaimPrize();
+				dailyRewards.ClaimPrize(1);
                 readyToClaim = false;
                 UpdateUI();
+            });
+
+            buttonClaimVideo.onClick.AddListener(() =>
+            {
+                AdsManager.Instance.ShowRewardedAd((result)=>
+                {
+                    if (result)
+                    {
+                        dailyRewards.ClaimPrize(3);
+                        readyToClaim = false;
+                        UpdateUI();
+                    }
+                    else
+                    {
+                        dailyRewards.ClaimPrize(1);
+                        readyToClaim = false;
+                        UpdateUI();
+                    }
+                });
             });
 
             buttonCloseReward.onClick.AddListener(() =>
@@ -250,7 +270,7 @@ namespace NiobiumStudios
         }
 
         // Delegate
-        private void OnClaimPrize(int day)
+        private void OnClaimPrize(int day,int multiplier)
         {
             panelReward.SetActive(true);
 
@@ -260,7 +280,7 @@ namespace NiobiumStudios
             imageReward.sprite = reward.sprite;
             if (rewardQt > 0)
             {
-                textReward.text = string.Format(LanguageManager.Instance.GetString("yougotreward"), reward.reward, LanguageManager.Instance.GetString(unit));
+                textReward.text = string.Format(LanguageManager.Instance.GetString("yougotreward"), reward.reward * multiplier, LanguageManager.Instance.GetString(unit));
             }
             else
             {

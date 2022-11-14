@@ -134,6 +134,7 @@ public class UIManager : MonoBehaviour
                          LevelPanel.Open(rank,game.MyPlayer.TotalScore, () =>
                          {
                              GoToMainMenu();
+                             PlayerPrefs.GetInt("gamefinished", 1);
                          });
                      }
                      else

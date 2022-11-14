@@ -23,7 +23,7 @@ namespace NiobiumStudios
         public bool keepOpen = true;        // Keep open even when there are no Rewards available?
 
         // Delegates
-        public delegate void OnClaimPrize(int day);                 // When the player claims the prize
+        public delegate void OnClaimPrize(int day,int multiplier);     // When the player claims the prize
         public OnClaimPrize onClaimPrize;
 
         // Needed Constants
@@ -139,13 +139,13 @@ namespace NiobiumStudios
         }
 
         // Checks if the player claim the prize and claims it by calling the delegate. Avoids duplicate call
-        public void ClaimPrize()
+        public void ClaimPrize(int multiplier)
         {
             if (availableReward > 0)
             {
                 // Delegate
                 if (onClaimPrize != null)
-                    onClaimPrize(availableReward);
+                    onClaimPrize(availableReward,multiplier);
 
                 Debug.Log(" Reward [" + rewards[availableReward - 1] + "] Claimed!");
                 PlayerPrefs.SetInt(GetLastRewardKey(), availableReward);
