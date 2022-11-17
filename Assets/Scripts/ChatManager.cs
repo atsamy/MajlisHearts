@@ -94,6 +94,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         chatClient.AddFriends(friendIDs);
     }
 
+    public void AddFriend(string friend)
+    {
+        chatClient.AddFriends(new string[] { friend });
+    }
+
     public void OnDisconnected()
     {
 

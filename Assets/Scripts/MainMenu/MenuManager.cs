@@ -6,6 +6,8 @@ using System;
 using TMPro;
 using NiobiumStudios;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class MenuManager : MonoBehaviour
 {
@@ -16,9 +18,14 @@ public class MenuManager : MonoBehaviour
     public StoreScene StoreScene;
     public MainPanelScript MainPanel;
     public MeetingPanel meetingPanel;
+    public FriendListPanel friendPanel;
     public InvitePopup InvitePopup;
 
     public Image timerFill;
+    public GameObject SpinWheel;
+
+    public FriendRequestPopup FriendRequestPopup;
+
 
     internal void OpenStore(int index)
     {
@@ -44,28 +51,83 @@ public class MenuManager : MonoBehaviour
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
 
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
+
+        if (PlayerPrefs.GetInt("gamefinished", 0) == 1)
+        {
+            SpinWheel.SetActive(true);
+            PlayerPrefs.SetInt("gamefinished", 0);
+        }
     }
 
     private void ChatManager_OnGotPrivateMessage(string sender, string message)
     {
-        if (message.ToString() == "decline")
+        if (message == "decline")
         {
             meetingPanel.FriendDeclined(sender);
         }
-        else if (message.ToString() == "timeout")
+        else if (message == "timeout")
         {
             meetingPanel.FriendTimedOut(sender);
+        }
+        else if (message.Contains("friendRequest"))
+        {
+            FriendRequestPopup.Show(sender, () =>
+             {
+                 PlayfabManager.instance.AcceptFriendRequest(message.Split(":")[1],sender,(success,friendName) =>
+                 {
+                     if (success)
+                     {
+                         ChatManager.Instance.SendPrivateMessage(sender, "accept");
+                         friendPanel.AcceptFriend(friendName);
+                     }
+                 });
+
+             }, () =>
+             {
+                 PlayfabManager.instance.DenyFriendRequest(message.Split(":")[1]);
+             });
+        }
+        else if (message.Contains("accept"))
+        {
+            friendPanel.SetOnline(sender);
         }
         else
         {
             if (sender != GameManager.Instance.MyPlayer.Name)
-                ShowInvitePopup(sender, message.ToString());
+                ShowInvitePopup(sender, message);
         }
     }
 
-    void ClaimDailyReward(int day)
+    void ClaimDailyReward(int day,int multiplier)
     {
-        GameManager.Instance.AddCoins(DailyRewards.instance.GetReward(day).reward);
+        GameManager.Instance.AddCoins(DailyRewards.instance.GetReward(day).reward * multiplier);
+    }
+
+    internal void ShowFriendRequest(Dictionary<string, string> friendRequests)
+    {
+        if (friendRequests.Count > 0)
+        {
+            FriendRequestPopup.Show(friendRequests.ElementAt(0).Value, () =>
+            {
+                PlayfabManager.instance.AcceptFriendRequest(friendRequests.ElementAt(0).Key, friendRequests.ElementAt(0).Value,
+                    (success,friendName) =>
+                {
+                    if (success)
+                    {
+                        ChatManager.Instance.SendPrivateMessage(friendName, "accept");
+                        friendPanel.AcceptFriend(friendName);
+                    }
+                });
+                friendRequests.Remove(friendRequests.ElementAt(0).Key);
+                ShowFriendRequest(friendRequests);
+            }, () =>
+            {
+                PlayfabManager.instance.DenyFriendRequest(friendRequests.ElementAt(0).Key);
+                friendRequests.Remove(friendRequests.ElementAt(0).Key);
+                ShowFriendRequest(friendRequests);
+            });
+
+        }
     }
 
     public void StartSingleGame()

@@ -33,7 +33,7 @@ public class PlayfabManager : MonoBehaviour
     public event ConnectionError OnConnectionError;
 
     bool emptyLoadOut;
-
+    string currentPlayerId;
     void Awake()
     {
         if (instance == null) // check to see if the instance has a reference
@@ -87,10 +87,10 @@ public class PlayfabManager : MonoBehaviour
 #endif
     }
 
-    internal void RemoveQuest(string id, Action<bool> p)
-    {
+    //internal void RemoveQuest(string id, Action<bool> p)
+    //{
 
-    }
+    //}
 
     internal void LoginWithApple()
     {
@@ -148,23 +148,89 @@ public class PlayfabManager : MonoBehaviour
     //    });
     //}
 
-    public void AddFriend(string name, Action<bool> success)
+    //public void AddFriend(string name, Action<bool> success)
+    //{
+    //    PlayFabClientAPI.AddFriend(new AddFriendRequest() { FriendTitleDisplayName = name },
+    //        (result) =>
+    //        {
+    //            if (result.Created)
+    //            {
+    //                success?.Invoke(true);
+    //            }
+    //            else
+    //            {
+    //                success?.Invoke(false);
+    //            }
+    //        }, (error) =>
+    //        {
+    //            success?.Invoke(false);
+    //        });
+    //}
+
+    public void AddFriend(string name,Action<bool,UserAccountInfo> success)
     {
-        PlayFabClientAPI.AddFriend(new AddFriendRequest() { FriendTitleDisplayName = name },
-            (result) =>
-            {
-                if (result.Created)
+        PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest() { TitleDisplayName = name }, (result) =>
+        {
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest()
                 {
-                    success?.Invoke(true);
-                }
-                else
+                    FunctionName = "SendFriendRequest",
+                    FunctionParameter = new { PlayFabId = currentPlayerId, FriendPlayFabId = result.AccountInfo.PlayFabId }
+                },
+                (res) =>
                 {
-                    success?.Invoke(false);
-                }
-            }, (error) =>
-            {
-                success?.Invoke(false);
-            });
+                    Debug.Log("add friend Success" + PlayFabSimpleJson.SerializeObject(res.FunctionResult));
+                    success?.Invoke(true, result.AccountInfo);
+                },
+                (error) =>
+                {
+                    Debug.Log("add friend Error: " + error.ErrorMessage);
+                    success?.Invoke(false,null);
+                });
+
+        },(error) =>
+        {
+            Debug.Log("add friend Error: " + error.ErrorMessage);
+        });
+    }
+
+    internal void AcceptFriendRequest(string friendPlayFabID,string friendName,Action<bool,string> success)
+    {
+        PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest()
+                {
+                    FunctionName = "AcceptFriendRequest",
+                    FunctionParameter = new { PlayFabId = currentPlayerId, FriendPlayFabId = friendPlayFabID }
+                },
+                (res) =>
+                {
+                    Debug.Log("Accept Friend Success" + PlayFabSimpleJson.SerializeObject(res.FunctionResult));
+                    success?.Invoke(true, friendName);
+                },
+                (error) =>
+                {
+                    Debug.Log("Accept Friend Error: " + error.ErrorMessage);
+                    success?.Invoke(false, friendName);
+                });
+    }
+
+    internal void DenyFriendRequest(string friendPlayFabID)
+    {
+        PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest()
+                {
+                    FunctionName = "DenyFriendRequest",
+                    FunctionParameter = new { PlayFabId = currentPlayerId, FriendPlayFabId = friendPlayFabID }
+                },
+                (res) =>
+                {
+                    Debug.Log("UpgradeCard Success" + PlayFabSimpleJson.SerializeObject(res.FunctionResult));
+
+                },
+                (error) =>
+                {
+                    Debug.Log("UpgradeCard Error: " + error.ErrorMessage);
+                });
     }
 
     public void GetFriends(Action<List<FriendInfo>> onFriendsReturned)
@@ -214,6 +280,7 @@ public class PlayfabManager : MonoBehaviour
                 if (accountInfo != null)
                 {
                     onData?.Invoke(res.AccountInfo.TitleInfo);
+                    currentPlayerId = res.AccountInfo.PlayFabId;
                 }
                 else
                     Debug.Log("Account Info not found");

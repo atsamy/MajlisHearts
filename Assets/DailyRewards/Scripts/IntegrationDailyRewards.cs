@@ -24,7 +24,7 @@ public class IntegrationDailyRewards : MonoBehaviour
     }
 
     // this is your integration function. Can be on Start or simply a function to be called
-    public void OnClaimPrizeDailyRewards(int day)
+    public void OnClaimPrizeDailyRewards(int day,int multiple)
     {
        //This returns a Reward object
 		Reward myReward = DailyRewards.instance.GetReward(day);
