@@ -214,7 +214,7 @@ public class PlayfabManager : MonoBehaviour
                 });
     }
 
-    internal void DenyFriendRequest(string friendPlayFabID)
+    internal void DenyFriendRequest(string friendPlayFabID,Action<bool> result = null)
     {
         PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest()
@@ -225,11 +225,13 @@ public class PlayfabManager : MonoBehaviour
                 (res) =>
                 {
                     Debug.Log("UpgradeCard Success" + PlayFabSimpleJson.SerializeObject(res.FunctionResult));
+                    result?.Invoke(true);
 
                 },
                 (error) =>
                 {
                     Debug.Log("UpgradeCard Error: " + error.ErrorMessage);
+                    result?.Invoke(false);
                 });
     }
 

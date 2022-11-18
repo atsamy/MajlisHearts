@@ -25,10 +25,18 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public delegate void GotPrivateMessage(string sender, string message);
     public static event GotPrivateMessage OnGotPrivateMessage;
 
+    bool isConnected;
 
     private void Awake()
     {
         Instance = this;
+
+        AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
+        chatClient = new ChatClient(this);
+        chatClient.AuthValues = auth;
+
+        ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
+        chatClient.ConnectUsingSettings(chatSettings);
     }
 
     //public void Connect()
@@ -42,6 +50,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         {
             this.chatClient.Service();
         }
+
+        if(Input.GetKeyDown(KeyCode.S))
+            print(chatClient.State);
     }
 
     public void DebugReturn(DebugLevel level, string message)
@@ -51,14 +62,15 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void AddFriends(string[] IDs)
     {
-        AuthenticationValues auth = new AuthenticationValues(GameManager.Instance.MyPlayer.Name);
-        chatClient = new ChatClient(this);
-        chatClient.AuthValues = auth;
-
-        ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
-        chatClient.ConnectUsingSettings(chatSettings);
-
-        friendIDs = IDs;
+        if (isConnected)
+        {
+            //chatClient.RemoveFriends();
+            chatClient.AddFriends(IDs);
+        }
+        else
+        {
+            friendIDs = IDs;
+        }
     }
 
     public void SendPrivateMessage(string player, string message)
@@ -66,10 +78,19 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         chatClient.SendPrivateMessage(player, message);
     }
 
-    //public void SendMessage()
-    //{
-
-    //}
+    public void Refresh()
+    {
+        //chatClient.SetOnlineStatus(StatusCode.o, "Mostly Harmless");
+        if (chatClient.State == ChatState.Disconnected)
+        {
+            ChatAppSettings chatSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
+            chatClient.ConnectUsingSettings(chatSettings);
+        }
+        else
+        {
+            chatClient.SetOnlineStatus(2);
+        }
+    }
 
     public void SubscribeToChannel(string channel)
     {
@@ -91,7 +112,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         Debug.Log("chat client connected");
 
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
-        chatClient.AddFriends(friendIDs);
+
+        if(friendIDs != null)
+            chatClient.AddFriends(friendIDs);
+
+        isConnected = true;
     }
 
     public void AddFriend(string friend)
@@ -111,6 +136,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
+        if (sender == GameManager.Instance.MyPlayer.Name)
+            return;
+
         OnGotPrivateMessage?.Invoke(sender, message.ToString());
     }
 

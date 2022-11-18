@@ -20,18 +20,25 @@ public class FriendListPanel : MonoBehaviour
     InputField FriendNameEntry;
     [SerializeField]
     GameObject error;
+    [SerializeField]
+    Button inviteBtn;
     //[SerializeField]
     //Text friendName;
     [SerializeField]
     MuliGameOptions gameOptions;
 
+    List<string> acceptedFriends;
+
     string[] ids;
 
     Dictionary<string, FriendListItem> friendsList;
     Dictionary<string, string> friendsInfo = new Dictionary<string, string>();
+    Dictionary<string, string> sendRequestMessage = new Dictionary<string, string>();
 
     private void Start()
     {
+        acceptedFriends = new List<string>();
+
         ChatManager.OnPlayerStatusUpdate += ChatManager_OnPlayerStatusUpdate;
         friendsList = new Dictionary<string, FriendListItem>();
 
@@ -51,7 +58,15 @@ public class FriendListPanel : MonoBehaviour
             {
                 if (friends[i].Tags != null)
                 {
-                    if (friends[i].Tags[0] == "requester")
+                    if (friends[i].Tags[0] == "confirmed" || acceptedFriends.Contains(friends[i].TitleDisplayName))
+                    {
+                        print(friends[i].TitleDisplayName + " " + friends[i].Profile.AvatarUrl);
+                        AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
+                        FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
+                        friend.Set(friends[i].TitleDisplayName,true, friends[i].Profile.PlayerId,FriendValueChanged);
+                        friendsList.Add(friends[i].TitleDisplayName, friend);
+                    }
+                    else if (friends[i].Tags[0] == "requester")
                     {
                         friendRequests.Add(friends[i].FriendPlayFabId, friends[i].TitleDisplayName);
                     }
@@ -59,18 +74,11 @@ public class FriendListPanel : MonoBehaviour
                     {
                         AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
                         FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
-                        friend.Set(friends[i].TitleDisplayName, false);
+                        friend.Set(friends[i].TitleDisplayName, false, friends[i].Profile.PlayerId,FriendValueChanged);
                         friendsList.Add(friends[i].TitleDisplayName, friend);
                     }
-                    else if (friends[i].Tags[0] == "confirmed")
-                    {
-                        friendsInfo.Add(friends[i].Profile.DisplayName, friends[i].Profile.AvatarUrl);
-                        print(friends[i].TitleDisplayName + " " + friends[i].Profile.AvatarUrl);
-                        AvatarManager.Instance.SetPlayerAvatar(friends[i].TitleDisplayName, friends[i].Profile.AvatarUrl);
-                        FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
-                        friend.Set(friends[i].TitleDisplayName,true);
-                        friendsList.Add(friends[i].TitleDisplayName, friend);
-                    }
+
+                    friendsInfo.Add(friends[i].Profile.DisplayName, friends[i].Profile.AvatarUrl);
                     ids[i] = friends[i].TitleDisplayName;
                 }
 
@@ -82,8 +90,34 @@ public class FriendListPanel : MonoBehaviour
             if(ids.Length > 0)
                 ChatManager.Instance.AddFriends(ids);
 
+            //friendRequests.Clear();
+
             success?.Invoke(true);
         });
+    }
+
+    void FriendValueChanged(bool value)
+    {
+        bool isPlayersSelected = false;
+
+        foreach (var item in friendsList)
+        {
+            if (item.Value.InviteToggle.isOn)
+            {
+                isPlayersSelected = true;
+                break;
+            }
+        }
+
+        inviteBtn.interactable = isPlayersSelected;
+    }
+
+    internal bool IsConfirmedFriend(string sender)
+    {
+        if (!friendsList.ContainsKey(sender))
+            return false;
+
+        return friendsList[sender].IsConfirmed;
     }
 
     public void RemoveAllFriends()
@@ -99,12 +133,21 @@ public class FriendListPanel : MonoBehaviour
 
     private void ChatManager_OnPlayerStatusUpdate(string user, int status)
     {
+        print(user+","+status);
+
         if (!friendsList.ContainsKey(user))
             return;
 
         if (status == 2)
         {
             friendsList[user].SetOnline();
+
+            if (sendRequestMessage.ContainsKey(user))
+            {
+                print("send to:" + user);
+                ChatManager.Instance.SendPrivateMessage(user, sendRequestMessage[user]);
+                sendRequestMessage.Remove(user);
+            }
         }
         else
         {
@@ -114,11 +157,22 @@ public class FriendListPanel : MonoBehaviour
 
     internal void AcceptFriend(string friendName)
     {
+        acceptedFriends.Add(friendName);
+        RemoveAllFriends();
+        AddAllFriends((result) =>
+        {
+            if (result)
+            {
+                ChatManager.Instance.SendPrivateMessage(friendName, "accept");
+            }
+        });
+    }
+
+    public void Refresh()
+    {
         RemoveAllFriends();
         AddAllFriends();
-        //FriendListItem friend = Instantiate(friendItem, content).GetComponent<FriendListItem>();
-        //friend.Set(friendName, false);
-        //friendsList.Add(friendName, friend);
+        ChatManager.Instance.Refresh();
     }
 
     public void Show()
@@ -129,8 +183,9 @@ public class FriendListPanel : MonoBehaviour
     }
 
 
-    public void SetOnline(string friendName)
+    public void ConfirmFriend(string friendName)
     {
+        ChatManager.Instance.Refresh();
         if (!friendsList.ContainsKey(friendName))
         {
             Debug.LogError("user " + friendName + " doesnt exits!");
@@ -143,32 +198,32 @@ public class FriendListPanel : MonoBehaviour
     //    addFriendPanel.SetActive(true);
     //}
 
-    public void AddFriend()
+    public void SendFriendRequest()
     {
         if (string.IsNullOrEmpty(FriendNameEntry.text))
+        {
+            TouchScreenKeyboard.Open("");
             return;
+        }
         string friendName = FriendNameEntry.text;
         PlayfabManager.instance.AddFriend(friendName, (success,accoundInfo) =>
         {
             if (success)
             {
-
-                //CloseAddPanel();
-                //add friend
                 FriendNameEntry.text = "";
                 RemoveAllFriends();
                 AddAllFriends((success) =>
                 {
                     if (success)
                     {
-                        ChatManager.Instance.SendPrivateMessage(friendName, "friendRequest:" + accoundInfo.PlayFabId);
+                        sendRequestMessage.Add(friendName, "friendRequest:" + accoundInfo.PlayFabId);
+                        //ChatManager.Instance.SendPrivateMessage(friendName, "friendRequest:" + accoundInfo.PlayFabId);
                     }
                 });
             }
             else
             {
                 MenuManager.Instance.OpenPopup("nomatchname");
-                //error.SetActive(true);
             }
         });
     }
@@ -202,7 +257,7 @@ public class FriendListPanel : MonoBehaviour
 
         gameOptions.OpenFriendGame((cost, type) =>
         {
-            string roomName = Random.Range(0, 10000).ToString("0000");
+            string roomName = UnityEngine.Random.Range(0, 10000).ToString("0000");
             string gameType = type == 0 ? "single" : "team";
 
             List<PlayerInfo> PlayersInvited = new List<PlayerInfo>();

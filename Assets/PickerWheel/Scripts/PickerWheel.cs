@@ -105,8 +105,8 @@ namespace EasyUI.PickerWheelUI {
          pieceTrns.GetChild (2).GetComponent <Text> ().text = piece.Amount.ToString () ;
 
          //Line
-         Transform lineTrns = Instantiate (linePrefab, linesParent.position, Quaternion.identity, linesParent).transform ;
-         lineTrns.RotateAround (wheelPiecesParent.position, Vector3.back, (pieceAngle * index) + halfPieceAngle) ;
+         //Transform lineTrns = Instantiate (linePrefab, linesParent.position, Quaternion.identity, linesParent).transform ;
+         //lineTrns.RotateAround (wheelPiecesParent.position, Vector3.back, (pieceAngle * index) + halfPieceAngle) ;
 
          pieceTrns.RotateAround (wheelPiecesParent.position, Vector3.back, pieceAngle * index) ;
       }

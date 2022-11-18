@@ -29,6 +29,7 @@ namespace NiobiumStudios
 
         [Header("Panel Reward Message")]
         public GameObject panelReward;              // Rewards panel
+        public GameObject panelDailyReward;
         public Text textReward;                     // Reward Text to show an explanatory message to the player
         public Button buttonCloseReward;            // The Button to close the Rewards Panel
         public Image imageReward;                   // The image of the reward
@@ -273,6 +274,7 @@ namespace NiobiumStudios
         private void OnClaimPrize(int day,int multiplier)
         {
             panelReward.SetActive(true);
+            panelDailyReward.SetActive(false);
 
             var reward = dailyRewards.GetReward(day);
             var unit = reward.unit;

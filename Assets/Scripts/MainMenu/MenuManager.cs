@@ -77,8 +77,7 @@ public class MenuManager : MonoBehaviour
                  {
                      if (success)
                      {
-                         ChatManager.Instance.SendPrivateMessage(sender, "accept");
-                         friendPanel.AcceptFriend(friendName);
+                         friendPanel.AcceptFriend(sender);
                      }
                  });
 
@@ -89,7 +88,7 @@ public class MenuManager : MonoBehaviour
         }
         else if (message.Contains("accept"))
         {
-            friendPanel.SetOnline(sender);
+            friendPanel.ConfirmFriend(sender);
         }
         else
         {

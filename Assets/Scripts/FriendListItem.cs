@@ -25,8 +25,11 @@ public class FriendListItem : MonoBehaviour
     [SerializeField]
     Sprite[] statusSprites;
     bool isComfirmed;
+    string playfabID;
 
-    public void Set(string name,bool isComfirmed)
+    public bool IsConfirmed => isComfirmed;
+
+    public void Set(string name,bool isComfirmed,string playfabID,Action<bool> OnValueChanged)
     {
         ArabicFixerTool.useHinduNumbers = false;
         playerName.text = ArabicFixer.Fix(name,false,false);
@@ -40,6 +43,13 @@ public class FriendListItem : MonoBehaviour
                 statusText[i].SetActive(i == 2);
             }
         }
+
+        InviteToggle.onValueChanged.AddListener((value)=>
+        {
+            OnValueChanged?.Invoke(value);
+        });
+
+        this.playfabID = playfabID;
     }
 
     public void SetOnline()
@@ -50,6 +60,7 @@ public class FriendListItem : MonoBehaviour
 
         statusText[0].SetActive(false);
         statusText[1].SetActive(true);
+        statusText[2].SetActive(false);
 
         InviteToggle.interactable = true;
     }
@@ -65,6 +76,25 @@ public class FriendListItem : MonoBehaviour
         statusText[1].SetActive(false);
 
         InviteToggle.interactable = false;
+    }
+
+    public void Remove()
+    {
+        MenuManager.Instance.OpenPopup("deletefriend",true,true,()=>
+        {
+            PlayfabManager.instance.DenyFriendRequest(playfabID,(result) =>
+            {
+                if (result)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    MenuManager.Instance.OpenPopup(("somethingwrong"),true,true);
+                }
+            });
+        });
+
     }
 
     internal void Confirm()
