@@ -3,6 +3,7 @@ using UnityEngine.UI ;
 using DG.Tweening ;
 using UnityEngine.Events ;
 using System.Collections.Generic ;
+using TMPro;
 
 namespace EasyUI.PickerWheelUI {
 
@@ -101,8 +102,8 @@ namespace EasyUI.PickerWheelUI {
          Transform pieceTrns = InstantiatePiece ().transform.GetChild (0) ;
 
          pieceTrns.GetChild (0).GetComponent <Image> ().sprite = piece.Icon ;
-         pieceTrns.GetChild (1).GetComponent <Text> ().text = piece.Label ;
-         pieceTrns.GetChild (2).GetComponent <Text> ().text = piece.Amount.ToString () ;
+         //pieceTrns.GetChild (1).GetComponent <TextMeshProUGUI> ().text = piece.Label ;
+         pieceTrns.GetChild (1).GetComponent <TextMeshProUGUI> ().text = piece.Amount.ToString () ;
 
          //Line
          //Transform lineTrns = Instantiate (linePrefab, linesParent.position, Quaternion.identity, linesParent).transform ;

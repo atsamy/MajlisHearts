@@ -22,7 +22,6 @@ public class MenuManager : MonoBehaviour
     public InvitePopup InvitePopup;
 
     public Image timerFill;
-    public GameObject SpinWheel;
 
     public FriendRequestPopup FriendRequestPopup;
 
@@ -52,11 +51,11 @@ public class MenuManager : MonoBehaviour
 
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
 
-        if (PlayerPrefs.GetInt("gamefinished", 0) == 1)
-        {
-            SpinWheel.SetActive(true);
-            PlayerPrefs.SetInt("gamefinished", 0);
-        }
+        //if (PlayerPrefs.GetInt("gamefinished", 0) == 1)
+        //{
+        //    SpinWheel.SetActive(true);
+        //    PlayerPrefs.SetInt("gamefinished", 0);
+        //}
     }
 
     private void ChatManager_OnGotPrivateMessage(string sender, string message)
