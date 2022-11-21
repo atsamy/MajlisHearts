@@ -99,7 +99,7 @@ public class CardsUIManager : MonoBehaviour
     {
         this.cardBack = new GameObject();
         this.cardBack.AddComponent<Image>().sprite = cardBack;
-        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(143, 208f);
+        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(159, 214f);
     }
 
     public void OrganizeCards()
@@ -241,6 +241,8 @@ public class CardsUIManager : MonoBehaviour
                 playedCard.rotation = Quaternion.identity;
             }
         });
+
+        //playedCard.GetComponent<RectTransform>().DOSizeDelta(new Vector2(159 ,214), 0.5f);
 
         deckCards.Add(deckCard);
         RemoveDoubleIcon(card, playerIndex);

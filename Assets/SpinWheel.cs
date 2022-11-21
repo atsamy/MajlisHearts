@@ -13,6 +13,8 @@ public class SpinWheel : MonoBehaviour
     [SerializeField]
     Button claimBtn;
     [SerializeField]
+    Button closeBtn;
+    [SerializeField]
     PickerWheel pickerWheel;
     [SerializeField]
     GameObject rewardPanel;
@@ -20,21 +22,41 @@ public class SpinWheel : MonoBehaviour
     Image rewardImage;
     [SerializeField]
     TextMeshProUGUI rewardAmount;
-
     Action claimReawrd;
+    Action panelClosed;
+
+
+    public void Open(Action onClosed)
+    {
+        gameObject.SetActive(true);
+        panelClosed = onClosed;
+    }
     // Start is called before the first frame update
     void Start()
     {
         spinBtn.onClick.AddListener(()=>
         {
-            pickerWheel.Spin();
-            spinBtn.interactable = false;
+            AdsManager.Instance.ShowRewardedAd((result) =>
+            {
+                if (result)
+                {
+                    pickerWheel.Spin();
+                    spinBtn.interactable = false;
+                }
+            });
         });
 
         claimBtn.onClick.AddListener(() =>
         {
             claimReawrd?.Invoke();
-            gameObject.SetActive(false);
+            Invoke("ClosePanel", 1);
+            rewardPanel.SetActive(false);
+            GameSFXManager.Instance.PlayClip("Coins");
+        });
+
+        closeBtn.onClick.AddListener(() =>
+        {
+            panelClosed?.Invoke();
         });
 
         pickerWheel.OnSpinEnd((prize) =>
@@ -55,5 +77,10 @@ public class SpinWheel : MonoBehaviour
                 }
             };
         });
+    }
+
+    void ClosePanel()
+    {
+        panelClosed?.Invoke();
     }
 }

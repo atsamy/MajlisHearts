@@ -153,7 +153,8 @@ namespace EasyUI.PickerWheelUI {
                float diff = Mathf.Abs (prevAngle - currentAngle) ;
                if (diff >= halfPieceAngle) {
                   if (isIndicatorOnTheLine) {
-                     audioSource.PlayOneShot (audioSource.clip) ;
+                        if(!GameSFXManager.Instance.Muted)
+                            audioSource.PlayOneShot (audioSource.clip) ;
                   }
                   prevAngle = currentAngle ;
                   isIndicatorOnTheLine = !isIndicatorOnTheLine ;

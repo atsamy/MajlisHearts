@@ -185,10 +185,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    //private void MainPlayerTurn(int index,DealInfo info)
-    //{
-    //    playerTimer = StartCoroutine(StartTimer());
-    //}
 
     private void GameScript_OnDoubleCard(Card card, bool value, int index)
     {
@@ -228,6 +224,17 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     private void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S) && (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor))
+        {
+            foreach (var item in Players)
+            {
+                item.Score = 140;
+            }
+        }
     }
 
     internal void SendMessageToOthers(object message)

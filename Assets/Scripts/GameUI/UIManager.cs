@@ -28,7 +28,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject scoresHolder;
     [SerializeField]
+    SpinWheel spinnerWheel;
+    [SerializeField]
     Popup hostLeftPopup;
+    [SerializeField]
+    GameObject gamePanel;
 
     MainPlayer mainPlayer;
 
@@ -127,13 +131,18 @@ public class UIManager : MonoBehaviour
         gameOver = isGameOver;
         if (isGameOver)
         {
+            gamePanel.SetActive(false);
             DealFinishedPanel.ShowRound(game.Players,false,true, (rank) =>
                  {
                      if (GameManager.Instance.GameType != GameType.Single)
                      {
                          LevelPanel.Open(rank,game.MyPlayer.TotalScore, () =>
                          {
-                             GoToMainMenu();
+                             LevelPanel.gameObject.SetActive(false);
+                             spinnerWheel.Open(()=>
+                             {
+                                 GoToMainMenu();
+                             });
                          });
                      }
                      else
