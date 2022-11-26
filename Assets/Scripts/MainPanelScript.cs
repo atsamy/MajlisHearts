@@ -39,6 +39,7 @@ public class MainPanelScript : MonoBehaviour
     private void Awake()
     {
         coinsRect = coins.GetComponent<RectTransform>();
+        IsOnMain = true;
     }
 
     private void OnEnable()
@@ -56,7 +57,6 @@ public class MainPanelScript : MonoBehaviour
 
         GameManager.Instance.OnCoinsChanged += OnCurrencyChanged;
         GameManager.Instance.OnGemsChanged += OnGemsChanged;
-        IsOnMain = true;
     }
 
     private void OnCurrencyChanged(int value)

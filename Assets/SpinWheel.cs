@@ -22,9 +22,12 @@ public class SpinWheel : MonoBehaviour
     Image rewardImage;
     [SerializeField]
     TextMeshProUGUI rewardAmount;
-    Action claimReawrd;
-    Action panelClosed;
 
+    int amount = 0;
+    string currency = "";
+    //Action claimReawrd;
+    Action panelClosed;
+    public Action<string, int> onClaimReawrd;
 
     public void Open(Action onClosed)
     {
@@ -48,7 +51,7 @@ public class SpinWheel : MonoBehaviour
 
         claimBtn.onClick.AddListener(() =>
         {
-            claimReawrd?.Invoke();
+            onClaimReawrd?.Invoke(currency, amount);
             Invoke("ClosePanel", 1);
             rewardPanel.SetActive(false);
             GameSFXManager.Instance.PlayClip("Coins");
@@ -65,17 +68,20 @@ public class SpinWheel : MonoBehaviour
             rewardImage.sprite = prize.Icon;
             rewardPanel.SetActive(true);
 
-            claimReawrd = () =>
-            {
-                if (prize.Label == "Coins")
-                {
-                    GameManager.Instance.AddCoins(prize.Amount);
-                }
-                else if (prize.Label == "Gems")
-                {
-                    GameManager.Instance.AddGems(prize.Amount);
-                }
-            };
+            GameSFXManager.Instance.PlayClip("Prize");
+            amount = prize.Amount;
+            currency = prize.Label;
+            //claimReawrd = () =>
+            //{
+            //    if (prize.Label == "Coins")
+            //    {
+            //        GameManager.Instance.AddCoins(prize.Amount);
+            //    }
+            //    else if (prize.Label == "Gems")
+            //    {
+            //        GameManager.Instance.AddGems(prize.Amount);
+            //    }
+            //};
         });
     }
 

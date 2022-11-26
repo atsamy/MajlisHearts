@@ -23,6 +23,10 @@ public class ProfileScript : MenuScene
     Text headerUserName;
     [SerializeField]
     Image avatar;
+    [SerializeField]
+    Image cardBack;
+    [SerializeField]
+    Image tableTop;
 
 
 
@@ -35,6 +39,8 @@ public class ProfileScript : MenuScene
     private void OnEnable()
     {
         avatar.sprite = AvatarManager.Instance.playerAvatar;
+        cardBack.sprite = Resources.Load<Sprite>("CardBack/" + GameManager.Instance.EquippedItem["CardBack"]);
+        tableTop.sprite = Resources.Load<Sprite>("TableTop/" + GameManager.Instance.EquippedItem["TableTop"]);
     }
 
     public void OpenStore(int index)

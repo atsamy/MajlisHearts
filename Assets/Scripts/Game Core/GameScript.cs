@@ -257,27 +257,6 @@ public class GameScript : MonoBehaviour
         return isGameOver;
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.T))
-    //    {
-    //        List<Card> cards = new List<Card>();
-
-    //        for (int i = 0; i < 4; i++)
-    //        {
-    //            foreach (var item in Players[i].OwnedCards)
-    //            {
-    //                if (!cards.Contains(item))
-    //                    cards.Add(item);
-    //                else
-    //                {
-    //                    Debug.Log("dublicate card: " + item.ToString());
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
     public void StartGame()
     {
         Deal.StartDeal();

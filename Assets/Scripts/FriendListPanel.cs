@@ -43,8 +43,6 @@ public class FriendListPanel : MonoBehaviour
         friendsList = new Dictionary<string, FriendListItem>();
 
         AddAllFriends();
-
-        //ChatManager.up
     }
 
     private void AddAllFriends(Action<bool> success = null)

@@ -11,50 +11,47 @@ public class LevelPanel : MonoBehaviour
 {
     [SerializeField]
     Image avatarImage;
-
     [SerializeField]
     Image levelProgress;
-
     [SerializeField]
     Image newLevelProgress;
 
     [SerializeField]
+    SpinWheel spinnerWheel;
+    [SerializeField]
+    GameObject mainPanel;
+    [SerializeField]
     TextMeshProUGUI playerName;
-
     [SerializeField]
     TextMeshProUGUI rankText;
-
     [SerializeField]
     TextMeshProUGUI gemsText;
-
-    //[SerializeField]
-    //TextMeshProUGUI newGemsText;
-
     [SerializeField]
     TextMeshProUGUI scoreText;
-
-    //[SerializeField]
-    //TextMeshProUGUI newPoints;
-
     [SerializeField]
     TextMeshProUGUI coinsText;
-
     [SerializeField]
     TextMeshProUGUI levelText;
+    [SerializeField]
+    TextMeshProUGUI totalCoinsText;
+    [SerializeField]
+    TextMeshProUGUI totalGemsText;
+    [SerializeField]
+    TextMeshProUGUI addCoinsText;
+    [SerializeField]
+    TextMeshProUGUI addGemsText;
 
     [SerializeField]
     GameObject levelUp;
-
     [SerializeField]
     GameObject nextButton;
 
-    int nextLevelPoints = 1;
     Action nextPressed;
 
     public void Open(int rank,int totalScore, Action next)
     {
         playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
-        nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
+        //nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
         nextPressed = next;
         scoreText.text = totalScore.ToString();
         gameObject.SetActive(true);
@@ -79,11 +76,7 @@ public class LevelPanel : MonoBehaviour
 
         //this.nextPressed = nextPressed;
         int startPoints = GameManager.Instance.MyPlayer.Points;
-        //totalPoints.text = startPoints.ToString() + "/" + nextLevelPoints;
-
         int score = GetScore(rank);
-
-        //newPoints.text = score + "+";
 
         levelText.text = GameManager.Instance.MyPlayer.Level.ToString();
         float currentProgress = GameManager.Instance.MyPlayer.CurrentPogress;
@@ -99,12 +92,19 @@ public class LevelPanel : MonoBehaviour
             GameSFXManager.Instance.PlayClip("Lose");
         }
 
+        int startCoins = GameManager.Instance.Coins;
+        int startGems = GameManager.Instance.Gems;
+
+        totalCoinsText.text = startCoins.ToString();
+        totalGemsText.text = startGems.ToString();
+
         int reward = GameManager.Instance.GetRewardAndSave(rank);
         int gems = GameManager.Instance.GetGemsAndSave(rank);
 
         coinsText.text = reward.ToString();
         gemsText.text = gems.ToString();
-        //StartCoroutine(CountNumbers(gems, reward, 1f));
+
+        StartCoroutine(CountNumbers(startGems,startCoins,gems, reward, 1f));
 
         float progress = GameManager.Instance.AddPoints(score);
         float totalProgress = MathF.Min(1, currentProgress + progress);
@@ -122,6 +122,22 @@ public class LevelPanel : MonoBehaviour
                 nextButton.SetActive(true);
             }
         });
+
+        spinnerWheel.onClaimReawrd += (currency, amount) =>
+        {
+            if (currency == "Coins")
+            {
+                GameManager.Instance.AddCoins(amount);
+                totalCoinsText.GetComponent<ChangeNumber>().Change(GameManager.Instance.Coins);
+                ShowAddedAmount(addCoinsText, amount);
+            }
+            else
+            {
+                GameManager.Instance.AddGems(amount);
+                totalGemsText.GetComponent<ChangeNumber>().Change(GameManager.Instance.Gems);
+                ShowAddedAmount(addGemsText, amount);
+            }
+        };
     }
 
     private IEnumerator ShowLevelUp()
@@ -133,7 +149,7 @@ public class LevelPanel : MonoBehaviour
         nextButton.SetActive(true);
     }
 
-    public IEnumerator CountNumbers(int gems, int reward, float time)
+    public IEnumerator CountNumbers(int startgems,int startcoins, int gems, int reward, float time)
     {
         float timer = 0;
         yield return new WaitForSeconds(2);
@@ -141,23 +157,44 @@ public class LevelPanel : MonoBehaviour
 
         while (timer < time)
         {
-            coinsText.text = Mathf.Round(Mathf.Lerp(0,reward, Mathf.Min(1f, time * 1.5f))).ToString();
-            //newCoinsText.text = "+ " + Mathf.Round(Mathf.Lerp(reward,0, time)).ToString();
-
-            gemsText.text = Mathf.Round(Mathf.Lerp(0,gems, Mathf.Max(0, time * 1.5f - 0.5f))).ToString();
-            //newGemsText.text = "+ " + Mathf.Round(Mathf.Lerp(gems, 0, time)).ToString();
+            coinsText.text = Mathf.Round(Mathf.Lerp(reward, 0, timer)).ToString();
+            totalCoinsText.text = Mathf.Round(Mathf.Lerp(startcoins, startcoins + reward, timer)).ToString();
 
             timer += Time.deltaTime;
             yield return null;
         }
 
-        coinsText.text = reward.ToString();
-        gemsText.text = gems.ToString();
+        totalCoinsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Coins);
+        coinsText.text = "0";
+        ShowAddedAmount(addCoinsText, reward);
 
-        //newCoinsText.text = "+ 0";
-        //newGemsText.text = "+ 0";
+        timer = 0;
+        GameSFXManager.Instance.PlayClip("Count");
+        while (timer < time)
+        {
+            gemsText.text = Mathf.Round(Mathf.Lerp(gems, 0, timer)).ToString();
+            totalGemsText.text = Mathf.Round(Mathf.Lerp(startgems, startgems + gems, timer)).ToString();
 
+            timer += Time.deltaTime;
+            yield return null;
+        }
 
+        totalGemsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Gems);
+        gemsText.text = "0";
+        ShowAddedAmount(addGemsText,gems);
+    }
+
+    private void ShowAddedAmount(TextMeshProUGUI currencyText,int gems)
+    {
+        Vector3 originalPosition = currencyText.transform.position;
+        currencyText.text = "+" + gems;
+        currencyText.DOFade(0, 2f);
+        currencyText.transform.DOMoveY(originalPosition.y + 10, 2.1f).OnComplete(()=>
+        {
+            currencyText.text = "";
+            currencyText.color = Color.white;
+            currencyText.transform.position = originalPosition;
+        });
     }
 
     int GetScore(int rank) => rank switch
@@ -170,6 +207,17 @@ public class LevelPanel : MonoBehaviour
 
     public void NextPressed()
     {
-        nextPressed?.Invoke();
+        mainPanel.SetActive(false);
+        if (AdsManager.Instance.IsVideoReady)
+        {
+            spinnerWheel.Open(() =>
+            {
+                nextPressed?.Invoke();
+            });
+        }
+        else
+        {
+            nextPressed?.Invoke();
+        }
     }
 }

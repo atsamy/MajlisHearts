@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 namespace NiobiumStudios
 {
@@ -30,7 +31,7 @@ namespace NiobiumStudios
         [Header("Panel Reward Message")]
         public GameObject panelReward;              // Rewards panel
         public GameObject panelDailyReward;
-        public Text textReward;                     // Reward Text to show an explanatory message to the player
+        public TextMeshProUGUI textReward;                     // Reward Text to show an explanatory message to the player
         public Button buttonCloseReward;            // The Button to close the Rewards Panel
         public Image imageReward;                   // The image of the reward
 
@@ -39,7 +40,7 @@ namespace NiobiumStudios
         public Button buttonClaimVideo;                  // Claim Button
         public Button buttonClose;                  // Close Button
         public Button buttonCloseWindow;            // Close Button on the upper right corner
-        public Text textTimeDue;                    // Text showing how long until the next claim
+        public TextMeshProUGUI textTimeDue;                    // Text showing how long until the next claim
         public HorizontalLayoutGroup dailyRewardsGroup;   // The Grid that contains the rewards
         //public ScrollRect scrollRect;               // The Scroll Rect
 

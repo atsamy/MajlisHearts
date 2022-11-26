@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
     public float AddPoints(int value)
     {
         //int Level = MyPlayer.Level;
-        //MyPlayer.Points += value;
+        MyPlayer.Points += value;
         //int newLevel = MyPlayer.Level;
 
         PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() {
@@ -176,16 +176,6 @@ public class GameManager : MonoBehaviour
         MyPlayer.Avatar = avatar;
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.D))
-    //    {
-    //        TimeSpan timeSpan = DailyRewards.instance.GetTimeDifference();
-
-    //        print(timeSpan.TotalSeconds);
-    //    }
-    //}
-
     public void OnApplicationFocus(bool focus)
     {
         #if UNITY_ANDROID
@@ -215,15 +205,6 @@ public class GameManager : MonoBehaviour
 
                 AndroidNotificationCenter.SendNotification(notification, "channel_id");
             }
-
-            //AndroidNotification testnotification = new AndroidNotification
-            //{
-            //    Title = "Testing!",
-            //    Text = "Testing test testing the test!",
-            //    FireTime = DateTime.Now.AddSeconds(10)
-            //};
-
-            //AndroidNotificationCenter.SendNotification(testnotification, "channel_id");
         }
         else
         {

@@ -11,7 +11,9 @@ public class PausePanel : MonoBehaviour
     public void Show()
     {
         gameObject.SetActive(true);
-        Time.timeScale = 0;
+
+        if(GameManager.Instance.GameType == GameType.Single)
+            Time.timeScale = 0;
     }
     public void Continue()
     {

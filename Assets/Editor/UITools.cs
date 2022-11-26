@@ -47,9 +47,9 @@ public class UITools : Editor {
     [MenuItem("My Tools/Reset Daily Rewards")]
     static void ResetDailyRewards()
     {
-        PlayerPrefs.DeleteKey("LAST_REWARD");
-        PlayerPrefs.DeleteKey("LAST_REWARD_TIME");
-        PlayerPrefs.DeleteKey("DEBUG_TIME");
+        PlayerPrefs.DeleteKey("LastReward");
+        PlayerPrefs.DeleteKey("LastRewardTime");
+        PlayerPrefs.DeleteKey("DebugTime");
     }
 
     [MenuItem("My Tools/FixArabicTMP")]

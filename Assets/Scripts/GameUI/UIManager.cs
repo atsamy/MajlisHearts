@@ -28,8 +28,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject scoresHolder;
     [SerializeField]
-    SpinWheel spinnerWheel;
-    [SerializeField]
     Popup hostLeftPopup;
     [SerializeField]
     GameObject gamePanel;
@@ -138,11 +136,7 @@ public class UIManager : MonoBehaviour
                      {
                          LevelPanel.Open(rank,game.MyPlayer.TotalScore, () =>
                          {
-                             LevelPanel.gameObject.SetActive(false);
-                             spinnerWheel.Open(()=>
-                             {
-                                 GoToMainMenu();
-                             });
+                             GoToMainMenu();
                          });
                      }
                      else
@@ -418,7 +412,20 @@ public class UIManager : MonoBehaviour
 
     public void OnDisable()
     {
+        game.OnCardsReady -= Game_OnCardsDealt;
+        game.OnTrickFinished -= Game_OnTrickFinished;
+        game.OnStartPlaying -= Game_OnStartPlaying;
+        game.OnCardsPassed -= CardsPassed;
+        game.OnDealFinished -= Game_OnDealFinished;
+        game.OnCardDoubled -= Game_OnCardDoubled;
+        game.OnSetPlayEnvironment -= Game_OnSetPlayEnvironment;
+        MultiGameScript.OnMessageRecieved -= MessageRecieved;
 
+        foreach (var player in game.Players)
+        {
+            player.OnCardReady -= Player_OnCardReady;
+            player.OnPlayerTurn -= Player_OnPlayerTurn;
+        }
     }
 
     internal void PassCards(List<Card> selectedPassCards)

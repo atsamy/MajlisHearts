@@ -17,7 +17,11 @@ public class CardsUIManager : MonoBehaviour
     //PassCardsPanel passCardsPanel;
     [SerializeField]
     CardShapeSprites[] cardShapeSprites;
-    //public Transform DoubleCardHolder;
+
+    [SerializeField]
+    Vector2 CardsStartResolution = new Vector2(209, 304);
+    [SerializeField]
+    Vector2 CardsOnTableResolution = new Vector2(143,208);
 
     public Transform[] DeckCardsPosition;
 
@@ -27,10 +31,6 @@ public class CardsUIManager : MonoBehaviour
 
     [SerializeField]
     PlayerDetails[] playersDetails;
-
-    //PlayerCardsLayout playerCards;
-
-    //Dictionary<Card, Sprite> cardSprites;
 
     public void SetMainPlayer(MainPlayer mainPlayer)
     {
@@ -44,20 +44,6 @@ public class CardsUIManager : MonoBehaviour
 
     private void Awake()
     {
-        //cardSprites = new Dictionary<Card, Sprite>();
-
-
-        //for (int i = 0; i < 13; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        CardShape shape = (CardShape)j;
-        //        CardRank rank = (CardRank)i;
-
-        //        cardSprites.Add(new Card(shape, rank), cardShapeSprites[(int)shape].Sprites[(int)rank]);
-        //    }
-        //}
-
         deckCards = new List<DeckCard>();
     }
 
@@ -99,7 +85,7 @@ public class CardsUIManager : MonoBehaviour
     {
         this.cardBack = new GameObject();
         this.cardBack.AddComponent<Image>().sprite = cardBack;
-        this.cardBack.GetComponent<RectTransform>().sizeDelta = new Vector2(159, 214f);
+        this.cardBack.GetComponent<RectTransform>().sizeDelta = CardsStartResolution;
     }
 
     public void OrganizeCards()
@@ -204,7 +190,6 @@ public class CardsUIManager : MonoBehaviour
     {
         playerCardsUI.Add(cardUI);
         cardUI.transform.SetParent(CardsHolder[0].transform);
-        //selectedPassCards.Remove(cardUI.CardInfo);
         UIManager.Instance.RemoveCard(cardUI);
         cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
@@ -242,7 +227,7 @@ public class CardsUIManager : MonoBehaviour
             }
         });
 
-        //playedCard.GetComponent<RectTransform>().DOSizeDelta(new Vector2(159 ,214), 0.5f);
+        playedCard.GetComponent<RectTransform>().DOSizeDelta(CardsOnTableResolution, 0.5f);
 
         deckCards.Add(deckCard);
         RemoveDoubleIcon(card, playerIndex);
@@ -279,7 +264,7 @@ public class CardsUIManager : MonoBehaviour
         //        ShowWinningCard();
         //    }
         //});
-        cardUI.RectTransform.DOSizeDelta(new Vector2(143, 208), 0.5f);
+        cardUI.RectTransform.DOSizeDelta(CardsOnTableResolution, 0.5f);
         cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
