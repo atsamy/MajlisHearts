@@ -32,9 +32,9 @@ public class SingleEditableItem : EditableItem
         sprite.sprite = originalSprite;
     }
 
-    public override void SetModified(int index)
+    public override void SetModified(int index,bool userModify)
     {
-        base.SetModified(index);
+        base.SetModified(index, userModify);
         modifiedSprite = sprite.sprite;
     }
 

@@ -64,9 +64,9 @@ public class MultiEditableItems : EditableItem
             item.Init();
         }
     }
-    public override void SetModified(int index)
+    public override void SetModified(int index, bool userModify)
     {
-        base.SetModified(index);
+        base.SetModified(index,userModify);
 
         foreach (var item in AllItems)
         {

@@ -39,13 +39,13 @@ public class TilableEditableItem : SingleEditableItem
         }
     }
 
-    public override void SetModified(int index)
+    public override void SetModified(int index,bool isUserModify)
     {
         selectedIndex = index;
         modified = true;
         modifiedSprite = allTiles[0].sprite;
 
-        if (floorMaterial != null)
+        if (isUserModify && floorMaterial != null)
             StartCoroutine(ShowEffect());
             //floorMaterial?.DOFloat(0.5f, "_Intensity",0.25f).SetDelay(1).SetLoops(2,LoopType.Yoyo);//.SetFloat("_Intensity",).do
     }

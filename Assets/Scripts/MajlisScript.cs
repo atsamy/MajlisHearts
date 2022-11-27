@@ -48,7 +48,7 @@ public class MajlisScript : MonoBehaviour
                 case ActionType.Change:
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
                     editableItem.ChangeItem(task.SelectedIndex);
-                    editableItem.SetModified(task.SelectedIndex);
+                    editableItem.SetModified(task.SelectedIndex,false);
                     Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
 
                     foreach (var item in colliders)

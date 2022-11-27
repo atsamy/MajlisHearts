@@ -112,7 +112,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     //}
 
-    public virtual void SetModified(int index)
+    public virtual void SetModified(int index,bool userModify)
     {
         selectedIndex = index;
         modified = true;

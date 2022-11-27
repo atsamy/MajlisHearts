@@ -132,7 +132,7 @@ public class TaskPanel : MonoBehaviour
                 TargetItem = taskData.TargetItem,
                 SelectedIndex = index
             };
-            editableItem.SetModified(index);
+            editableItem.SetModified(index,true);
             Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
 
             foreach (var item in colliders)

@@ -46,9 +46,9 @@ public class MultipleEditableObject : EditableItem
         originalIndex = -1;
     }
 
-    public override void SetModified(int index)
+    public override void SetModified(int index,bool userModify)
     {
         originalIndex = selectedIndex;
-        base.SetModified(index);
+        base.SetModified(index,userModify);
     }
 }
