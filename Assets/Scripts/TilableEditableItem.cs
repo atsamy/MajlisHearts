@@ -44,11 +44,11 @@ public class TilableEditableItem : SingleEditableItem
         modified = true;
         modifiedSprite = allTiles[0].sprite;
 
-        if (enableEffect && userModify)
+        if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
             {
-                effectMaterial = new Material(Shader.Find("Shader Graphs/EffectMaterial"));
+                effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
                 foreach (var item in allTiles)
                 {
                     item.material = effectMaterial;

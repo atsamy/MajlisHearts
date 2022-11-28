@@ -66,11 +66,11 @@ public class MultiEditableItems : EditableItem
     }
     public override void SetModified(int index, bool userModify)
     {
-        if (enableEffect && userModify)
+        if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
             {
-                effectMaterial = new Material(Shader.Find("Shader Graphs/EffectMaterial"));
+                effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
 
                 foreach (var item in AllItems)
                 {

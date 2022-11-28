@@ -28,7 +28,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
     [SerializeField]
     protected bool disableAnimation;
     [SerializeField]
-    protected bool enableEffect;
+    protected EffectType effectType;
     //public bool Modified { set => modified = value; }
     float timer = 0;
     protected bool modified;
@@ -162,16 +162,16 @@ public class EditableItem : MonoBehaviour, IJsonTask
         float timer = 0;
         while (timer < 1)
         {
-            effectMaterial.SetFloat("_Intensity", timer / 3);
+            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3:2));
             timer += Time.deltaTime * 4;
             yield return null;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(effectType == EffectType.Glow?1.5f:0.5f);
 
         while (timer > 0)
         {
-            effectMaterial.SetFloat("_Intensity", timer / 3);
+            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
             timer -= Time.deltaTime * 4;
             yield return null;
         }
@@ -184,4 +184,11 @@ public interface IJsonTask
 {
     public string GetTaskJson();
     public Sprite GetTaskIcon();
+}
+
+public enum EffectType
+{
+    None,
+    Glow,
+    Sparkle
 }
