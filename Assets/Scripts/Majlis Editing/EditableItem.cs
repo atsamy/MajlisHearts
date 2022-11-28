@@ -19,10 +19,16 @@ public class EditableItem : MonoBehaviour, IJsonTask
     [SerializeField]
     ActionType actionType;
 
+    //[SerializeField]
+    //bool showEffect;
+    protected Material effectMaterial;
+
     protected int selectedIndex = 0;
 
     [SerializeField]
     protected bool disableAnimation;
+    [SerializeField]
+    protected bool enableEffect;
     //public bool Modified { set => modified = value; }
     float timer = 0;
     protected bool modified;
@@ -39,8 +45,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
     {
         if (!MenuManager.Instance.MainPanel.IsOnMain)
             return;
-        mouseDown = true;
 
+        mouseDown = true;
         clickPos = Input.mousePosition;
         MenuManager.Instance.timerFill.transform.position = clickPos; //Camera.main.
 
@@ -107,15 +113,13 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     }
 
-    //public virtual void SetOriginal()
-    //{
-
-    //}
-
     public virtual void SetModified(int index,bool userModify)
     {
         selectedIndex = index;
         modified = true;
+
+        if (userModify && effectMaterial != null)
+            StartCoroutine(ShowEffect());
     }
 
     public virtual void Init()
@@ -151,6 +155,28 @@ public class EditableItem : MonoBehaviour, IJsonTask
     public Sprite GetTaskIcon()
     {
         return varientIcons[0];
+    }
+
+    public IEnumerator ShowEffect()
+    {
+        float timer = 0;
+        while (timer < 1)
+        {
+            effectMaterial.SetFloat("_Intensity", timer / 3);
+            timer += Time.deltaTime * 4;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        while (timer > 0)
+        {
+            effectMaterial.SetFloat("_Intensity", timer / 3);
+            timer -= Time.deltaTime * 4;
+            yield return null;
+        }
+
+        effectMaterial.SetFloat("_Intensity", 0);
     }
 }
 

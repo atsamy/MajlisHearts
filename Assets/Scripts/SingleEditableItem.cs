@@ -34,6 +34,15 @@ public class SingleEditableItem : EditableItem
 
     public override void SetModified(int index,bool userModify)
     {
+        if (enableEffect && userModify)
+        {
+            if (effectMaterial == null)
+            {
+                effectMaterial = new Material(Shader.Find("Shader Graphs/EffectMaterial"));
+                sprite.material = effectMaterial;
+            }
+        }
+
         base.SetModified(index, userModify);
         modifiedSprite = sprite.sprite;
     }

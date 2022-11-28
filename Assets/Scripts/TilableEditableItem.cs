@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TilableEditableItem : SingleEditableItem
 {
     SpriteRenderer[] allTiles;
-    [SerializeField]
-    Material floorMaterial;
     public override void ChangeItem(int index)
     {
         //SetModified(index);
@@ -35,20 +34,31 @@ public class TilableEditableItem : SingleEditableItem
     {
         foreach (var item in allTiles)
         {
-            item.sprite = modified?modifiedSprite:originalSprite;
+            item.sprite = modified ? modifiedSprite : originalSprite;
         }
     }
 
-    public override void SetModified(int index,bool isUserModify)
+    public override void SetModified(int index, bool userModify)
     {
         selectedIndex = index;
         modified = true;
         modifiedSprite = allTiles[0].sprite;
 
-        if (isUserModify && floorMaterial != null)
+        if (enableEffect && userModify)
+        {
+            if (effectMaterial == null)
+            {
+                effectMaterial = new Material(Shader.Find("Shader Graphs/EffectMaterial"));
+                foreach (var item in allTiles)
+                {
+                    item.material = effectMaterial;
+                }
+            }
+
             StartCoroutine(ShowEffect());
-            //floorMaterial?.DOFloat(0.5f, "_Intensity",0.25f).SetDelay(1).SetLoops(2,LoopType.Yoyo);//.SetFloat("_Intensity",).do
+        }
     }
+
 
     public override void Init()
     {
@@ -57,27 +67,5 @@ public class TilableEditableItem : SingleEditableItem
             allTiles = transform.GetComponentsInChildren<SpriteRenderer>();
             originalSprite = allTiles[0].sprite;
         }
-    }
-
-    IEnumerator ShowEffect()
-    {
-        float timer = 0;
-        while (timer < 1)
-        {
-            floorMaterial.SetFloat("_Intensity",timer / 3);
-            timer += Time.deltaTime * 4;
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(1.5f);
-
-        while (timer > 0)
-        {
-            floorMaterial.SetFloat("_Intensity", timer / 3);
-            timer -= Time.deltaTime * 4;
-            yield return null;
-        }
-
-        floorMaterial.SetFloat("_Intensity", 0);
     }
 }

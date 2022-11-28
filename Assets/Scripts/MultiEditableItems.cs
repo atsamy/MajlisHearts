@@ -66,6 +66,19 @@ public class MultiEditableItems : EditableItem
     }
     public override void SetModified(int index, bool userModify)
     {
+        if (enableEffect && userModify)
+        {
+            if (effectMaterial == null)
+            {
+                effectMaterial = new Material(Shader.Find("Shader Graphs/EffectMaterial"));
+
+                foreach (var item in AllItems)
+                {
+                    item.GetComponent<SpriteRenderer>().material = effectMaterial;
+                }
+            }
+        }
+
         base.SetModified(index,userModify);
 
         foreach (var item in AllItems)
