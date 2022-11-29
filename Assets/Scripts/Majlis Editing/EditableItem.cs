@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EditableItem : MonoBehaviour, IJsonTask
 {
@@ -119,7 +120,9 @@ public class EditableItem : MonoBehaviour, IJsonTask
         modified = true;
 
         if (userModify && effectMaterial != null)
+        {
             StartCoroutine(ShowEffect());
+        }
     }
 
     public virtual void Init()
@@ -159,6 +162,11 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     public IEnumerator ShowEffect()
     {
+        effectMaterial.DOFloat(1, "_Progress", 1f).SetEase(Ease.Flash).OnComplete(() =>
+        {
+            effectMaterial.SetFloat("_Progress", 0);
+        });
+
         float timer = 0;
         while (timer < 1)
         {
@@ -167,7 +175,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
             yield return null;
         }
 
-        yield return new WaitForSeconds(effectType == EffectType.Glow?1.5f:0.5f);
+        yield return new WaitForSeconds(effectType == EffectType.Glow?0.5f:0.3f);
 
         while (timer > 0)
         {
