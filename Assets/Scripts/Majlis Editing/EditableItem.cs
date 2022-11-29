@@ -121,7 +121,19 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
         if (userModify && effectMaterial != null)
         {
-            StartCoroutine(ShowEffect());
+            ShowEffect();
+        }
+    }
+
+    protected void ShowEffect()
+    {
+        if (effectType == EffectType.Glow)
+        {
+            ShowGlowEffect();
+        }
+        else
+        {
+            StartCoroutine(ShowSparkleEffect());
         }
     }
 
@@ -160,27 +172,35 @@ public class EditableItem : MonoBehaviour, IJsonTask
         return varientIcons[0];
     }
 
-    public IEnumerator ShowEffect()
+    public void ShowGlowEffect()
     {
-        effectMaterial.DOFloat(1, "_Progress", 1f).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(1.5f, "_Progress", 1).SetEase(Ease.Flash).OnComplete(() =>
         {
-            effectMaterial.SetFloat("_Progress", 0);
+            effectMaterial.SetFloat("_Progress", -0.4f);
         });
 
+        effectMaterial.DOFloat(0.3f, "_Intensity", 0.25f).SetEase(Ease.Flash).OnComplete(() =>
+        {
+            effectMaterial.DOFloat(0,"_Intensity", 0.5f).SetDelay(0.25f);
+        });
+    }
+
+    public IEnumerator ShowSparkleEffect()
+    {
         float timer = 0;
         while (timer < 1)
         {
-            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3:2));
+            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
             timer += Time.deltaTime * 4;
             yield return null;
         }
 
-        yield return new WaitForSeconds(effectType == EffectType.Glow?0.5f:0.3f);
+        yield return new WaitForSeconds(effectType == EffectType.Glow ? 0.25f : 0.3f);
 
         while (timer > 0)
         {
-            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
-            timer -= Time.deltaTime * 4;
+            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 4 : 2));
+            timer -= Time.deltaTime * 2;
             yield return null;
         }
 

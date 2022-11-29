@@ -55,7 +55,7 @@ public class TilableEditableItem : SingleEditableItem
                 }
             }
 
-            StartCoroutine(ShowEffect());
+            ShowEffect();
         }
     }
 
