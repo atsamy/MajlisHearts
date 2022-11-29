@@ -175,12 +175,12 @@ public class EditableItem : MonoBehaviour, IJsonTask
     public void ShowGlowEffect()
     {
         effectMaterial.SetFloat("_Intensity", 0.25f);
-        effectMaterial.DOFloat(1f, "_Progress", 1.3f).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(1f, "_Progress", 1f).SetEase(Ease.Flash).OnComplete(() =>
         {
             effectMaterial.SetFloat("_Progress", 0f);
         });
 
-        effectMaterial.DOFloat(0, "_Intensity", 0.5f).SetDelay(0.7f).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(0, "_Intensity", 0.5f).SetDelay(0.4f).SetEase(Ease.Flash).OnComplete(() =>
         {
             effectMaterial.SetFloat("_Intensity", 0.25f);
         });
