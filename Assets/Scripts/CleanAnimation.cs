@@ -22,6 +22,8 @@ public class CleanAnimation : MonoBehaviour,IJsonTask
         }
         else
         {
+            MajlisScript.Instance.DustParticles.transform.position = transform.position + new Vector3(0,0,-3);
+            MajlisScript.Instance.DustParticles.Emit(10);
             SFXManager.Instance.PlayClip("Woosh");
             transform.DOScale(0, 0.5f).SetEase(Ease.InOutCubic).OnComplete(()=>
             {
@@ -34,6 +36,9 @@ public class CleanAnimation : MonoBehaviour,IJsonTask
     {
         foreach (Transform item in transform)
         {
+            MajlisScript.Instance.DustParticles.transform.position = item.position;
+            MajlisScript.Instance.DustParticles.Emit(UnityEngine.Random.Range(6,10));
+
             SFXManager.Instance.PlayClip("Woosh");
             item.DOScale(0, 0.5f).SetEase(Ease.InOutCubic);
             yield return new WaitForSeconds(0.2f);

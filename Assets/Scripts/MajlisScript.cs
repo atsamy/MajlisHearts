@@ -12,6 +12,8 @@ public class MajlisScript : MonoBehaviour
     [SerializeField]
     TaskPanel taskPanel;
 
+    public ParticleSystem DustParticles;
+
     public Action TaskFinished;
 
     private void Awake()

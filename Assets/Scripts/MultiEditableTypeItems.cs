@@ -67,4 +67,12 @@ public class MultiEditableTypeItems : EditableItem
             item.SetModified(index, userModify);
         }
     }
+
+    public override void Reset()
+    {
+        foreach (var item in AllItems)
+        {
+            item.Reset();
+        }
+    }
 }
