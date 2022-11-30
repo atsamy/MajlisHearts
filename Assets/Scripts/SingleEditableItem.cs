@@ -38,7 +38,14 @@ public class SingleEditableItem : EditableItem
         {
             if (effectMaterial == null)
             {
-                effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
+                if (effectType == EffectType.Glow)
+                {
+                    effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
+                }
+                else
+                {
+                    effectMaterial = new Material(Shader.Find("AllIn1SpriteShader/AllIn1Urp2dRenderer"));
+                }
                 sprite.material = effectMaterial;
             }
         }

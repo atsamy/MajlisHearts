@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Unity.Mathematics;
 
 public class EditableItem : MonoBehaviour, IJsonTask
 {
@@ -135,7 +136,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
         }
         else
         {
-            StartCoroutine(ShowSparkleEffect());
+            ShowSparkleEffect();
         }
     }
 
@@ -188,26 +189,41 @@ public class EditableItem : MonoBehaviour, IJsonTask
         });
     }
 
-    public IEnumerator ShowSparkleEffect()
+    public void ShowSparkleEffect()
     {
-        float timer = 0;
-        while (timer < 1)
+        effectMaterial.EnableKeyword("GLOW_ON");
+        effectMaterial.SetFloat("_Glow", 0);
+        effectMaterial.DOFloat(0.5f, "_Glow", 0.5f).SetLoops(2,LoopType.Yoyo);
+
+        effectMaterial.EnableKeyword("SHINE_ON");
+
+        effectMaterial.SetFloat("_ShineGlow", 1f);
+        effectMaterial.SetFloat("_ShineLocation", 0);
+        effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f).OnComplete(() =>
         {
-            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
-            timer += Time.deltaTime * 4;
-            yield return null;
-        }
+            effectMaterial.SetFloat("_ShineLocation", 0);
+            effectMaterial.SetFloat("_ShineGlow", 0.25f);
+            effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f);
+        });
+        
+        //float timer = 0;
+        //while (timer < 1)
+        //{
+        //    effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
+        //    timer += Time.deltaTime * 4;
+        //    yield return null;
+        //}
 
-        yield return new WaitForSeconds(effectType == EffectType.Glow ? 0.25f : 0.3f);
+        //yield return new WaitForSeconds(effectType == EffectType.Glow ? 0.25f : 0.3f);
 
-        while (timer > 0)
-        {
-            effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 4 : 2));
-            timer -= Time.deltaTime * 2;
-            yield return null;
-        }
+        //while (timer > 0)
+        //{
+        //    effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 4 : 2));
+        //    timer -= Time.deltaTime * 2;
+        //    yield return null;
+        //}
 
-        effectMaterial.SetFloat("_Intensity", 0);
+        //effectMaterial.SetFloat("_Intensity", 0);
     }
 }
 
