@@ -20,6 +20,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
     [SerializeField]
     ActionType actionType;
 
+    [SerializeField]
+    float effectTime = 1;
     //[SerializeField]
     //bool showEffect;
     protected Material effectMaterial;
@@ -175,12 +177,12 @@ public class EditableItem : MonoBehaviour, IJsonTask
     public void ShowGlowEffect()
     {
         effectMaterial.SetFloat("_Intensity", 0.25f);
-        effectMaterial.DOFloat(1f, "_Progress", 1f).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(1.3f, "_Progress", effectTime).SetEase(Ease.Flash).OnComplete(() =>
         {
             effectMaterial.SetFloat("_Progress", 0f);
         });
 
-        effectMaterial.DOFloat(0, "_Intensity", 0.5f).SetDelay(0.4f).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(0, "_Intensity", 0.3f).SetDelay(0.4f).SetEase(Ease.Flash).OnComplete(() =>
         {
             effectMaterial.SetFloat("_Intensity", 0.25f);
         });
