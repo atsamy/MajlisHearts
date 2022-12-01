@@ -45,6 +45,9 @@ public class SingleEditableItem : EditableItem
                 else
                 {
                     effectMaterial = new Material(Shader.Find("AllIn1SpriteShader/AllIn1Urp2dRenderer"));
+                    var shape = MajlisScript.Instance.SparkleParticles.shape;
+                    shape.spriteRenderer = sprite;
+                    MajlisScript.Instance.SparkleParticles.Emit(15);
                 }
                 sprite.material = effectMaterial;
             }

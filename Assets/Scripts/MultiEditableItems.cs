@@ -85,12 +85,14 @@ public class MultiEditableItems : EditableItem
             }
         }
 
-        base.SetModified(index,userModify);
-
         foreach (var item in AllItems)
         {
-            item.SetModified();
+            item.SetModified(userModify,effectType);
         }
+
+        base.SetModified(index,userModify);
+
+
     }
 
     //public override void SetOriginal()

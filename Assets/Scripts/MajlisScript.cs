@@ -13,6 +13,7 @@ public class MajlisScript : MonoBehaviour
     TaskPanel taskPanel;
 
     public ParticleSystem DustParticles;
+    public ParticleSystem SparkleParticles;
 
     public Action TaskFinished;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using PlayFab.ProfilesModels;
 using UnityEngine;
 
 public class EditableItemUnit : MonoBehaviour
@@ -55,9 +56,16 @@ public class EditableItemUnit : MonoBehaviour
         }
     }
 
-    internal void SetModified()
+    internal void SetModified(bool userModify,EffectType effectType)
     {
         modified = true;
         modifiedSprite = sprite.sprite;
+
+        if (effectType != EffectType.None && userModify)
+        {
+            var shape = MajlisScript.Instance.SparkleParticles.shape;
+            shape.spriteRenderer = sprite;
+            MajlisScript.Instance.SparkleParticles.Emit(7);
+        }
     }
 }
