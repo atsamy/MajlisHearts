@@ -26,12 +26,12 @@ public class MultiEditableTypeItems : EditableItem
         return AllItems[0].GetVarientsCount();
     }
 
-    public override void ChangeItem(int index)
+    public override void ChangeItem(int index,bool showEffect)
     {
         //SetModified(index);
         foreach (var item in AllItems)
         {
-            item.ChangeItem(index);
+            item.ChangeItem(index,showEffect);
         }
     }
 
@@ -39,7 +39,7 @@ public class MultiEditableTypeItems : EditableItem
     {
         if (disableAnimation)
         {
-            ChangeItem(index);
+            ChangeItem(index,false);
             return;
         }
 

@@ -61,6 +61,11 @@ public class EditableItemUnit : MonoBehaviour
         modified = true;
         modifiedSprite = sprite.sprite;
 
+        ShowParticles(userModify, effectType);
+    }
+
+    public void ShowParticles(bool userModify, EffectType effectType)
+    {
         if (effectType != EffectType.None && userModify)
         {
             var shape = MajlisScript.Instance.SparkleParticles.shape;

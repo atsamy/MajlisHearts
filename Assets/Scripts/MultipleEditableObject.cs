@@ -6,7 +6,7 @@ public class MultipleEditableObject : EditableItem
 {
     public GameObject[] Objects;
     int originalIndex = -1;
-    public override void ChangeItem(int index)
+    public override void ChangeItem(int index,bool showEffect)
     {
         //SetModified(index);
         for (int i = 0; i < Objects.Length; i++)
@@ -17,7 +17,7 @@ public class MultipleEditableObject : EditableItem
 
     public override void ChangeItem(int index, float time)
     {
-        ChangeItem(index);
+        ChangeItem(index,false);
     }
 
     public override void ResetToOriginal()

@@ -32,12 +32,22 @@ public class MultiEditableItems : EditableItem
         return AllItems[0].VarientCount;
     }
 
-    public override void ChangeItem(int index)
+    public override void ChangeItem(int index,bool showEffect)
     {
         //SetModified(index);
         foreach (var item in AllItems)
         {
             item.ChangeItem(index);
+        }
+
+        if (showEffect)
+        {
+            SetMaterial(true);
+            ShowEffect();
+            foreach (var item in AllItems)
+            {
+                item.ShowParticles(true, effectType);
+            }
         }
     }
 
@@ -45,7 +55,7 @@ public class MultiEditableItems : EditableItem
     {
         if (disableAnimation)
         {
-            ChangeItem(index);
+            ChangeItem(index,false);
             return;
         }
 
@@ -66,6 +76,20 @@ public class MultiEditableItems : EditableItem
     }
     public override void SetModified(int index, bool userModify)
     {
+        SetMaterial(userModify);
+
+        foreach (var item in AllItems)
+        {
+            item.SetModified(userModify, effectType);
+        }
+
+        base.SetModified(index, userModify);
+
+
+    }
+
+    protected void SetMaterial(bool userModify)
+    {
         if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
@@ -84,15 +108,6 @@ public class MultiEditableItems : EditableItem
                 }
             }
         }
-
-        foreach (var item in AllItems)
-        {
-            item.SetModified(userModify,effectType);
-        }
-
-        base.SetModified(index,userModify);
-
-
     }
 
     //public override void SetOriginal()

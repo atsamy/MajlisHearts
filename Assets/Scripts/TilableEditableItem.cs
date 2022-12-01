@@ -7,7 +7,7 @@ using static UnityEngine.UIElements.UxmlAttributeDescription;
 public class TilableEditableItem : SingleEditableItem
 {
     SpriteRenderer[] allTiles;
-    public override void ChangeItem(int index)
+    public override void ChangeItem(int index,bool showEffect)
     {
         //SetModified(index);
         foreach (var item in allTiles)
@@ -19,7 +19,7 @@ public class TilableEditableItem : SingleEditableItem
     public override void ChangeItem(int index, float time)
     {
         //SetModified(index);
-        ChangeItem(index);
+        ChangeItem(index,false);
     }
 
     public override void ResetToOriginal()

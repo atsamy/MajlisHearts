@@ -57,7 +57,7 @@ public class EditableItemInterface
         {
             if (GUILayout.Button("Show " + (i + 1)))
             {
-                item.ChangeItem(i);
+                item.ChangeItem(i,false);
             }
         }
 

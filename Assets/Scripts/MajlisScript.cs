@@ -50,7 +50,7 @@ public class MajlisScript : MonoBehaviour
                     break;
                 case ActionType.Change:
                     EditableItem editableItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
-                    editableItem.ChangeItem(task.SelectedIndex);
+                    editableItem.ChangeItem(task.SelectedIndex,false);
                     editableItem.SetModified(task.SelectedIndex,false);
                     Collider2D[] colliders = editableItem.GetComponents<Collider2D>();
 
@@ -61,7 +61,7 @@ public class MajlisScript : MonoBehaviour
                     break;
                 case ActionType.Add:
                     EditableItem fixItem = RoomItems.First(a => a.RoomId == task.TargetArea).EditableItems.First(a => a.Code == task.TargetItem);
-                    fixItem.ChangeItem(0);
+                    fixItem.ChangeItem(0,false);
                     //fixItem.SetModified(0);
                     break;
             }
@@ -174,7 +174,7 @@ public class MajlisScript : MonoBehaviour
         {
             MenuManager.Instance.ShowMain();
             //taskPanel.OpenEditPanel(editableItem, target, TaskFinished);
-            editableItem.ChangeItem(0);
+            editableItem.ChangeItem(0,true);
             TaskFinished?.Invoke();
             SFXManager.Instance.PlayClip("Confirm");
         });

@@ -34,6 +34,14 @@ public class SingleEditableItem : EditableItem
 
     public override void SetModified(int index,bool userModify)
     {
+        SetMaterial(userModify);
+
+        base.SetModified(index, userModify);
+        modifiedSprite = sprite.sprite;
+    }
+
+    private void SetMaterial(bool userModify)
+    {
         if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
@@ -52,9 +60,6 @@ public class SingleEditableItem : EditableItem
                 sprite.material = effectMaterial;
             }
         }
-
-        base.SetModified(index, userModify);
-        modifiedSprite = sprite.sprite;
     }
 
     public override void Reset()
@@ -62,12 +67,18 @@ public class SingleEditableItem : EditableItem
         sprite.sprite = modified?modifiedSprite:originalSprite;
     }
 
-    public override void ChangeItem(int index)
+    public override void ChangeItem(int index,bool showEffect)
     {
         if (index >= varientSprites.Length)
             print(name);
 
         sprite.sprite = varientSprites[index];
+
+        if (showEffect)
+        {
+            SetMaterial(true);
+            ShowEffect();
+        }
     }
 
     public override int GetVarientsCount()

@@ -107,7 +107,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
         return 0;
     }
 
-    public virtual void ChangeItem(int index)
+    public virtual void ChangeItem(int index,bool showEffect)
     {
 
     }
@@ -178,7 +178,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
     public void ShowGlowEffect()
     {
         effectMaterial.SetFloat("_Intensity", 0.25f);
-        effectMaterial.DOFloat(1.3f, "_Progress", effectTime).SetEase(Ease.Flash).OnComplete(() =>
+        effectMaterial.DOFloat(1f, "_Progress", effectTime).SetEase(Ease.Flash).OnComplete(() =>
         {
             effectMaterial.SetFloat("_Progress", 0f);
         });
@@ -225,6 +225,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
         //effectMaterial.SetFloat("_Intensity", 0);
     }
+
+
 }
 
 public interface IJsonTask
