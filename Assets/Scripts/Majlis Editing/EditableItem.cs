@@ -195,16 +195,16 @@ public class EditableItem : MonoBehaviour, IJsonTask
         effectMaterial.SetFloat("_Glow", 0);
         effectMaterial.DOFloat(0.5f, "_Glow", 0.5f).SetLoops(2,LoopType.Yoyo);
 
-        effectMaterial.EnableKeyword("SHINE_ON");
+        //effectMaterial.EnableKeyword("SHINE_ON");
 
-        effectMaterial.SetFloat("_ShineGlow", 1f);
-        effectMaterial.SetFloat("_ShineLocation", 0);
-        effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f).OnComplete(() =>
-        {
-            effectMaterial.SetFloat("_ShineLocation", 0);
-            effectMaterial.SetFloat("_ShineGlow", 0.25f);
-            effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f);
-        });
+        //effectMaterial.SetFloat("_ShineGlow", 1f);
+        //effectMaterial.SetFloat("_ShineLocation", 0);
+        //effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f).OnComplete(() =>
+        //{
+        //    effectMaterial.SetFloat("_ShineLocation", 0);
+        //    effectMaterial.SetFloat("_ShineGlow", 0.25f);
+        //    effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f);
+        //});
         
         //float timer = 0;
         //while (timer < 1)

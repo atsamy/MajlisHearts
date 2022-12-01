@@ -53,13 +53,19 @@ public class SingleEditableItem : EditableItem
                 else
                 {
                     effectMaterial = new Material(Shader.Find("AllIn1SpriteShader/AllIn1Urp2dRenderer"));
-                    var shape = MajlisScript.Instance.SparkleParticles.shape;
-                    shape.spriteRenderer = sprite;
-                    MajlisScript.Instance.SparkleParticles.Emit(15);
+                    ShowSparkles();
                 }
                 sprite.material = effectMaterial;
             }
         }
+
+    }
+
+    void ShowSparkles()
+    {
+        var shape = MajlisScript.Instance.SparkleParticles.shape;
+        shape.spriteRenderer = sprite;
+        MajlisScript.Instance.SparkleParticles.Emit(15);
     }
 
     public override void Reset()
@@ -94,9 +100,11 @@ public class SingleEditableItem : EditableItem
             return;
         }
         
-        transform.DOJump(transform.position,0.2f,1, time * 2).OnComplete(() =>
+        transform.DOMoveY(transform.position.y + 0.2f, time).SetLoops(2,LoopType.Yoyo).OnStepComplete(() =>
         {
             sprite.sprite = varientSprites[index];
         });
+
+        transform.DOScale(0.9f, time).SetLoops(2, LoopType.Yoyo);
     }
 }
