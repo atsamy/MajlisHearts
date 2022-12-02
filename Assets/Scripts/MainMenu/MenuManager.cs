@@ -21,6 +21,7 @@ public class MenuManager : MonoBehaviour
     public FriendListPanel friendPanel;
     public InvitePopup InvitePopup;
 
+    public Image timerFrame;
     public Image timerFill;
 
     public FriendRequestPopup FriendRequestPopup;
@@ -47,8 +48,8 @@ public class MenuManager : MonoBehaviour
         {
             MainPanel.SetAvatar();
         }
-        DailyRewards.instance.onClaimPrize += ClaimDailyReward;
 
+        DailyRewards.instance.onClaimPrize += ClaimDailyReward;
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
 
         //if (PlayerPrefs.GetInt("gamefinished", 0) == 1)

@@ -136,6 +136,7 @@ Material:
   - GLOWTEX_ON
   - GRADIENT_ON
   - OUTDIST_ON
+  - PINCH_ON
   - RADIALGRADIENT_ON
   m_InvalidKeywords:
   - _GRADISRADIAL_ON
@@ -231,12 +232,12 @@ Material:
     - _DistortAmount: 0.5
     - _DistortTexXSpeed: 5
     - _DistortTexYSpeed: 5
-    - _EditorDrawers: 3
+    - _EditorDrawers: 7
     - _FadeAmount: -0.07
     - _FadeBurnGlow: 2
     - _FadeBurnTransition: 0.075
     - _FadeBurnWidth: 0.025
-    - _FishEyeUvAmount: 0.35
+    - _FishEyeUvAmount: 0
     - _FlickerAlpha: 0.208
     - _FlickerFreq: 0.96
     - _FlickerPercent: 0.069
@@ -312,7 +313,7 @@ Material:
     - _ShadowAlpha: 0.424
     - _ShadowX: 0.272
     - _ShadowY: 0.036
-    - _ShakeUvSpeed: 2.5
+    - _ShakeUvSpeed: 0
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
     - _ShineGlow: 2

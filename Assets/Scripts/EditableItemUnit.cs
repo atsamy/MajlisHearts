@@ -41,10 +41,14 @@ public class EditableItemUnit : MonoBehaviour
 
     public void ChangeItem(int index, float time)
     {
-        transform.DOJump(transform.position, 0.2f, 1, time * 2).OnComplete(() =>
+        transform.DOMoveY(transform.position.y + 0.2f, time).SetLoops(2, LoopType.Yoyo).OnStepComplete(() =>
         {
             sprite.sprite = varientSprites[index];
         });
+        //transform.DOJump(transform.position, 0.2f, 1, time * 2).OnComplete(() =>
+        //{
+        //    sprite.sprite = varientSprites[index];
+        //});
     }
 
     internal void Init()
@@ -66,7 +70,7 @@ public class EditableItemUnit : MonoBehaviour
 
     public void ShowParticles(bool userModify, EffectType effectType)
     {
-        if (effectType != EffectType.None && userModify)
+        if (effectType == EffectType.Sparkle && userModify)
         {
             var shape = MajlisScript.Instance.SparkleParticles.shape;
             shape.spriteRenderer = sprite;

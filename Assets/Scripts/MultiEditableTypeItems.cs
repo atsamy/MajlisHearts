@@ -54,8 +54,11 @@ public class MultiEditableTypeItems : EditableItem
     {
         foreach (var item in AllItems)
         {
-            if(item != null)
-            item.Init();
+            if (item != null)
+            {
+                item.Init();
+                item.SetEffectType(effectType);
+            }
         }
     }
 

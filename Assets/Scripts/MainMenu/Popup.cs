@@ -13,27 +13,21 @@ public class Popup : MonoBehaviour
 
     public TextMeshProUGUI Message;
 
-    //public Message[] Messages;
-
     void Show(Action OnOKPressed = null,Action OnCanelPressed = null)
     {
         gameObject.SetActive(true);
         OKPressed = OnOKPressed;
         ClosePressed = OnCanelPressed;
+
+        if (LanguageManager.Instance.CurrentLanguage == Language.Arabic)
+        {
+            Message.lineSpacing = -330;
+        }
+        else
+        {
+            Message.lineSpacing = 0;
+        }
     }
-
-    //public void ShowWithCode(string code, Action OnOKPressed = null)
-    //{
-    //    Show(OnOKPressed);
-    //    Message.text = LanguageManager.Instance.GetString(code);
-    //    //Message.font = LanguageManager.Instance.GetFont();
-    //}
-
-    //public void ShowWithMessage(string message, Action OnOKPressed = null)
-    //{
-    //    Show(OnOKPressed);
-    //    Message.text = message;
-    //}
 
     public void ShowWithMessage(string message, Action OnOKPressed = null, Action OnClosePressed = null)
     {

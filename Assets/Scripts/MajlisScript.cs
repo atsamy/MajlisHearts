@@ -15,6 +15,8 @@ public class MajlisScript : MonoBehaviour
     public ParticleSystem DustParticles;
     public ParticleSystem SparkleParticles;
 
+    public Material GlowMaterial;
+
     public Action TaskFinished;
 
     private void Awake()

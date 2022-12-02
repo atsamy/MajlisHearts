@@ -48,10 +48,17 @@ public class TilableEditableItem : SingleEditableItem
         {
             if (effectMaterial == null)
             {
-                effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
+                effectMaterial = new Material(MajlisScript.Instance.GlowMaterial);
                 foreach (var item in allTiles)
                 {
                     item.material = effectMaterial;
+
+                    if (effectType == EffectType.Sparkle)
+                    {
+                        var shape = MajlisScript.Instance.SparkleParticles.shape;
+                        shape.spriteRenderer = item;
+                        MajlisScript.Instance.SparkleParticles.Emit(15);
+                    }
                 }
             }
 

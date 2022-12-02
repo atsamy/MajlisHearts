@@ -29,12 +29,6 @@ public class LanguageManager : MonoBehaviour
         get
         {
             return currentLanguage;
-            //if (Application.systemLanguage == SystemLanguage.Arabic)
-            //{
-            //    return Language.Arabic;
-            //}
-
-            //return (Language)PlayerPrefs.GetInt("Language", (int)Language.English);
         }
         set
         {
@@ -120,8 +114,9 @@ public class LanguageManager : MonoBehaviour
         string text = ((string)Strings[name]).Replace("\\n", "\n");
 
         if (CurrentLanguage == Language.Arabic)
+        {
             text = ArabicFixer.Fix(text, false, false);
-
+        }
         return text;
     }
 

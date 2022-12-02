@@ -45,6 +45,11 @@ public class EditableItem : MonoBehaviour, IJsonTask
         Init();
     }
 
+    public void SetEffectType(EffectType effectType)
+    {
+        this.effectType = effectType;
+    }
+
     private void OnMouseDown()
     {
         if (!MenuManager.Instance.MainPanel.IsOnMain)
@@ -52,8 +57,11 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
         mouseDown = true;
         clickPos = Input.mousePosition;
-        MenuManager.Instance.timerFill.transform.position = clickPos; //Camera.main.
+        MenuManager.Instance.timerFrame.transform.position = clickPos + Vector3.up * 150f; //Camera.main.
+        MenuManager.Instance.timerFrame.gameObject.SetActive(true);
 
+        MenuManager.Instance.timerFrame.color = new Color(1,1,1,0);
+        MenuManager.Instance.timerFrame.DOFade(1, 0.25f);
         StartCoroutine(resetTimer());
     }
 
@@ -81,8 +89,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
                     TargetItem = Code,
                     ActionType = ActionType.Change
                 };
+                MenuManager.Instance.timerFrame.gameObject.SetActive(false);
                 MajlisScript.Instance.ShowEditableItem(task, false, selectedIndex);
-
                 mouseDown = false;
             }
 
@@ -90,6 +98,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
         }
 
         MenuManager.Instance.timerFill.fillAmount = 0;
+        MenuManager.Instance.timerFrame.gameObject.SetActive(false);
     }
 
     public virtual void ResetToOriginal()
@@ -130,14 +139,19 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     protected void ShowEffect()
     {
-        if (effectType == EffectType.Glow)
+        if(effectType == EffectType.Glow)
+            effectMaterial.SetInt("_Shine", 1);
+
+        effectMaterial.SetFloat("_Intensity", 0.25f);
+        effectMaterial.DOFloat(1f, "_Progress", effectTime / (int)effectType).SetEase(Ease.Flash).OnComplete(() =>
         {
-            ShowGlowEffect();
-        }
-        else
+            effectMaterial.SetFloat("_Progress", 0f);
+        });
+
+        effectMaterial.DOFloat(0, "_Intensity", 0.3f).SetDelay(0.4f).SetEase(Ease.Flash).OnComplete(() =>
         {
-            ShowSparkleEffect();
-        }
+            effectMaterial.SetFloat("_Intensity", 0.25f);
+        });
     }
 
     public virtual void Init()
@@ -174,59 +188,6 @@ public class EditableItem : MonoBehaviour, IJsonTask
     {
         return varientIcons[0];
     }
-
-    public void ShowGlowEffect()
-    {
-        effectMaterial.SetFloat("_Intensity", 0.25f);
-        effectMaterial.DOFloat(1f, "_Progress", effectTime).SetEase(Ease.Flash).OnComplete(() =>
-        {
-            effectMaterial.SetFloat("_Progress", 0f);
-        });
-
-        effectMaterial.DOFloat(0, "_Intensity", 0.3f).SetDelay(0.4f).SetEase(Ease.Flash).OnComplete(() =>
-        {
-            effectMaterial.SetFloat("_Intensity", 0.25f);
-        });
-    }
-
-    public void ShowSparkleEffect()
-    {
-        effectMaterial.EnableKeyword("GLOW_ON");
-        effectMaterial.SetFloat("_Glow", 0);
-        effectMaterial.DOFloat(0.5f, "_Glow", 0.5f).SetLoops(2,LoopType.Yoyo);
-
-        //effectMaterial.EnableKeyword("SHINE_ON");
-
-        //effectMaterial.SetFloat("_ShineGlow", 1f);
-        //effectMaterial.SetFloat("_ShineLocation", 0);
-        //effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f).OnComplete(() =>
-        //{
-        //    effectMaterial.SetFloat("_ShineLocation", 0);
-        //    effectMaterial.SetFloat("_ShineGlow", 0.25f);
-        //    effectMaterial.DOFloat(1f, "_ShineLocation", 0.5f);
-        //});
-        
-        //float timer = 0;
-        //while (timer < 1)
-        //{
-        //    effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 3 : 2));
-        //    timer += Time.deltaTime * 4;
-        //    yield return null;
-        //}
-
-        //yield return new WaitForSeconds(effectType == EffectType.Glow ? 0.25f : 0.3f);
-
-        //while (timer > 0)
-        //{
-        //    effectMaterial.SetFloat("_Intensity", timer / (effectType == EffectType.Glow ? 4 : 2));
-        //    timer -= Time.deltaTime * 2;
-        //    yield return null;
-        //}
-
-        //effectMaterial.SetFloat("_Intensity", 0);
-    }
-
-
 }
 
 public interface IJsonTask

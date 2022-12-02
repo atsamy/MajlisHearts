@@ -94,14 +94,7 @@ public class MultiEditableItems : EditableItem
         {
             if (effectMaterial == null)
             {
-                if (effectType == EffectType.Glow)
-                {
-                    effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
-                }
-                else
-                {
-                    effectMaterial = new Material(Shader.Find("AllIn1SpriteShader/AllIn1Urp2dRenderer"));
-                }
+                effectMaterial = new Material(MajlisScript.Instance.GlowMaterial);
                 foreach (var item in AllItems)
                 {
                     item.GetComponent<SpriteRenderer>().material = effectMaterial;

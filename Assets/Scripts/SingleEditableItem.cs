@@ -34,38 +34,39 @@ public class SingleEditableItem : EditableItem
 
     public override void SetModified(int index,bool userModify)
     {
-        SetMaterial(userModify);
+        SetEffect(userModify);
+        modifiedSprite = sprite.sprite;
 
         base.SetModified(index, userModify);
-        modifiedSprite = sprite.sprite;
     }
 
-    private void SetMaterial(bool userModify)
+    public void SetEffect(bool userModify)
+    {
+        SetMaterial(userModify);
+        ShowSparkles(userModify);
+    }
+
+    public void SetMaterial(bool userModify)
     {
         if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
             {
-                if (effectType == EffectType.Glow)
-                {
-                    effectMaterial = new Material(Shader.Find("Shader Graphs/" + effectType));
-                }
-                else
-                {
-                    effectMaterial = new Material(Shader.Find("AllIn1SpriteShader/AllIn1Urp2dRenderer"));
-                    ShowSparkles();
-                }
+                effectMaterial = new Material(MajlisScript.Instance.GlowMaterial);
                 sprite.material = effectMaterial;
             }
         }
 
     }
 
-    void ShowSparkles()
+    public void ShowSparkles(bool userModify)
     {
-        var shape = MajlisScript.Instance.SparkleParticles.shape;
-        shape.spriteRenderer = sprite;
-        MajlisScript.Instance.SparkleParticles.Emit(15);
+        if (userModify && effectType == EffectType.Sparkle)
+        {
+            var shape = MajlisScript.Instance.SparkleParticles.shape;
+            shape.spriteRenderer = sprite;
+            MajlisScript.Instance.SparkleParticles.Emit(15);
+        }
     }
 
     public override void Reset()
@@ -84,6 +85,7 @@ public class SingleEditableItem : EditableItem
         {
             SetMaterial(true);
             ShowEffect();
+            ShowSparkles(true);
         }
     }
 
@@ -99,12 +101,10 @@ public class SingleEditableItem : EditableItem
             sprite.sprite = varientSprites[index];
             return;
         }
-        
-        transform.DOMoveY(transform.position.y + 0.2f, time).SetLoops(2,LoopType.Yoyo).OnStepComplete(() =>
+
+        transform.DOMoveY(transform.position.y + 0.2f, time).SetLoops(2, LoopType.Yoyo).OnStepComplete(() =>
         {
             sprite.sprite = varientSprites[index];
         });
-
-        transform.DOScale(0.9f, time).SetLoops(2, LoopType.Yoyo);
     }
 }
