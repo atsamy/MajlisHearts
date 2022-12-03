@@ -21,8 +21,7 @@ public class MenuManager : MonoBehaviour
     public FriendListPanel friendPanel;
     public InvitePopup InvitePopup;
 
-    public Image timerFrame;
-    public Image timerFill;
+    public EditTimer EditTimer;
 
     public FriendRequestPopup FriendRequestPopup;
 

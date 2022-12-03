@@ -57,11 +57,12 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
         mouseDown = true;
         clickPos = Input.mousePosition;
-        MenuManager.Instance.timerFrame.transform.position = clickPos + Vector3.up * 150f; //Camera.main.
-        MenuManager.Instance.timerFrame.gameObject.SetActive(true);
+        MenuManager.Instance.EditTimer.SetPosition(clickPos);
+        //MenuManager.Instance.timerFrame.transform.position = clickPos + Vector3.up * 150f; //Camera.main.
+        //MenuManager.Instance.timerFrame.gameObject.SetActive(true);
 
-        MenuManager.Instance.timerFrame.color = new Color(1,1,1,0);
-        MenuManager.Instance.timerFrame.DOFade(1, 0.25f);
+        //MenuManager.Instance.timerFrame.color = new Color(1,1,1,0);
+        //MenuManager.Instance.timerFrame.DOFade(1, 0.25f);
         StartCoroutine(resetTimer());
     }
 
@@ -80,7 +81,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
                 mouseDown = false;
 
             timer -= Time.deltaTime;
-            MenuManager.Instance.timerFill.fillAmount = (1 - timer) / 1;
+            //MenuManager.Instance.timerFill.fillAmount = (1 - timer) / 1;
+            MenuManager.Instance.EditTimer.Fill((1 - timer));
             if (timer <= 0)
             {
                 TaskData task = new TaskData()
@@ -89,16 +91,17 @@ public class EditableItem : MonoBehaviour, IJsonTask
                     TargetItem = Code,
                     ActionType = ActionType.Change
                 };
-                MenuManager.Instance.timerFrame.gameObject.SetActive(false);
+                MenuManager.Instance.EditTimer.Hide();
+                //MenuManager.Instance.timerFrame.gameObject.SetActive(false);
                 MajlisScript.Instance.ShowEditableItem(task, false, selectedIndex);
                 mouseDown = false;
             }
 
             yield return null;
         }
-
-        MenuManager.Instance.timerFill.fillAmount = 0;
-        MenuManager.Instance.timerFrame.gameObject.SetActive(false);
+        MenuManager.Instance.EditTimer.Hide();
+        //MenuManager.Instance.timerFill.fillAmount = 0;
+        //MenuManager.Instance.timerFrame.gameObject.SetActive(false);
     }
 
     public virtual void ResetToOriginal()
