@@ -12,7 +12,6 @@ public class TasksManager : MonoBehaviour
     [HideInInspector]
     public List<FinishedTask> FinishedTasks;
     //int currentIndex;
-
     public TaskData CurrentTask { get => Tasks[FinishedTasks.Count]; }
     public bool tasksCompleted { get => FinishedTasks.Count >= Tasks.Length; }
 

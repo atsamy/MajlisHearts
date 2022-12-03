@@ -14,6 +14,11 @@ public class TilableEditableItem : SingleEditableItem
         {
             item.sprite = VarientSprites[index];
         }
+
+        if (showEffect)
+        {
+            SetEffect(true);
+        }
     }
 
     public override void ChangeItem(int index, float time)
@@ -44,6 +49,11 @@ public class TilableEditableItem : SingleEditableItem
         modified = true;
         modifiedSprite = allTiles[0].sprite;
 
+        SetEffect(userModify);
+    }
+
+    private new void SetEffect(bool userModify)
+    {
         if (effectType != EffectType.None && userModify)
         {
             if (effectMaterial == null)
@@ -65,7 +75,6 @@ public class TilableEditableItem : SingleEditableItem
             ShowEffect();
         }
     }
-
 
     public override void Init()
     {

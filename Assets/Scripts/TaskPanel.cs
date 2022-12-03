@@ -31,7 +31,8 @@ public class TaskPanel : MonoBehaviour
 
     private void InitTask()
     {
-        //currentTaskItem = Instantiate(taskItem, content).GetComponent<TaskItemScript>();
+        if (TasksManager.Instance.tasksCompleted)
+            return;
         currentTask = TasksManager.Instance.CurrentTask;
 
         string taskName = LanguageManager.Instance.GetString(currentTask.ActionName);
@@ -93,13 +94,15 @@ public class TaskPanel : MonoBehaviour
 
     public void Open()
     {
-        InitTask();
-
         if (TasksManager.Instance.tasksCompleted)
         {
-            MenuManager.Instance.OpenPopup("taskdone");
+            MenuManager.Instance.OpenPopup("taskdone",false,false, () =>
+            {
+                MenuManager.Instance.ShowMain();
+            });
             return;
         }
+        InitTask();
         taskPanel.SetActive(true);
         MenuManager.Instance.HideMain(false,true);
 
