@@ -74,13 +74,18 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     IEnumerator resetTimer()
     {
+        yield return new WaitForSeconds(0.2f);
+
+        if(Vector3.Distance(Input.mousePosition, clickPos) > 5)
+            mouseDown = false;
+
         timer = 1;
         while (mouseDown)
         {
             if (Vector3.Distance(Input.mousePosition, clickPos) > 5)
                 mouseDown = false;
 
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime * 2;
             //MenuManager.Instance.timerFill.fillAmount = (1 - timer) / 1;
             MenuManager.Instance.EditTimer.Fill((1 - timer));
             if (timer <= 0)
