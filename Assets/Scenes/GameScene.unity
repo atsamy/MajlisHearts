@@ -1305,7 +1305,7 @@ GameObject:
   - component: {fileID: 95852743}
   - component: {fileID: 95852742}
   m_Layer: 5
-  m_Name: next
+  m_Name: claim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2303,7 +2303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 20}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &148394754
@@ -4558,8 +4558,9 @@ GameObject:
   - component: {fileID: 341141549}
   - component: {fileID: 341141551}
   - component: {fileID: 341141550}
+  - component: {fileID: 341141552}
   m_Layer: 5
-  m_Name: Info
+  m_Name: extrarewards
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4682,6 +4683,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341141548}
   m_CullTransparentMesh: 1
+--- !u!114 &341141552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341141548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &349225474
 GameObject:
   m_ObjectHideFlags: 0
@@ -6455,6 +6468,7 @@ GameObject:
   - component: {fileID: 520749693}
   - component: {fileID: 520749695}
   - component: {fileID: 520749694}
+  - component: {fileID: 520749696}
   m_Layer: 5
   m_Name: LuckySpin
   m_TagString: Untagged
@@ -6579,6 +6593,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520749692}
   m_CullTransparentMesh: 1
+--- !u!114 &520749696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520749692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &522114952
 GameObject:
   m_ObjectHideFlags: 0
@@ -9718,8 +9744,8 @@ MonoBehaviour:
   scoreText: {fileID: 2014384714}
   coinsText: {fileID: 836806555}
   levelText: {fileID: 1651065707}
-  totalCoinsText: {fileID: 1705999381}
-  totalGemsText: {fileID: 322483350}
+  totalCoinsText: {fileID: 1705999380}
+  totalGemsText: {fileID: 322483349}
   addCoinsText: {fileID: 206162539}
   addGemsText: {fileID: 382024023}
   levelUp: {fileID: 174708706}
@@ -14125,8 +14151,9 @@ GameObject:
   - component: {fileID: 1215934587}
   - component: {fileID: 1215934589}
   - component: {fileID: 1215934588}
+  - component: {fileID: 1215934590}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: spin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14249,6 +14276,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1215934586}
   m_CullTransparentMesh: 1
+--- !u!114 &1215934590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215934586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1216884381
 GameObject:
   m_ObjectHideFlags: 0
@@ -14339,7 +14378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.6699048
+  m_AspectRatio: 1.6699047
 --- !u!1 &1218969747
 GameObject:
   m_ObjectHideFlags: 0
@@ -16924,7 +16963,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 100, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1385031009
@@ -20593,7 +20632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -100, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1704111774
@@ -24100,6 +24139,7 @@ GameObject:
   - component: {fileID: 1992932791}
   - component: {fileID: 1992932793}
   - component: {fileID: 1992932792}
+  - component: {fileID: 1992932794}
   m_Layer: 0
   m_Name: close
   m_TagString: Untagged
@@ -24224,6 +24264,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992932790}
   m_CullTransparentMesh: 1
+--- !u!114 &1992932794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992932790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2008714527
 GameObject:
   m_ObjectHideFlags: 0
@@ -24469,35 +24521,35 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 8bb4321899a8c854c9b936b31f626959, type: 3}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[0].Label
-      value: Gems
+      value: gems
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[1].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[2].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[3].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[4].Label
-      value: Gems
+      value: gems
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[5].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[6].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[7].Label
-      value: Coins
+      value: coins
       objectReference: {fileID: 0}
     - target: {fileID: 114361574848870256, guid: 160be82451391f6448834ec65286e007, type: 3}
       propertyPath: wheelPieces.Array.data[1].Amount

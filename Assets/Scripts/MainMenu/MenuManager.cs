@@ -50,12 +50,6 @@ public class MenuManager : MonoBehaviour
 
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
-
-        //if (PlayerPrefs.GetInt("gamefinished", 0) == 1)
-        //{
-        //    SpinWheel.SetActive(true);
-        //    PlayerPrefs.SetInt("gamefinished", 0);
-        //}
     }
 
     private void ChatManager_OnGotPrivateMessage(string sender, string message)

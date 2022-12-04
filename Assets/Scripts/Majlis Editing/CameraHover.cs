@@ -26,9 +26,19 @@ public class CameraHover : MonoBehaviour
     float hoverSpeed = 5;
     new Camera camera;
 
+    float prevDistance;
+    float NewTime = 0;
+
+    bool firstTouch = true;
+    bool doubleTouch;
+    float startSize = 0;
+    public float MaxDoubleTapTime = 0.5f;
+    int TapCount;
+
     private void Start()
     {
         camera = GetComponent<Camera>();
+        TapCount = 0;
     }
 
     void LateUpdate()
@@ -37,6 +47,33 @@ public class CameraHover : MonoBehaviour
             return;
 
         if (IsPointerOverUIObject())
+            return;
+
+        if (Input.touchCount >= 2)
+        {
+            Vector2 touch0 = Input.GetTouch(0).position;
+            Vector2 touch1 = Input.GetTouch(1).position;
+            float distance = Vector2.Distance(touch0, touch1);
+
+            doubleTouch = true;
+
+            if (firstTouch)
+            {
+                prevDistance = distance;
+                firstTouch = false;
+
+                startSize = camera.orthographicSize;
+            }
+
+            camera.orthographicSize = Mathf.Clamp(startSize + ((prevDistance - distance) / 50), 3, 10);
+            return;
+        }
+        else if (Input.touchCount == 0)
+            doubleTouch = false;
+
+        firstTouch = true;
+
+        if (doubleTouch)
             return;
 
         if (Input.GetMouseButtonDown(0))
@@ -64,9 +101,45 @@ public class CameraHover : MonoBehaviour
                 transform.position -= velocity * Time.deltaTime;
                 velocity -= velocity * Time.deltaTime * 5;
 
-                transform.position = new Vector3(Mathf.Clamp(transform.position.x,minBounds.x,maxBounds.x),
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x, minBounds.x, maxBounds.x),
                     Mathf.Clamp(transform.position.y, minBounds.y, maxBounds.y), -20);
             }
+        }
+    }
+
+    void Update()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                TapCount += 1;
+            }
+
+            if (TapCount == 1)
+            {
+
+                NewTime = Time.time + MaxDoubleTapTime;
+            }
+            else if (TapCount == 2 && Time.time <= NewTime)
+            {
+
+                //Whatever you want after a dubble tap    
+                print("Dubble tap");
+                if (camera.orthographicSize != 6)
+                {
+                    camera.DOOrthoSize(6, 0.5f).SetEase(Ease.InCirc);
+                }
+
+                TapCount = 0;
+            }
+
+        }
+        if (Time.time > NewTime)
+        {
+            TapCount = 0;
         }
     }
 
@@ -103,7 +176,7 @@ public class CameraHover : MonoBehaviour
         return false;
     }
 
-    public void GoToLocation(Transform Location,Action onArrived)
+    public void GoToLocation(Transform Location, Action onArrived)
     {
         //originalPosition = transform.position;
         //originalRotation = transform.rotation;
@@ -113,7 +186,7 @@ public class CameraHover : MonoBehaviour
         tagetLocation.z = -20;
         tagetLocation.y -= 1;
 
-        transform.DOMove(tagetLocation, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() => 
+        transform.DOMove(tagetLocation, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             onArrived?.Invoke();
         });

@@ -40,6 +40,8 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     Vector3 clickPos;
 
+    Coroutine timerCoroutine;
+
     private void Awake()
     {
         Init();
@@ -52,7 +54,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     private void OnMouseDown()
     {
-        if (!MenuManager.Instance.MainPanel.IsOnMain)
+        if (!MenuManager.Instance.MainPanel.IsOnMain || Input.touchCount > 1)
             return;
 
         mouseDown = true;
@@ -63,12 +65,17 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
         //MenuManager.Instance.timerFrame.color = new Color(1,1,1,0);
         //MenuManager.Instance.timerFrame.DOFade(1, 0.25f);
-        StartCoroutine(resetTimer());
+        timerCoroutine = StartCoroutine(resetTimer());
     }
 
     private void OnMouseUp()
     {
         mouseDown = false;
+
+        if (timerCoroutine != null)
+            StopCoroutine(timerCoroutine);
+
+        MenuManager.Instance.EditTimer.Hide();
     }
 
 
@@ -76,14 +83,16 @@ public class EditableItem : MonoBehaviour, IJsonTask
     {
         yield return new WaitForSeconds(0.2f);
 
-        if(Vector3.Distance(Input.mousePosition, clickPos) > 5)
+        if (Vector3.Distance(Input.mousePosition, clickPos) > 10)
             mouseDown = false;
 
         timer = 1;
         while (mouseDown)
         {
-            if (Vector3.Distance(Input.mousePosition, clickPos) > 5)
+            if (Vector3.Distance(Input.mousePosition, clickPos) > 10)
+            {
                 mouseDown = false;
+            }
 
             timer -= Time.deltaTime * 2;
             //MenuManager.Instance.timerFill.fillAmount = (1 - timer) / 1;
@@ -124,17 +133,17 @@ public class EditableItem : MonoBehaviour, IJsonTask
         return 0;
     }
 
-    public virtual void ChangeItem(int index,bool showEffect)
+    public virtual void ChangeItem(int index, bool showEffect)
     {
 
     }
 
-    public virtual void ChangeItem(int index,float time)
+    public virtual void ChangeItem(int index, float time)
     {
 
     }
 
-    public virtual void SetModified(int index,bool userModify)
+    public virtual void SetModified(int index, bool userModify)
     {
         selectedIndex = index;
         modified = true;
@@ -147,7 +156,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     protected void ShowEffect()
     {
-        if(effectType == EffectType.Glow)
+        if (effectType == EffectType.Glow)
             effectMaterial.SetInt("_Shine", 1);
 
         effectMaterial.SetFloat("_Intensity", 0.25f);
@@ -175,7 +184,7 @@ public class EditableItem : MonoBehaviour, IJsonTask
 
     public void CopyLanguageFieldToClipBoard()
     {
-        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">"+ Code + "</string>";
+        GUIUtility.systemCopyBuffer = "<string name =\"" + Code + "\">" + Code + "</string>";
     }
 
     public string GetTaskJson()

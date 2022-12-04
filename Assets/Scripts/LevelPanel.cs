@@ -33,9 +33,9 @@ public class LevelPanel : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI levelText;
     [SerializeField]
-    TextMeshProUGUI totalCoinsText;
+    ChangeNumber totalCoinsText;
     [SerializeField]
-    TextMeshProUGUI totalGemsText;
+    ChangeNumber totalGemsText;
     [SerializeField]
     TextMeshProUGUI addCoinsText;
     [SerializeField]
@@ -48,9 +48,12 @@ public class LevelPanel : MonoBehaviour
 
     Action nextPressed;
 
+    int reward;
+    int gems;
+
     public void Open(int rank,int totalScore, Action next)
     {
-        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name);
+        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
         //nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
         nextPressed = next;
         scoreText.text = totalScore.ToString();
@@ -95,16 +98,16 @@ public class LevelPanel : MonoBehaviour
         int startCoins = GameManager.Instance.Coins;
         int startGems = GameManager.Instance.Gems;
 
-        totalCoinsText.text = startCoins.ToString();
-        totalGemsText.text = startGems.ToString();
+        totalCoinsText.setNumber(startCoins);
+        totalGemsText.setNumber(startGems);
 
-        int reward = GameManager.Instance.GetRewardAndSave(rank);
-        int gems = GameManager.Instance.GetGemsAndSave(rank);
+        reward = GameManager.Instance.GetRewardAndSave(rank);
+        gems = GameManager.Instance.GetGemsAndSave(rank);
 
         coinsText.text = reward.ToString();
         gemsText.text = gems.ToString();
 
-        StartCoroutine(CountNumbers(startGems,startCoins,gems, reward, 1f));
+        //StartCoroutine(CountNumbers(startGems,startCoins,gems, reward, 1f));
 
         float progress = GameManager.Instance.AddPoints(score);
         float totalProgress = MathF.Min(1, currentProgress + progress);
@@ -125,7 +128,7 @@ public class LevelPanel : MonoBehaviour
 
         spinnerWheel.onClaimReawrd += (currency, amount) =>
         {
-            if (currency == "Coins")
+            if (currency == "coins")
             {
                 GameManager.Instance.AddCoins(amount);
                 totalCoinsText.GetComponent<ChangeNumber>().Change(GameManager.Instance.Coins);
@@ -149,40 +152,40 @@ public class LevelPanel : MonoBehaviour
         nextButton.SetActive(true);
     }
 
-    public IEnumerator CountNumbers(int startgems,int startcoins, int gems, int reward, float time)
-    {
-        float timer = 0;
-        yield return new WaitForSeconds(2);
-        GameSFXManager.Instance.PlayClip("Count");
+    //public IEnumerator CountNumbers(int startgems,int startcoins, int gems, int reward, float time)
+    //{
+    //    float timer = 0;
+    //    yield return new WaitForSeconds(2);
+    //    GameSFXManager.Instance.PlayClip("Count");
 
-        while (timer < time)
-        {
-            coinsText.text = Mathf.Round(Mathf.Lerp(reward, 0, timer)).ToString();
-            totalCoinsText.text = Mathf.Round(Mathf.Lerp(startcoins, startcoins + reward, timer)).ToString();
+    //    while (timer < time)
+    //    {
+    //        coinsText.text = Mathf.Round(Mathf.Lerp(reward, 0, timer)).ToString();
+    //        totalCoinsText.text = Mathf.Round(Mathf.Lerp(startcoins, startcoins + reward, timer)).ToString();
 
-            timer += Time.deltaTime;
-            yield return null;
-        }
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        totalCoinsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Coins);
-        coinsText.text = "0";
-        ShowAddedAmount(addCoinsText, reward);
+    //    totalCoinsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Coins);
+    //    coinsText.text = "0";
+    //    ShowAddedAmount(addCoinsText, reward);
 
-        timer = 0;
-        GameSFXManager.Instance.PlayClip("Count");
-        while (timer < time)
-        {
-            gemsText.text = Mathf.Round(Mathf.Lerp(gems, 0, timer)).ToString();
-            totalGemsText.text = Mathf.Round(Mathf.Lerp(startgems, startgems + gems, timer)).ToString();
+    //    timer = 0;
+    //    GameSFXManager.Instance.PlayClip("Count");
+    //    while (timer < time)
+    //    {
+    //        gemsText.text = Mathf.Round(Mathf.Lerp(gems, 0, timer)).ToString();
+    //        totalGemsText.text = Mathf.Round(Mathf.Lerp(startgems, startgems + gems, timer)).ToString();
 
-            timer += Time.deltaTime;
-            yield return null;
-        }
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        totalGemsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Gems);
-        gemsText.text = "0";
-        ShowAddedAmount(addGemsText,gems);
-    }
+    //    totalGemsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Gems);
+    //    gemsText.text = "0";
+    //    ShowAddedAmount(addGemsText,gems);
+    //}
 
     private void ShowAddedAmount(TextMeshProUGUI currencyText,int gems)
     {
@@ -207,7 +210,23 @@ public class LevelPanel : MonoBehaviour
 
     public void NextPressed()
     {
+        StartCoroutine(NextSeq());
+    }
+
+    IEnumerator NextSeq()
+    {
+        totalCoinsText.Change(GameManager.Instance.Coins);
+        totalGemsText.Change(GameManager.Instance.Gems);
+
+        ShowAddedAmount(addCoinsText, reward);
+        ShowAddedAmount(addGemsText, gems);
+
+        GameSFXManager.Instance.PlayClip("Coins");
+
         mainPanel.SetActive(false);
+
+        yield return new WaitForSeconds(0.5f);
+
         if (AdsManager.Instance.IsVideoReady)
         {
             spinnerWheel.Open(() =>

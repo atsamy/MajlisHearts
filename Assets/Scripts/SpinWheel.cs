@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using NiobiumStudios;
+using static UnityEngine.UI.CanvasScaler;
 
 public class SpinWheel : MonoBehaviour
 {
@@ -61,10 +63,9 @@ public class SpinWheel : MonoBehaviour
         {
             panelClosed?.Invoke();
         });
-
         pickerWheel.OnSpinEnd((prize) =>
         {
-            rewardAmount.text = prize.Amount.ToString();
+            rewardAmount.text = string.Format(LanguageManager.Instance.GetString("yougotreward"), prize.Amount, LanguageManager.Instance.GetString(prize.Label));
             rewardImage.sprite = prize.Icon;
             rewardPanel.SetActive(true);
 
