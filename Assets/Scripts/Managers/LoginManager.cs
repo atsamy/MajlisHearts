@@ -75,7 +75,7 @@ public class LoginManager : MonoBehaviour
         
         loginValue = PlayerPrefs.GetInt("login", 0);
 
-        if (Application.platform == RuntimePlatform.Android && !forceDeviceLogin)// || Application.platform == RuntimePlatform.IPhonePlayer)
+        if ((Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) && !forceDeviceLogin)// || Application.platform == RuntimePlatform.IPhonePlayer)
         {
             print("device login");
             InitPlayGames();
