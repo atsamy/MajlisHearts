@@ -35,12 +35,6 @@ public class MajlisScript : MonoBehaviour
         AdjustMajlis(TasksManager.Instance.FinishedTasks);
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.R))
-    //        ResetTask();
-    //}
-
     public void AdjustMajlis(List<FinishedTask> finishedTasks)
     {
         foreach (var task in finishedTasks)

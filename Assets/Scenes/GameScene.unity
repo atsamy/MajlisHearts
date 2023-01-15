@@ -5923,7 +5923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &465340807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12764,7 +12764,7 @@ GameObject:
   - component: {fileID: 1078356344}
   - component: {fileID: 1078356347}
   - component: {fileID: 1078356346}
-  - component: {fileID: 1078356345}
+  - component: {fileID: 1078356348}
   m_Layer: 5
   m_Name: Table
   m_TagString: Untagged
@@ -12794,20 +12794,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1078356345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078356343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 4
-  m_AspectRatio: 2.1113403
 --- !u!114 &1078356346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12828,7 +12814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f8b3cb47dc60a1a448636bc68182708f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4a1b1750e600fd749a9976dcf38cc4df, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12846,6 +12832,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078356343}
   m_CullTransparentMesh: 1
+--- !u!114 &1078356348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078356343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 4
+  m_AspectRatio: 2.1113403
 --- !u!1 &1100185265
 GameObject:
   m_ObjectHideFlags: 0
@@ -13566,7 +13566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1175103590
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14378,7 +14378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.6699047
+  m_AspectRatio: 1.6699048
 --- !u!1 &1218969747
 GameObject:
   m_ObjectHideFlags: 0
