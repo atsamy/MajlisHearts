@@ -1,217 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
-//using GoogleMobileAds.Api;
 using UnityEngine.Advertisements;
 using System;
 
 public enum AdsNetwork { Unity, AdMob }
 
-public class AdsManager : MonoBehaviour, IUnityAdsListener
+public class AdsManager : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsInitializationListener
 {
-    //InterstitialAd interstitial;
     public static AdsManager Instance;
-    //private RewardBasedVideoAd rewardBasedVideo;
     Action<ShowResult> RewardedVideoCallback;
     Action<ShowResult> InterstitialCallback;
 
     public Action<bool> FinishedVideo;
 
-    //public bool VideoReady { get { return Advertisement.IsReady("rewardedVideo"); } }
+    bool isAddLoaded;
+    [SerializeField] 
+    bool testMode = true;    
+    [SerializeField] 
+    string androidGameId;
+    [SerializeField] 
+    string iOSGameId;
 
-    public AdsNetwork[] VideoPriority;
-    public AdsNetwork[] InterstitialPriority;
+    string _adUnitId = null;
 
     public bool IsVideoReady
     {
         get
         {
-#if UNITY_ANDROID
-            return Advertisement.IsReady("Rewarded_Android");
-#elif UNITY_IOS
-            return Advertisement.IsReady("Rewarded_iOS");
-#endif
+            return isAddLoaded;
         }
     }
 
     private void Awake()
     {
         Instance = this;
-    }
+        string appId = "";
 
-    // Use this for initialization
-    void Start()
-    {
-        //#if UNITY_ANDROID
-        //        string appId = "ca-app-pub-4234006813055244~3003294487";
-        //#elif UNITY_IPHONE
-        //            string appId = "ca-app-pub-3940256099942544~1458002511";
-        //#else
-        //            string appId = "unexpected_platform";
-        //#endif
-
-        //        // Initialize the Google Mobile Ads SDK.
-        //        MobileAds.Initialize(appId);
-
-        //        rewardBasedVideo = RewardBasedVideoAd.Instance;
-
-        //        rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
-
-        //        rewardBasedVideo.OnAdLoaded += RewardBasedVideo_OnAdLoaded;
 #if UNITY_ANDROID
-        Advertisement.Initialize("4981388");
-#elif UNITY_IOS
-        Advertisement.Initialize("4981389");
+        appId = androidGameId;
+#elif UNITY_IPHONE
+        appId = iOSGameId;
 #endif
 
-        Advertisement.AddListener(this);
-        //RequestInterstitial();
-
-        //requestVideo();
+        Advertisement.Initialize(appId, testMode, this);
     }
-
-    //    private void RequestInterstitial()
-    //    {
-    //#if UNITY_ANDROID
-    //        string adUnitId = "ca-app-pub-4234006813055244/9319035791";
-    //#elif UNITY_IPHONE
-    //        string adUnitId = "ca-app-pub-3940256099942544/4411468910";
-    //#else
-    //        string adUnitId = "unexpected_platform";
-    //#endif
-
-    //        // Initialize an InterstitialAd.
-    //        interstitial = new InterstitialAd(adUnitId);
-    //        // Create an empty ad request.
-    //        AdRequest request = new AdRequest.Builder().Build();
-    //        // Load the interstitial with the request.
-    //        interstitial.LoadAd(request);
-    //        interstitial.OnAdClosed += interstitialclosed;
-    //        interstitial.OnAdFailedToLoad += interstitialFailed;
-
-    //    }
-
-    //private void interstitialclosed(object sender, EventArgs e)
-    //{
-    //    InterstitialCallback.Invoke(ShowResult.Finished);
-    //}
-
-    //private void interstitialFailed(object sender, EventArgs e)
-    //{
-    //    InterstitialCallback.Invoke(ShowResult.Failed);
-    //}
-
-    //    private void requestVideo()
-    //    {
-
-    //#if UNITY_ANDROID
-    //        string adUnitId = "ca-app-pub-4234006813055244/9865830706";
-    //#elif UNITY_IPHONE
-    //            string adUnitId = "ca-app-pub-3940256099942544/1712485313";
-    //#else
-    //            string adUnitId = "unexpected_platform";
-    //#endif
-
-    //        // Create an empty ad request.
-    //        AdRequest request = new AdRequest.Builder().Build();
-    //        // Load the rewarded video ad with the request.
-    //        this.rewardBasedVideo.LoadAd(request, adUnitId);
-    //    }
-
-    //private void RewardBasedVideo_OnAdLoaded(object sender, EventArgs e)
-    //{
-    //    print("VideoLoaded");
-    //}
-
-    //public void ShowInterstitial(Action<ShowResult> HandleShowResult)
-    //{
-    //    bool adPlayed = false;
-
-    //    foreach (var item in InterstitialPriority)
-    //    {
-    //        if (item == AdsNetwork.Unity)
-    //        {
-    //            if (Advertisement.IsReady("video"))
-    //            {
-    //                var options = new ShowOptions { resultCallback = HandleShowResult };
-    //                Advertisement.Show("video", options);
-    //                adPlayed = true;
-    //                break;
-    //            }
-    //        }
-    //        //else if (item == AdsNetwork.AdMob)
-    //        //{
-    //        //    if (interstitial.IsLoaded())
-    //        //    {
-    //        //        interstitial.Show();
-    //        //        InterstitialCallback = HandleShowResult;
-    //        //        adPlayed = true;
-    //        //        break;
-    //        //    }
-    //        //}
-
-    //        if (!adPlayed)
-    //        {
-    //            HandleShowResult.Invoke(ShowResult.Failed);
-    //        }
-    //    }
-    //}
 
     public void ShowRewardedAd(Action<bool> HandleShowResult)
     {
-        //prin("unity ads" + Advertisement.IsReady());
-        //print("admob ads" + rewardBasedVideo.IsLoaded());
-
-        foreach (var item in VideoPriority)
+        if (isAddLoaded)
         {
-            if (item == AdsNetwork.Unity)
-            {
-#if UNITY_ANDROID
-                if (Advertisement.IsReady("Rewarded_Android"))
-                {
-                    FinishedVideo = HandleShowResult;
-                    Advertisement.Show("Rewarded_Android");
-                    break;
-                }
-#elif UNITY_IOS
-                if (Advertisement.IsReady("Rewarded_iOS"))
-                {
-                    FinishedVideo = HandleShowResult;
-                    Advertisement.Show("Rewarded_iOS");
-                    break;
-                }
-#endif
-            }
-            //else if (item == AdsNetwork.AdMob)
-            //{
-            //    if (rewardBasedVideo.IsLoaded())
-            //    {
-            //        rewardBasedVideo.Show();
-            //        RewardedVideoCallback = HandleShowResult;
-            //        break;
-            //    }
-            //}
+            Advertisement.Show(_adUnitId, this);
+            FinishedVideo = HandleShowResult;
+
+            isAddLoaded = false;
         }
     }
 
-    //public void HandleRewardBasedVideoRewarded(object sender, Reward args)
-    //{
-    //    requestVideo();
-
-    //    string type = args.Type;
-    //    double amount = args.Amount;
-
-    //    print(
-    //        "HandleRewardBasedVideoRewarded event received for "
-    //                    + amount.ToString() + " " + type);
-
-    //    RewardedVideoCallback.Invoke(ShowResult.Finished);
-    //}
-
-    public void OnUnityAdsReady(string placementId)
-    {
-
-        //VideoReady = true;
-    }
 
     public void OnUnityAdsDidError(string message)
     {
@@ -223,32 +67,67 @@ public class AdsManager : MonoBehaviour, IUnityAdsListener
 
     }
 
-    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+    public void OnUnityAdsAdLoaded(string placementId)
+    {
+        Debug.Log("add loaded");
+        if (placementId.Equals(_adUnitId))
+        {
+            isAddLoaded = true;
+        }
+    }
+
+    public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(false);
+
+        LoadVideo();
+    }
+
+    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(false);
+
+        LoadVideo();
+    }
+
+    public void OnUnityAdsShowStart(string placementId)
     {
 
+    }
 
-        switch (showResult)
-        {
-            case ShowResult.Failed:
+    public void OnUnityAdsShowClick(string placementId)
+    {
 
-                if (FinishedVideo != null)
-                    FinishedVideo.Invoke(false);
+    }
 
-                break;
-            case ShowResult.Skipped:
+    public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(true);
 
-                if (FinishedVideo != null)
-                    FinishedVideo.Invoke(false);
+        LoadVideo();
+    }
 
-                break;
-            case ShowResult.Finished:
+    public void OnInitializationComplete()
+    {
+        LoadVideo();
+    }
 
-                if (FinishedVideo != null)
-                    FinishedVideo.Invoke(true);
+    private void LoadVideo()
+    {
+#if UNITY_ANDROID
+        _adUnitId = "Rewarded_Android";
+#elif UNITY_IOS
+        _adUnitId = "Rewarded_iOS";
+#endif
 
-                break;
-            default:
-                break;
-        }
+        Advertisement.Load(_adUnitId, this);
+    }
+
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+    {
+        Debug.Log(message);
     }
 }
