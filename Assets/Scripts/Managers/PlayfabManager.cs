@@ -55,8 +55,8 @@ public class PlayfabManager : MonoBehaviour
     public void DeviceLogin()
     {
 #if UNITY_ANDROID
-        Debug.Log("Login Android");
-        var request = new LoginWithAndroidDeviceIDRequest { CreateAccount = true, AndroidDeviceId = Application.identifier }; //AndroidDeviceId = SystemInfo.deviceUniqueIdentifier };
+        Debug.Log("Login Android"); //Application.identifier };
+    var request = new LoginWithAndroidDeviceIDRequest { CreateAccount = true, AndroidDeviceId = SystemInfo.deviceUniqueIdentifier };
 
         PlayFabClientAPI.LoginWithAndroidDeviceID(request,
             (result) => SetupSessionData((titleData) =>

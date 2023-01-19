@@ -309,7 +309,7 @@ public class UIManager : MonoBehaviour
         if (GameManager.Instance.GameType != GameType.Single)
         {
             int index = CorrectIndex(playerIndex);
-            print(index);
+            //print(index);
             cardsUIManager.WaitPlayer(index);
         }
         if (playerIndex == game.MainPlayerIndex)
