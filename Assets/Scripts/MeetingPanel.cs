@@ -26,8 +26,8 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
     GameObject friendsStatusParent;
     [SerializeField]
     FriendStatus[] friendsStatus;
-    [SerializeField]
-    Image[] avatars;
+    //[SerializeField]
+    //Image[] avatars;
     [SerializeField]
     Button toggleStatusBtn;
     [SerializeField]
@@ -298,23 +298,23 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         PhotonNetwork.RaiseEvent(shuffleCode, playersOrder, eventOptionsCards, SendOptions.SendReliable);
     }
 
-    void RearragePlayers(string[] players)
-    {
-        //PhotonNetwork.CurrentRoom.CustomProperties["players"] = players;
+    //void RearragePlayers(string[] players)
+    //{
+    //    //PhotonNetwork.CurrentRoom.CustomProperties["players"] = players;
 
-        for (int i = 1; i < players.Length; i++)
-        {
-            if (players[i] != "empty")
-            {
-                avatars[i].sprite = AvatarManager.Instance.GetPlayerAvatar(players[i]);
-                avatars[i].transform.parent.gameObject.SetActive(true);
-            }
-            else
-            {
-                avatars[i].transform.parent.gameObject.SetActive(false);
-            }
-        }
-    }
+    //    for (int i = 1; i < players.Length; i++)
+    //    {
+    //        if (players[i] != "empty")
+    //        {
+    //            avatars[i].sprite = AvatarManager.Instance.GetPlayerAvatar(players[i]);
+    //            avatars[i].transform.parent.gameObject.SetActive(true);
+    //        }
+    //        else
+    //        {
+    //            avatars[i].transform.parent.gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
@@ -357,7 +357,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
                 PhotonNetwork.CurrentRoom.CustomProperties["players"] = playersOrder;
 
                 //friendsStatus.First(a => a.PlayerName == newPlayer.NickName).ChangeStatus("ready");
-                RearragePlayers(playersOrder);
+                //RearragePlayers(playersOrder);
 
                 playersStatus.Remove(playersStatus.Find(a => a.playerName == otherPlayer.NickName));
                 SendPlayerStatusChange();
@@ -441,7 +441,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
                 StartCoroutine(StartGameRoutine());
                 break;
             case shuffleCode:
-                RearragePlayers((string[])photonEvent.CustomData);
+                //RearragePlayers((string[])photonEvent.CustomData);
                 break;
             case playersStatusMessage:
                 playerStatus[] data = JsonUtility.FromJson<Wrapper<playerStatus>>(photonEvent.CustomData.ToString()).array;
@@ -472,7 +472,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             }
         }
 
-        RearragePlayers(playersOrder);
+        //RearragePlayers(playersOrder);
         friendsStatusParent.SetActive(true);
         //TogglePlayersStatus();
         toggleStatusBtn.interactable = true;
@@ -480,7 +480,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
     IEnumerator StartGameRoutine()
     {
-        AddBots();
+        //AddBots();
 
         yield return new WaitForSeconds(3);
 
@@ -506,22 +506,22 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             AvatarManager.Instance.SetPlayerAvatar(newPlayer.NickName, newPlayer.CustomProperties["avatar"].ToString());
         }
 
-        avatars[newPlayer.ActorNumber - 1].transform.parent.gameObject.SetActive(true);
-        avatars[newPlayer.ActorNumber - 1].sprite = AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
+        //avatars[newPlayer.ActorNumber - 1].transform.parent.gameObject.SetActive(true);
+        //avatars[newPlayer.ActorNumber - 1].sprite = AvatarManager.Instance.GetPlayerAvatar(newPlayer.NickName);
     }
 
 
-    private void AddBots()
-    {
-        for (int i = PhotonNetwork.PlayerList.Length - 1; i < 4; i++)
-        {
-            if (!avatars[i].transform.parent.gameObject.activeSelf)
-            {
-                avatars[i].transform.parent.gameObject.SetActive(true);
-                avatars[i].sprite = AvatarManager.Instance.RobotAvatar;
-            }
-        }
-    }
+    //private void AddBots()
+    //{
+    //    for (int i = PhotonNetwork.PlayerList.Length - 1; i < 4; i++)
+    //    {
+    //        if (!avatars[i].transform.parent.gameObject.activeSelf)
+    //        {
+    //            avatars[i].transform.parent.gameObject.SetActive(true);
+    //            avatars[i].sprite = AvatarManager.Instance.RobotAvatar;
+    //        }
+    //    }
+    //}
 
     public override void Close()
     {
@@ -537,7 +537,7 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
         for (int i = 0; i < 4; i++)
         {
             friendsStatus[i].Reset();
-            avatars[i].transform.parent.gameObject.SetActive(false);
+            //avatars[i].transform.parent.gameObject.SetActive(false);
         }
         //PhotonNetwork.Disconnect();
 

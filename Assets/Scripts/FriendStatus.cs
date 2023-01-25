@@ -30,7 +30,7 @@ public class FriendStatus : MonoBehaviour
 
     public void Set(string playerName,string avatar,int level,string status)
     {
-        playerNameText.text = ArabicFixer.Fix(playerName);
+        playerNameText.text = ArabicFixer.Fix(playerName,false,false);
         levelText.text = level.ToString();
         statusText.text = LanguageManager.Instance.GetString(status);
 

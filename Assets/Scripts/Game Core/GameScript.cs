@@ -197,6 +197,9 @@ public class GameScript : MonoBehaviour
     public void SetDealFinished(bool hostPlayer)
     {
         bool isFinished = SetFinalScore();
+
+
+
         OnDealFinished?.Invoke(hostPlayer, isFinished);
     }
 
@@ -252,6 +255,8 @@ public class GameScript : MonoBehaviour
 
             if (item.TotalScore >= FinishScore)
                 isGameOver = true;
+
+            item.Reset();
         }
 
         return isGameOver;

@@ -351,6 +351,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 {
                     passedCardsNo = 0;
                     SetDealFinished(false);
+
                 }
                 break;
             case doubleCardCode:
@@ -454,17 +455,24 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnTurnBegins(int turn)
     {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            if (beginIndex == MainPlayerIndex)
-            {
-                myPlayer.SetTurn(Deal.DealInfo);
-            }
-        }
-        else if (!Players[beginIndex].IsPlayer)
-        {
-            Deal.SetTurn();
-        }
+        // this code send twice when AI card is played for
+        //vif (DealInfo.roundNumber < 13)
+        if (!PhotonNetwork.IsMasterClient && Players[beginIndex] is AIPlayer)
+            return;
+
+        Players[beginIndex].SetTurn(Deal.DealInfo);
+
+        //if (!PhotonNetwork.IsMasterClient)
+        //{
+        //    if (beginIndex == MainPlayerIndex)
+        //    {
+        //        myPlayer.SetTurn(Deal.DealInfo);
+        //    }
+        //}
+        //else if (!Players[beginIndex].IsPlayer)
+        //{
+        //    Deal.SetTurn();
+        //}
     }
 
     public void OnTurnCompleted(int turn)

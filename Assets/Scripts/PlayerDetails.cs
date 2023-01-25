@@ -52,6 +52,9 @@ public class PlayerDetails : MonoBehaviour
 
     public void StartTimer(int timer)
     {
+        if (timerRoutine != null)
+            return;
+
         timerRoutine = StartCoroutine(TimerRoutine(timer));
     }
 
@@ -59,6 +62,8 @@ public class PlayerDetails : MonoBehaviour
     {
         if(timerRoutine != null)
             StopCoroutine(timerRoutine);
+
+        timerRoutine = null;
 
         timerFill.DOFillAmount(0, 0.15f);
         timerText.text = "";

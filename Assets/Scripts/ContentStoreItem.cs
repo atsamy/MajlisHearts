@@ -21,7 +21,7 @@ public class ContentStoreItem : StoreItem
     {
         ((Image)ItemValue).sprite = itemSprite;
         this.index = index;
-        this.itemName.text = itemName;
+        this.itemName.text = LanguageManager.Instance.GetString(itemName);
 
         if (equipped)
         {
