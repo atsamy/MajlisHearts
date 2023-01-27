@@ -295,7 +295,6 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.Instance.GameType != GameType.Single)
         {
-            print("stop" + index);
             cardsUIManager.StopTimer(index);
         }
         if (playerIndex != game.MainPlayerIndex)
@@ -311,7 +310,6 @@ public class UIManager : MonoBehaviour
         {
             int index = CorrectIndex(playerIndex);
             //print(index);
-            print("start" + index);
             cardsUIManager.WaitPlayer(index);
         }
         if (playerIndex == game.MainPlayerIndex)

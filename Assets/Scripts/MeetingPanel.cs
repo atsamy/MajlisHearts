@@ -135,18 +135,17 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
 
      void Open(string roomName, int entryfee)
     {
-        gameObject.SetActive(true);
         this.roomName = roomName;
         this.entryFee = entryfee;
         playersOrder = new string[4];
-
-        ConnectToMaster();
+        gameObject.SetActive(true);
+        //ConnectToMaster();
     }
 
     public void OpenAsHost(string roomName, int entryfee, List<PlayerInfo> players)
     {
-        Open(roomName, entryfee);
         isHost = true;
+        Open(roomName, entryfee);
         majlisName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.MajlisName);
         playersOrder[0] = GameManager.Instance.MyPlayer.Name;
 
@@ -207,10 +206,12 @@ public class MeetingPanel : MenuScene, IConnectionCallbacks, IInRoomCallbacks, I
             roomOptions.CustomRoomProperties["CardBack"] = GameManager.Instance.EquippedItem["CardBack"];
             roomOptions.CustomRoomProperties["MajlisName"] = GameManager.Instance.MyPlayer.MajlisName;
 
+            print("room name:" + roomName);
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
         else
         {
+            print("room name:" + roomName);
             PhotonNetwork.JoinRoom(roomName);
         }
     }

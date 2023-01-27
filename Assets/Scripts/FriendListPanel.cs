@@ -45,6 +45,11 @@ public class FriendListPanel : MonoBehaviour
         AddAllFriends();
     }
 
+    private void OnDestroy()
+    {
+        ChatManager.OnPlayerStatusUpdate -= ChatManager_OnPlayerStatusUpdate;
+    }
+
     private void AddAllFriends(Action<bool> success = null)
     {
         PlayfabManager.instance.GetFriends((friends) =>

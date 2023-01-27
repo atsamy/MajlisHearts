@@ -66,6 +66,9 @@ public class MajlisScript : MonoBehaviour
 
     public void ResetTask(List<FinishedTask> tasks)
     {
+        if (tasks == null)
+            return;
+
         foreach (var task in tasks)
         {
             switch (task.ActionType)

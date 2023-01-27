@@ -52,6 +52,12 @@ public class MenuManager : MonoBehaviour
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
     }
 
+    private void OnDestroy()
+    {
+        DailyRewards.instance.onClaimPrize -= ClaimDailyReward;
+        ChatManager.OnGotPrivateMessage -= ChatManager_OnGotPrivateMessage;
+    }
+
     private void ChatManager_OnGotPrivateMessage(string sender, string message)
     {
         if (message == "decline")
@@ -156,7 +162,7 @@ public class MenuManager : MonoBehaviour
     {
         bool isArabic = LanguageManager.Instance.CurrentLanguage == Language.Arabic;
 
-        string invitationMessage = (isArabic ? "" : " <color=green>" + ArabicFixer.Fix(sender) + "</color> ") +
+        string invitationMessage = (isArabic ? "" : " <color=green>" + ArabicFixer.Fix(sender,false,false) + "</color> ") +
             LanguageManager.Instance.GetString("invitationmessage") +
             (isArabic ? " <color=green>" + ArabicFixer.Fix(sender) + "</color> " : "");
         string[] inviteOptions = message.Split(':');

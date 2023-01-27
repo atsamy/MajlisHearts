@@ -460,19 +460,22 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         if (!PhotonNetwork.IsMasterClient && Players[beginIndex] is AIPlayer)
             return;
 
-        Players[beginIndex].SetTurn(Deal.DealInfo);
+        //Players[beginIndex].SetTurn(Deal.DealInfo);
 
-        //if (!PhotonNetwork.IsMasterClient)
-        //{
-        //    if (beginIndex == MainPlayerIndex)
-        //    {
-        //        myPlayer.SetTurn(Deal.DealInfo);
-        //    }
-        //}
-        //else if (!Players[beginIndex].IsPlayer)
-        //{
-        //    Deal.SetTurn();
-        //}
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            if (beginIndex == MainPlayerIndex)
+            {
+                myPlayer.SetTurn(Deal.DealInfo);
+            }
+        }
+        else if (!Players[beginIndex].IsPlayer)
+        {
+            Deal.SetTurn();
+
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+            PhotonNetwork.RaiseEvent(playerTurnCode, beginIndex, eventOptionsCards, SendOptions.SendReliable);
+        }
     }
 
     public void OnTurnCompleted(int turn)
