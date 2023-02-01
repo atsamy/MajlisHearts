@@ -18,6 +18,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
 
     string[] friendIDs;
+    string[] friendIDsAdded;
 
     public delegate void GotMessage(string sender, string message);
     public static event GotMessage OnGotMessage;
@@ -39,11 +40,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         chatClient.ConnectUsingSettings(chatSettings);
     }
 
-    //public void Connect()
-    //{
-    //    chatClient.ConnectUsingSettings();
-    //}
-
     void Update()
     {
         if (this.chatClient != null)
@@ -64,8 +60,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     {
         if (isConnected)
         {
-            //chatClient.RemoveFriends();
+            if (friendIDsAdded != null)
+            {
+                chatClient.RemoveFriends(friendIDsAdded);
+            }
+
             chatClient.AddFriends(IDs);
+            friendIDsAdded = IDs;
         }
         else
         {
@@ -88,6 +89,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         }
         else
         {
+            print("set status");
             chatClient.SetOnlineStatus(2);
         }
     }
@@ -113,8 +115,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
         chatClient.SetOnlineStatus(ChatUserStatus.Online);
 
-        if(friendIDs != null)
+        if (friendIDs != null)
+        {
             chatClient.AddFriends(friendIDs);
+            friendIDsAdded = friendIDs;
+        }
 
         isConnected = true;
     }
@@ -144,6 +149,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
+        print("status updated:" + status + " " + user);
         OnPlayerStatusUpdate?.Invoke(user, status);
     }
 

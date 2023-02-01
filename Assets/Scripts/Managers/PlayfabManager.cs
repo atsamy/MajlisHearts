@@ -167,7 +167,7 @@ public class PlayfabManager : MonoBehaviour
     //        });
     //}
 
-    public void AddFriend(string name,Action<bool,UserAccountInfo> success)
+    public void AddFriend(string name,Action<bool,string> success)
     {
         PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest() { TitleDisplayName = name }, (result) =>
         {
@@ -180,7 +180,7 @@ public class PlayfabManager : MonoBehaviour
                 (res) =>
                 {
                     Debug.Log("add friend Success" + PlayFabSimpleJson.SerializeObject(res.FunctionResult));
-                    success?.Invoke(true, result.AccountInfo);
+                    success?.Invoke(true, currentPlayerId);
                 },
                 (error) =>
                 {
@@ -196,6 +196,8 @@ public class PlayfabManager : MonoBehaviour
 
     internal void AcceptFriendRequest(string friendPlayFabID,string friendName,Action<bool,string> success)
     {
+        Debug.Log(string.Format("friends {0} {1}",friendPlayFabID, friendName));
+
         PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest()
                 {

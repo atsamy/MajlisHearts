@@ -61,7 +61,7 @@ public class FriendStatus : MonoBehaviour
 
     internal void Set(playerStatus playerStatus)
     {
-        playerNameText.text = ArabicFixer.Fix(playerStatus.playerName);
+        playerNameText.text = ArabicFixer.Fix(playerStatus.playerName, false, false);
         statusText.text = LanguageManager.Instance.GetString(playerStatus.Status);
 
         AvatarManager.Instance.SetPlayerAvatar(playerStatus.playerName, playerStatus.Avatar);

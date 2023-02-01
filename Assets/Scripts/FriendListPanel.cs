@@ -185,7 +185,6 @@ public class FriendListPanel : MonoBehaviour
         //MenuManager.Instance.CurrentScene = friendListPanel.gameObject;
     }
 
-
     public void ConfirmFriend(string friendName)
     {
         ChatManager.Instance.Refresh();
@@ -209,7 +208,7 @@ public class FriendListPanel : MonoBehaviour
             return;
         }
         string friendName = FriendNameEntry.text;
-        PlayfabManager.instance.AddFriend(friendName, (success,accoundInfo) =>
+        PlayfabManager.instance.AddFriend(friendName, (success,myPlayfabID) =>
         {
             if (success)
             {
@@ -219,7 +218,7 @@ public class FriendListPanel : MonoBehaviour
                 {
                     if (success)
                     {
-                        sendRequestMessage.Add(friendName, "friendRequest:" + accoundInfo.PlayFabId);
+                        sendRequestMessage.Add(friendName, "friendRequest:" + myPlayfabID);
                         //ChatManager.Instance.SendPrivateMessage(friendName, "friendRequest:" + accoundInfo.PlayFabId);
                     }
                 });
