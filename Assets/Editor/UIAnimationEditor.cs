@@ -14,15 +14,6 @@ public class UIAnimationEditor : Editor
 
         UIAnimation animation = ((UIAnimation)target);
 
-        //if (animation.MoveAnimations == null)
-        //    animation.MoveAnimations = new List<MoveAnimation>();
-
-        //if (animation.ScaleAnimation == null)
-        //    animation.ScaleAnimation = new List<ScaleAnimation>();
-
-        //if (animation.ColorAnimation == null)
-        //    animation.ColorAnimation = new List<ColorAnimation>();
-
         EditorGUILayout.LabelField("Move");
         ShowMoveAnimation(animation.MoveAnimations);
 

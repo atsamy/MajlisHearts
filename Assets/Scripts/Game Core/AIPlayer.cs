@@ -179,7 +179,7 @@ public class AIPlayer : Player
 
         if (card.Shape == CardShape.Spade)
         {
-            if (card.IsQueenOfSpades)
+            if (((Card)card).IsQueenOfSpades)
             {
                 return (int)card.Rank * Mathf.Max(300 - shapeCount[CardShape.Spade] * 50,50) / totalValue;
             }
@@ -187,7 +187,7 @@ public class AIPlayer : Player
         }
         else if (card.Shape == CardShape.Diamond)
         {
-            if (card.IsTenOfDiamonds)
+            if (((Card)card).IsTenOfDiamonds)
             {
                 return (int)card.Rank * Mathf.Max(270 - shapeCount[CardShape.Diamond] * 50, 20) / totalValue;
             }
@@ -299,7 +299,7 @@ public class AIPlayer : Player
                 risk--;
         }
 
-        if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
+        if (((Card)card).IsQueenOfSpades || ((Card)card).IsTenOfDiamonds)
             risk += 100;
 
         int riskToCut = groundShape.Count + sameShape.Count;

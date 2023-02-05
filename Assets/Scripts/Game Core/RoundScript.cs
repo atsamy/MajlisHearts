@@ -4,33 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DealScript
+public class RoundScript: RoundScriptBase
 {
-    //public delegate void DealFinished();
-    //public event DealFinished OnDealFinished;
-
-    //public delegate void TrickFinished(int winningHand);
-    //public event TrickFinished OnTrickFinished;
-
-    //public delegate void CardsDealt(bool waitPass);
-    //public event CardsDealt OnCardsDealt;
-
-    //public delegate void CardsPassed();
-    //public event CardsPassed OnCardsPassed;
-
-    //public delegate void NextTurn();
-    //public event NextTurn OnNextTurn;
-
     public delegate void Event(EventType eventType);
     public event Event OnEvent;
 
     public GameState CurrentState { get; private set; }
 
-    Dictionary<int, Card> cardsOnDeck;
-
-    int playingIndex = -1;
-
-    public int PlayingIndex { get => playingIndex; }
 
     public DealInfo DealInfo;
     int passCardsCount = 0;
@@ -42,7 +22,7 @@ public class DealScript
 
     Player[] players;
 
-    public DealScript()
+    public RoundScript()
     {
         cardsOnDeck = new Dictionary<int, Card>();
         DealInfo = new DealInfo();
@@ -53,7 +33,7 @@ public class DealScript
         this.players = players;
     }
 
-    public void StartDeal()
+    public override void StartRound()
     {
         cardsOnDeck = new Dictionary<int, Card>();
 
@@ -69,9 +49,6 @@ public class DealScript
         DealInfo.ShapesOnGround[card.Shape]++;
 
         cardsOnDeck.Add(playerIndex, card);
-
-        //if (card.Shape == CardShape.Heart)
-        //    DealInfo.heartBroken = true;
 
         if (noOfCards == 1)
         {
@@ -106,17 +83,11 @@ public class DealScript
         }
     }
 
-    public void GameScript_OnCardReady(int playerIndex, Card card)
+    public override void OnCardReady(int playerIndex, Card card)
     {
-        //Debug.Log(playerIndex + " played " + card.ToString());
         cardsOnDeck.Add(playerIndex, card);
-
         DealInfo.CardsOntable.Add(card);
-        //DealInfo.CardsDrawn.Add(card);
         DealInfo.ShapesOnGround[card.Shape]++;
-
-        //if (card.Shape == CardShape.Heart)
-        //    DealInfo.heartBroken = true;
 
         if (cardsOnDeck.Count == 1)
         {
@@ -153,7 +124,7 @@ public class DealScript
         }
     }
 
-    public void SetTurn()
+    public override void SetTurn()
     {
         if (DealInfo.roundNumber < 13)
             players[playingIndex].SetTurn(DealInfo);
@@ -177,7 +148,7 @@ public class DealScript
 
     private int EvaluateDeck(out int value)
     {
-        Card winningCard = cardsOnDeck.ElementAt(0).Value;
+        Card winningCard = (Card)cardsOnDeck.ElementAt(0).Value;
         int index = cardsOnDeck.ElementAt(0).Key;
 
         value = 0;
@@ -186,7 +157,7 @@ public class DealScript
 
         for (int i = 1; i < 4; i++)
         {
-            Card currentCard = cardsOnDeck.ElementAt(i).Value;
+            Card currentCard = (Card)cardsOnDeck.ElementAt(i).Value;
             value += GetValue(currentCard);
             if (currentCard.Shape == winningCard.Shape)
             {
@@ -296,7 +267,7 @@ public class DealScript
         StartNewGame();
     }
 
-    public void StartNewGame()
+    public override void StartNewGame()
     {
         passCardsCount = 0;
         doubleCount = 0;

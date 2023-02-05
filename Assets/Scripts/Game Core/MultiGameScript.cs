@@ -151,8 +151,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
-        Deal.SetPlayers(Players);
-        Deal.OnEvent += Deal_OnEvent;
+        ((RoundScript)RoundScript).SetPlayers(Players);
+        ((RoundScript)RoundScript).OnEvent += Deal_OnEvent;
 
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
         hash.Add("LoadedGame", 1);
@@ -266,10 +266,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 GetDoubleCards();
                 break;
             case EventType.TrickFinished:
-                SetTrickFinished(Deal.PlayingIndex);
+                SetTrickFinished(RoundScript.PlayingIndex);
 
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(trickFinishedCode, Deal.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent(trickFinishedCode, RoundScript.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
                 break;
             case EventType.DoubleCardsFinished:
                 Debug.Log("double card finished");
@@ -277,7 +277,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 if (PhotonNetwork.IsMasterClient)
                 {
                     RaiseEventOptions eventReadyOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                    PhotonNetwork.RaiseEvent(gameReadyCode, Deal.PlayingIndex, eventReadyOptions, SendOptions.SendReliable);
+                    PhotonNetwork.RaiseEvent(gameReadyCode, RoundScript.PlayingIndex, eventReadyOptions, SendOptions.SendReliable);
                 }
                 break;
             case EventType.DealFinished:
@@ -297,7 +297,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                Deal.DealInfo = new DealInfo();
+                ((RoundScript)RoundScript).DealInfo = new DealInfo();
                 myPlayer.Reset();
 
                 foreach (var item in cards)
@@ -358,7 +358,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 //look into double card index
                 int playerIndex;// = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 KeyValuePair<bool, Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData, out playerIndex);
-                Deal.DoubleCard(cardValue.Value, cardValue.Key);
+                ((RoundScript)RoundScript).DoubleCard(cardValue.Value, cardValue.Key);
                 //print("double card index:" + playerIndex);
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
@@ -378,7 +378,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int turnIndex = int.Parse(photonEvent.CustomData.ToString());
 
                 if (turnIndex != MainPlayerIndex)
-                    Players[turnIndex].SetTurn(Deal.DealInfo);
+                    Players[turnIndex].SetTurn(((RoundScript)RoundScript).DealInfo);
 
                 break;
         }
@@ -388,7 +388,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (Deal.DealInfo.roundNumber < 13)
+            if (((RoundScript)RoundScript).DealInfo.roundNumber < 13)
                 turnManager.BeginTurn();
         }
     }
@@ -415,7 +415,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (passedCardsNo == 4)
         {
-            Deal.PassingCardsDone();
+            ((RoundScript)RoundScript).PassingCardsDone();
         }
     }
 
@@ -443,12 +443,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
         else if (lastIndex != MainPlayerIndex)
         {
-            Deal.UpdateDealInfo(lastIndex, hand.Value);
+            ((RoundScript)RoundScript).UpdateDealInfo(lastIndex, hand.Value);
             Players[hand.Key].ShowCard(hand.Value);
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
-                myPlayer.SetTurn(Deal.DealInfo);
+                myPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
             }
         }
     }
@@ -466,12 +466,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             if (beginIndex == MainPlayerIndex)
             {
-                myPlayer.SetTurn(Deal.DealInfo);
+                myPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
             }
         }
         else if (!Players[beginIndex].IsPlayer)
         {
-            Deal.SetTurn();
+            RoundScript.SetTurn();
 
             RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
             PhotonNetwork.RaiseEvent(playerTurnCode, beginIndex, eventOptionsCards, SendOptions.SendReliable);
@@ -501,12 +501,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             if (!Players[playerIndex].IsPlayer)
                 turnManager.SendMove(Utils.SerializeCardAndPlayer(card, playerIndex), playerIndex == finishIndex);
 
-            Deal.GameScript_OnCardReady(playerIndex, card);
+            RoundScript.OnCardReady(playerIndex, card);
         }
         else if (playerIndex == MainPlayerIndex)
         {
             turnManager.SendMove(Utils.SerializeCardAndPlayer(card, playerIndex), playerIndex == finishIndex);
-            Deal.UpdateDealInfo(playerIndex, card);
+            ((RoundScript)RoundScript).UpdateDealInfo(playerIndex, card);
         }
     }
 
@@ -574,16 +574,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (nextIndex == index)
             {
-                aiPlayer.SetTurn(Deal.DealInfo);
+                aiPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
             }
         }
-        //else
-        //{
-        //    if (otherPlayer.IsMasterClient)
-        //    {
-
-        //    }
-        //}
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)

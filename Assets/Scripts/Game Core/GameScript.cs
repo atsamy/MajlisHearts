@@ -5,32 +5,14 @@ using System.Linq;
 using UnityEngine;
 
 
-public class GameScript : MonoBehaviour
+public class GameScript : GameScriptBase
 {
-    public delegate void CardsReady();
-    public event CardsReady OnCardsReady;
-
     public delegate void CardsPassed();
     public event CardsPassed OnCardsPassed;
-
-    public delegate void StartPlaying(bool isMulti);
-    public event StartPlaying OnStartPlaying;
-
-    public delegate void TrickFinished(int winningHand);
-    public event TrickFinished OnTrickFinished;
-
-    public delegate void DealFinished(bool hostPlayer, bool gameFinished);
-    public event DealFinished OnDealFinished;
 
     public delegate void CardDoubled(Card card, int playerIndex);
     public event CardDoubled OnCardDoubled;
 
-    public delegate void SetPlayEnvironment(Sprite tableTop, Sprite cardBack);
-    public event SetPlayEnvironment OnSetPlayEnvironment;
-
-    private const int Seconds = 10;
-    private const int FinishScore = 150;
-    protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
 
@@ -39,17 +21,17 @@ public class GameScript : MonoBehaviour
 
     [HideInInspector]
     public int MainPlayerIndex = 0;
-    public Player MyPlayer => Players[MainPlayerIndex]; 
-
+    public Player MyPlayer => Players[MainPlayerIndex];
+    //public new RoundScript RoundScript;
     private void Awake()
     {
         Instance = this;
-        Deal = new DealScript();
+        RoundScript = new RoundScript();
     }
 
     void Start()
     {
-        Deal.OnEvent += Deal_OnEvent;
+        ((RoundScript)RoundScript).OnEvent += Deal_OnEvent;
 
         Players = new Player[4];
 
@@ -77,7 +59,7 @@ public class GameScript : MonoBehaviour
         myPlayer = (MainPlayer)Players[0];
         myPlayer.OnPlayerTurn += MainPlayerTurn;
 
-        Deal.SetPlayers(Players);
+        ((RoundScript)RoundScript).SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
              GameManager.Instance.EquippedItem["CardBack"]);
@@ -85,11 +67,10 @@ public class GameScript : MonoBehaviour
         StartGame();
     }
 
-    public void SetEnvironment(string tableTop, string cardBack)
-    {
-        OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/Tables/" + tableTop),
-            Resources.Load<Sprite>("CardBack/" + cardBack));
-    }
+    //public override void StartGame()
+    //{
+
+    //}
 
     private void OnDestroy()
     {
@@ -114,7 +95,7 @@ public class GameScript : MonoBehaviour
 
     private void GameScript_OnDoubleCard(Card card, bool value, int playerIndex)
     {
-        Deal.DoubleCard(card, value);
+        ((RoundScript)RoundScript).DoubleCard(card, value);
 
         SetCardDoubled(card, value, playerIndex);
     }
@@ -125,11 +106,6 @@ public class GameScript : MonoBehaviour
         {
             OnCardDoubled?.Invoke(card, playerIndex);
         }
-    }
-
-    public virtual void StartNextDeal()
-    {
-        Deal.StartNewGame();
     }
 
     private void Deal_OnEvent(EventType eventType)
@@ -145,10 +121,10 @@ public class GameScript : MonoBehaviour
                 break;
             case EventType.DoubleCardsFinished:
                 SetStartGame(false);
-                Deal.SetTurn();
+                RoundScript.SetTurn();
                 break;
             case EventType.TrickFinished:
-                Deal_OnTrickFinished(Deal.PlayingIndex);
+                Deal_OnTrickFinished(RoundScript.PlayingIndex);
                 break;
             case EventType.DealFinished:
                 Deal_OnDealFinished();
@@ -160,33 +136,20 @@ public class GameScript : MonoBehaviour
 
     protected void CheckDoubleCards()
     {
-        //await System.Threading.Tasks.Task.Delay(2000);
-
         foreach (var item in Players)
         {
             item.CheckForDoubleCards();
         }
     }
 
-    public void Deal_OnTrickFinished(int winningHand)
-    {
-        Deal.SetTurn();
-        OnTrickFinished?.Invoke(winningHand);
-    }
-
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        Deal.GameScript_OnCardReady(playerIndex, card);
-
-        //if (playerIndex == 0)
-        //{
-            //StopCoroutine(playerTimer);
-        //}
+        RoundScript.OnCardReady(playerIndex, card);
     }
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
-        Deal.GameScript_OnPassCardsReady(playerIndex, cards);
+        ((RoundScript)RoundScript).GameScript_OnPassCardsReady(playerIndex, cards);
     }
 
     private void Deal_OnDealFinished()
@@ -194,34 +157,9 @@ public class GameScript : MonoBehaviour
         SetDealFinished(true);
     }
 
-    public void SetDealFinished(bool hostPlayer)
-    {
-        bool isFinished = SetFinalScore();
-
-
-
-        OnDealFinished?.Invoke(hostPlayer, isFinished);
-    }
-
     public void SetCardsPassed()
     {
         OnCardsPassed?.Invoke();
-    }
-
-    public void SetStartGame(bool isMulti)
-    {
-        OnStartPlaying?.Invoke(isMulti);
-    }
-
-    public void SetTrickFinished(int winningHand)
-    {
-        GameSFXManager.Instance.PlayClipRandom("CardDraw");
-        OnTrickFinished?.Invoke(winningHand);
-    }
-
-    public void SetCardsReady()
-    {
-        OnCardsReady?.Invoke();
     }
 
     public void AddPlayer(int index, Player player)
@@ -229,27 +167,14 @@ public class GameScript : MonoBehaviour
         Players[index] = player;
     }
 
-    public bool SetFinalScore()
+    public override bool SetFinalScore()
     {
         bool isGameOver = false;
-        //bool isMoonShot = Players.Any(a => a.Score == 26);
 
         foreach (var item in Players)
         {
             if (!item.DidLead)
                 item.IncrementScore(-15);
-
-            //if (isMoonShot)
-            //{
-            //    if (item.Score == 26)
-            //    {
-            //        item.Score = 0;
-            //    }
-            //    else
-            //    {
-            //        item.Score = 26;
-            //    }
-            //}
 
             item.SetTotalScore();
 
@@ -260,10 +185,5 @@ public class GameScript : MonoBehaviour
         }
 
         return isGameOver;
-    }
-
-    public void StartGame()
-    {
-        Deal.StartDeal();
     }
 }
