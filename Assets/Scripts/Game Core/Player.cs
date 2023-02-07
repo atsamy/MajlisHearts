@@ -15,19 +15,9 @@ public class Player:PlayerBase
     public bool DidLead { get; protected set; }
 
 
-    public Player(int index)
+    public Player(int index):base(index)
     {
-        shapeCount = new Dictionary<CardShape, int>();
 
-        for (int i = 0; i < 4; i++)
-        {
-            shapeCount.Add((CardShape)i,0);
-        }
-
-        OwnedCards = new List<Card>();
-        this.index = index;
-
-        isPlayer = true;
     }
 
     public async void CheckForDoubleCards()
@@ -36,14 +26,14 @@ public class Player:PlayerBase
 
         bool hasDoubleCard = false;
 
-        if (HasCard(Card.QueenOfSpades))
+        if (HasCard(CardHelper.QueenOfSpades))
         {
-            CheckDoubleCards(Card.QueenOfSpades);
+            CheckDoubleCards(CardHelper.QueenOfSpades);
             hasDoubleCard = true;
         }
-        if (HasCard(Card.TenOfDiamonds))
+        if (HasCard(CardHelper.TenOfDiamonds))
         {
-            CheckDoubleCards(Card.TenOfDiamonds);
+            CheckDoubleCards(CardHelper.TenOfDiamonds);
             hasDoubleCard = true;
         }
 

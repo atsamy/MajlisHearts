@@ -8,62 +8,102 @@ public class BalootRoundScript:RoundScriptBase
     public event Event OnEvent;
 
 
-    public RoundInfo DealInfo;
+    public BalootRoundInfo RoundInfo;
 
-    Player[] players;
+    public Card BalootCard;
 
+    List<Card> AllCards;
     public BalootRoundScript()
     {
         cardsOnDeck = new Dictionary<int, Card>();
-        DealInfo = new RoundInfo();
+        RoundInfo = new BalootRoundInfo();
     }
-}
 
-public class RoundInfo
-{
-    public CardShape TrickShape;
-    public int roundNumber;
-    public Dictionary<CardShape, int> ShapesOnGround;
-    public List<CardBaloot> CardsDrawn;
-    public List<CardBaloot> CardsOntable;
-
-    public BalootRoundType BalootRoundType;
-
-    public RoundInfo()
+    public override void Deal()
     {
-        TrickShape = CardShape.Club;
-        roundNumber = 0;
+        AllCards = GetAllCards();
 
-        ShapesOnGround = new Dictionary<CardShape, int>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].Reset();
+
+            for (int j = 0; j < 5; j++)
+            {
+                int getRandom = Random.Range(0, AllCards.Count);
+
+                players[i].AddCard(AllCards[getRandom]);
+                AllCards.RemoveAt(getRandom);
+            }
+        }
+
+        BalootCard = AllCards[Random.Range(0, AllCards.Count)];
+        AllCards.Remove(BalootCard);
+    }
+
+    public void DealContinue(int playerIndex)
+    {
+        players[playerIndex].AddCard(BalootCard);
+
+        int index = playerIndex;
+
+        while (AllCards.Count > 0)
+        {
+            index++;
+            index %= 4;
+            int getRandom = Random.Range(0, AllCards.Count);
+            players[index].AddCard(AllCards[getRandom]);
+            AllCards.RemoveAt(index);
+        }
+
+        OnEvent?.Invoke(EventTypeBaloot.CardsDealtFinished);
+    }
+
+    public override void StartNewGame()
+    {
+        Deal();
+        RoundInfo = new BalootRoundInfo();
+
+        OnEvent?.Invoke(EventTypeBaloot.CardsDealtBegin);
+    }
+
+    private List<Card> GetAllCards()
+    {
+        List<Card> cards = new List<Card>();
 
         for (int i = 0; i < 4; i++)
         {
-            ShapesOnGround.Add((CardShape)i, 0);
+            for (int j = 5; j < 13; j++)
+            {
+                cards.Add(new Card((CardShape)i, (CardRank)j));
+            }
         }
 
-        CardsOntable = new List<CardBaloot>();
-        CardsDrawn = new List<CardBaloot>();
+        return cards;
     }
 
-    internal void DrawCards()
+    internal void SetGameType(int index, BalootGameType type)
     {
-        roundNumber++;
-        CardsDrawn.AddRange(CardsOntable);
-        CardsOntable.Clear();
+        RoundInfo.BalootRoundType = type;
+        DealContinue(index);
+        players[index].SetTurn(RoundInfo);
+    }
+}
+
+public class BalootRoundInfo: RoundInfo
+{
+    public BalootGameType BalootRoundType;
+
+    public BalootRoundInfo():base()
+    {
+
     }
 }
 
 public enum EventTypeBaloot
 {
-    CardsDealt,
-    CardsPassed,
+    CardsDealtBegin,
+    CardsDealtFinished,
     TrickFinished,
     DealFinished,
     DoubleCardsFinished,
-}
-
-public enum BalootRoundType
-{
-    Sun = 0,
-    Hokum = 1
 }

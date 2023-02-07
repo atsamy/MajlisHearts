@@ -14,7 +14,6 @@ public class MainPlayer : Player
 
     public event Action WaitOthers;
     //public delegate void ForcePlay();
-    public event Action OnForcePlay;
 
     public List<Card> PassedCards { get; private set; } 
 
@@ -34,10 +33,10 @@ public class MainPlayer : Player
         base.AddPassCards(cards);
     }
 
-    public override void SetTurn(DealInfo info)
-    {
-        base.SetTurn(info);
-    }
+    //public override void SetTurn(DealInfo info)
+    //{
+    //    base.SetTurn(info);
+    //}
 
     public void OrderCards()
     {
@@ -58,9 +57,4 @@ public class MainPlayer : Player
     {
         OnForcePlay?.Invoke();
     }
-    //public override void Reset()
-    //{
-    //    base.Reset();
-    //    PassedCards.Clear();
-    //}
 }

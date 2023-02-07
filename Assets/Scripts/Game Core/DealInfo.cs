@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DealInfo
+public class RoundInfo
 {
     public CardShape TrickShape;
     public int roundNumber;
@@ -11,10 +11,10 @@ public class DealInfo
     public List<Card> CardsDrawn;
     public List<Card> CardsOntable;
 
-    public bool QueenOfSpade { get => CardsDrawn.Contains(Card.QueenOfSpades); }
-    public bool TenOfDiamonds { get => CardsDrawn.Contains(Card.TenOfDiamonds); }
+    public bool QueenOfSpade { get => CardsDrawn.Contains(CardHelper.QueenOfSpades); }
+    public bool TenOfDiamonds { get => CardsDrawn.Contains(CardHelper.TenOfDiamonds); }
 
-    public DealInfo()
+    public RoundInfo()
     {
         TrickShape = CardShape.Club;
         //heartBroken = false;

@@ -38,7 +38,7 @@ public class DealResult : MonoBehaviour
     //    StartCoroutine(CountNextRound(5));
     //}
 
-    public void ShowRound(Player[] players, bool inGame,bool gameOver, Action<int> OnPanelClosed)
+    public void ShowRound(PlayerBase[] players, bool inGame,bool gameOver, Action<int> OnPanelClosed)
     {
         gameObject.SetActive(true);
 
@@ -68,7 +68,7 @@ public class DealResult : MonoBehaviour
         teamPlayersParent.SetActive(isTeam);
 
         PlayerDealResult[] currentPlayers = isTeam ? teamPlayers : singlePlayers;
-        Player[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
+        PlayerBase[] sortedPlayers = players.OrderBy(a => a.TotalScore).ToArray();
 
         int rankIndex = 0;
         int score = sortedPlayers[0].TotalScore;
@@ -144,7 +144,7 @@ public class DealResult : MonoBehaviour
         }
     }
 
-    public void ShowInGame(Player[] players)
+    public void ShowInGame(PlayerBase[] players)
     {
         ShowRound(players, true,false, (rank) =>
           {

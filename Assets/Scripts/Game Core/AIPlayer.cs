@@ -13,13 +13,13 @@ public class AIPlayer : Player
         isPlayer = false;
     }
 
-    public override void SetTurn(DealInfo info)
+    public override void SetTurn(RoundInfo info)
     {
         base.SetTurn(info);
         playCard(info);
     }
 
-    async void playCard(DealInfo info)
+    async void playCard(RoundInfo info)
     {
         //int dedduct = (3000 - OwnedCards.Count * 230);
         //int time = FakePlayer ? Random.Range(1000, 4000 - dedduct) : 1000;
@@ -63,17 +63,17 @@ public class AIPlayer : Player
                 bool isTeamPlayer = checkIfTeamPlayer(info,hand);
 
 
-                if (OwnedCards.Contains(Card.QueenOfSpades))// && info.roundNumber != 0 && !isTeamPlayer)
+                if (OwnedCards.Contains(CardHelper.QueenOfSpades))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     if (FakePlayer)
                         await Task.Delay(Random.Range(800, 1200));
-                    ChooseCard(Card.QueenOfSpades);
+                    ChooseCard(CardHelper.QueenOfSpades);
                 }
-                else if (OwnedCards.Contains(Card.TenOfDiamonds))// && info.roundNumber != 0 && !isTeamPlayer)
+                else if (OwnedCards.Contains(CardHelper.TenOfDiamonds))// && info.roundNumber != 0 && !isTeamPlayer)
                 {
                     if (FakePlayer)
                         await Task.Delay(Random.Range(800, 1200));
-                    ChooseCard(Card.TenOfDiamonds);
+                    ChooseCard(CardHelper.TenOfDiamonds);
                 }
                 else if (specificShape.Count > 0)// && info.roundNumber != 0 && !isTeamPlayer)
                 {
@@ -92,12 +92,7 @@ public class AIPlayer : Player
 
     }
 
-    public void AddWeightToCards()
-    {
-
-    }
-
-    bool checkIfTeamPlayer(DealInfo info,int hand)
+    bool checkIfTeamPlayer(RoundInfo info,int hand)
     {
         if (GameManager.Instance.IsTeam)
         {
@@ -218,7 +213,7 @@ public class AIPlayer : Player
         SetDoubleCard(card, value > 0.6f);
     }
 
-    public Card ChooseRiskyCards(DealInfo info)
+    public Card ChooseRiskyCards(RoundInfo info)
     {
         // revisit this code we need to choose hight cards from a stack with few options
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
@@ -235,7 +230,7 @@ public class AIPlayer : Player
         return AllCards.Last().Key;
     }
 
-    public Card ChooseFirstHand(DealInfo info)
+    public Card ChooseFirstHand(RoundInfo info)
     {
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
 
@@ -263,7 +258,7 @@ public class AIPlayer : Player
         //bug here
     }
 
-    public Card ChooseSpecificShape(List<Card> specificShape, DealInfo info)
+    public Card ChooseSpecificShape(List<Card> specificShape, RoundInfo info)
     {
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
 
@@ -279,7 +274,7 @@ public class AIPlayer : Player
         }
     }
 
-    int GetRiskfactor(Card card, DealInfo info)
+    int GetRiskfactor(Card card, RoundInfo info)
     {
         int risk = (int)card.Rank;
 
@@ -307,7 +302,7 @@ public class AIPlayer : Player
         return risk + riskToCut;
     }
 
-    Card GetLeastAvoidCard(DealInfo info, List<Card> specificShape)
+    Card GetLeastAvoidCard(RoundInfo info, List<Card> specificShape)
     {
         Card HighestCard = new Card(info.TrickShape, CardRank.Two);
 
@@ -342,7 +337,7 @@ public class AIPlayer : Player
         return chosenOne;
     }
 
-    int AvoidHand(DealInfo info)
+    int AvoidHand(RoundInfo info)
     {
         int avoidWeight = 0;
 

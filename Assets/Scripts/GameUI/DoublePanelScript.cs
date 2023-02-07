@@ -27,12 +27,12 @@ public class DoublePanelScript : MonoBehaviour
     {
         if (TenPanel.activeSelf)
         {
-            UIManager.Instance.SetDoubleCard(Card.TenOfDiamonds, value);
+            HeartsUIManager.Instance.SetDoubleCard(CardHelper.TenOfDiamonds, value);
             TenPanel.SetActive(false);
         }
         else if (QueenPanel.activeSelf)
         {
-            UIManager.Instance.SetDoubleCard(Card.QueenOfSpades, value);
+            HeartsUIManager.Instance.SetDoubleCard(CardHelper.QueenOfSpades, value);
             QueenPanel.SetActive(false);
         }
 

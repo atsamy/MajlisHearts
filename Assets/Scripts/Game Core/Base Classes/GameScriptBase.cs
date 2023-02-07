@@ -24,6 +24,9 @@ public class GameScriptBase : MonoBehaviour
 
     protected RoundScriptBase RoundScript;
 
+    public PlayerBase[] Players;
+    [HideInInspector]
+    public int MainPlayerIndex = 0;
     public void SetEnvironment(string tableTop, string cardBack)
     {
         OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/Tables/" + tableTop),

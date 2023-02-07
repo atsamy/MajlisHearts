@@ -36,8 +36,6 @@ public class Card
 
     public bool IsQueenOfSpades { get => Shape == CardShape.Spade && Rank == CardRank.Queen; }
     public bool IsTenOfDiamonds { get => Shape == CardShape.Diamond && Rank == CardRank.Ten; }
-    public static Card QueenOfSpades { get => new Card(CardShape.Spade, CardRank.Queen); }
-    public static Card TenOfDiamonds { get => new Card(CardShape.Diamond, CardRank.Ten); }
 }
 
 //[System.Serializable]
@@ -51,11 +49,10 @@ public class Card
 //    public static Card TenOfDiamonds { get => new Card(CardShape.Diamond, CardRank.Ten); }
 //}
 
-public class CardBaloot : Card
+public static class CardHelper 
 {
-    public CardBaloot(CardShape cardShape, CardRank rank) : base(cardShape, rank) { }
 
-    public Dictionary<CardRank, int> SunValue = new Dictionary<CardRank, int>()
+    public static Dictionary<CardRank, int> SunValue = new Dictionary<CardRank, int>()
     {
         {CardRank.Seven, 0},
         {CardRank.Eight, 1},
@@ -67,7 +64,7 @@ public class CardBaloot : Card
         {CardRank.Ace, 7}
     };
 
-    public Dictionary<CardRank, int> HokumValue = new Dictionary<CardRank, int>()
+    public static Dictionary<CardRank, int> HokumValue = new Dictionary<CardRank, int>()
     {
         {CardRank.Seven, 0},
         {CardRank.Eight, 1},
@@ -79,17 +76,20 @@ public class CardBaloot : Card
         {CardRank.Knight, 7}
     };
 
-    public int GetCardValue(BalootRoundType balootDealType)
+    public static int GetCardValue(BalootGameType gameType,Card card)
     {
-        if (balootDealType == BalootRoundType.Sun)
+        if (gameType == BalootGameType.Sun)
         {
-            return SunValue[Rank];
+            return SunValue[card.Rank];
         }
         else
         {
-            return HokumValue[Rank];
+            return HokumValue[card.Rank];
         }
     }
+
+    public static Card QueenOfSpades { get => new Card(CardShape.Spade, CardRank.Queen); }
+    public static Card TenOfDiamonds { get => new Card(CardShape.Diamond, CardRank.Ten); }
 }
 
 

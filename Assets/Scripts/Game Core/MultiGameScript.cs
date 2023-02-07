@@ -143,9 +143,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 //}
             }
 
-            Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
+            ((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
-            Players[i].OnDoubleCard += GameScript_OnDoubleCard;
+            ((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
             Players[i].OnPlayerTurn += GameScript_OnPlayerTurn;
         }
 
@@ -172,7 +172,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    void GameScript_OnPlayerTurn(int index,DealInfo info)
+    void GameScript_OnPlayerTurn(int index,RoundInfo info)
     {
         if (index == MainPlayerIndex)
         {
@@ -297,7 +297,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                ((RoundScript)RoundScript).DealInfo = new DealInfo();
+                ((RoundScript)RoundScript).DealInfo = new RoundInfo();
                 myPlayer.Reset();
 
                 foreach (var item in cards)
@@ -318,10 +318,10 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
                     if (Players[senderIndex].IsPlayer)
                     {
-                        Players[senderIndex].PassCards(passedCards);
+                        ((Player)Players[senderIndex]).PassCards(passedCards);
                     }
 
-                    Players[recieverIndex].AddPassCards(passedCards);
+                    ((Player)Players[recieverIndex]).AddPassCards(passedCards);
 
                     InrementPassedCards();
                 }
@@ -404,7 +404,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             }
             else
             {
-                Players[i].CheckForDoubleCards();
+                ((Player)Players[i]).CheckForDoubleCards();
             }
         }
     }
@@ -540,7 +540,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
         else
         {
-            Players[recieverIndex].AddPassCards(cards);
+            ((Player)Players[recieverIndex]).AddPassCards(cards);
         }
 
         InrementPassedCards();
@@ -560,13 +560,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (otherPlayer.ActorNumber == 1)
         {
-            UIManager.Instance.HostLeft();
+            HeartsUIManager.Instance.HostLeft();
         }
         else if (PhotonNetwork.IsMasterClient)
         {
             int index = otherPlayer.ActorNumber - 1;
 
-            Player oldPlayer = Players[index];
+            Player oldPlayer = ((Player)Players[index]);
 
             AIPlayer aiPlayer = new AIPlayer(index);
             Players[index] = aiPlayer;

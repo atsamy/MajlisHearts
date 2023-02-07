@@ -14,14 +14,10 @@ public class GameScript : GameScriptBase
     public event CardDoubled OnCardDoubled;
 
     public static GameScript Instance;
-    public Player[] Players;
 
     protected MainPlayer myPlayer;
     protected Coroutine playerTimer;
-
-    [HideInInspector]
-    public int MainPlayerIndex = 0;
-    public Player MyPlayer => Players[MainPlayerIndex];
+    public Player MyPlayer => (Player)Players[MainPlayerIndex];
     //public new RoundScript RoundScript;
     private void Awake()
     {
@@ -50,14 +46,14 @@ public class GameScript : GameScriptBase
                 Players[i].Name = "Player " + i;
             }
 
-            Players[i].OnPassCardsReady += GameScript_OnPassCardsReady;
+            ((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
-            Players[i].OnDoubleCard += GameScript_OnDoubleCard;
+            ((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
             
         }
 
         myPlayer = (MainPlayer)Players[0];
-        myPlayer.OnPlayerTurn += MainPlayerTurn;
+        //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         ((RoundScript)RoundScript).SetPlayers(Players);
 
@@ -82,10 +78,10 @@ public class GameScript : GameScriptBase
 
     }
 
-    private void MainPlayerTurn(int index, DealInfo info)
-    {
-        //playerTimer = StartCoroutine(StartTimer());
-    }
+    //private void MainPlayerTurn(int index, RoundInfo info)
+    //{
+    //    //playerTimer = StartCoroutine(StartTimer());
+    //}
 
     protected IEnumerator StartTimer()
     {
@@ -138,7 +134,7 @@ public class GameScript : GameScriptBase
     {
         foreach (var item in Players)
         {
-            item.CheckForDoubleCards();
+            ((Player)item).CheckForDoubleCards();
         }
     }
 
@@ -173,7 +169,7 @@ public class GameScript : GameScriptBase
 
         foreach (var item in Players)
         {
-            if (!item.DidLead)
+            if (!((Player)item).DidLead)
                 item.IncrementScore(-15);
 
             item.SetTotalScore();

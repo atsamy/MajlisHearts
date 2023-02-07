@@ -27,7 +27,7 @@ public class PlayerDealResult : MonoBehaviour
     //[SerializeField]
     //Sprite[] avatarFrames;
 
-    public void Set(Player player, bool inGame)
+    public void Set(PlayerBase player, bool inGame)
     {
         playerName.text = ArabicFixer.Fix(player.Name, false, false);
         playerAvatar.sprite = player.Avatar;

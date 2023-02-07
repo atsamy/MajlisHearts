@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class PlayerBase
     public delegate void CardReady(int playerIndex, Card card);
     public CardReady OnCardReady;
 
-    public delegate void PlayerTurn(int index, DealInfo info);
+    public delegate void PlayerTurn(int index, RoundInfo info);
     public PlayerTurn OnPlayerTurn;
     public int Index { get => index; }
     public int Score { get => dealScore; set => dealScore = value; }
@@ -30,6 +31,22 @@ public class PlayerBase
     protected bool isPlayer;
 
     public bool IsPlayer { get => isPlayer; }
+    public Action OnForcePlay;
+
+    public PlayerBase(int index)
+    {
+        shapeCount = new Dictionary<CardShape, int>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            shapeCount.Add((CardShape)i, 0);
+        }
+
+        OwnedCards = new List<Card>();
+        this.index = index;
+
+        isPlayer = true;
+    }
 
     public virtual void ChooseCard(Card card)
     {
@@ -48,7 +65,7 @@ public class PlayerBase
         OnCardReady?.Invoke(index, card);
     }
 
-    public virtual void SetTurn(DealInfo info)
+    public virtual void SetTurn(RoundInfo info)
     {
         OnPlayerTurn?.Invoke(index, info);
     }

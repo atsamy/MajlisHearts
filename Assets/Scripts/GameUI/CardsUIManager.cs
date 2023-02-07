@@ -32,7 +32,9 @@ public class CardsUIManager : MonoBehaviour
     [SerializeField]
     PlayerDetails[] playersDetails;
 
-    public void SetMainPlayer(MainPlayer mainPlayer)
+    public Image BalootCard;
+
+    public void SetMainPlayer(PlayerBase mainPlayer)
     {
         mainPlayer.OnForcePlay += () =>
         {
@@ -57,12 +59,12 @@ public class CardsUIManager : MonoBehaviour
         playersDetails[index].StopTimer();
     }
 
-    public void ShowPlayerCards(MainPlayer mainPlayer, bool passCards)
+    public void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable,int count)
     {
         playerCardsUI = new List<CardUI>();
         playableCards = new List<CardUI>();
 
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
@@ -74,10 +76,10 @@ public class CardsUIManager : MonoBehaviour
                  AddToPassCards(newCard.GetComponent<CardUI>());
             });
 
-            playerCardsUI.Last().SetInteractable(passCards);
+            playerCardsUI.Last().SetInteractable(setInteractable);
         }
 
-        AddCards();
+        AddCards(count);
         OrganizeCards();
     }
 
@@ -150,7 +152,7 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddToPassCards(CardUI cardUI)
     {
-        if (UIManager.Instance.AddCard(cardUI))
+        if (HeartsUIManager.Instance.AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
             cardUI.SetOnPressed((card) =>
@@ -167,30 +169,11 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    //void ShowWinningCard()
-    //{
-    //    int winningIndex = 0;
-
-    //    for (int i = 1; i < deckCards.Count; i++)
-    //    {
-    //        if (deckCards[i].Card.Shape == deckCards[0].Card.Shape && deckCards[i].Card.Rank > deckCards[winningIndex].Card.Rank)
-    //            winningIndex = i;
-    //    }
-
-    //    for (int i = 0; i < deckCards.Count; i++)
-    //    {
-    //        if(i != winningIndex)
-    //            deckCards[i].Image.DOColor(Color.gray,0.1f);
-    //    }
-
-    //    //deckCards[winningIndex].Transform.SetAsLastSibling();
-    //}
-
     public void ReturnToStack(CardUI cardUI)
     {
         playerCardsUI.Add(cardUI);
         cardUI.transform.SetParent(CardsHolder[0].transform);
-        UIManager.Instance.RemoveCard(cardUI);
+        HeartsUIManager.Instance.RemoveCard(cardUI);
         cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
         {
@@ -241,7 +224,7 @@ public class CardsUIManager : MonoBehaviour
             playersDetails[index].HideDouble(1);
     }
 
-    public void SetPlayers(int index, Player player)
+    public void SetPlayers(int index, PlayerBase player)
     {
         playersDetails[index].SetPlayer(player.Avatar, player.Name, 0);
     }
@@ -257,13 +240,6 @@ public class CardsUIManager : MonoBehaviour
         DeckCardsPosition[0].SetAsLastSibling();
 
         cardUI.RectTransform.DOAnchorPos(Vector3.zero + new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0), 0.5f);
-        //    .OnComplete(() =>
-        //{
-        //    if (deckCards.Count > 1)
-        //    {
-        //        ShowWinningCard();
-        //    }
-        //});
         cardUI.RectTransform.DOSizeDelta(CardsOnTableResolution, 0.5f);
         cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
@@ -305,17 +281,17 @@ public class CardsUIManager : MonoBehaviour
         deckCards.Clear();
     }
 
-    public void AddCards()
+    public void AddCards(int count)
     {
-        AddVerticalCards(CardsHolder[1], cardBack,90);
-        AddVerticalCards(CardsHolder[3], cardBack,-90);
-        AddHorizontalCards(CardsHolder[2], cardBack);
+        AddVerticalCards(CardsHolder[1], cardBack,90, count);
+        AddVerticalCards(CardsHolder[3], cardBack,-90, count);
+        AddHorizontalCards(CardsHolder[2], cardBack, count);
     }
 
-    void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack,int rotation)
+    void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack,int rotation,int count)
     {
         parent.IsVertical = true;
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent.transform);
             newCard.transform.localPosition = new Vector3(0, (i - 6) * Spacing);
@@ -323,9 +299,9 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack)
+    void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack, int count)
     {
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < count; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent.transform);
             newCard.transform.localPosition = new Vector3((i - 6) * Spacing, 0);
@@ -333,7 +309,7 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    public void SetPlayableCards(DealInfo info, Player player)
+    public void SetPlayableCards(RoundInfo info, PlayerBase player)
     {
         playableCards.Clear();
 
@@ -359,7 +335,13 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    bool checkIfPlayable(Card card, DealInfo trickInfo, Player player)
+    public void AddBalootCard(Card card)
+    {
+        BalootCard.gameObject.SetActive(true);
+        BalootCard.sprite = cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
+    }
+
+    bool checkIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
     {
         bool firstHand = trickInfo.CardsOntable.Count == 0;
 

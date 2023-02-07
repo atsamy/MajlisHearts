@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Timeline;
 using UnityEngine;
 
 public class RoundScript: RoundScriptBase
@@ -12,7 +13,7 @@ public class RoundScript: RoundScriptBase
     public GameState CurrentState { get; private set; }
 
 
-    public DealInfo DealInfo;
+    public RoundInfo DealInfo;
     int passCardsCount = 0;
 
     bool isDoubleQueenOfSpades;
@@ -20,17 +21,10 @@ public class RoundScript: RoundScriptBase
 
     int doubleCount;
 
-    Player[] players;
-
     public RoundScript()
     {
         cardsOnDeck = new Dictionary<int, Card>();
-        DealInfo = new DealInfo();
-    }
-
-    public void SetPlayers(Player[] players)
-    {
-        this.players = players;
+        DealInfo = new RoundInfo();
     }
 
     public override void StartRound()
@@ -74,8 +68,6 @@ public class RoundScript: RoundScriptBase
             isDoubleTenOfDiamonds = value;
 
         doubleCount++;
-
-        //Debug.Log("double card " + doubleCount);
 
         if (doubleCount == 2)
         {
@@ -201,7 +193,7 @@ public class RoundScript: RoundScriptBase
                 break;
         }
 
-        players[playerIndex].AddPassCards(cards);
+        ((Player)players[playerIndex]).AddPassCards(cards);
 
         passCardsCount++;
 
@@ -229,7 +221,7 @@ public class RoundScript: RoundScriptBase
         }
     }
 
-    public void Deal()
+    public override void Deal()
     {
         List<Card> AllCards = GetAllCards();
 
@@ -276,7 +268,7 @@ public class RoundScript: RoundScriptBase
 
         OnEvent?.Invoke(EventType.CardsDealt);
 
-        DealInfo = new DealInfo();
+        DealInfo = new RoundInfo();
 
         if (CurrentState == GameState.DontPass)
         {
@@ -286,7 +278,7 @@ public class RoundScript: RoundScriptBase
         {
             foreach (var item in players)
             {
-                item.SelectPassCards();
+                ((Player)item).SelectPassCards();
             }
         }
     }

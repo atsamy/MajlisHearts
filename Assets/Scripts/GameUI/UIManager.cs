@@ -10,83 +10,65 @@ using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-
     [SerializeField]
     Text debugText;
     [SerializeField]
     PausePanel pausePanel;
-    [SerializeField]
-    PassCardsPanel passCardsPanel;
-    [SerializeField]
-    DealResult DealFinishedPanel;
-    [SerializeField]
-    LevelPanel LevelPanel;
-    [SerializeField]
-    WaitingScript waitingPanel;
+    public LevelPanel LevelPanel;
+    public WaitingScript WaitingPanel;
     [SerializeField]
     Image tableTop;
     [SerializeField]
-    GameObject scoresHolder;
+    public GameObject scoresHolder;
     [SerializeField]
     Popup hostLeftPopup;
-    [SerializeField]
-    GameObject gamePanel;
+    public GameObject GamePanel;
 
-    MainPlayer mainPlayer;
-
-    public DoublePanelScript DoublePanel;
+    PlayerBase mainPlayer;
     public Transform DragCardHolder;
 
     CardsUIManager cardsUIManager;
-    GameScript game;
+    //GameScript game;
     public DebugCards[] debugCards;
 
-    int doubleCardCount;
+
     [Space]
     [Header("Emojis Elements")]
     [Space]
     public Image[] EmojiImages;
     public Sprite[] Emojes;
-    [SerializeField]
-    GameObject emojiButton;
-    [SerializeField]
-    GameObject emojiPanel;
-    bool init;
+    public GameObject EmojiButton;
+    public GameObject EmojiPanel;
 
-    bool gameOver;
+    public GameScriptBase game { set; private get; }
+    internal bool GameOver;
 
+    public Sprite cardBack;
     void Awake()
     {
         Instance = this;
-        doubleCardCount = 0;
-        game = GameScript.Instance;
-
-        game.OnCardsReady += Game_OnCardsDealt;
-        game.OnTrickFinished += Game_OnTrickFinished;
-        game.OnStartPlaying += Game_OnStartPlaying;
-        game.OnCardsPassed += CardsPassed;
-        game.OnDealFinished += Game_OnDealFinished;
-        game.OnCardDoubled += Game_OnCardDoubled;
-        game.OnSetPlayEnvironment += Game_OnSetPlayEnvironment;
-
         cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
 
-        FadeScreen.Instance.FadeOut(2);
+        //remove later
+        cardsUIManager.SetCardBack(cardBack);
+
+        //uncomment later
+        //FadeScreen.Instance?.FadeOut(2);
     }
 
-    private void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
+    public void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
     {
         this.tableTop.sprite = tableTop;
         cardsUIManager.SetCardBack(cardBack);
     }
 
-    private void Game_OnStartPlaying(bool isMulti)
+    public void Game_OnStartPlaying(bool isMulti)
     {
-        waitingPanel.Hide();
+        WaitingPanel.Hide();
         SetPlayer();
 
-        emojiButton.SetActive(isMulti);
+        EmojiButton.SetActive(isMulti);
     }
 
     public void PauseGame()
@@ -95,74 +77,16 @@ public class UIManager : MonoBehaviour
         GameSFXManager.Instance.PlayClip("Click");
     }
 
-    internal void SetDoubleCard(Card card, bool value)
-    {
-        if (doubleCardCount == 1)
-            waitingPanel.Show();
 
-        mainPlayer.SetDoubleCard(card, value);
-    }
-
-    private void Game_OnCardDoubled(Card card, int playerIndex)
-    {
-        int index = CorrectIndex(playerIndex);
-        cardsUIManager.AddDoubledCard(card, index);
-    }
-
-    private void CardsPassed()
-    {
-        waitingPanel.Hide();
-        StartCoroutine(cardsUIManager.UpdateCards(mainPlayer));
-    }
 
     public void SetCardLocations()
     {
         cardsUIManager.SetCardLocations();
     }
 
-    private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
-    {
-        doubleCardCount = 0;
-        scoresHolder.SetActive(false);
-        emojiButton.SetActive(false);
-
-        gameOver = isGameOver;
-        if (isGameOver)
-        {
-            gamePanel.SetActive(false);
-            DealFinishedPanel.ShowRound(game.Players,false,true, (rank) =>
-                 {
-                     if (GameManager.Instance.GameType != GameType.Single)
-                     {
-                         LevelPanel.Open(rank,game.MyPlayer.TotalScore, () =>
-                         {
-                             GoToMainMenu();
-                         });
-                     }
-                     else
-                     {
-                         GoToMainMenu();
-                     }
-                 });
 
 
-            return;
-        }
-        if (hostPlayer)
-        {
-            DealFinishedPanel.ShowRound(game.Players, false,false, (rank) =>
-              {
-                  game.StartNextDeal();
-              });
-        }
-        else
-        {
-            DealFinishedPanel.ShowRound(game.Players, false,false, null);
-        }
-
-    }
-
-    private void GoToMainMenu()
+    public void GoToMainMenu()
     {
         LeaveRoom();
         FadeScreen.Instance.FadeIn(2, () =>
@@ -171,15 +95,6 @@ public class UIManager : MonoBehaviour
         });
     }
 
-    public void ShowScores()
-    {
-        DealFinishedPanel.ShowInGame(game.Players);
-    }
-
-    public void HideScores()
-    {
-        DealFinishedPanel.gameObject.SetActive(false);
-    }
 
     public void LeaveRoom()
     {
@@ -189,68 +104,46 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public Player[] OrderTeamPlayers()
-    {
-        if (!GameManager.Instance.IsTeam)
-        {
-            return game.Players.OrderBy(a => a.TotalScore).ToArray();
-        }
+    //public Player[] OrderTeamPlayers()
+    //{
+    //    if (!GameManager.Instance.IsTeam)
+    //    {
+    //        return game.Players.OrderBy(a => a.TotalScore).ToArray();
+    //    }
 
-        Player[] players = game.Players;
+    //    Player[] players = game.Players;
 
-        int index = Array.FindIndex(players, a => a.Score == players.Max(b => b.Score));
+    //    int index = Array.FindIndex(players, a => a.Score == players.Max(b => b.Score));
 
-        Player[] orderedPlayers = new Player[4];
-        orderedPlayers[3] = players[index];
-        orderedPlayers[2] = players[(index + 2) % 4];
+    //    Player[] orderedPlayers = new Player[4];
+    //    orderedPlayers[3] = players[index];
+    //    orderedPlayers[2] = players[(index + 2) % 4];
 
-        Player player1 = players[(index + 1) % 4];
-        Player player2 = players[(index + 3) % 4];
+    //    Player player1 = players[(index + 1) % 4];
+    //    Player player2 = players[(index + 3) % 4];
 
-        if (player1.Score > player2.Score)
-        {
-            orderedPlayers[0] = player2;
-            orderedPlayers[1] = player1;
-        }
-        else
-        {
-            orderedPlayers[0] = player1;
-            orderedPlayers[1] = player2;
-        }
+    //    if (player1.Score > player2.Score)
+    //    {
+    //        orderedPlayers[0] = player2;
+    //        orderedPlayers[1] = player1;
+    //    }
+    //    else
+    //    {
+    //        orderedPlayers[0] = player1;
+    //        orderedPlayers[1] = player2;
+    //    }
 
-        return orderedPlayers;
-    }
+    //    return orderedPlayers;
+    //}
 
-    internal bool AddCard(CardUI card)
-    {
-        GameSFXManager.Instance.PlayClipRandom("Card");
-        return passCardsPanel.AddCard(card);
-    }
+
 
     public void AddDebugWeight(int playerIndex, Card card, int Weight)
     {
         debugCards[playerIndex].ShowWeight(card, Weight);
     }
 
-    private void Game_OnTrickFinished(int winningHand)
-    {
-        SetScore();
 
-        int index = CorrectIndex(winningHand);
-        cardsUIManager.RemoveCards(index);
-        GameSFXManager.Instance.PlayClipRandom("CardDraw");
-    }
-
-    public void SetScore()
-    {
-        for (int i = 0; i < game.Players.Length; i++)
-        {
-            int correctIndex = i + game.MainPlayerIndex;
-            correctIndex %= 4;
-
-            cardsUIManager.SetScore(i, game.Players[correctIndex].Score);
-        }
-    }
 
     public void SetPlayer()
     {
@@ -265,13 +158,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    internal void RemoveCard(CardUI cardUI)
-    {
-        GameSFXManager.Instance.PlayClipRandom("Card");
-        passCardsPanel.RemoveCard(cardUI);
-    }
 
-    private int CorrectIndex(int index)
+
+    public int CorrectIndex(int index)
     {
         int correctedIndex = index - game.MainPlayerIndex;
         correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
@@ -279,16 +168,18 @@ public class UIManager : MonoBehaviour
         return correctedIndex;
     }
 
-    public void SetPlayers(Player[] players)
+    public void SetPlayers(PlayerBase[] players,PlayerBase mainPlayer)
     {
         foreach (var player in players)
         {
             player.OnCardReady += Player_OnCardReady;
             player.OnPlayerTurn += Player_OnPlayerTurn;
         }
+
+        this.mainPlayer= mainPlayer;
     }
 
-    private void Player_OnCardReady(int playerIndex, Card card)
+    public void Player_OnCardReady(int playerIndex, Card card)
     {
         GameSFXManager.Instance.PlayClipRandom("Card");
         int index = CorrectIndex(playerIndex);
@@ -303,7 +194,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void Player_OnPlayerTurn(int playerIndex, DealInfo info)
+    public void Player_OnPlayerTurn(int playerIndex, RoundInfo info)
     {
         //print("player Index:" + playerIndex);
         if (GameManager.Instance.GameType != GameType.Single)
@@ -328,13 +219,13 @@ public class UIManager : MonoBehaviour
     {
         GameSFXManager.Instance.PlayClip("Click");
 
-        if (!emojiPanel.activeSelf)
+        if (!EmojiPanel.activeSelf)
         {
-            emojiPanel.SetActive(true);
+            EmojiPanel.SetActive(true);
         }
         else
         {
-            emojiPanel.SetActive(false);
+            EmojiPanel.SetActive(false);
         }
     }
 
@@ -344,7 +235,12 @@ public class UIManager : MonoBehaviour
 
         ShowEmoji(0, index);
 
-        emojiPanel.SetActive(false);
+        EmojiPanel.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        MultiGameScript.OnMessageRecieved -= MessageRecieved;
     }
 
     public void ShowEmoji(int playerIndex, int index)
@@ -366,78 +262,22 @@ public class UIManager : MonoBehaviour
         EmojiImages[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
-    private void Game_OnCardsDealt()
+    public void MainPlayer_WaitOthers()
     {
-        if (!init)
-        {
-            mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
-            mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
-            mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
-            cardsUIManager.SetMainPlayer(mainPlayer);
-
-            SetPlayers(game.Players);
-            init = true;
-        }
-        SetScore();
-        cardsUIManager.ShowPlayerCards(mainPlayer, true);
+        WaitingPanel.Show();
     }
 
-    private void MainPlayer_WaitOthers()
-    {
-        waitingPanel.Show();
-    }
 
-    private void MainPlayer_OnWaitDoubleCards(Card card)
-    {
-        doubleCardCount++;
-        waitingPanel.Hide();
-        DoublePanel.ShowPanel(card);
-    }
 
     internal void Debug(string v)
     {
         debugText.text = v;
     }
 
-    private void MainPlayer_OnWaitPassCards()
-    {
-        DealFinishedPanel.gameObject.SetActive(false);
-
-        passCardsPanel.Show((cards) =>
-        {
-            PassCards(cards);
-        });
-    }
-
-    public void OnDisable()
-    {
-        game.OnCardsReady -= Game_OnCardsDealt;
-        game.OnTrickFinished -= Game_OnTrickFinished;
-        game.OnStartPlaying -= Game_OnStartPlaying;
-        game.OnCardsPassed -= CardsPassed;
-        game.OnDealFinished -= Game_OnDealFinished;
-        game.OnCardDoubled -= Game_OnCardDoubled;
-        game.OnSetPlayEnvironment -= Game_OnSetPlayEnvironment;
-        MultiGameScript.OnMessageRecieved -= MessageRecieved;
-
-        foreach (var player in game.Players)
-        {
-            player.OnCardReady -= Player_OnCardReady;
-            player.OnPlayerTurn -= Player_OnPlayerTurn;
-        }
-    }
-
-    internal void PassCards(List<Card> selectedPassCards)
-    {
-        waitingPanel.Show();
-        mainPlayer.PassCards(selectedPassCards);
-        //scoresHolder.SetActive(true);
-    }
 
     internal void HostLeft()
     {
-        if (gameOver)
+        if (GameOver)
             return;
 
         hostLeftPopup.ShowWithCode("hostleftMessage", ()=>
