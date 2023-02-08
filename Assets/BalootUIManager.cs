@@ -1,34 +1,53 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BalootUIManager : MonoBehaviour
 {
     BalootGameScript game;
     public static BalootUIManager Instance;
-    CardsUIManager cardsUIManager;
+    BalootCardsUIManager cardsUIManager;
     UIManager uiManager;
     bool init;
 
     [SerializeField]
     GameTypePanel gameTypePanel;
 
+    [SerializeField]
+    TextMeshProUGUI[] typeTexts;
     BalootMainPlayer mainPlayer;
+
+    BalootGameScript balootGame => (BalootGameScript)game;
     void Awake()
     {
         Instance = this;
         game = BalootGameScript.Instance;
-
         uiManager = GetComponent<UIManager>();
         uiManager.game = game;
 
         game.OnCardsReady += Game_OnCardsReady;
-        ((BalootGameScript)game).OnStartCardsReady += BalootUIManager_OnStartCardsReady;
-
+        balootGame.OnStartCardsReady += BalootUIManager_OnStartCardsReady;
+        balootGame.OnPlayerSelectedType += BalootGame_OnPlayerSelectedType;
         gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
 
-        cardsUIManager = GetComponentInChildren<CardsUIManager>();  
+        cardsUIManager = GetComponentInChildren<BalootCardsUIManager>();
+        uiManager.SetCardManager(cardsUIManager);
+    }
+
+    private void BalootGame_OnPlayerSelectedType(int index, BalootGameType type)
+    {
+        typeTexts[index].text= type.ToString();
+        typeTexts[index].transform.parent.gameObject.SetActive(true);
+
+        StartCoroutine(ShowTypeAnimation(index));
+    }
+
+    IEnumerator ShowTypeAnimation(int playerIndex)
+    {
+        yield return new WaitForSeconds(3);
+        typeTexts[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
     private void BalootUIManager_OnStartCardsReady(Card balootCard)
@@ -44,6 +63,11 @@ public class BalootUIManager : MonoBehaviour
 
             uiManager.SetPlayers(game.Players, mainPlayer);
             init = true;
+
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    ((BalootPlayer)game.Players[i]).OnTypeSelected +=  
+            //}
         }
 
         cardsUIManager.AddBalootCard(balootCard);
@@ -58,7 +82,7 @@ public class BalootUIManager : MonoBehaviour
 
     private void Game_OnCardsReady()
     {
-
+        cardsUIManager.AddRemaingCards(mainPlayer);
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 

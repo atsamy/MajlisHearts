@@ -388,7 +388,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (((RoundScript)RoundScript).DealInfo.roundNumber < 13)
+            if (((RoundScript)RoundScript).DealInfo.TrickNumber < 13)
                 turnManager.BeginTurn();
         }
     }

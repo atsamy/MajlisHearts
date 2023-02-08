@@ -47,14 +47,20 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        cardsUIManager = GetComponentInChildren<CardsUIManager>();
+        //cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
 
         //remove later
-        cardsUIManager.SetCardBack(cardBack);
+        //cardsUIManager.SetCardBack(cardBack);
 
         //uncomment later
         //FadeScreen.Instance?.FadeOut(2);
+    }
+
+    public void SetCardManager(CardsUIManager cardsUIManager)
+    {
+        this.cardsUIManager = cardsUIManager;
+        cardsUIManager.SetCardBack(cardBack);
     }
 
     public void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
@@ -241,6 +247,15 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         MultiGameScript.OnMessageRecieved -= MessageRecieved;
+
+        foreach (var player in game.Players)
+        {
+            player.OnCardReady -= Player_OnCardReady;
+            player.OnPlayerTurn -= Player_OnPlayerTurn;
+        }
+
+        game.OnStartPlaying -= Game_OnStartPlaying;
+        game.OnSetPlayEnvironment -= Game_OnSetPlayEnvironment;
     }
 
     public void ShowEmoji(int playerIndex, int index)

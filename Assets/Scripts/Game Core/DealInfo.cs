@@ -6,7 +6,7 @@ using UnityEngine;
 public class RoundInfo
 {
     public CardShape TrickShape;
-    public int roundNumber;
+    public int TrickNumber;
     public Dictionary<CardShape, int> ShapesOnGround;
     public List<Card> CardsDrawn;
     public List<Card> CardsOntable;
@@ -18,7 +18,7 @@ public class RoundInfo
     {
         TrickShape = CardShape.Club;
         //heartBroken = false;
-        roundNumber = 0;
+        TrickNumber = 0;
 
         ShapesOnGround = new Dictionary<CardShape, int>();
 
@@ -33,7 +33,7 @@ public class RoundInfo
 
     internal void DrawCards()
     {
-        roundNumber++;
+        TrickNumber++;
         CardsDrawn.AddRange(CardsOntable);
         CardsOntable.Clear();
     }

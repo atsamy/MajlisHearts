@@ -23,6 +23,9 @@ public class PlayerDetails : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI timerText;
 
+    [SerializeField]
+    TextMeshProUGUI typeText;
+
     Coroutine timerRoutine;
 
     public void SetPlayer(Sprite avatar, string name, int level)

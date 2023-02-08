@@ -7,7 +7,7 @@ public class BalootRoundScript:RoundScriptBase
     public delegate void Event(EventTypeBaloot eventType);
     public event Event OnEvent;
 
-
+    public int StartIndex;
     public BalootRoundInfo RoundInfo;
 
     public Card BalootCard;
@@ -17,6 +17,8 @@ public class BalootRoundScript:RoundScriptBase
     {
         cardsOnDeck = new Dictionary<int, Card>();
         RoundInfo = new BalootRoundInfo();
+
+        StartIndex = -1;
     }
 
     public override void Deal()
@@ -40,6 +42,12 @@ public class BalootRoundScript:RoundScriptBase
         AllCards.Remove(BalootCard);
     }
 
+    private void IncrementStartIndex()
+    {
+        StartIndex++;
+        StartIndex %= 4;
+    }
+
     public void DealContinue(int playerIndex)
     {
         players[playerIndex].AddCard(BalootCard);
@@ -52,7 +60,7 @@ public class BalootRoundScript:RoundScriptBase
             index %= 4;
             int getRandom = Random.Range(0, AllCards.Count);
             players[index].AddCard(AllCards[getRandom]);
-            AllCards.RemoveAt(index);
+            AllCards.RemoveAt(getRandom);
         }
 
         OnEvent?.Invoke(EventTypeBaloot.CardsDealtFinished);
@@ -60,6 +68,8 @@ public class BalootRoundScript:RoundScriptBase
 
     public override void StartNewGame()
     {
+        IncrementStartIndex();
+
         Deal();
         RoundInfo = new BalootRoundInfo();
 
@@ -85,7 +95,7 @@ public class BalootRoundScript:RoundScriptBase
     {
         RoundInfo.BalootRoundType = type;
         DealContinue(index);
-        players[index].SetTurn(RoundInfo);
+        players[StartIndex].SetTurn(RoundInfo);
     }
 }
 

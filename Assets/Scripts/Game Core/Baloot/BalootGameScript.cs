@@ -12,6 +12,11 @@ public class BalootGameScript : GameScriptBase
     public delegate void StartCardsReady(Card balootCard);
     public event StartCardsReady OnStartCardsReady;
 
+    public delegate void PlayerSelectedType(int index,BalootGameType type);
+    public event PlayerSelectedType OnPlayerSelectedType;
+
+    public BalootRoundScript balootRoundScript => (BalootRoundScript)RoundScript;
+
     private void Awake()
     {
         Instance = this;
@@ -20,7 +25,7 @@ public class BalootGameScript : GameScriptBase
 
     void Start()
     {
-        ((BalootRoundScript)RoundScript).OnEvent += Deal_OnEvent;
+        balootRoundScript.OnEvent += Deal_OnEvent;
 
         Players = new BalootPlayer[4];
 
@@ -39,7 +44,7 @@ public class BalootGameScript : GameScriptBase
                 Players[i].Name = "Player " + i;
             }
 
-            ((BalootPlayer)Players[i]).OnTypeSelected += PlayerSelectedType;
+            ((BalootPlayer)Players[i]).OnTypeSelected += Players_SelectedType;
             Players[i].OnCardReady += GameScript_OnCardReady;
 
         }
@@ -55,12 +60,13 @@ public class BalootGameScript : GameScriptBase
         StartGame();
     }
 
-    public void PlayerSelectedType(int index,BalootGameType type)
+    public void Players_SelectedType(int index,BalootGameType type)
     {
+        OnPlayerSelectedType?.Invoke(index,type);
         switch (type) 
         {
             case BalootGameType.Sun:
-                ((BalootRoundScript)RoundScript).SetGameType(index,type);
+                balootRoundScript.SetGameType(index,type);
                 break;
             case BalootGameType.Hukom:
                 break;
@@ -82,10 +88,12 @@ public class BalootGameScript : GameScriptBase
         {
             case EventTypeBaloot.CardsDealtBegin:
                 OnStartCardsReady?.Invoke(((BalootRoundScript)RoundScript).BalootCard);
+                ((BalootPlayer)Players[0]).CheckGameType();
                 break;
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
                 break;
         }
     }
+
 }

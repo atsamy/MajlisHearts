@@ -29,7 +29,7 @@ public class AIPlayer : Player
 
         int hand = info.CardsOntable.Count;
 
-        if (hand == 0 && info.roundNumber == 0)
+        if (hand == 0 && info.TrickNumber == 0)
         {
             if (FakePlayer)
                 await Task.Delay(600);

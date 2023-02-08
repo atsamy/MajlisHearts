@@ -10,13 +10,13 @@ public class CardsUIManager : MonoBehaviour
     public int Spacing = 40;
     public GameObject playerCard;
 
-    GameObject cardBack;
+    protected GameObject cardBack;
 
     public PlayerCardsLayout[] CardsHolder;
     //[SerializeField]
     //PassCardsPanel passCardsPanel;
     [SerializeField]
-    CardShapeSprites[] cardShapeSprites;
+    protected CardShapeSprites[] cardShapeSprites;
 
     [SerializeField]
     Vector2 CardsStartResolution = new Vector2(209, 304);
@@ -25,14 +25,12 @@ public class CardsUIManager : MonoBehaviour
 
     public Transform[] DeckCardsPosition;
 
-    List<DeckCard> deckCards;
-    List<CardUI> playableCards;
-    List<CardUI> playerCardsUI;
+    protected List<DeckCard> deckCards;
+    protected List<CardUI> playableCards;
+    protected List<CardUI> playerCardsUI;
 
     [SerializeField]
-    PlayerDetails[] playersDetails;
-
-    public Image BalootCard;
+    protected PlayerDetails[] playersDetails;
 
     public void SetMainPlayer(PlayerBase mainPlayer)
     {
@@ -59,28 +57,28 @@ public class CardsUIManager : MonoBehaviour
         playersDetails[index].StopTimer();
     }
 
-    public void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable,int count)
+    public virtual void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable,int count)
     {
-        playerCardsUI = new List<CardUI>();
-        playableCards = new List<CardUI>();
+        //playerCardsUI = new List<CardUI>();
+        //playableCards = new List<CardUI>();
 
-        for (int i = 0; i < count; i++)
-        {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
-            playerCardsUI.Add(newCard.GetComponent<CardUI>());
+        //for (int i = 0; i < count; i++)
+        //{
+        //    GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
+        //    playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
-            Card card = mainPlayer.OwnedCards[i];
+        //    Card card = mainPlayer.OwnedCards[i];
 
-            playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
-            {
-                 AddToPassCards(newCard.GetComponent<CardUI>());
-            });
+        //    playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+        //    {
+        //         AddToPassCards(newCard.GetComponent<CardUI>());
+        //    });
 
-            playerCardsUI.Last().SetInteractable(setInteractable);
-        }
+        //    playerCardsUI.Last().SetInteractable(setInteractable);
+        //}
 
-        AddCards(count);
-        OrganizeCards();
+        //AddCards(count);
+        //OrganizeCards();
     }
 
     internal void SetCardBack(Sprite cardBack)
@@ -105,14 +103,6 @@ public class CardsUIManager : MonoBehaviour
     public void SetCardLocations()
     {
         CardsHolder[0].SetLocations();
-    }
-
-    internal void AddDoubledCard(Card card, int index)
-    {
-        if (card.IsTenOfDiamonds)
-            playersDetails[index].ShowDouble(0);
-        else if (card.IsQueenOfSpades)
-            playersDetails[index].ShowDouble(1);
     }
 
     internal IEnumerator UpdateCards(MainPlayer mainPlayer)
@@ -150,40 +140,7 @@ public class CardsUIManager : MonoBehaviour
         OrganizeCards();
     }
 
-    public void AddToPassCards(CardUI cardUI)
-    {
-        if (HeartsUIManager.Instance.AddCard(cardUI))
-        {
-            playerCardsUI.Remove(cardUI);
-            cardUI.SetOnPressed((card) =>
-            {
-                ReturnToStack(cardUI);
-            });
-
-            cardUI.transform.rotation = Quaternion.identity;
-            CardsHolder[0].SetLocations();
-        }
-        else
-        {
-            UIManager.Instance.SetCardLocations();
-        }
-    }
-
-    public void ReturnToStack(CardUI cardUI)
-    {
-        playerCardsUI.Add(cardUI);
-        cardUI.transform.SetParent(CardsHolder[0].transform);
-        HeartsUIManager.Instance.RemoveCard(cardUI);
-        cardUI.PassCard = false;
-        cardUI.SetOnPressed((card) =>
-        {
-            AddToPassCards(cardUI);
-        });
-
-        OrganizeCards();
-    }
-
-    public void CardsPlayed(int playerIndex, Card card)
+    public virtual void CardsPlayed(int playerIndex, Card card)
     {
         //bug here
         Transform playedCard = CardsHolder[playerIndex].transform.GetChild(Random.Range(0, CardsHolder[playerIndex].transform.childCount));
@@ -213,15 +170,6 @@ public class CardsUIManager : MonoBehaviour
         playedCard.GetComponent<RectTransform>().DOSizeDelta(CardsOnTableResolution, 0.5f);
 
         deckCards.Add(deckCard);
-        RemoveDoubleIcon(card, playerIndex);
-    }
-
-    private void RemoveDoubleIcon(Card card, int index)
-    {
-        if (card.IsTenOfDiamonds)
-            playersDetails[index].HideDouble(0);
-        else if (card.IsQueenOfSpades)
-            playersDetails[index].HideDouble(1);
     }
 
     public void SetPlayers(int index, PlayerBase player)
@@ -234,7 +182,7 @@ public class CardsUIManager : MonoBehaviour
         playersDetails[index].SetScore(score);
     }
 
-    public void MainPlayerCard(CardUI cardUI)
+    public virtual void MainPlayerCard(CardUI cardUI)
     {
         cardUI.transform.SetParent(DeckCardsPosition[0]);
         DeckCardsPosition[0].SetAsLastSibling();
@@ -256,7 +204,6 @@ public class CardsUIManager : MonoBehaviour
             item.SetInteractable(false);
         }
 
-        RemoveDoubleIcon(cardUI.CardInfo, 0);
         CardsHolder[0].SetLocations();
     }
 
@@ -315,7 +262,7 @@ public class CardsUIManager : MonoBehaviour
 
         foreach (var item in playerCardsUI)
         {
-            if (checkIfPlayable(item.CardInfo, info, player))
+            if (CheckIfPlayable(item.CardInfo, info, player))
             {
                 playableCards.Add(item);
                 item.SetInteractable(true);
@@ -335,31 +282,9 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    public void AddBalootCard(Card card)
+    protected virtual bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
     {
-        BalootCard.gameObject.SetActive(true);
-        BalootCard.sprite = cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
-    }
-
-    bool checkIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
-    {
-        bool firstHand = trickInfo.CardsOntable.Count == 0;
-
-        if (trickInfo.roundNumber == 0 && firstHand && !(card.Shape == CardShape.Club && card.Rank == CardRank.Two))
-            return false;
-        if (trickInfo.TrickShape != card.Shape && player.HasShape(trickInfo.TrickShape) && !firstHand)
-            return false;
-        //if (trickInfo.roundNumber == 0)
-        //{
-        //    if (card.Shape == CardShape.Heart)
-        //        return false;
-        //    if (card.IsQueenOfSpades || card.IsTenOfDiamonds)
-        //        return false;
-        //}
-        //if (!trickInfo.heartBroken && card.Shape == CardShape.Heart && firstHand && !player.HasOnlyHearts())
-        //    return false;
-
-        return true;
+        return false;
     }
 }
 

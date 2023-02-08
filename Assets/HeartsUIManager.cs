@@ -12,7 +12,7 @@ public class HeartsUIManager : UIManagerBase
     int doubleCardCount;
     MainPlayer mainPlayer;
 
-    CardsUIManager cardsUIManager;
+    HeartsCardsUIManager cardsUIManager;
     UIManager uiManager;
 
     [SerializeField]
@@ -40,7 +40,7 @@ public class HeartsUIManager : UIManagerBase
         game.OnCardDoubled += Game_OnCardDoubled;
         game.OnSetPlayEnvironment += uiManager.Game_OnSetPlayEnvironment;
 
-        cardsUIManager = GetComponentInChildren<CardsUIManager>();
+        cardsUIManager = GetComponentInChildren<HeartsCardsUIManager>();
     }
 
     private void Game_OnCardsDealt()
@@ -186,17 +186,9 @@ public class HeartsUIManager : UIManagerBase
     {
         game.OnCardsReady -= Game_OnCardsDealt;
         game.OnTrickFinished -= Game_OnTrickFinished;
-        game.OnStartPlaying -= uiManager.Game_OnStartPlaying;
         game.OnCardsPassed -= CardsPassed;
         game.OnDealFinished -= Game_OnDealFinished;
         game.OnCardDoubled -= Game_OnCardDoubled;
-        game.OnSetPlayEnvironment -= uiManager.Game_OnSetPlayEnvironment;
-
-        foreach (var player in game.Players)
-        {
-            player.OnCardReady -= uiManager.Player_OnCardReady;
-            player.OnPlayerTurn -= uiManager.Player_OnPlayerTurn;
-        }
     }
 
     internal void PassCards(List<Card> selectedPassCards)

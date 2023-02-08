@@ -97,7 +97,7 @@ public class RoundScript: RoundScriptBase
 
             DealInfo.DrawCards();
 
-            if (DealInfo.roundNumber < 13)
+            if (DealInfo.TrickNumber < 13)
             {
                 trickFinished();
             }
@@ -118,7 +118,7 @@ public class RoundScript: RoundScriptBase
 
     public override void SetTurn()
     {
-        if (DealInfo.roundNumber < 13)
+        if (DealInfo.TrickNumber < 13)
             players[playingIndex].SetTurn(DealInfo);
     }
 
