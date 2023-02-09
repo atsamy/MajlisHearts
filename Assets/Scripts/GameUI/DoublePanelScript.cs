@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class DoublePanelScript : MonoBehaviour
 {
     public GameObject QueenPanel;
     public GameObject TenPanel;
+
+    public Action<Card, bool> OnDoubleCardSet;
 
     public void ShowPanel(Card card)
     {
@@ -27,12 +30,14 @@ public class DoublePanelScript : MonoBehaviour
     {
         if (TenPanel.activeSelf)
         {
-            HeartsUIManager.Instance.SetDoubleCard(CardHelper.TenOfDiamonds, value);
+            OnDoubleCardSet?.Invoke(CardHelper.TenOfDiamonds,value);
+            //((HeartsUIManager)HeartsUIManager.Instance).SetDoubleCard(CardHelper.TenOfDiamonds, value);
             TenPanel.SetActive(false);
         }
         else if (QueenPanel.activeSelf)
         {
-            HeartsUIManager.Instance.SetDoubleCard(CardHelper.QueenOfSpades, value);
+            OnDoubleCardSet?.Invoke(CardHelper.QueenOfSpades, value);
+            //((HeartsUIManager)HeartsUIManager.Instance).SetDoubleCard(CardHelper.QueenOfSpades, value);
             QueenPanel.SetActive(false);
         }
 

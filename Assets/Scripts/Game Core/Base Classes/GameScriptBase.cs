@@ -27,6 +27,7 @@ public class GameScriptBase : MonoBehaviour
     public PlayerBase[] Players;
     [HideInInspector]
     public int MainPlayerIndex = 0;
+
     public void SetEnvironment(string tableTop, string cardBack)
     {
         OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/Tables/" + tableTop),
@@ -74,5 +75,10 @@ public class GameScriptBase : MonoBehaviour
     public virtual bool SetFinalScore()
     {
         return false;
+    }
+
+    public void Deal_OnDealFinished()
+    {
+        SetDealFinished(true);
     }
 }

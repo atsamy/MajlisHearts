@@ -4,87 +4,66 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HeartsUIManager : UIManagerBase
+public class HeartsUIManager : UIManager
 {
-    public static HeartsUIManager Instance;
-
-    GameScript game;
+    GameScript heartsGame => (GameScript)Game;
     int doubleCardCount;
     MainPlayer mainPlayer;
 
-    HeartsCardsUIManager cardsUIManager;
-    UIManager uiManager;
+    HeartsCardsUIManager heartsCardsUI => (HeartsCardsUIManager)CardsUI;
 
     [SerializeField]
     PassCardsPanel passCardsPanel;
     [SerializeField]
-    DealResult DealFinishedPanel;
-    [SerializeField]
     DoublePanelScript doublePanel;
 
     bool init;
-    void Awake()
+
+    private void OnEnable()
     {
         Instance = this;
         doubleCardCount = 0;
-        game = GameScript.Instance;
+        Game = GameScript.Instance;
+        CardsUI = GetComponentInChildren<HeartsCardsUIManager>();
 
-        uiManager = GetComponent<UIManager>();
-        uiManager.game= game;
+        Init();
 
-        game.OnCardsReady += Game_OnCardsDealt;
-        game.OnTrickFinished += Game_OnTrickFinished;
-        game.OnStartPlaying += uiManager.Game_OnStartPlaying;
-        game.OnCardsPassed += CardsPassed;
-        game.OnDealFinished += Game_OnDealFinished;
-        game.OnCardDoubled += Game_OnCardDoubled;
-        game.OnSetPlayEnvironment += uiManager.Game_OnSetPlayEnvironment;
+        heartsGame.OnCardsPassed += CardsPassed;
+        heartsGame.OnCardDoubled += Game_OnCardDoubled;
 
-        cardsUIManager = GetComponentInChildren<HeartsCardsUIManager>();
+        doublePanel.OnDoubleCardSet += SetDoubleCard;
     }
 
-    private void Game_OnCardsDealt()
+
+    public override void Game_OnCardsReady()
     {
         if (!init)
         {
-            mainPlayer = (MainPlayer)game.Players[game.MainPlayerIndex];
+            mainPlayer = (MainPlayer)Game.Players[Game.MainPlayerIndex];
             mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
             mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-            mainPlayer.WaitOthers += uiManager.MainPlayer_WaitOthers;
-            cardsUIManager.SetMainPlayer(mainPlayer);
+            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
+            CardsUI.SetMainPlayer(mainPlayer);
 
-            uiManager.SetPlayers(game.Players, mainPlayer);
+            SetPlayers(Game.Players, mainPlayer);
             init = true;
         }
         SetScore();
-        cardsUIManager.ShowPlayerCards(mainPlayer, true,13);
+        CardsUI.ShowPlayerCards(mainPlayer, true,13);
+    }
+
+    protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
+    {
+        doubleCardCount = 0;
+        base.Game_OnDealFinished(hostPlayer, isGameOver);
     }
 
     internal void SetDoubleCard(Card card, bool value)
     {
         if (doubleCardCount == 1)
-            uiManager.WaitingPanel.Show();
+            UIElementsHolder.WaitingPanel.Show();
 
         mainPlayer.SetDoubleCard(card, value);
-    }
-
-    public void ShowScores()
-    {
-        DealFinishedPanel.ShowInGame(game.Players);
-    }
-
-    public void HideScores()
-    {
-        DealFinishedPanel.gameObject.SetActive(false);
-    }
-
-    private void Game_OnTrickFinished(int winningHand)
-    {
-        SetScore();
-
-        int index = uiManager.CorrectIndex(winningHand);
-        cardsUIManager.RemoveCards(index);
-        GameSFXManager.Instance.PlayClipRandom("CardDraw");
     }
 
     private void MainPlayer_OnWaitPassCards()
@@ -97,71 +76,30 @@ public class HeartsUIManager : UIManagerBase
         });
     }
 
-    public void SetScore()
+    public override void SetScore()
     {
-        for (int i = 0; i < game.Players.Length; i++)
+        for (int i = 0; i < heartsGame.Players.Length; i++)
         {
-            int correctIndex = i + game.MainPlayerIndex;
+            int correctIndex = i + heartsGame.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetScore(i, game.Players[correctIndex].Score);
+            CardsUI.SetScore(i, heartsGame.Players[correctIndex].Score);
         }
     }
 
     private void Game_OnCardDoubled(Card card, int playerIndex)
     {
-        int index = uiManager.CorrectIndex(playerIndex);
-        cardsUIManager.AddDoubledCard(card, index);
+        int index = CorrectIndex(playerIndex);
+        heartsCardsUI.AddDoubledCard(card, index);
     }
 
     private void CardsPassed()
     {
-        uiManager.WaitingPanel.Hide();
-        StartCoroutine(cardsUIManager.UpdateCards(mainPlayer));
+        UIElementsHolder.WaitingPanel.Hide();
+        StartCoroutine(heartsCardsUI.UpdateCards(mainPlayer));
     }
 
-    private void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
-    {
-        doubleCardCount = 0;
 
-        uiManager.scoresHolder.SetActive(false);
-        uiManager.EmojiButton.SetActive(false);
-        uiManager.GameOver = isGameOver;
-
-        if (isGameOver)
-        {
-            uiManager.GamePanel.SetActive(false);
-            DealFinishedPanel.ShowRound(game.Players, false, true, (rank) =>
-            {
-                if (GameManager.Instance.GameType != GameType.Single)
-                {
-                    uiManager.LevelPanel.Open(rank, game.MyPlayer.TotalScore, () =>
-                    {
-                        uiManager.GoToMainMenu();
-                    });
-                }
-                else
-                {
-                    uiManager.GoToMainMenu();
-                }
-            });
-
-
-            return;
-        }
-        if (hostPlayer)
-        {
-            DealFinishedPanel.ShowRound(game.Players, false, false, (rank) =>
-            {
-                game.StartNextDeal();
-            });
-        }
-        else
-        {
-            DealFinishedPanel.ShowRound(game.Players, false, false, null);
-        }
-
-    }
 
     internal bool AddCard(CardUI card)
     {
@@ -178,29 +116,23 @@ public class HeartsUIManager : UIManagerBase
     private void MainPlayer_OnWaitDoubleCards(Card card)
     {
         doubleCardCount++;
-        uiManager.WaitingPanel.Hide();
+        UIElementsHolder.WaitingPanel.Hide();
         doublePanel.ShowPanel(card);
     }
 
-    public void OnDisable()
+    private void OnDisable()
     {
-        game.OnCardsReady -= Game_OnCardsDealt;
-        game.OnTrickFinished -= Game_OnTrickFinished;
-        game.OnCardsPassed -= CardsPassed;
-        game.OnDealFinished -= Game_OnDealFinished;
-        game.OnCardDoubled -= Game_OnCardDoubled;
+        heartsGame.OnCardsPassed -= CardsPassed;
+        heartsGame.OnCardDoubled -= Game_OnCardDoubled;
+        doublePanel.OnDoubleCardSet -= SetDoubleCard;
+
+        base.Disable();
     }
 
     internal void PassCards(List<Card> selectedPassCards)
     {
-        uiManager.WaitingPanel.Show();
+        UIElementsHolder.WaitingPanel.Show();
         mainPlayer.PassCards(selectedPassCards);
         //scoresHolder.SetActive(true);
-    }
-
-    internal void HostLeft()
-    {
-        uiManager.HostLeft();
-        //throw new NotImplementedException();
     }
 }

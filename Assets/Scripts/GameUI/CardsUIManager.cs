@@ -7,30 +7,18 @@ using DG.Tweening;
 
 public class CardsUIManager : MonoBehaviour
 {
-    public int Spacing = 40;
-    public GameObject playerCard;
-
     protected GameObject cardBack;
-
-    public PlayerCardsLayout[] CardsHolder;
-    //[SerializeField]
-    //PassCardsPanel passCardsPanel;
-    [SerializeField]
-    protected CardShapeSprites[] cardShapeSprites;
-
-    [SerializeField]
-    Vector2 CardsStartResolution = new Vector2(209, 304);
-    [SerializeField]
-    Vector2 CardsOnTableResolution = new Vector2(143,208);
-
-    public Transform[] DeckCardsPosition;
-
     protected List<DeckCard> deckCards;
     protected List<CardUI> playableCards;
     protected List<CardUI> playerCardsUI;
 
-    [SerializeField]
-    protected PlayerDetails[] playersDetails;
+    protected CardElementsHolder cardElementsHolder;
+
+    public void OnEnable()
+    {
+        deckCards = new List<DeckCard>();
+        cardElementsHolder = GetComponent<CardElementsHolder>();
+    }
 
     public void SetMainPlayer(PlayerBase mainPlayer)
     {
@@ -39,22 +27,31 @@ public class CardsUIManager : MonoBehaviour
             playableCards[Random.Range(0, playableCards.Count)].Pressed();
         };
 
-        playersDetails[0].SetPlayer(mainPlayer.Avatar,mainPlayer.Name,0);
-    }
-
-    private void Awake()
-    {
-        deckCards = new List<DeckCard>();
+        cardElementsHolder.playersDetails[0].SetPlayer(mainPlayer.Avatar,mainPlayer.Name,0);
     }
 
     public void WaitPlayer(int index)
     {
-        playersDetails[index].StartTimer(10);
+        cardElementsHolder.playersDetails[index].StartTimer(10);
     }
 
     public void StopTimer(int index)
     {
-        playersDetails[index].StopTimer();
+        cardElementsHolder.playersDetails[index].StopTimer();
+    }
+
+    public void SetPlayerCards(PlayerBase mainPlayer)
+    {
+        foreach (var item in playerCardsUI)
+        {
+            item.SetOnPressed((card) =>
+            {
+                mainPlayer.ChooseCard(card);
+                MainPlayerCard(item);
+            });
+
+            item.SetInteractable(false);
+        }
     }
 
     public virtual void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable,int count)
@@ -85,7 +82,7 @@ public class CardsUIManager : MonoBehaviour
     {
         this.cardBack = new GameObject();
         this.cardBack.AddComponent<Image>().sprite = cardBack;
-        this.cardBack.GetComponent<RectTransform>().sizeDelta = CardsStartResolution;
+        this.cardBack.GetComponent<RectTransform>().sizeDelta = cardElementsHolder.CardsStartResolution;
     }
 
     public void OrganizeCards()
@@ -97,58 +94,24 @@ public class CardsUIManager : MonoBehaviour
             playerCardsUI[i].transform.SetSiblingIndex(i);
         }
 
-        CardsHolder[0].SetLocations();
+        cardElementsHolder.CardsHolder[0].SetLocations();
     }
 
     public void SetCardLocations()
     {
-        CardsHolder[0].SetLocations();
-    }
-
-    internal IEnumerator UpdateCards(MainPlayer mainPlayer)
-    {
-        foreach (var item in playerCardsUI)
-        {
-            item.SetOnPressed((card) =>
-            {
-                mainPlayer.ChooseCard(card);
-                MainPlayerCard(item);
-            });
-
-            item.SetInteractable(false);
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
-            newCard.transform.localPosition = new Vector3(i * 230 - 230,400,0);
-            CardUI cardUI = newCard.GetComponent<CardUI>();
-            playerCardsUI.Add(cardUI);
-
-            Card card = mainPlayer.PassedCards[i];
-            cardUI.Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
-            {
-                mainPlayer.ChooseCard(card);
-                MainPlayerCard(cardUI);
-            });
-
-            //Debug.Log(card);
-            //bug here
-            cardUI.SetInteractable(false);
-        }
-        yield return new WaitForSeconds(1.7f);
-        OrganizeCards();
+        cardElementsHolder.CardsHolder[0].SetLocations();
     }
 
     public virtual void CardsPlayed(int playerIndex, Card card)
     {
         //bug here
-        Transform playedCard = CardsHolder[playerIndex].transform.GetChild(Random.Range(0, CardsHolder[playerIndex].transform.childCount));
+        Transform playedCard = cardElementsHolder.CardsHolder[playerIndex].transform.GetChild(
+            Random.Range(0, cardElementsHolder.CardsHolder[playerIndex].transform.childCount));
 
-        CardsHolder[playerIndex].SetLocations();
+        cardElementsHolder.CardsHolder[playerIndex].SetLocations();
 
-        playedCard.SetParent(DeckCardsPosition[playerIndex]);
-        DeckCardsPosition[playerIndex].SetAsLastSibling();
+        playedCard.SetParent(cardElementsHolder.DeckCardsPosition[playerIndex]);
+        cardElementsHolder.DeckCardsPosition[playerIndex].SetAsLastSibling();
 
         DeckCard deckCard = new DeckCard(playedCard.gameObject, card);
 
@@ -159,7 +122,7 @@ public class CardsUIManager : MonoBehaviour
         playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
-            deckCard.Image.sprite = cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
+            deckCard.Image.sprite = cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
 
             if (playerIndex == 1 || playerIndex == 3)
             {
@@ -167,28 +130,28 @@ public class CardsUIManager : MonoBehaviour
             }
         });
 
-        playedCard.GetComponent<RectTransform>().DOSizeDelta(CardsOnTableResolution, 0.5f);
+        playedCard.GetComponent<RectTransform>().DOSizeDelta(cardElementsHolder.CardsOnTableResolution, 0.5f);
 
         deckCards.Add(deckCard);
     }
 
     public void SetPlayers(int index, PlayerBase player)
     {
-        playersDetails[index].SetPlayer(player.Avatar, player.Name, 0);
+        cardElementsHolder.playersDetails[index].SetPlayer(player.Avatar, player.Name, 0);
     }
 
     public void SetScore(int index, int score)
     {
-        playersDetails[index].SetScore(score);
+        cardElementsHolder.playersDetails[index].SetScore(score);
     }
 
     public virtual void MainPlayerCard(CardUI cardUI)
     {
-        cardUI.transform.SetParent(DeckCardsPosition[0]);
-        DeckCardsPosition[0].SetAsLastSibling();
+        cardUI.transform.SetParent(cardElementsHolder.DeckCardsPosition[0]);
+        cardElementsHolder.DeckCardsPosition[0].SetAsLastSibling();
 
         cardUI.RectTransform.DOAnchorPos(Vector3.zero + new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0), 0.5f);
-        cardUI.RectTransform.DOSizeDelta(CardsOnTableResolution, 0.5f);
+        cardUI.RectTransform.DOSizeDelta(cardElementsHolder.CardsOnTableResolution, 0.5f);
         cardUI.RectTransform.DORotate(new Vector3(0, 0, Random.Range(-40, 40)), 0.5f);
         cardUI.RectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         cardUI.RectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -204,7 +167,7 @@ public class CardsUIManager : MonoBehaviour
             item.SetInteractable(false);
         }
 
-        CardsHolder[0].SetLocations();
+        cardElementsHolder.CardsHolder[0].SetLocations();
     }
 
     public void RemoveCards(int winningHand)
@@ -230,9 +193,9 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddCards(int count)
     {
-        AddVerticalCards(CardsHolder[1], cardBack,90, count);
-        AddVerticalCards(CardsHolder[3], cardBack,-90, count);
-        AddHorizontalCards(CardsHolder[2], cardBack, count);
+        AddVerticalCards(cardElementsHolder.CardsHolder[1], cardBack,90, count);
+        AddVerticalCards(cardElementsHolder.CardsHolder[3], cardBack,-90, count);
+        AddHorizontalCards(cardElementsHolder.CardsHolder[2], cardBack, count);
     }
 
     void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack,int rotation,int count)
@@ -241,7 +204,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent.transform);
-            newCard.transform.localPosition = new Vector3(0, (i - 6) * Spacing);
+            newCard.transform.localPosition = new Vector3(0, (i - 6) * cardElementsHolder.Spacing);
             newCard.transform.eulerAngles = new Vector3(0, 0, rotation);
         }
     }
@@ -251,7 +214,7 @@ public class CardsUIManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject newCard = Instantiate(CardBack, parent.transform);
-            newCard.transform.localPosition = new Vector3((i - 6) * Spacing, 0);
+            newCard.transform.localPosition = new Vector3((i - 6) * cardElementsHolder.Spacing, 0);
             newCard.transform.eulerAngles = new Vector3(0, 0, 180);
         }
     }

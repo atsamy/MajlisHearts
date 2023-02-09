@@ -7,12 +7,12 @@ using static BalootGameScript;
 public class BalootGameScript : GameScriptBase
 {
     public static BalootGameScript Instance;
-    BalootMainPlayer myPlayer;
+    BalootMainPlayer myPlayer => (BalootMainPlayer)Players[0];
 
     public delegate void StartCardsReady(Card balootCard);
     public event StartCardsReady OnStartCardsReady;
 
-    public delegate void PlayerSelectedType(int index,BalootGameType type);
+    public delegate void PlayerSelectedType(int index, BalootGameType type);
     public event PlayerSelectedType OnPlayerSelectedType;
 
     public BalootRoundScript balootRoundScript => (BalootRoundScript)RoundScript;
@@ -49,8 +49,6 @@ public class BalootGameScript : GameScriptBase
 
         }
 
-        myPlayer = (BalootMainPlayer)Players[0];
-        //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         RoundScript.SetPlayers(Players);
 
@@ -60,17 +58,17 @@ public class BalootGameScript : GameScriptBase
         StartGame();
     }
 
-    public void Players_SelectedType(int index,BalootGameType type)
+    public void Players_SelectedType(int index, BalootGameType type)
     {
-        OnPlayerSelectedType?.Invoke(index,type);
-        switch (type) 
+        OnPlayerSelectedType?.Invoke(index, type);
+        switch (type)
         {
             case BalootGameType.Sun:
-                balootRoundScript.SetGameType(index,type);
+                balootRoundScript.SetGameType(index, type);
                 break;
             case BalootGameType.Hukom:
                 break;
-            case BalootGameType.Ashkal: 
+            case BalootGameType.Ashkal:
                 break;
             case BalootGameType.Pass:
                 break;
@@ -82,16 +80,23 @@ public class BalootGameScript : GameScriptBase
         RoundScript.OnCardReady(playerIndex, card);
     }
 
-    private void Deal_OnEvent(EventTypeBaloot eventType)
+    private void Deal_OnEvent(int eventIndex)
     {
+        EventTypeBaloot eventType = (EventTypeBaloot)eventIndex;
         switch (eventType)
         {
             case EventTypeBaloot.CardsDealtBegin:
-                OnStartCardsReady?.Invoke(((BalootRoundScript)RoundScript).BalootCard);
+                OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
                 ((BalootPlayer)Players[0]).CheckGameType();
                 break;
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
+                break;
+            case EventTypeBaloot.TrickFinished:
+                Deal_OnTrickFinished(RoundScript.PlayingIndex);
+                break;
+            case EventTypeBaloot.DealFinished:
+                Deal_OnDealFinished();
                 break;
         }
     }

@@ -59,7 +59,7 @@ public class CardUI : MonoBehaviour
     IEnumerator Drag()
     {
         if(PassCard)
-            transform.parent = UIManager.Instance.DragCardHolder;
+            transform.parent = UIManager.Instance.UIElementsHolder.DragCardHolder;
 
         while (drag)
         {

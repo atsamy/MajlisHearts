@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.Searcher.AnalyticsEvent;
 
 public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
@@ -93,8 +94,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             {
                 if (i == 0)
                 {
-                    myPlayer = new MainPlayer(i);
-                    Players[i] = myPlayer;
+                    Players[i] = new MainPlayer(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.playerAvatar;//lookUpAvatar[i];
                 }
@@ -118,8 +118,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             {
                 if (i < playersOrder.Length && playersOrder[i] == GameManager.Instance.MyPlayer.Name)
                 {
-                    myPlayer = new MainPlayer(i);
-                    Players[i] = myPlayer;
+                    Players[i] = new MainPlayer(i);
                     MainPlayerIndex = i;
                     Players[i].Avatar = AvatarManager.Instance.playerAvatar;
                     Players[i].Name = playersOrder[i];
@@ -243,8 +242,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         PhotonNetwork.RaiseEvent(messageCode, message, eventOptions, SendOptions.SendReliable);
     }
 
-    private void Deal_OnEvent(EventType eventType)
+    private void Deal_OnEvent(int eventIndex)
     {
+        EventType eventType = (EventType)eventIndex;
         switch (eventType)
         {
             case EventType.CardsDealt:
@@ -298,15 +298,15 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 ((RoundScript)RoundScript).DealInfo = new RoundInfo();
-                myPlayer.Reset();
+                MyPlayer.Reset();
 
                 foreach (var item in cards)
                 {
-                    myPlayer.AddCard(item);
+                    MyPlayer.AddCard(item);
                 }
 
                 SetCardsReady();
-                myPlayer.SelectPassCards();
+                MyPlayer.SelectPassCards();
                 break;
             case passCardsCode:
                 List<Card> passedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
@@ -328,7 +328,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 else
                 {
                     //print("recieved my cards");
-                    myPlayer.AddPassCards(passedCards);
+                    MyPlayer.AddPassCards(passedCards);
 
                     //RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
                     //PhotonNetwork.RaiseEvent(recievedCardsCode, null, raiseEventOptions, SendOptions.SendReliable);
@@ -365,7 +365,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case checkDoubleCode:
                 //make sure people recieved passed cards first
                 SetCardsPassed();
-                myPlayer.CheckForDoubleCards();
+                MyPlayer.CheckForDoubleCards();
                 break;
             case messageCode:
                 int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
@@ -448,7 +448,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
-                myPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
+                MyPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
             }
         }
     }
@@ -466,7 +466,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             if (beginIndex == MainPlayerIndex)
             {
-                myPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
+                MyPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
             }
         }
         else if (!Players[beginIndex].IsPlayer)

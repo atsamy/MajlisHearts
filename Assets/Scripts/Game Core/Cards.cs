@@ -52,7 +52,7 @@ public class Card
 public static class CardHelper 
 {
 
-    public static Dictionary<CardRank, int> SunValue = new Dictionary<CardRank, int>()
+    public static Dictionary<CardRank, int> SunRank = new Dictionary<CardRank, int>()
     {
         {CardRank.Seven, 0},
         {CardRank.Eight, 1},
@@ -64,7 +64,7 @@ public static class CardHelper
         {CardRank.Ace, 7}
     };
 
-    public static Dictionary<CardRank, int> HokumValue = new Dictionary<CardRank, int>()
+    public static Dictionary<CardRank, int> HokumRank = new Dictionary<CardRank, int>()
     {
         {CardRank.Seven, 0},
         {CardRank.Eight, 1},
@@ -76,7 +76,43 @@ public static class CardHelper
         {CardRank.Knight, 7}
     };
 
-    public static int GetCardValue(BalootGameType gameType,Card card)
+    public static Dictionary<CardRank, int> SunValue = new Dictionary<CardRank, int>()
+    {
+        {CardRank.Seven, 0},
+        {CardRank.Eight, 0},
+        {CardRank.Nine, 0},
+        {CardRank.Knight, 2},
+        {CardRank.Queen, 3},
+        {CardRank.King, 4},
+        {CardRank.Ten, 10},
+        {CardRank.Ace, 11}
+    };
+
+    public static Dictionary<CardRank, int> HokumValue = new Dictionary<CardRank, int>()
+    {
+        {CardRank.Seven, 0},
+        {CardRank.Eight, 0},
+        {CardRank.Queen, 3},
+        {CardRank.King, 4},
+        {CardRank.Ten, 10},
+        {CardRank.Ace,11},
+        {CardRank.Nine, 14},
+        {CardRank.Knight, 20}
+    };
+
+    public static int GetCardRank(BalootGameType gameType,Card card)
+    {
+        if (gameType == BalootGameType.Sun)
+        {
+            return SunRank[card.Rank];
+        }
+        else
+        {
+            return HokumRank[card.Rank];
+        }
+    }
+
+    public static int GetCardValue(BalootGameType gameType, Card card)
     {
         if (gameType == BalootGameType.Sun)
         {

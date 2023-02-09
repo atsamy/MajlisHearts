@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Analytics;
 using UnityEngine;
 
-public class RoundScriptBase 
+public class RoundScriptBase
 {
+    //public delegate void Event(int eventType);
+    public Action<int> OnEvent;
+
     protected int playingIndex = -1;
     public int PlayingIndex { get => playingIndex; }
     protected Dictionary<int, Card> cardsOnDeck;
@@ -26,6 +30,17 @@ public class RoundScriptBase
         
     }
 
+    public virtual int GetValue(Card winningCard)
+    {
+        return 0;
+    }
+
+    public virtual int EvaluateDeck(out int value)
+    {
+        value = 0;
+        return 0;
+    }
+
     public virtual void StartNewGame()
     {
         
@@ -40,4 +55,21 @@ public class RoundScriptBase
     {
 
     }
+
+    public async void TrickFinished(int TrickFinished)
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnEvent?.Invoke(TrickFinished);
+        await System.Threading.Tasks.Task.Delay(1000);
+        //players[PlayingIndex].SetTurn(DealInfo, 0);
+    }
+
+    public async void DealFinished(int TrickFinished, int DealFinished)
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnEvent?.Invoke(TrickFinished);
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnEvent?.Invoke(DealFinished);
+    }
+
 }

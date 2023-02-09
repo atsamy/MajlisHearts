@@ -14,10 +14,9 @@ public class GameScript : GameScriptBase
     public event CardDoubled OnCardDoubled;
 
     public static GameScript Instance;
-
-    protected MainPlayer myPlayer;
     protected Coroutine playerTimer;
-    public Player MyPlayer => (Player)Players[MainPlayerIndex];
+
+    public MainPlayer MyPlayer => (MainPlayer)Players[MainPlayerIndex];
     //public new RoundScript RoundScript;
     private void Awake()
     {
@@ -52,9 +51,6 @@ public class GameScript : GameScriptBase
             
         }
 
-        myPlayer = (MainPlayer)Players[0];
-        //myPlayer.OnPlayerTurn += MainPlayerTurn;
-
         ((RoundScript)RoundScript).SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
@@ -86,7 +82,7 @@ public class GameScript : GameScriptBase
     protected IEnumerator StartTimer()
     {
         yield return new WaitForSeconds(Seconds);
-        myPlayer.ForcePlay();
+        MyPlayer.ForcePlay();
     }
 
     private void GameScript_OnDoubleCard(Card card, bool value, int playerIndex)
@@ -104,8 +100,10 @@ public class GameScript : GameScriptBase
         }
     }
 
-    private void Deal_OnEvent(EventType eventType)
+    private void Deal_OnEvent(int eventIndex)
     {
+        EventType eventType = (EventType)eventIndex;
+
         switch (eventType)
         {
             case EventType.CardsDealt:
@@ -146,11 +144,6 @@ public class GameScript : GameScriptBase
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
         ((RoundScript)RoundScript).GameScript_OnPassCardsReady(playerIndex, cards);
-    }
-
-    private void Deal_OnDealFinished()
-    {
-        SetDealFinished(true);
     }
 
     public void SetCardsPassed()

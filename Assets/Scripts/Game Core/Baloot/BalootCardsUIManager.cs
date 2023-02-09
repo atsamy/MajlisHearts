@@ -15,12 +15,12 @@ public class BalootCardsUIManager : CardsUIManager
 
         for (int i = 0; i < count; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
+            GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
 
-            playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+            playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
             {
                 mainPlayer.ChooseCard(card);
                 //AddToPassCards(newCard.GetComponent<CardUI>());
@@ -50,12 +50,12 @@ public class BalootCardsUIManager : CardsUIManager
 
         for (int i = 5; i < 8; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
+            GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
 
-            playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+            playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
             {
                 mainPlayer.ChooseCard(card);
                 //AddToPassCards(newCard.GetComponent<CardUI>());
@@ -64,11 +64,14 @@ public class BalootCardsUIManager : CardsUIManager
             playerCardsUI.Last().SetInteractable(false);
         }
 
+        //fix
+        //StartCoroutine(UpdateCards(mainPlayer));
+        SetPlayerCards(mainPlayer);
         OrganizeCards();
 
-        for (int i = 1; i < CardsHolder.Length; i++)
+        for (int i = 1; i < cardElementsHolder.CardsHolder.Length; i++)
         {
-            CardsHolder[i].SetLocations();
+            cardElementsHolder.CardsHolder[i].SetLocations();
         }
 
         BalootCard.gameObject.SetActive(false);
@@ -77,6 +80,6 @@ public class BalootCardsUIManager : CardsUIManager
     public void AddBalootCard(Card card)
     {
         BalootCard.gameObject.SetActive(true);
-        BalootCard.sprite = cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
+        BalootCard.sprite = cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
     }
 }

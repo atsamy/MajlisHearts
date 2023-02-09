@@ -22,8 +22,8 @@ public class CameraHover : MonoBehaviour
 
     Vector3 velocity;
 
-    [SerializeField]
-    float hoverSpeed = 5;
+    //[SerializeField]
+    //float hoverSpeed = 5;
     new Camera camera;
 
     float prevDistance;

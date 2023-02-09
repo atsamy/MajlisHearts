@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class RoundScript: RoundScriptBase
 {
-    public delegate void Event(EventType eventType);
-    public event Event OnEvent;
+    //public delegate void Event(EventType eventType);
+    //public event Event OnEvent;
 
     public GameState CurrentState { get; private set; }
 
@@ -71,7 +71,7 @@ public class RoundScript: RoundScriptBase
 
         if (doubleCount == 2)
         {
-            OnEvent?.Invoke(EventType.DoubleCardsFinished);
+            OnEvent?.Invoke((int)EventType.DoubleCardsFinished);
         }
     }
 
@@ -99,11 +99,11 @@ public class RoundScript: RoundScriptBase
 
             if (DealInfo.TrickNumber < 13)
             {
-                trickFinished();
+                TrickFinished((int)EventType.TrickFinished);
             }
             else
             {
-                dealFinished();
+                DealFinished((int)EventType.TrickFinished, (int)EventType.DealFinished);
             }
         }
         else
@@ -122,23 +122,7 @@ public class RoundScript: RoundScriptBase
             players[playingIndex].SetTurn(DealInfo);
     }
 
-    async void trickFinished()
-    {
-        await System.Threading.Tasks.Task.Delay(1000);
-        OnEvent?.Invoke(EventType.TrickFinished);
-        await System.Threading.Tasks.Task.Delay(1000);
-        //players[PlayingIndex].SetTurn(DealInfo, 0);
-    }
-
-    async void dealFinished()
-    {
-        await System.Threading.Tasks.Task.Delay(1000);
-        OnEvent?.Invoke(EventType.TrickFinished);
-        await System.Threading.Tasks.Task.Delay(1000);
-        OnEvent?.Invoke(EventType.DealFinished);
-    }
-
-    private int EvaluateDeck(out int value)
+    public override int EvaluateDeck(out int value)
     {
         Card winningCard = (Card)cardsOnDeck.ElementAt(0).Value;
         int index = cardsOnDeck.ElementAt(0).Key;
@@ -164,7 +148,7 @@ public class RoundScript: RoundScriptBase
         return index;
     }
 
-    private int GetValue(Card winningCard)
+    public override int GetValue(Card winningCard)
     {
         if (winningCard.Shape == CardShape.Heart)
             return 1;
@@ -206,7 +190,7 @@ public class RoundScript: RoundScriptBase
     public void PassingCardsDone()
     {
         GetStartingIndex();
-        OnEvent?.Invoke(EventType.CardsPassed);
+        OnEvent?.Invoke((int)EventType.CardsPassed);
         //players[playingIndex].SetTurn(DealInfo, 0);
     }
 
@@ -266,7 +250,7 @@ public class RoundScript: RoundScriptBase
 
         Deal();
 
-        OnEvent?.Invoke(EventType.CardsDealt);
+        OnEvent?.Invoke((int)EventType.CardsDealt);
 
         DealInfo = new RoundInfo();
 

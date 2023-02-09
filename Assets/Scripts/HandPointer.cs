@@ -10,7 +10,7 @@ public class HandPointer : MonoBehaviour
         transform.DOScale(0.8f, 0.75f).SetEase(Ease.InCubic).SetLoops(-1,LoopType.Yoyo);
     }
 
-    int index = 0;
+    //int index = 0;
 
     //private void Update()
     //{

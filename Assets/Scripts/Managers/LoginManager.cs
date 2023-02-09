@@ -24,8 +24,6 @@ public class LoginManager : MonoBehaviour
     PlayfabManager playfab;
     int loginValue;
 
-    bool newUser;
-
     [SerializeField]
     bool forceDeviceLogin;
     //public SplashLoading splashLoading;
@@ -180,7 +178,7 @@ public class LoginManager : MonoBehaviour
         fillBar.DOFillAmount(0.2f, 0.2f);
         if (newUser)
         {
-            this.newUser = true;
+            //this.newUser = true;
             SetLanguageAndUserName();
         }
         else if (string.IsNullOrEmpty(userInfo.DisplayName))

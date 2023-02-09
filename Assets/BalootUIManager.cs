@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BalootUIManager : MonoBehaviour
+public class BalootUIManager : UIManager
 {
-    BalootGameScript game;
-    public static BalootUIManager Instance;
-    BalootCardsUIManager cardsUIManager;
-    UIManager uiManager;
+    BalootGameScript balootGame => (BalootGameScript)Game;
+    //public static BalootUIManager Instance;
+    BalootCardsUIManager balootCardsUI => (BalootCardsUIManager)CardsUI;
     bool init;
 
     [SerializeField]
@@ -19,21 +18,20 @@ public class BalootUIManager : MonoBehaviour
     TextMeshProUGUI[] typeTexts;
     BalootMainPlayer mainPlayer;
 
-    BalootGameScript balootGame => (BalootGameScript)game;
-    void Awake()
+    private void OnEnable()
     {
         Instance = this;
-        game = BalootGameScript.Instance;
-        uiManager = GetComponent<UIManager>();
-        uiManager.game = game;
+        Game = BalootGameScript.Instance;
 
-        game.OnCardsReady += Game_OnCardsReady;
+        CardsUI = GetComponentInChildren<BalootCardsUIManager>();
+
+        Init();
+
         balootGame.OnStartCardsReady += BalootUIManager_OnStartCardsReady;
         balootGame.OnPlayerSelectedType += BalootGame_OnPlayerSelectedType;
-        gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
 
-        cardsUIManager = GetComponentInChildren<BalootCardsUIManager>();
-        uiManager.SetCardManager(cardsUIManager);
+        gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
+        SetCardManager(balootCardsUI);
     }
 
     private void BalootGame_OnPlayerSelectedType(int index, BalootGameType type)
@@ -54,24 +52,26 @@ public class BalootUIManager : MonoBehaviour
     {
         if (!init)
         {
-            mainPlayer = (BalootMainPlayer)game.Players[game.MainPlayerIndex];
+            mainPlayer = (BalootMainPlayer)Game.Players[Game.MainPlayerIndex];
             mainPlayer.OnWaitSelectType += MainPlayer_OnWaitSelectType;
             //mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
             //mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-            mainPlayer.WaitOthers += uiManager.MainPlayer_WaitOthers;
-            cardsUIManager.SetMainPlayer(mainPlayer);
+            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
+            balootCardsUI.SetMainPlayer(mainPlayer);
 
-            uiManager.SetPlayers(game.Players, mainPlayer);
+            SetPlayers(Game.Players, mainPlayer);
             init = true;
 
             //for (int i = 0; i < 4; i++)
             //{
             //    ((BalootPlayer)game.Players[i]).OnTypeSelected +=  
             //}
+
+            balootCardsUI.AddBalootCard(balootCard);
+            balootCardsUI.ShowPlayerCards(mainPlayer, false, 5);
         }
 
-        cardsUIManager.AddBalootCard(balootCard);
-        cardsUIManager.ShowPlayerCards(mainPlayer, false,5);
+
         //SetScore();
     }
 
@@ -80,9 +80,10 @@ public class BalootUIManager : MonoBehaviour
         mainPlayer.SelectType(type);    
     }
 
-    private void Game_OnCardsReady()
+    public override void Game_OnCardsReady()
     {
-        cardsUIManager.AddRemaingCards(mainPlayer);
+        balootCardsUI.AddRemaingCards(mainPlayer);
+
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 
@@ -91,14 +92,27 @@ public class BalootUIManager : MonoBehaviour
         gameTypePanel.Show();
     }
 
-    public void SetScore()
+    public override void SetScore()
     {
-        for (int i = 0; i < game.Players.Length; i++)
+        for (int i = 0; i < Game.Players.Length; i++)
         {
-            int correctIndex = i + game.MainPlayerIndex;
+            int correctIndex = i + Game.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetScore(i, game.Players[correctIndex].Score);
+            balootCardsUI.SetScore(i, Game.Players[correctIndex].Score);
         }
+    }
+
+    private void OnDisable()
+    {
+        base.Disable();
+
+        mainPlayer.OnWaitSelectType -= MainPlayer_OnWaitSelectType;
+        mainPlayer.WaitOthers -= MainPlayer_WaitOthers;
+
+        balootGame.OnStartCardsReady -= BalootUIManager_OnStartCardsReady;
+        balootGame.OnPlayerSelectedType -= BalootGame_OnPlayerSelectedType;
+
+        gameTypePanel.OnGameTypeSelected -= GameTypePanel_OnGameTypeSelected;
     }
 }

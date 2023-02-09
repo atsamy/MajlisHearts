@@ -12,12 +12,12 @@ public class HeartsCardsUIManager : CardsUIManager
 
         for (int i = 0; i < count; i++)
         {
-            GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
+            GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
             playerCardsUI.Add(newCard.GetComponent<CardUI>());
 
             Card card = mainPlayer.OwnedCards[i];
 
-            playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+            playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
             {
                 AddToPassCards(newCard.GetComponent<CardUI>());
             });
@@ -32,14 +32,14 @@ public class HeartsCardsUIManager : CardsUIManager
     internal void AddDoubledCard(Card card, int index)
     {
         if (card.IsTenOfDiamonds)
-            playersDetails[index].ShowDouble(0);
+            cardElementsHolder.playersDetails[index].ShowDouble(0);
         else if (card.IsQueenOfSpades)
-            playersDetails[index].ShowDouble(1);
+            cardElementsHolder.playersDetails[index].ShowDouble(1);
     }
 
     public void AddToPassCards(CardUI cardUI)
     {
-        if (HeartsUIManager.Instance.AddCard(cardUI))
+        if (((HeartsUIManager)HeartsUIManager.Instance).AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
             cardUI.SetOnPressed((card) =>
@@ -48,7 +48,7 @@ public class HeartsCardsUIManager : CardsUIManager
             });
 
             cardUI.transform.rotation = Quaternion.identity;
-            CardsHolder[0].SetLocations();
+            cardElementsHolder.CardsHolder[0].SetLocations();
         }
         else
         {
@@ -59,8 +59,8 @@ public class HeartsCardsUIManager : CardsUIManager
     public void ReturnToStack(CardUI cardUI)
     {
         playerCardsUI.Add(cardUI);
-        cardUI.transform.SetParent(CardsHolder[0].transform);
-        HeartsUIManager.Instance.RemoveCard(cardUI);
+        cardUI.transform.SetParent(cardElementsHolder.CardsHolder[0].transform);
+        ((HeartsUIManager)HeartsUIManager.Instance).RemoveCard(cardUI);
         cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
         {
@@ -73,9 +73,9 @@ public class HeartsCardsUIManager : CardsUIManager
     private void RemoveDoubleIcon(Card card, int index)
     {
         if (card.IsTenOfDiamonds)
-            playersDetails[index].HideDouble(0);
+            cardElementsHolder.playersDetails[index].HideDouble(0);
         else if (card.IsQueenOfSpades)
-            playersDetails[index].HideDouble(1);
+            cardElementsHolder.playersDetails[index].HideDouble(1);
     }
 
     public override void CardsPlayed(int playerIndex, Card card)
@@ -88,6 +88,32 @@ public class HeartsCardsUIManager : CardsUIManager
     {
         base.MainPlayerCard(cardUI);
         RemoveDoubleIcon(cardUI.CardInfo, 0);
+    }
+
+    internal IEnumerator UpdateCards(MainPlayer mainPlayer)
+    {
+        SetPlayerCards(mainPlayer);
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
+            newCard.transform.localPosition = new Vector3(i * 230 - 230, 400, 0);
+            CardUI cardUI = newCard.GetComponent<CardUI>();
+            playerCardsUI.Add(cardUI);
+
+            Card card = mainPlayer.PassedCards[i];
+            cardUI.Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+            {
+                mainPlayer.ChooseCard(card);
+                MainPlayerCard(cardUI);
+            });
+
+            //Debug.Log(card);
+            //bug here
+            cardUI.SetInteractable(false);
+        }
+        yield return new WaitForSeconds(1.7f);
+        OrganizeCards();
     }
 
     protected override bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)

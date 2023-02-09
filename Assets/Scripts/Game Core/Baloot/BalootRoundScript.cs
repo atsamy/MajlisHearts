@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BalootRoundScript:RoundScriptBase
 {
-    public delegate void Event(EventTypeBaloot eventType);
-    public event Event OnEvent;
-
     public int StartIndex;
     public BalootRoundInfo RoundInfo;
 
@@ -17,7 +15,7 @@ public class BalootRoundScript:RoundScriptBase
     {
         cardsOnDeck = new Dictionary<int, Card>();
         RoundInfo = new BalootRoundInfo();
-
+        playingIndex = 0;
         StartIndex = -1;
     }
 
@@ -48,6 +46,74 @@ public class BalootRoundScript:RoundScriptBase
         StartIndex %= 4;
     }
 
+    public override int EvaluateDeck(out int value)
+    {
+        Card winningCard = cardsOnDeck.ElementAt(0).Value;
+        int index = cardsOnDeck.ElementAt(0).Key;
+
+        value = 0;
+
+        value += CardHelper.GetCardValue(RoundInfo.BalootRoundType, winningCard);// GetValue(winningCard);
+
+        for (int i = 1; i < 4; i++)
+        {
+            Card currentCard = cardsOnDeck.ElementAt(i).Value;
+            value += CardHelper.GetCardValue(RoundInfo.BalootRoundType, currentCard);
+            if (currentCard.Shape == winningCard.Shape)
+            {
+                if (CardHelper.GetCardRank(RoundInfo.BalootRoundType,currentCard) > CardHelper.GetCardRank(RoundInfo.BalootRoundType, winningCard))
+                {
+                    index = cardsOnDeck.ElementAt(i).Key;
+                    winningCard = currentCard;
+                }
+            }
+        }
+
+        return index;
+    }
+
+    public override void OnCardReady(int playerIndex, Card card)
+    {
+        cardsOnDeck.Add(playerIndex, card);
+        RoundInfo.CardsOntable.Add(card);
+        RoundInfo.ShapesOnGround[card.Shape]++;
+
+        if (cardsOnDeck.Count == 1)
+        {
+            RoundInfo.TrickShape = card.Shape;
+        }
+
+        if (cardsOnDeck.Count == 4)
+        {
+            int value = 0;
+            int winningHand = EvaluateDeck(out value);
+            cardsOnDeck.Clear();
+            players[winningHand].IncrementScore(value);
+
+            playingIndex = winningHand;
+
+            RoundInfo.DrawCards();
+
+            if (RoundInfo.TrickNumber < 13)
+            {
+                TrickFinished((int)EventTypeBaloot.TrickFinished);
+            }
+            else
+            {
+                players[winningHand].IncrementScore(10);
+                DealFinished((int)EventTypeBaloot.TrickFinished, (int)EventTypeBaloot.DealFinished);
+            }
+        }
+        else
+        {
+            playingIndex++;
+            playingIndex %= 4;
+
+            //OnNextTurn?.Invoke();
+            players[playingIndex].SetTurn(RoundInfo);
+        }
+    }
+
     public void DealContinue(int playerIndex)
     {
         players[playerIndex].AddCard(BalootCard);
@@ -63,7 +129,7 @@ public class BalootRoundScript:RoundScriptBase
             AllCards.RemoveAt(getRandom);
         }
 
-        OnEvent?.Invoke(EventTypeBaloot.CardsDealtFinished);
+        OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtFinished);
     }
 
     public override void StartNewGame()
@@ -73,7 +139,7 @@ public class BalootRoundScript:RoundScriptBase
         Deal();
         RoundInfo = new BalootRoundInfo();
 
-        OnEvent?.Invoke(EventTypeBaloot.CardsDealtBegin);
+        OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtBegin);
     }
 
     private List<Card> GetAllCards()
@@ -114,6 +180,5 @@ public enum EventTypeBaloot
     CardsDealtBegin,
     CardsDealtFinished,
     TrickFinished,
-    DealFinished,
-    DoubleCardsFinished,
+    DealFinished
 }

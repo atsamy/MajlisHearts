@@ -10,86 +10,132 @@ using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-    [SerializeField]
-    Text debugText;
-    [SerializeField]
-    PausePanel pausePanel;
-    public LevelPanel LevelPanel;
-    public WaitingScript WaitingPanel;
-    [SerializeField]
-    Image tableTop;
-    [SerializeField]
-    public GameObject scoresHolder;
-    [SerializeField]
-    Popup hostLeftPopup;
-    public GameObject GamePanel;
 
     PlayerBase mainPlayer;
-    public Transform DragCardHolder;
+    protected CardsUIManager CardsUI;
 
-    CardsUIManager cardsUIManager;
-    //GameScript game;
-    public DebugCards[] debugCards;
+    [SerializeField]
+    protected DealResult DealFinishedPanel;
 
-
-    [Space]
-    [Header("Emojis Elements")]
-    [Space]
-    public Image[] EmojiImages;
-    public Sprite[] Emojes;
-    public GameObject EmojiButton;
-    public GameObject EmojiPanel;
-
-    public GameScriptBase game { set; private get; }
+    public GameScriptBase Game { set; protected get; }
     internal bool GameOver;
 
-    public Sprite cardBack;
-    void Awake()
+    public UIElementsHolder UIElementsHolder { get; private set; }
+
+    public void Init()
     {
-        Instance = this;
         //cardsUIManager = GetComponentInChildren<CardsUIManager>();
         MultiGameScript.OnMessageRecieved += MessageRecieved;
+        UIElementsHolder = GetComponent<UIElementsHolder>();
 
+        Game.OnCardsReady += Game_OnCardsReady;
+        Game.OnDealFinished += Game_OnDealFinished;
+        Game.OnTrickFinished += Game_OnTrickFinished;
+        Game.OnStartPlaying += Game_OnStartPlaying;
+        Game.OnSetPlayEnvironment += Game_OnSetPlayEnvironment;
         //remove later
-        //cardsUIManager.SetCardBack(cardBack);
+        CardsUI.SetCardBack(UIElementsHolder.CardBack);
 
         //uncomment later
         //FadeScreen.Instance?.FadeOut(2);
     }
 
+    public virtual void Game_OnCardsReady()
+    {
+        
+    }
+
     public void SetCardManager(CardsUIManager cardsUIManager)
     {
-        this.cardsUIManager = cardsUIManager;
-        cardsUIManager.SetCardBack(cardBack);
+        this.CardsUI = cardsUIManager;
+        cardsUIManager.SetCardBack(UIElementsHolder.CardBack);
     }
 
     public void Game_OnSetPlayEnvironment(Sprite tableTop, Sprite cardBack)
     {
-        this.tableTop.sprite = tableTop;
-        cardsUIManager.SetCardBack(cardBack);
+        UIElementsHolder.TableTop.sprite = tableTop;
+        CardsUI.SetCardBack(cardBack);
     }
 
     public void Game_OnStartPlaying(bool isMulti)
     {
-        WaitingPanel.Hide();
+        UIElementsHolder.WaitingPanel.Hide();
         SetPlayer();
 
-        EmojiButton.SetActive(isMulti);
+        UIElementsHolder.EmojiButton.SetActive(isMulti);
+    }
+
+    private void Game_OnTrickFinished(int winningHand)
+    {
+        SetScore();
+
+        int index = CorrectIndex(winningHand);
+        CardsUI.RemoveCards(index);
+        GameSFXManager.Instance.PlayClipRandom("CardDraw");
     }
 
     public void PauseGame()
     {
-        pausePanel.Show();
+        UIElementsHolder.PausePanel.Show();
         GameSFXManager.Instance.PlayClip("Click");
     }
 
+    protected virtual void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
+    {
+        UIElementsHolder.ScoresHolder.SetActive(false);
+        UIElementsHolder.EmojiButton.SetActive(false);
+        GameOver = isGameOver;
+
+        if (isGameOver)
+        {
+            UIElementsHolder.GamePanel.SetActive(false);
+            DealFinishedPanel.ShowRound(Game.Players, false, true, (rank) =>
+            {
+                if (GameManager.Instance.GameType != GameType.Single)
+                {
+                    UIElementsHolder.LevelPanel.Open(rank, Game.Players[Game.MainPlayerIndex].TotalScore, () =>
+                    {
+                        GoToMainMenu();
+                    });
+                }
+                else
+                {
+                    GoToMainMenu();
+                }
+            });
+
+
+            return;
+        }
+        if (hostPlayer)
+        {
+            DealFinishedPanel.ShowRound(Game.Players, false, false, (rank) =>
+            {
+                Game.StartNextDeal();
+            });
+        }
+        else
+        {
+            DealFinishedPanel.ShowRound(Game.Players, false, false, null);
+        }
+
+    }
 
 
     public void SetCardLocations()
     {
-        cardsUIManager.SetCardLocations();
+        CardsUI.SetCardLocations();
     }
 
+    public void ShowScores()
+    {
+        DealFinishedPanel.ShowInGame(Game.Players);
+    }
+
+    public void HideScores()
+    {
+        DealFinishedPanel.gameObject.SetActive(false);
+    }
 
 
     public void GoToMainMenu()
@@ -106,10 +152,14 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
         {
-            ((MultiGameScript)game).LeaveRoom();
+            ((MultiGameScript)Game).LeaveRoom();
         }
     }
 
+    public virtual void SetScore()
+    {
+        
+    }
     //public Player[] OrderTeamPlayers()
     //{
     //    if (!GameManager.Instance.IsTeam)
@@ -144,23 +194,23 @@ public class UIManager : MonoBehaviour
 
 
 
-    public void AddDebugWeight(int playerIndex, Card card, int Weight)
-    {
-        debugCards[playerIndex].ShowWeight(card, Weight);
-    }
+    //public void AddDebugWeight(int playerIndex, Card card, int Weight)
+    //{
+    //    UIElementsHolder.DebugCards[playerIndex].ShowWeight(card, Weight);
+    //}
 
 
 
     public void SetPlayer()
     {
-        scoresHolder.SetActive(true);
+        UIElementsHolder.ScoresHolder.SetActive(true);
 
-        for (int i = 1; i < game.Players.Length; i++)
+        for (int i = 1; i < Game.Players.Length; i++)
         {
-            int correctIndex = i + game.MainPlayerIndex;
+            int correctIndex = i + Game.MainPlayerIndex;
             correctIndex %= 4;
 
-            cardsUIManager.SetPlayers(i, game.Players[correctIndex]);
+            CardsUI.SetPlayers(i, Game.Players[correctIndex]);
         }
     }
 
@@ -168,7 +218,7 @@ public class UIManager : MonoBehaviour
 
     public int CorrectIndex(int index)
     {
-        int correctedIndex = index - game.MainPlayerIndex;
+        int correctedIndex = index - Game.MainPlayerIndex;
         correctedIndex = (correctedIndex < 0 ? correctedIndex + 4 : correctedIndex);
 
         return correctedIndex;
@@ -192,11 +242,11 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.Instance.GameType != GameType.Single)
         {
-            cardsUIManager.StopTimer(index);
+            CardsUI.StopTimer(index);
         }
-        if (playerIndex != game.MainPlayerIndex)
+        if (playerIndex != Game.MainPlayerIndex)
         {
-            cardsUIManager.CardsPlayed(index, card);
+            CardsUI.CardsPlayed(index, card);
         }
     }
 
@@ -207,11 +257,11 @@ public class UIManager : MonoBehaviour
         {
             int index = CorrectIndex(playerIndex);
             //print(index);
-            cardsUIManager.WaitPlayer(index);
+            CardsUI.WaitPlayer(index);
         }
-        if (playerIndex == game.MainPlayerIndex)
+        if (playerIndex == Game.MainPlayerIndex)
         {
-            cardsUIManager.SetPlayableCards(info, mainPlayer);
+            CardsUI.SetPlayableCards(info, mainPlayer);
         }
     }
 
@@ -225,43 +275,46 @@ public class UIManager : MonoBehaviour
     {
         GameSFXManager.Instance.PlayClip("Click");
 
-        if (!EmojiPanel.activeSelf)
+        if (!UIElementsHolder.EmojiPanel.activeSelf)
         {
-            EmojiPanel.SetActive(true);
+            UIElementsHolder.EmojiPanel.SetActive(true);
         }
         else
         {
-            EmojiPanel.SetActive(false);
+            UIElementsHolder.EmojiPanel.SetActive(false);
         }
     }
 
     public void SendEmoji(int index)
     {
-        ((MultiGameScript)game).SendMessageToOthers(index);
+        ((MultiGameScript)Game).SendMessageToOthers(index);
 
         ShowEmoji(0, index);
 
-        EmojiPanel.SetActive(false);
+        UIElementsHolder.EmojiPanel.SetActive(false);
     }
 
-    private void OnDisable()
+    protected void Disable()
     {
         MultiGameScript.OnMessageRecieved -= MessageRecieved;
 
-        foreach (var player in game.Players)
+        foreach (var player in Game.Players)
         {
             player.OnCardReady -= Player_OnCardReady;
             player.OnPlayerTurn -= Player_OnPlayerTurn;
         }
 
-        game.OnStartPlaying -= Game_OnStartPlaying;
-        game.OnSetPlayEnvironment -= Game_OnSetPlayEnvironment;
+        Game.OnCardsReady -= Game_OnCardsReady;
+        Game.OnTrickFinished -= Game_OnTrickFinished;
+        Game.OnDealFinished -= Game_OnDealFinished;
+        Game.OnStartPlaying -= Game_OnStartPlaying;
+        Game.OnSetPlayEnvironment -= Game_OnSetPlayEnvironment;
     }
 
     public void ShowEmoji(int playerIndex, int index)
     {
-        EmojiImages[playerIndex].sprite = Emojes[index];
-        EmojiImages[playerIndex].transform.parent.gameObject.SetActive(true);
+        UIElementsHolder.EmojiImages[playerIndex].sprite = UIElementsHolder.Emojes[index];
+        UIElementsHolder.EmojiImages[playerIndex].transform.parent.gameObject.SetActive(true);
         //EmojiImages[playerIndex].transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutCubic).OnComplete(() =>
         //{
         StartCoroutine(ShowEmoAnimation(playerIndex));
@@ -274,20 +327,20 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         //EmojiImages[playerIndex].transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.Flash);
-        EmojiImages[playerIndex].transform.parent.gameObject.SetActive(false);
+        UIElementsHolder.EmojiImages[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
     public void MainPlayer_WaitOthers()
     {
-        WaitingPanel.Show();
+        UIElementsHolder.WaitingPanel.Show();
     }
 
 
 
-    internal void Debug(string v)
-    {
-        debugText.text = v;
-    }
+    //internal void Debug(string v)
+    //{
+    //    debugText.text = v;
+    //}
 
 
     internal void HostLeft()
@@ -295,7 +348,7 @@ public class UIManager : MonoBehaviour
         if (GameOver)
             return;
 
-        hostLeftPopup.ShowWithCode("hostleftMessage", ()=>
+        UIElementsHolder.HostLeftPopup.ShowWithCode("hostleftMessage", ()=>
         {
             GameManager.Instance.AddCoins(GameManager.Instance.Bet);
             GoToMainMenu();
