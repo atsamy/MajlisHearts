@@ -67,8 +67,11 @@ public class StoreScene : MenuScene
                 //Debug.Log("item " + i + " price " + prices[i] + " amount " + amounts[i]);
                 CurrencyStoreItems[i].Set(prices[i], amounts[i], i, (index) =>
                 {
-                    SFXManager.Instance.PlayClip("Coins");
-                    GameManager.Instance.AddCoins(amounts[index]);
+                    Purchaser.Instance.BuyCurrency(index, () => 
+                    {
+                        SFXManager.Instance.PlayClip("Coins");
+                        GameManager.Instance.AddCoins(amounts[index]);
+                    });
                     //SFXManager.Instance.PlayClip("Buy");
                 });
             }
