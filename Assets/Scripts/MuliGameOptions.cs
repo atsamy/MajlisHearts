@@ -24,15 +24,49 @@ public class MuliGameOptions : MenuScene
 
     public int[] EntryFees;
 
+    [SerializeField]
+    TextMeshProUGUI[] entryFeesText;
+
+    [SerializeField]
+    Button[] difficultyButtons;
+
     Action<int,int> selectAction;
 
     int entryIndex;
     int gameType;
 
+    private void Awake()
+    {
+        for (int i = 0; i < EntryFees.Length; i++)
+        {
+            entryFeesText[i].text = EntryFees[i].ToString();
+        }
+
+        entryIndex = PlayerPrefs.GetInt("gameSelection", 0);
+
+        for (int i = 0; i < difficultyButtons.Length; i++)
+        {
+            difficultyButtons[i].interactable = (i != entryIndex);
+        }
+    }
+
+    public void SelectGame(int index)
+    {
+        entryIndex = index;
+        PlayerPrefs.SetInt("gameSelection", entryIndex);
+
+        for (int i = 0; i < difficultyButtons.Length; i++)
+        {
+            difficultyButtons[i].interactable = (i != entryIndex);
+        }
+
+        SFXManager.Instance.PlayClip("Toggle");
+    }
+
     public void OpenMultiGame()
     {
-        entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
-        SetText();
+        //entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
+        //SetText();
         gameType = 0;
         startGameText.text = LanguageManager.Instance.GetString("startgame");
         base.Open();
@@ -40,8 +74,8 @@ public class MuliGameOptions : MenuScene
 
     public void OpenFriendGame(Action<int, int> selectAction)
     {
-        entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
-        SetText();
+        //entryIndex = PlayerPrefs.GetInt("entryIndex", 0);
+        //SetText();
         this.gameType = 1;
         startGameText.text = LanguageManager.Instance.GetString("continue");
         this.selectAction = selectAction;
