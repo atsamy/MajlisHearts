@@ -87,7 +87,7 @@ public class StoreScene : MenuScene
             ContentPanels[i].SetActive(index == i);
         }
 
-        arrow.transform.position = Tabs[index].transform.position + Vector3.down * 75;
+        arrow.transform.position = new Vector3(Tabs[index].transform.position.x, arrow.transform.position.y);
     }
 }
 
