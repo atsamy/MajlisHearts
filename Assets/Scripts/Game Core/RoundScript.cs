@@ -11,9 +11,6 @@ public class RoundScript: RoundScriptBase
     //public event Event OnEvent;
 
     public GameState CurrentState { get; private set; }
-
-
-    public RoundInfo DealInfo;
     int passCardsCount = 0;
 
     bool isDoubleQueenOfSpades;
@@ -24,7 +21,7 @@ public class RoundScript: RoundScriptBase
     public RoundScript()
     {
         cardsOnDeck = new Dictionary<int, Card>();
-        DealInfo = new RoundInfo();
+        RoundInfo = new RoundInfo();
     }
 
     public override void StartRound()
@@ -39,14 +36,14 @@ public class RoundScript: RoundScriptBase
     {
         noOfCards++;
 
-        DealInfo.CardsOntable.Add(card);
-        DealInfo.ShapesOnGround[card.Shape]++;
+        RoundInfo.CardsOntable.Add(card);
+        RoundInfo.ShapesOnGround[card.Shape]++;
 
         cardsOnDeck.Add(playerIndex, card);
 
         if (noOfCards == 1)
         {
-            DealInfo.TrickShape = card.Shape;
+            RoundInfo.TrickShape = card.Shape;
         }
         else if (noOfCards == 4)
         {
@@ -55,7 +52,7 @@ public class RoundScript: RoundScriptBase
             cardsOnDeck.Clear();
             players[winningHand].IncrementScore(value);
 
-            DealInfo.DrawCards();
+            RoundInfo.DrawCards();
             noOfCards = 0;
         }
     }
@@ -78,12 +75,12 @@ public class RoundScript: RoundScriptBase
     public override void OnCardReady(int playerIndex, Card card)
     {
         cardsOnDeck.Add(playerIndex, card);
-        DealInfo.CardsOntable.Add(card);
-        DealInfo.ShapesOnGround[card.Shape]++;
+        RoundInfo.CardsOntable.Add(card);
+        RoundInfo.ShapesOnGround[card.Shape]++;
 
         if (cardsOnDeck.Count == 1)
         {
-            DealInfo.TrickShape = card.Shape;
+            RoundInfo.TrickShape = card.Shape;
         }
 
         if (cardsOnDeck.Count == 4)
@@ -95,9 +92,9 @@ public class RoundScript: RoundScriptBase
 
             playingIndex = winningHand;
 
-            DealInfo.DrawCards();
+            RoundInfo.DrawCards();
 
-            if (DealInfo.TrickNumber < 13)
+            if (RoundInfo.TrickNumber < 13)
             {
                 TrickFinished((int)EventType.TrickFinished);
             }
@@ -112,14 +109,14 @@ public class RoundScript: RoundScriptBase
             playingIndex %= 4;
 
             //OnNextTurn?.Invoke();
-            players[playingIndex].SetTurn(DealInfo);
+            players[playingIndex].SetTurn(RoundInfo);
         }
     }
 
     public override void SetTurn()
     {
-        if (DealInfo.TrickNumber < 13)
-            players[playingIndex].SetTurn(DealInfo);
+        if (RoundInfo.TrickNumber < 13)
+            players[playingIndex].SetTurn(RoundInfo);
     }
 
     public override int EvaluateDeck(out int value)
@@ -252,11 +249,11 @@ public class RoundScript: RoundScriptBase
 
         OnEvent?.Invoke((int)EventType.CardsDealt);
 
-        DealInfo = new RoundInfo();
+        RoundInfo = new RoundInfo();
 
         if (CurrentState == GameState.DontPass)
         {
-            players[playingIndex].SetTurn(DealInfo);
+            players[playingIndex].SetTurn(RoundInfo);
         }
         else
         {

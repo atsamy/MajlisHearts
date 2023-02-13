@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RoundScriptBase
 {
+    public RoundInfo RoundInfo;
     //public delegate void Event(int eventType);
     public Action<int> OnEvent;
 
@@ -61,7 +62,7 @@ public class RoundScriptBase
         await System.Threading.Tasks.Task.Delay(1000);
         OnEvent?.Invoke(TrickFinished);
         await System.Threading.Tasks.Task.Delay(1000);
-        //players[PlayingIndex].SetTurn(DealInfo, 0);
+        players[PlayingIndex].SetTurn(RoundInfo);
     }
 
     public async void DealFinished(int TrickFinished, int DealFinished)

@@ -297,7 +297,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                ((RoundScript)RoundScript).DealInfo = new RoundInfo();
+                ((RoundScript)RoundScript).RoundInfo = new RoundInfo();
                 MyPlayer.Reset();
 
                 foreach (var item in cards)
@@ -378,7 +378,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int turnIndex = int.Parse(photonEvent.CustomData.ToString());
 
                 if (turnIndex != MainPlayerIndex)
-                    Players[turnIndex].SetTurn(((RoundScript)RoundScript).DealInfo);
+                    Players[turnIndex].SetTurn(((RoundScript)RoundScript).RoundInfo);
 
                 break;
         }
@@ -388,7 +388,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (((RoundScript)RoundScript).DealInfo.TrickNumber < 13)
+            if (((RoundScript)RoundScript).RoundInfo.TrickNumber < 13)
                 turnManager.BeginTurn();
         }
     }
@@ -448,7 +448,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
-                MyPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
+                MyPlayer.SetTurn(((RoundScript)RoundScript).RoundInfo);
             }
         }
     }
@@ -466,7 +466,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             if (beginIndex == MainPlayerIndex)
             {
-                MyPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
+                MyPlayer.SetTurn(((RoundScript)RoundScript).RoundInfo);
             }
         }
         else if (!Players[beginIndex].IsPlayer)
@@ -574,7 +574,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
             if (nextIndex == index)
             {
-                aiPlayer.SetTurn(((RoundScript)RoundScript).DealInfo);
+                aiPlayer.SetTurn(((RoundScript)RoundScript).RoundInfo);
             }
         }
     }

@@ -167,7 +167,7 @@ public class GameScript : GameScriptBase
 
             item.SetTotalScore();
 
-            if (item.TotalScore >= FinishScore)
+            if (item.TotalScore >= GameManager.Instance.GameData.TargetScore)
                 isGameOver = true;
 
             item.Reset();

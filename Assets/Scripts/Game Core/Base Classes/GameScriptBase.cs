@@ -20,7 +20,7 @@ public class GameScriptBase : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     protected const int Seconds = 10;
-    protected const int FinishScore = 150;
+    //protected const int FinishScore = 150;
 
     protected RoundScriptBase RoundScript;
 

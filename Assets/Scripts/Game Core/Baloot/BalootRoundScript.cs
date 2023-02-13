@@ -6,10 +6,9 @@ using UnityEngine;
 public class BalootRoundScript:RoundScriptBase
 {
     public int StartIndex;
-    public BalootRoundInfo RoundInfo;
+    BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
 
     public Card BalootCard;
-
     List<Card> AllCards;
     public BalootRoundScript()
     {
@@ -53,15 +52,15 @@ public class BalootRoundScript:RoundScriptBase
 
         value = 0;
 
-        value += CardHelper.GetCardValue(RoundInfo.BalootRoundType, winningCard);// GetValue(winningCard);
+        value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, winningCard);// GetValue(winningCard);
 
         for (int i = 1; i < 4; i++)
         {
             Card currentCard = cardsOnDeck.ElementAt(i).Value;
-            value += CardHelper.GetCardValue(RoundInfo.BalootRoundType, currentCard);
+            value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, currentCard);
             if (currentCard.Shape == winningCard.Shape)
             {
-                if (CardHelper.GetCardRank(RoundInfo.BalootRoundType,currentCard) > CardHelper.GetCardRank(RoundInfo.BalootRoundType, winningCard))
+                if (CardHelper.GetCardRank(balootRoundInfo.BalootRoundType,currentCard) > CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, winningCard))
                 {
                     index = cardsOnDeck.ElementAt(i).Key;
                     winningCard = currentCard;
@@ -94,7 +93,7 @@ public class BalootRoundScript:RoundScriptBase
 
             RoundInfo.DrawCards();
 
-            if (RoundInfo.TrickNumber < 13)
+            if (RoundInfo.TrickNumber < 8)
             {
                 TrickFinished((int)EventTypeBaloot.TrickFinished);
             }
@@ -159,7 +158,7 @@ public class BalootRoundScript:RoundScriptBase
 
     internal void SetGameType(int index, BalootGameType type)
     {
-        RoundInfo.BalootRoundType = type;
+        balootRoundInfo.BalootRoundType = type;
         DealContinue(index);
         players[StartIndex].SetTurn(RoundInfo);
     }
