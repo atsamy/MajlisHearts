@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.Playables;
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
 #elif UNITY_IOS
@@ -29,6 +30,9 @@ public class GameManager : MonoBehaviour
     public int Gems;
     [HideInInspector]
     public List<InventoryItem> Inventory;
+
+    [HideInInspector]
+    public GameData GameData;
 
     [HideInInspector]
     public PlayerInfo MyPlayer;
@@ -261,6 +265,14 @@ public class InventoryItem
         return base.GetHashCode();
     }
 }
+
+[System.Serializable]
+public class GameData
+{
+    public int TargetScore;
+    public int[] EntryFee;
+}
+
 
 public enum GameType
 {

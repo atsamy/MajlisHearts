@@ -22,8 +22,6 @@ public class MuliGameOptions : MenuScene
     [SerializeField]
     MultiPanel multiPanel;
 
-    public int[] EntryFees;
-
     [SerializeField]
     TextMeshProUGUI[] entryFeesText;
 
@@ -35,11 +33,15 @@ public class MuliGameOptions : MenuScene
     int entryIndex;
     int gameType;
 
+    int[] entryFees;
+
     private void Awake()
     {
-        for (int i = 0; i < EntryFees.Length; i++)
+        entryFees = GameManager.Instance.GameData.EntryFee;
+
+        for (int i = 0; i < entryFees.Length; i++)
         {
-            entryFeesText[i].text = EntryFees[i].ToString();
+            entryFeesText[i].text = entryFees[i].ToString();
         }
 
         entryIndex = PlayerPrefs.GetInt("gameSelection", 0);
@@ -84,11 +86,11 @@ public class MuliGameOptions : MenuScene
 
     private void SetText()
     {
-        entry.text = EntryFees[entryIndex].ToString();
-        prize.text = (EntryFees[entryIndex] * 2).ToString();
+        entry.text = entryFees[entryIndex].ToString();
+        prize.text = (entryFees[entryIndex] * 2).ToString();
 
         decreaseBtn.interactable = (entryIndex > 0);
-        increaseBtn.interactable = (entryIndex < EntryFees.Length - 1);
+        increaseBtn.interactable = (entryIndex < entryFees.Length - 1);
     }
 
     public void IncreaeEntry()
@@ -112,7 +114,7 @@ public class MuliGameOptions : MenuScene
         gameObject.SetActive(false);
         MenuManager.Instance.HideMain(true, true);
 
-        if (EntryFees[entryIndex] > GameManager.Instance.Coins)
+        if (entryFees[entryIndex] > GameManager.Instance.Coins)
         {
             MenuManager.Instance.OpenPopup("nocoins",false,true, () =>
             {
@@ -123,11 +125,11 @@ public class MuliGameOptions : MenuScene
 
         if (gameType == 0)
         {
-            multiPanel.Open(EntryFees[entryIndex], typeGroup.GroupIndex);
+            multiPanel.Open(entryFees[entryIndex], typeGroup.GroupIndex);
         }
         else
         {
-            selectAction?.Invoke(EntryFees[entryIndex], typeGroup.GroupIndex);
+            selectAction?.Invoke(entryFees[entryIndex], typeGroup.GroupIndex);
         }
     }
 

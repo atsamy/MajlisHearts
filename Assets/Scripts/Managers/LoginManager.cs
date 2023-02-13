@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
 using DG.Tweening;
+using UnityEngine.Playables;
 //using UnityEngine.Analytics;
 
 public class LoginManager : MonoBehaviour
@@ -114,6 +115,10 @@ public class LoginManager : MonoBehaviour
             if (item.Key == "Tasks")
             {
                 TasksManager.Instance.Tasks = JsonUtility.FromJson<Wrapper<TaskData>>(item.Value).array;
+            }
+            else if (item.Key == "GameData")
+            {
+                GameManager.Instance.GameData = JsonUtility.FromJson<GameData>(item.Value);
             }
         }
         playfab.GetCatalog();

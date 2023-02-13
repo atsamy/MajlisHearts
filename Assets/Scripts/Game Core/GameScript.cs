@@ -29,7 +29,7 @@ public class GameScript : MonoBehaviour
     public event SetPlayEnvironment OnSetPlayEnvironment;
 
     private const int Seconds = 10;
-    private const int FinishScore = 150;
+    //private const int FinishScore = 150;
     protected DealScript Deal;
     public static GameScript Instance;
     public Player[] Players;
@@ -253,7 +253,7 @@ public class GameScript : MonoBehaviour
 
             item.SetTotalScore();
 
-            if (item.TotalScore >= FinishScore)
+            if (item.TotalScore >= GameManager.Instance.GameData.TargetScore)
                 isGameOver = true;
 
             item.Reset();

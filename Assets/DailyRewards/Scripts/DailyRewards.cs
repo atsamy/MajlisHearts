@@ -96,7 +96,7 @@ namespace NiobiumStudios
                 DateTime advancedTime = now.AddHours(debugTime.TotalHours);
 
                 TimeSpan diff = advancedTime - lastRewardTime;
-                Debug.Log(" Last claim was " + (long)diff.TotalHours + " hours ago.");
+                //Debug.Log(" Last claim was " + (long)diff.TotalHours + " hours ago.");
 
                 int days = (int)(Math.Abs(diff.TotalHours) / 24);
                 if (days == 0)
@@ -119,7 +119,7 @@ namespace NiobiumStudios
 
                     availableReward = lastReward + 1;
 
-                    Debug.Log(" Player can claim prize " + availableReward);
+                    //Debug.Log(" Player can claim prize " + availableReward);
                     return;
                 }
 
@@ -128,7 +128,7 @@ namespace NiobiumStudios
                     // The player loses the following day reward and resets the prize
                     availableReward = 1;
                     lastReward = 0;
-                    Debug.Log(" Prize reset ");
+                    //Debug.Log(" Prize reset ");
                 }
             }
             else
