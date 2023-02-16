@@ -188,6 +188,8 @@ public class BalootGameScript : GameScriptBase
             case EventTypeBaloot.CardsDealtBegin:
                 OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
                 ((BalootPlayer)Players[balootRoundScript.StartIndex]).CheckGameType();
+
+                SetStartGame(false);
                 break;
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
