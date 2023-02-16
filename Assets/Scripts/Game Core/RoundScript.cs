@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.Timeline;
 using UnityEngine;
 
-public class RoundScript: RoundScriptBase
+public class RoundScriptHeats: RoundScriptBase
 {
     //public delegate void Event(EventType eventType);
     //public event Event OnEvent;
@@ -18,7 +18,7 @@ public class RoundScript: RoundScriptBase
 
     int doubleCount;
 
-    public RoundScript()
+    public RoundScriptHeats()
     {
         cardsOnDeck = new Dictionary<int, Card>();
         RoundInfo = new RoundInfo();

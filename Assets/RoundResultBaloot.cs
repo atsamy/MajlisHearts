@@ -1,18 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class RoundResultBaloot : MonoBehaviour
+public class RoundResultBaloot : RoundResult
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    TextMeshProUGUI roundTeam1;
+    [SerializeField]
+    TextMeshProUGUI roundTeam2;
+    [SerializeField]
+    TextMeshProUGUI pointsTeam1;
+    [SerializeField]
+    TextMeshProUGUI pointsTeam2;
+    [SerializeField]
+    TextMeshProUGUI totalPointsTeam1;
+    [SerializeField]
+    TextMeshProUGUI totalPointsTeam2;
 
-    // Update is called once per frame
-    void Update()
+    public override void ShowRound(GameScriptBase game, bool inGame, bool gameOver, Action<int> OnPanelClosed)
     {
-        
+        base.ShowRound(game, inGame, gameOver, OnPanelClosed);
+
+        roundTeam1.text = (game.Players[0].Score + game.Players[2].Score).ToString();
+        roundTeam2.text = (game.Players[1].Score + game.Players[3].Score).ToString();
+
+        totalPointsTeam1.text = ((BalootGameScript)game).TeamsTotalScore[0].ToString();
+        totalPointsTeam2.text = ((BalootGameScript)game).TeamsTotalScore[1].ToString();
+
+        pointsTeam1.text = ((BalootGameScript)game).TeamsScore[0].ToString();
+        pointsTeam2.text = ((BalootGameScript)game).TeamsScore[1].ToString();
     }
 }

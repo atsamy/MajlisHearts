@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     protected CardsUIManager CardsUI;
 
     [SerializeField]
-    protected DealResult DealFinishedPanel;
+    protected RoundResult DealFinishedPanel;
 
     public GameScriptBase Game { set; protected get; }
     internal bool GameOver;
@@ -89,7 +89,7 @@ public class UIManager : MonoBehaviour
         if (isGameOver)
         {
             UIElementsHolder.GamePanel.SetActive(false);
-            DealFinishedPanel.ShowRound(Game.Players, false, true, (rank) =>
+            DealFinishedPanel.ShowRound(Game, false, true, (rank) =>
             {
                 if (GameManager.Instance.GameType != GameType.Single)
                 {
@@ -109,14 +109,14 @@ public class UIManager : MonoBehaviour
         }
         if (hostPlayer)
         {
-            DealFinishedPanel.ShowRound(Game.Players, false, false, (rank) =>
+            DealFinishedPanel.ShowRound(Game, false, false, (rank) =>
             {
                 Game.StartNextDeal();
             });
         }
         else
         {
-            DealFinishedPanel.ShowRound(Game.Players, false, false, null);
+            DealFinishedPanel.ShowRound(Game, false, false, null);
         }
 
     }
@@ -129,7 +129,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowScores()
     {
-        DealFinishedPanel.ShowInGame(Game.Players);
+        DealFinishedPanel.ShowInGame(Game);
     }
 
     public void HideScores()

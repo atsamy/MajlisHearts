@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static BalootGameScript;
 
 public class BalootGameScript : GameScriptBase
 {
@@ -15,12 +14,20 @@ public class BalootGameScript : GameScriptBase
     public delegate void PlayerSelectedType(int index, BalootGameType type);
     public event PlayerSelectedType OnPlayerSelectedType;
 
-    public BalootRoundScript balootRoundScript => (BalootRoundScript)RoundScript;
+    public RoundScriptBaloot balootRoundScript => (RoundScriptBaloot)RoundScript;
+
+    [HideInInspector]
+    public int[] TeamsScore;
+
+    [HideInInspector]
+    public int[] TeamsTotalScore;
 
     private void Awake()
     {
         Instance = this;
-        RoundScript = new BalootRoundScript();
+        RoundScript = new RoundScriptBaloot();
+        TeamsScore = new int[2];
+        TeamsTotalScore= new int[2];
     }
 
     void Start()
@@ -58,21 +65,114 @@ public class BalootGameScript : GameScriptBase
         StartGame();
     }
 
+    public override bool SetFinalScore()
+    {
+        switch (balootRoundScript.RoundType)
+        {
+            case BalootGameType.Sun:
+                SetScoreSuns();
+                break;
+            case BalootGameType.Hukom:
+                int[] total = new int[2];
+
+                total[0] = Players[0].Score + Players[2].Score;
+                total[0] = CalculatePointsHokum(total[0]);
+
+                total[1] = Players[1].Score + Players[3].Score;
+                total[1] = CalculatePointsHokum(total[1]);
+
+
+                if (total[balootRoundScript.BidingTeam] > total[(balootRoundScript.BidingTeam + 1) % 2] + 8)
+                {
+                    TeamsScore[0] = total[0];
+                    TeamsScore[1] = total[1];
+                }
+                else
+                {
+                    TeamsScore[balootRoundScript.BidingTeam] = 0;
+                    TeamsScore[(balootRoundScript.BidingTeam + 1) % 2] = 16;
+                }
+                break;
+            case BalootGameType.Ashkal:
+                SetScoreSuns();
+                break;
+        }
+
+        bool finished  = false;
+
+        for (int i = 0; i < 2; i++)
+        {
+            TeamsTotalScore[i] += TeamsScore[i];
+
+            if (TeamsTotalScore[i] >= 152)
+            {
+                finished = true;
+            }
+        }
+
+        return finished;
+    }
+
+    private void SetScoreSuns()
+    {
+        int[] total = new int[2];
+
+        total[0] = Players[0].Score + Players[2].Score;
+        total[0] = CalculatePointsSuns(total[0]);
+
+        total[1] = Players[1].Score + Players[3].Score;
+        total[1] = CalculatePointsSuns(total[1]);
+
+
+        if (total[balootRoundScript.BidingTeam] > total[(balootRoundScript.BidingTeam + 1) % 2] + 13)
+        {
+            TeamsScore[0] = total[0];
+            TeamsScore[1] = total[1];
+        }
+        else
+        {
+            TeamsScore[balootRoundScript.BidingTeam] = 0;
+            TeamsScore[(balootRoundScript.BidingTeam + 1) % 2] = 26;
+        }
+    }
+
+    private int CalculatePointsSuns(int total)
+    {
+        if (total % 5 == 0)
+        {
+            total *= 2;
+            total /= 10;
+        }
+        else
+        {
+            total = Mathf.RoundToInt((float)total / 10) * 2;
+        }
+
+        return total;
+    }
+
+    private int CalculatePointsHokum(int total)
+    {
+        return Mathf.RoundToInt(total / 10);
+    }
+
     public void Players_SelectedType(int index, BalootGameType type)
     {
         OnPlayerSelectedType?.Invoke(index, type);
-        switch (type)
-        {
-            case BalootGameType.Sun:
-                balootRoundScript.SetGameType(index, type);
-                break;
-            case BalootGameType.Hukom:
-                break;
-            case BalootGameType.Ashkal:
-                break;
-            case BalootGameType.Pass:
-                break;
-        }
+
+        balootRoundScript.PlayerSelectedType(index, type);
+        //switch (type)
+        //{
+        //    case BalootGameType.Sun:
+        //        balootRoundScript.SetGameType(index, type);
+        //        break;
+        //    case BalootGameType.Hukom:
+        //        break;
+        //    case BalootGameType.Ashkal:
+        //        break;
+        //    case BalootGameType.Pass:
+        //        break;
+        //}
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
@@ -87,7 +187,7 @@ public class BalootGameScript : GameScriptBase
         {
             case EventTypeBaloot.CardsDealtBegin:
                 OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
-                ((BalootPlayer)Players[0]).CheckGameType();
+                ((BalootPlayer)Players[balootRoundScript.StartIndex]).CheckGameType();
                 break;
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
@@ -97,6 +197,9 @@ public class BalootGameScript : GameScriptBase
                 break;
             case EventTypeBaloot.DealFinished:
                 Deal_OnDealFinished();
+
+                TeamsScore[0] = 0;
+                TeamsScore[1] = 0;
                 break;
         }
     }

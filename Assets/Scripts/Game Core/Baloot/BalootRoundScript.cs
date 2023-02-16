@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BalootRoundScript:RoundScriptBase
+public class RoundScriptBaloot :RoundScriptBase
 {
     public int StartIndex;
     BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
 
     public Card BalootCard;
     List<Card> AllCards;
-    public BalootRoundScript()
+
+    public BalootGameType RoundType => balootRoundInfo.BalootRoundType;
+
+    public int BidingTeam { get; internal set; }
+
+    public RoundScriptBaloot()
     {
         cardsOnDeck = new Dictionary<int, Card>();
         RoundInfo = new BalootRoundInfo();
@@ -161,6 +166,39 @@ public class BalootRoundScript:RoundScriptBase
         balootRoundInfo.BalootRoundType = type;
         DealContinue(index);
         players[StartIndex].SetTurn(RoundInfo);
+    }
+
+    int typeRound;
+    bool hukomSelected;
+    internal void PlayerSelectedType(int index, BalootGameType type)
+    {
+        switch (type)
+        {
+            case BalootGameType.Sun:
+                SetGameType(index, type);
+                break;
+            case BalootGameType.Hukom:
+                break;
+            case BalootGameType.Ashkal:
+                break;
+            case BalootGameType.Pass:
+
+                int nextIndex = (index + 1) % 4;
+
+                if (StartIndex == nextIndex && typeRound == 2 && !hukomSelected)
+                {
+                    //start new deal
+                }
+                else if (StartIndex == nextIndex && typeRound == 2)
+                {
+                    SetGameType(index, BalootGameType.Hukom);
+                }
+                else
+                {
+                    ((BalootPlayer)players[nextIndex]).CheckGameType();
+                }
+                break;
+        }
     }
 }
 
