@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,10 +70,10 @@ public class BalootCardsUIManager : CardsUIManager
         SetPlayerCards(mainPlayer);
         OrganizeCards();
 
-        for (int i = 1; i < cardElementsHolder.CardsHolder.Length; i++)
-        {
-            cardElementsHolder.CardsHolder[i].SetLocations();
-        }
+        //for (int i = 1; i < cardElementsHolder.CardsHolder.Length; i++)
+        //{
+        //    cardElementsHolder.CardsHolder[i].SetLocations();
+        //}
 
         BalootCard.gameObject.SetActive(false);
     }
@@ -81,5 +82,16 @@ public class BalootCardsUIManager : CardsUIManager
     {
         BalootCard.gameObject.SetActive(true);
         BalootCard.sprite = cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank];
+    }
+
+    internal void RemoveAllCards()
+    {
+
+        foreach (var item in cardElementsHolder.CardsHolder)
+        {
+            item.RemoveCards();
+        }
+        BalootCard.gameObject.SetActive(false);
+        playerCardsUI.Clear();
     }
 }

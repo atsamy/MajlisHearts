@@ -207,6 +207,8 @@ public class CardsUIManager : MonoBehaviour
             newCard.transform.localPosition = new Vector3(0, (i - 6) * cardElementsHolder.Spacing);
             newCard.transform.eulerAngles = new Vector3(0, 0, rotation);
         }
+
+        parent.SetLocations();
     }
 
     void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack, int count)
@@ -217,6 +219,8 @@ public class CardsUIManager : MonoBehaviour
             newCard.transform.localPosition = new Vector3((i - 6) * cardElementsHolder.Spacing, 0);
             newCard.transform.eulerAngles = new Vector3(0, 0, 180);
         }
+
+        parent.SetLocations();
     }
 
     public void SetPlayableCards(RoundInfo info, PlayerBase player)

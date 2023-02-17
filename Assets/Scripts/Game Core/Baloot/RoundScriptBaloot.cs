@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoundScriptBaloot :RoundScriptBase
+public class RoundScriptBaloot : RoundScriptBase
 {
     public int StartIndex;
     BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
@@ -136,7 +136,7 @@ public class RoundScriptBaloot :RoundScriptBase
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtFinished);
     }
 
-    public override void StartNewGame()
+    public override void StartNewRound()
     {
         IncrementStartIndex();
 
@@ -166,12 +166,18 @@ public class RoundScriptBaloot :RoundScriptBase
         balootRoundInfo.BalootRoundType = type;
         DealContinue(index);
         players[StartIndex].SetTurn(RoundInfo);
+        playingIndex = StartIndex;
+
+        BidingTeam = (index == 0 || index == 2) ? 0 : 1;
     }
 
     int typeRound;
     bool hukomSelected;
     internal void PlayerSelectedType(int index, BalootGameType type)
     {
+        if (index == StartIndex)
+            typeRound++;
+
         switch (type)
         {
             case BalootGameType.Sun:
@@ -180,14 +186,16 @@ public class RoundScriptBaloot :RoundScriptBase
             case BalootGameType.Hukom:
                 break;
             case BalootGameType.Ashkal:
+                SetGameType((index + 2) % 4, BalootGameType.Sun);
                 break;
             case BalootGameType.Pass:
-
                 int nextIndex = (index + 1) % 4;
 
                 if (StartIndex == nextIndex && typeRound == 2 && !hukomSelected)
                 {
                     //start new deal
+                    typeRound = 0;
+                    OnEvent?.Invoke((int)EventTypeBaloot.RestartDeal);
                 }
                 else if (StartIndex == nextIndex && typeRound == 2)
                 {
@@ -216,6 +224,7 @@ public enum EventTypeBaloot
 {
     CardsDealtBegin,
     CardsDealtFinished,
+    RestartDeal,
     TrickFinished,
     DealFinished
 }

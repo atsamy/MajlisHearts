@@ -559,7 +559,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (otherPlayer.ActorNumber == 1)
         {
-            HeartsUIManager.Instance.HostLeft();
+            UIManagerHearts.Instance.HostLeft();
         }
         else if (PhotonNetwork.IsMasterClient)
         {

@@ -28,7 +28,7 @@ public class RoundScriptHeats: RoundScriptBase
     {
         cardsOnDeck = new Dictionary<int, Card>();
 
-        StartNewGame();
+        StartNewRound();
     }
 
     int noOfCards = 0;
@@ -237,10 +237,10 @@ public class RoundScriptHeats: RoundScriptBase
 
     public void Reset()
     {
-        StartNewGame();
+        StartNewRound();
     }
 
-    public override void StartNewGame()
+    public override void StartNewRound()
     {
         passCardsCount = 0;
         doubleCount = 0;

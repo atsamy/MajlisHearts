@@ -42,7 +42,7 @@ public class RoundScriptBase
         return 0;
     }
 
-    public virtual void StartNewGame()
+    public virtual void StartNewRound()
     {
         
     }

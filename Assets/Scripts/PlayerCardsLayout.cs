@@ -17,7 +17,7 @@ public class PlayerCardsLayout : MonoBehaviour
     public void SetLocations()
     {
         float count = transform.childCount;
-
+        //print(count);
         for (int i = 0; i < count; i++)
         {
             float location = i - ((count - 1) / 2);
@@ -28,6 +28,14 @@ public class PlayerCardsLayout : MonoBehaviour
 
             transform.GetChild(i).DOLocalMove(new Vector3(IsVertical?y:x,IsVertical?x:y, 0),0.15f);
             transform.GetChild(i).DORotate(new Vector3(0, 0, rot), 0.15f);
+        }
+    }
+
+    public void RemoveCards()
+    {
+        foreach (Transform item in transform)
+        {
+            Destroy(item.gameObject);
         }
     }
 }

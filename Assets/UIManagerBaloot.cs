@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class BalootUIManager : UIManager
+public class UIManagerBaloot : UIManager
 {
-    BalootGameScript balootGame => (BalootGameScript)Game;
+    GameScriptBaloot balootGame => (GameScriptBaloot)Game;
     //public static BalootUIManager Instance;
     BalootCardsUIManager balootCardsUI => (BalootCardsUIManager)CardsUI;
     bool init;
@@ -21,7 +21,7 @@ public class BalootUIManager : UIManager
     private void OnEnable()
     {
         Instance = this;
-        Game = BalootGameScript.Instance;
+        Game = GameScriptBaloot.Instance;
 
         CardsUI = GetComponentInChildren<BalootCardsUIManager>();
 
@@ -29,9 +29,15 @@ public class BalootUIManager : UIManager
 
         balootGame.OnStartCardsReady += BalootUIManager_OnStartCardsReady;
         balootGame.OnPlayerSelectedType += BalootGame_OnPlayerSelectedType;
-
+        balootGame.OnRestartDeal += BalootGame_OnRestartDeal;
         gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
         SetCardManager(balootCardsUI);
+    }
+
+    private void BalootGame_OnRestartDeal()
+    {
+        balootCardsUI.RemoveAllCards();
+        UIElementsHolder.ScoresHolder.SetActive(false);
     }
 
     private void BalootGame_OnPlayerSelectedType(int index, BalootGameType type)
@@ -66,10 +72,10 @@ public class BalootUIManager : UIManager
             //{
             //    ((BalootPlayer)game.Players[i]).OnTypeSelected +=  
             //}
-
-            balootCardsUI.AddBalootCard(balootCard);
-            balootCardsUI.ShowPlayerCards(mainPlayer, false, 5);
         }
+
+        balootCardsUI.AddBalootCard(balootCard);
+        balootCardsUI.ShowPlayerCards(mainPlayer, false, 5);
 
 
         //SetScore();

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BalootGameScript : GameScriptBase
+public class GameScriptBaloot : GameScriptBase
 {
-    public static BalootGameScript Instance;
+    public static GameScriptBaloot Instance;
     BalootMainPlayer myPlayer => (BalootMainPlayer)Players[0];
 
     public delegate void StartCardsReady(Card balootCard);
@@ -13,6 +13,9 @@ public class BalootGameScript : GameScriptBase
 
     public delegate void PlayerSelectedType(int index, BalootGameType type);
     public event PlayerSelectedType OnPlayerSelectedType;
+
+    public delegate void RestartDeal();
+    public event RestartDeal OnRestartDeal;
 
     public RoundScriptBaloot balootRoundScript => (RoundScriptBaloot)RoundScript;
 
@@ -159,20 +162,7 @@ public class BalootGameScript : GameScriptBase
     public void Players_SelectedType(int index, BalootGameType type)
     {
         OnPlayerSelectedType?.Invoke(index, type);
-
         balootRoundScript.PlayerSelectedType(index, type);
-        //switch (type)
-        //{
-        //    case BalootGameType.Sun:
-        //        balootRoundScript.SetGameType(index, type);
-        //        break;
-        //    case BalootGameType.Hukom:
-        //        break;
-        //    case BalootGameType.Ashkal:
-        //        break;
-        //    case BalootGameType.Pass:
-        //        break;
-        //}
     }
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
@@ -188,11 +178,14 @@ public class BalootGameScript : GameScriptBase
             case EventTypeBaloot.CardsDealtBegin:
                 OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
                 ((BalootPlayer)Players[balootRoundScript.StartIndex]).CheckGameType();
+                break;
+            case EventTypeBaloot.RestartDeal:
+                RestartGame();
 
-                SetStartGame(false);
                 break;
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
+                SetStartGame(false);
                 break;
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
@@ -206,4 +199,10 @@ public class BalootGameScript : GameScriptBase
         }
     }
 
+    private async void RestartGame()
+    {
+        OnRestartDeal?.Invoke();
+        await System.Threading.Tasks.Task.Delay(1500);
+        StartGame();
+    }
 }

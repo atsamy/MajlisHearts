@@ -59,7 +59,7 @@ public class GameScriptBase : MonoBehaviour
 
     public void StartGame()
     {
-        RoundScript.StartNewGame();
+        RoundScript.StartNewRound();
     }
 
     public void SetStartGame(bool isMulti)
@@ -69,7 +69,7 @@ public class GameScriptBase : MonoBehaviour
 
     public virtual void StartNextDeal()
     {
-        RoundScript.StartNewGame();
+        RoundScript.StartNewRound();
     }
 
     public virtual bool SetFinalScore()

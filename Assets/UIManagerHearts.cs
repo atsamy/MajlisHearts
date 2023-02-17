@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class HeartsUIManager : UIManager
+public class UIManagerHearts : UIManager
 {
     GameScript heartsGame => (GameScript)Game;
     int doubleCardCount;

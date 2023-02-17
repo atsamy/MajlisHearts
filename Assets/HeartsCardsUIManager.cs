@@ -39,7 +39,7 @@ public class HeartsCardsUIManager : CardsUIManager
 
     public void AddToPassCards(CardUI cardUI)
     {
-        if (((HeartsUIManager)HeartsUIManager.Instance).AddCard(cardUI))
+        if (((UIManagerHearts)UIManagerHearts.Instance).AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
             cardUI.SetOnPressed((card) =>
@@ -60,7 +60,7 @@ public class HeartsCardsUIManager : CardsUIManager
     {
         playerCardsUI.Add(cardUI);
         cardUI.transform.SetParent(cardElementsHolder.CardsHolder[0].transform);
-        ((HeartsUIManager)HeartsUIManager.Instance).RemoveCard(cardUI);
+        ((UIManagerHearts)UIManagerHearts.Instance).RemoveCard(cardUI);
         cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
         {

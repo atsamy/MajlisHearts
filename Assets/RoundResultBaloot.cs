@@ -26,10 +26,10 @@ public class RoundResultBaloot : RoundResult
         roundTeam1.text = (game.Players[0].Score + game.Players[2].Score).ToString();
         roundTeam2.text = (game.Players[1].Score + game.Players[3].Score).ToString();
 
-        totalPointsTeam1.text = ((BalootGameScript)game).TeamsTotalScore[0].ToString();
-        totalPointsTeam2.text = ((BalootGameScript)game).TeamsTotalScore[1].ToString();
+        totalPointsTeam1.text = ((GameScriptBaloot)game).TeamsTotalScore[0].ToString();
+        totalPointsTeam2.text = ((GameScriptBaloot)game).TeamsTotalScore[1].ToString();
 
-        pointsTeam1.text = ((BalootGameScript)game).TeamsScore[0].ToString();
-        pointsTeam2.text = ((BalootGameScript)game).TeamsScore[1].ToString();
+        pointsTeam1.text = ((GameScriptBaloot)game).TeamsScore[0].ToString();
+        pointsTeam2.text = ((GameScriptBaloot)game).TeamsScore[1].ToString();
     }
 }
