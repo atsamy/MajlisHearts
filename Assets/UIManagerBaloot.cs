@@ -50,7 +50,7 @@ public class UIManagerBaloot : UIManager
 
     IEnumerator ShowTypeAnimation(int playerIndex)
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         typeTexts[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
@@ -95,7 +95,8 @@ public class UIManagerBaloot : UIManager
 
     private void MainPlayer_OnWaitSelectType()
     {
-        gameTypePanel.Show();
+        gameTypePanel.Show(balootGame.balootRoundScript.BiddingRound, 
+            balootGame.balootRoundScript.HokumIndex,Game.MainPlayerIndex);
     }
 
     public override void SetScore()

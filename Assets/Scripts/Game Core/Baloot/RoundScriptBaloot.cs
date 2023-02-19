@@ -14,6 +14,8 @@ public class RoundScriptBaloot : RoundScriptBase
     public BalootGameType RoundType => balootRoundInfo.BalootRoundType;
 
     public int BidingTeam { get; internal set; }
+    public int BiddingRound { get; private set; }
+    public int HokumIndex { get; private set; }
 
     public RoundScriptBaloot()
     {
@@ -25,6 +27,7 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public override void Deal()
     {
+        HokumIndex = -1;
         AllCards = GetAllCards();
 
         for (int i = 0; i < players.Length; i++)
@@ -171,12 +174,12 @@ public class RoundScriptBaloot : RoundScriptBase
         BidingTeam = (index == 0 || index == 2) ? 0 : 1;
     }
 
-    int typeRound;
-    bool hukomSelected;
     internal void PlayerSelectedType(int index, BalootGameType type)
     {
         if (index == StartIndex)
-            typeRound++;
+            BiddingRound++;
+
+        int nextIndex = (index + 1) % 4;
 
         switch (type)
         {
@@ -184,20 +187,28 @@ public class RoundScriptBaloot : RoundScriptBase
                 SetGameType(index, type);
                 break;
             case BalootGameType.Hukom:
+                if (HokumIndex == -1)
+                {
+                    HokumIndex = index;
+                    ((BalootPlayer)players[nextIndex]).CheckGameType();
+                }
+                else
+                    SetGameType(index, type);
                 break;
             case BalootGameType.Ashkal:
                 SetGameType((index + 2) % 4, BalootGameType.Sun);
                 break;
             case BalootGameType.Pass:
-                int nextIndex = (index + 1) % 4;
+                if (HokumIndex == index)
+                    HokumIndex = -1;
 
-                if (StartIndex == nextIndex && typeRound == 2 && !hukomSelected)
+                if (StartIndex == nextIndex && BiddingRound == 2 && HokumIndex == -1)
                 {
                     //start new deal
-                    typeRound = 0;
+                    BiddingRound = 0;
                     OnEvent?.Invoke((int)EventTypeBaloot.RestartDeal);
                 }
-                else if (StartIndex == nextIndex && typeRound == 2)
+                else if (StartIndex == nextIndex && BiddingRound == 2)
                 {
                     SetGameType(index, BalootGameType.Hukom);
                 }
