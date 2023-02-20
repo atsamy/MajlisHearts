@@ -13,6 +13,10 @@ public class UIManagerBaloot : UIManager
 
     [SerializeField]
     GameTypePanel gameTypePanel;
+    [SerializeField]
+    SelectShapePanel selectShapePanel;
+    [SerializeField]
+    GameInfoPanel gameInfoPanel;
 
     [SerializeField]
     TextMeshProUGUI[] typeTexts;
@@ -31,7 +35,20 @@ public class UIManagerBaloot : UIManager
         balootGame.OnPlayerSelectedType += BalootGame_OnPlayerSelectedType;
         balootGame.OnRestartDeal += BalootGame_OnRestartDeal;
         gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
+        gameTypePanel.OnOtherHokumSelected += GameTypePanel_OnOtherHokumSelected;
+        selectShapePanel.OnShapeSelected += SelectShapePanel_OnShapeSelected;
         SetCardManager(balootCardsUI);
+    }
+
+    private void GameTypePanel_OnOtherHokumSelected()
+    {
+        selectShapePanel.Show(balootGame.balootRoundScript.BalootCard.Shape);
+    }
+
+    private void SelectShapePanel_OnShapeSelected(CardShape shape)
+    {
+        balootGame.balootRoundScript.HokumShape = shape;
+        mainPlayer.SelectType(BalootGameType.Hukom);
     }
 
     private void BalootGame_OnRestartDeal()
@@ -81,6 +98,18 @@ public class UIManagerBaloot : UIManager
         //SetScore();
     }
 
+    protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
+    {
+        base.Game_OnDealFinished(hostPlayer, isGameOver);
+        gameInfoPanel.gameObject.SetActive(false);
+    }
+
+    protected override void Game_OnTrickFinished(int winningHand)
+    {
+        base.Game_OnTrickFinished(winningHand);
+        gameInfoPanel.UpdateScore(Game.Players);
+    }
+
     private void GameTypePanel_OnGameTypeSelected(BalootGameType type)
     {
         mainPlayer.SelectType(type);    
@@ -90,6 +119,10 @@ public class UIManagerBaloot : UIManager
     {
         balootCardsUI.AddRemaingCards(mainPlayer);
 
+        if (balootGame.balootRoundScript.RoundType == BalootGameType.Hukom)
+            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape);
+        else
+            gameInfoPanel.ShowSuns();
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 

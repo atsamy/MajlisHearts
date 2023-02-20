@@ -70,6 +70,11 @@ public class GameScriptBaloot : GameScriptBase
 
     public override bool SetFinalScore()
     {
+        for (int i = 0; i < Players.Length; i++)
+        {
+            Players[i].Score = 0;
+        }
+
         switch (balootRoundScript.RoundType)
         {
             case BalootGameType.Sun:

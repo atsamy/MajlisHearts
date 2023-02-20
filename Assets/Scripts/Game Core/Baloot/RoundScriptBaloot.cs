@@ -8,6 +8,7 @@ public class RoundScriptBaloot : RoundScriptBase
     public int StartIndex;
     BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
 
+    public CardShape HokumShape;
     public Card BalootCard;
     List<Card> AllCards;
 
@@ -59,23 +60,55 @@ public class RoundScriptBaloot : RoundScriptBase
         int index = cardsOnDeck.ElementAt(0).Key;
 
         value = 0;
+        value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, winningCard);
 
-        value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, winningCard);// GetValue(winningCard);
-
-        for (int i = 1; i < 4; i++)
+        if (balootRoundInfo.BalootRoundType == BalootGameType.Hukom)
         {
-            Card currentCard = cardsOnDeck.ElementAt(i).Value;
-            value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, currentCard);
-            if (currentCard.Shape == winningCard.Shape)
+            for (int i = 1; i < 4; i++)
             {
-                if (CardHelper.GetCardRank(balootRoundInfo.BalootRoundType,currentCard) > CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, winningCard))
+                Card currentCard = cardsOnDeck.ElementAt(i).Value;
+                value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, currentCard);
+                if (currentCard.Shape == winningCard.Shape)
                 {
-                    index = cardsOnDeck.ElementAt(i).Key;
-                    winningCard = currentCard;
+                    if (CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, currentCard) >
+                        CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, winningCard))
+                    {
+                        index = cardsOnDeck.ElementAt(i).Key;
+                        winningCard = currentCard;
+                    }
+                }
+                else if (currentCard.Shape == HokumShape)
+                {
+                    if (winningCard.Shape != HokumShape)
+                    {
+                        winningCard = currentCard;
+                        index = cardsOnDeck.ElementAt(i).Key;
+                    }
+                    else if (CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, currentCard) >
+                        CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, winningCard))
+                    {
+                        winningCard = currentCard;
+                        index = cardsOnDeck.ElementAt(i).Key;
+                    }
                 }
             }
         }
-
+        else
+        {
+            for (int i = 1; i < 4; i++)
+            {
+                Card currentCard = cardsOnDeck.ElementAt(i).Value;
+                value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, currentCard);
+                if (currentCard.Shape == winningCard.Shape)
+                {
+                    if (CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, currentCard) > CardHelper.GetCardRank(balootRoundInfo.BalootRoundType, winningCard))
+                    {
+                        index = cardsOnDeck.ElementAt(i).Key;
+                        winningCard = currentCard;
+                    }
+                }
+            }
+        }
         return index;
     }
 
@@ -144,6 +177,7 @@ public class RoundScriptBaloot : RoundScriptBase
         IncrementStartIndex();
 
         Deal();
+        HokumShape = BalootCard.Shape;
         RoundInfo = new BalootRoundInfo();
 
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtBegin);
@@ -174,6 +208,8 @@ public class RoundScriptBaloot : RoundScriptBase
         BidingTeam = (index == 0 || index == 2) ? 0 : 1;
     }
 
+
+    bool hokumConfirmed;
     internal void PlayerSelectedType(int index, BalootGameType type)
     {
         if (index == StartIndex)
@@ -208,10 +244,10 @@ public class RoundScriptBaloot : RoundScriptBase
                     BiddingRound = 0;
                     OnEvent?.Invoke((int)EventTypeBaloot.RestartDeal);
                 }
-                else if (StartIndex == nextIndex && BiddingRound == 2)
-                {
-                    SetGameType(index, BalootGameType.Hukom);
-                }
+                //else if (StartIndex == nextIndex && BiddingRound == 2 && nextIndex != HokumIndex)
+                //{
+                //    SetGameType(index, BalootGameType.Hukom);
+                //}
                 else
                 {
                     ((BalootPlayer)players[nextIndex]).CheckGameType();
@@ -221,11 +257,11 @@ public class RoundScriptBaloot : RoundScriptBase
     }
 }
 
-public class BalootRoundInfo: RoundInfo
+public class BalootRoundInfo : RoundInfo
 {
     public BalootGameType BalootRoundType;
 
-    public BalootRoundInfo():base()
+    public BalootRoundInfo() : base()
     {
 
     }

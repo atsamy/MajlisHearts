@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
         UIElementsHolder.EmojiButton.SetActive(isMulti);
     }
 
-    private void Game_OnTrickFinished(int winningHand)
+    protected virtual void Game_OnTrickFinished(int winningHand)
     {
         SetScore();
 
