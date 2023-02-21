@@ -59,6 +59,11 @@ public class Player:PlayerBase
         OnPassCardsReady?.Invoke(index,cards);
     }
 
+    public void OrderCards()
+    {
+        OwnedCards = OwnedCards.OrderBy(a => a.Shape).ToList();
+    }
+
     public virtual void SelectPassCards()
     {
 

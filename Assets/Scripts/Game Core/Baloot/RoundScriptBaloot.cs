@@ -62,7 +62,7 @@ public class RoundScriptBaloot : RoundScriptBase
         value = 0;
         value += CardHelper.GetCardValue(balootRoundInfo.BalootRoundType, winningCard);
 
-        if (balootRoundInfo.BalootRoundType == BalootGameType.Hukom)
+        if (balootRoundInfo.BalootRoundType == BalootGameType.Hokum)
         {
             for (int i = 1; i < 4; i++)
             {
@@ -222,11 +222,11 @@ public class RoundScriptBaloot : RoundScriptBase
             case BalootGameType.Sun:
                 SetGameType(index, type);
                 break;
-            case BalootGameType.Hukom:
+            case BalootGameType.Hokum:
                 if (HokumIndex == -1)
                 {
                     HokumIndex = index;
-                    ((BalootPlayer)players[nextIndex]).CheckGameType();
+                    ((PlayerBaloot)players[nextIndex]).CheckGameType();
                 }
                 else
                     SetGameType(index, type);
@@ -244,13 +244,9 @@ public class RoundScriptBaloot : RoundScriptBase
                     BiddingRound = 0;
                     OnEvent?.Invoke((int)EventTypeBaloot.RestartDeal);
                 }
-                //else if (StartIndex == nextIndex && BiddingRound == 2 && nextIndex != HokumIndex)
-                //{
-                //    SetGameType(index, BalootGameType.Hukom);
-                //}
                 else
                 {
-                    ((BalootPlayer)players[nextIndex]).CheckGameType();
+                    ((PlayerBaloot)players[nextIndex]).CheckGameType();
                 }
                 break;
         }

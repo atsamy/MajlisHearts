@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class BalootAIPlayer : BalootPlayer
+public class BalootAIPlayer : PlayerBaloot
 {
     public bool FakePlayer { private get; set; }
 

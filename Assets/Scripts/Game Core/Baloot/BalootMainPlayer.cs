@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BalootMainPlayer : BalootPlayer
+public class BalootMainPlayer : PlayerBaloot
 {
     public event Action WaitOthers;
 
@@ -29,11 +29,6 @@ public class BalootMainPlayer : BalootPlayer
     internal void ForcePlay()
     {
         OnForcePlay?.Invoke();
-    }
-
-    public void OrderCards()
-    {
-        OwnedCards = OwnedCards.OrderBy(a => a.Shape).ToList();
     }
 
     public override void SetTurn(RoundInfo info)

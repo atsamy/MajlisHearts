@@ -48,7 +48,7 @@ public class UIManagerBaloot : UIManager
     private void SelectShapePanel_OnShapeSelected(CardShape shape)
     {
         balootGame.balootRoundScript.HokumShape = shape;
-        mainPlayer.SelectType(BalootGameType.Hukom);
+        mainPlayer.SelectType(BalootGameType.Hokum);
     }
 
     private void BalootGame_OnRestartDeal()
@@ -119,7 +119,7 @@ public class UIManagerBaloot : UIManager
     {
         balootCardsUI.AddRemaingCards(mainPlayer);
 
-        if (balootGame.balootRoundScript.RoundType == BalootGameType.Hukom)
+        if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape);
         else
             gameInfoPanel.ShowSuns();

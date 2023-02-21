@@ -81,7 +81,7 @@ public class GameTypePanel : MonoBehaviour
 public enum BalootGameType
 {
     Sun = 0,
-    Hukom = 1,
+    Hokum = 1,
     Ashkal = 2,
     Pass = 3
 }

@@ -37,7 +37,7 @@ public class GameScriptBaloot : GameScriptBase
     {
         balootRoundScript.OnEvent += Deal_OnEvent;
 
-        Players = new BalootPlayer[4];
+        Players = new PlayerBaloot[4];
 
         for (int i = 0; i < 4; i++)
         {
@@ -54,7 +54,7 @@ public class GameScriptBaloot : GameScriptBase
                 Players[i].Name = "Player " + i;
             }
 
-            ((BalootPlayer)Players[i]).OnTypeSelected += Players_SelectedType;
+            ((PlayerBaloot)Players[i]).OnTypeSelected += Players_SelectedType;
             Players[i].OnCardReady += GameScript_OnCardReady;
 
         }
@@ -80,7 +80,7 @@ public class GameScriptBaloot : GameScriptBase
             case BalootGameType.Sun:
                 SetScoreSuns();
                 break;
-            case BalootGameType.Hukom:
+            case BalootGameType.Hokum:
                 int[] total = new int[2];
 
                 total[0] = Players[0].Score + Players[2].Score;
@@ -182,7 +182,7 @@ public class GameScriptBaloot : GameScriptBase
         {
             case EventTypeBaloot.CardsDealtBegin:
                 OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
-                ((BalootPlayer)Players[balootRoundScript.StartIndex]).CheckGameType();
+                ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType();
                 break;
             case EventTypeBaloot.RestartDeal:
                 RestartGame();

@@ -38,11 +38,6 @@ public class MainPlayer : Player
     //    base.SetTurn(info);
     //}
 
-    public void OrderCards()
-    {
-        OwnedCards = OwnedCards.OrderBy(a => a.Shape).ToList();
-    }
-
     protected override void CheckDoubleCards(Card card)
     {
         OnWaitDoubleCards?.Invoke(card);
