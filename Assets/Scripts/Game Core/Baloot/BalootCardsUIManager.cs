@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class BalootCardsUIManager : CardsUIManager
 {
     public Image BalootCard;
 
+    [SerializeField]
+    ProjectCards[] projectCards;
     public override void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable, int count)
     {
         playerCardsUI = new List<CardUI>();
@@ -32,6 +34,36 @@ public class BalootCardsUIManager : CardsUIManager
 
         AddCards(count);
         OrganizeCards();
+    }
+
+    public void RevealCards(int playerIndex,Dictionary<List<Card>, Projects> AllProjects)
+    {
+        for (int i = 0; i < AllProjects.Count; i++)
+        {
+            foreach (var item in AllProjects.ElementAt(i).Key)
+            {
+                GameObject newCard = Instantiate(cardBack, projectCards[playerIndex].CardsHolder[i].transform);
+                newCard.GetComponent<RectTransform>().sizeDelta = new Vector2(55,80);
+
+                newCard.transform.DOScaleX(0, 0.25f).SetDelay(1).OnComplete(() =>
+                {
+                    newCard.GetComponent<Image>().sprite = 
+                    cardElementsHolder.cardShapeSprites[(int)item.Shape].Sprites[(int)item.Rank];
+
+                    newCard.transform.DOScaleX(1, 0.25f);
+                });
+            }
+
+            projectCards[playerIndex].NameText[i].text = AllProjects.ElementAt(i).Value.ToString();
+        }
+
+        StartCoroutine(RemoveProjectCards(playerIndex));
+    }
+
+    IEnumerator RemoveProjectCards(int index)
+    {
+        yield return new WaitForSeconds(3);
+        projectCards[index].RemoveAll();
     }
 
     protected override bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)

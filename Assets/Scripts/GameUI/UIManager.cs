@@ -248,6 +248,10 @@ public class UIManager : MonoBehaviour
         {
             CardsUI.CardsPlayed(index, card);
         }
+        else
+        {
+            MainPlayerPlayed(Game.RoundScript.RoundInfo.TrickNumber);
+        }
     }
 
     public void Player_OnPlayerTurn(int playerIndex, RoundInfo info)
@@ -263,6 +267,11 @@ public class UIManager : MonoBehaviour
         {
             CardsUI.SetPlayableCards(info, mainPlayer);
         }
+    }
+
+    protected virtual void MainPlayerPlayed(int trickNumber)
+    {
+
     }
 
     void MessageRecieved(int playerIndex, object message)

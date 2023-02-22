@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManagerBaloot : UIManager
 {
@@ -17,6 +18,8 @@ public class UIManagerBaloot : UIManager
     SelectShapePanel selectShapePanel;
     [SerializeField]
     GameInfoPanel gameInfoPanel;
+    [SerializeField]
+    ProjectsPanel projectsPanel;
 
     [SerializeField]
     TextMeshProUGUI[] typeTexts;
@@ -37,7 +40,22 @@ public class UIManagerBaloot : UIManager
         gameTypePanel.OnGameTypeSelected += GameTypePanel_OnGameTypeSelected;
         gameTypePanel.OnOtherHokumSelected += GameTypePanel_OnOtherHokumSelected;
         selectShapePanel.OnShapeSelected += SelectShapePanel_OnShapeSelected;
+        projectsPanel.OnProjectAdded += ProjectsPanel_OnProjectAdded;
+
         SetCardManager(balootCardsUI);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(2);
+        }
+    }
+
+    private void ProjectsPanel_OnProjectAdded(Projects project, int count)
+    {
+        mainPlayer.AddProject(project,count);
     }
 
     private void GameTypePanel_OnOtherHokumSelected()
@@ -98,6 +116,20 @@ public class UIManagerBaloot : UIManager
         //SetScore();
     }
 
+    protected override void MainPlayerPlayed(int trickNumber)
+    {
+        if (trickNumber == 0)
+        {
+            projectsPanel.gameObject.SetActive(false);
+        }
+        else if (trickNumber == 1) 
+        {
+            Dictionary<List<Card>, Projects> projects = mainPlayer.CheckAvailableProjects(balootGame.balootRoundScript.RoundType);
+            print("no of projects " + projects.Count);
+            balootCardsUI.RevealCards(0, projects);
+        }
+    }
+
     protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
         base.Game_OnDealFinished(hostPlayer, isGameOver);
@@ -123,6 +155,7 @@ public class UIManagerBaloot : UIManager
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape);
         else
             gameInfoPanel.ShowSuns();
+        projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 

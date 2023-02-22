@@ -191,6 +191,7 @@ public class GameScriptBaloot : GameScriptBase
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
                 SetStartGame(false);
+                myPlayer.SetStartCards();
                 break;
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);

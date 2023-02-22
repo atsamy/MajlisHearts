@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ public class PlayerBaloot : PlayerBase
     public TypeSelected OnTypeSelected;
 
     Dictionary<Projects, int> ProjectsCount;
-
-    Dictionary<List<Card>, Projects> AvailableProjects;
+    List<Card> startCards;
+    //Dictionary<List<Card>, Projects> AvailableProjects;
     public PlayerBaloot(int index) : base(index)
     {
         ProjectsCount = new();
-        AvailableProjects = new();
+        //AvailableProjects = new();
     }
 
     public virtual void CheckGameType()
@@ -33,96 +34,116 @@ public class PlayerBaloot : PlayerBase
         OnTypeSelected?.Invoke(index, type);
     }
 
-    public bool AddProject(Projects project)
+    public void AddProject(Projects project, int count)
     {
-        if ((int)project <= 20 && ProjectsCount[project] == 2)
-            return false;
-        if (project == Projects.FourHundred && ProjectsCount[project] == 1)
-            return false;
-
-        ProjectsCount[project]++;
-        return true;
+        if (count == 0)
+        {
+            ProjectsCount.Remove(project);
+            return;
+        }
+        ProjectsCount[project] = count;
     }
 
-    public void CheckAvailableProjects(BalootGameType type)
+    public void SetStartCards()
     {
-        for (int i = 1; i < OwnedCards.Count; i++)
+        startCards = OwnedCards.OrderBy(a => a.Shape).ThenByDescending(a => a.Rank).ToList();
+    }
+
+    public Dictionary<List<Card>, Projects> CheckAvailableProjects(BalootGameType type)
+    {
+        if (ProjectsCount.Count == 0)
+            return new Dictionary<List<Card>, Projects>();
+
+         
+        Dictionary<List<Card>, Projects> AvailableProjects = new ();
+        //order cards
+        if (ProjectsCount.ContainsKey(Projects.FourHundred) || ProjectsCount.ContainsKey(Projects.OneHundred))
         {
-            int count = 0;
-            if (OwnedCards[i].Shape == OwnedCards[i - 1].Shape)
+            List<Card> aceCount = startCards.Where(a => a.Rank == CardRank.Ace).ToList();
+
+            if (aceCount.Count == 4)
             {
-                if (OwnedCards[i].Rank == OwnedCards[i - 1].Rank + 1)
+                if (type == BalootGameType.Hokum)
+                {
+                    AvailableProjects.Add(aceCount, Projects.OneHundred);
+                }
+                else
+                {
+                    AvailableProjects.Add(aceCount, Projects.FourHundred);
+                }
+
+                startCards.RemoveAll(a => a.Rank == CardRank.Ace);
+            }
+
+            for (int i = 8; i < 12; i++)
+            {
+                List<Card> rankCount = startCards.Where(a => a.Rank == (CardRank)i).ToList();
+
+                if (rankCount.Count == 4)
+                {
+                    AvailableProjects.Add(rankCount, Projects.OneHundred);
+                    startCards.RemoveAll(a => a.Rank == (CardRank)i);
+                }
+            }
+        }
+
+        int count = 0;
+
+        for (int i = 1; i < startCards.Count; i++)
+        {
+            if (startCards[i].Shape == startCards[i - 1].Shape)
+            {
+                if (startCards[i].Rank + 1 == startCards[i - 1].Rank)
                 {
                     count++;
                 }
                 else
                 {
-                    CheckCount(count,i);
+                    CheckCount(AvailableProjects, count, i);
                     count = 0;
                 }
             }
             else
             {
-                CheckCount(count, i);
+                CheckCount(AvailableProjects, count, i);
                 count = 0;
             }
         }
 
-        for (int i = 8; i < 12; i++)
-        {
-            List<Card> rankCount = OwnedCards.Where(a => a.Rank == (CardRank)i).ToList();
-            
-            if (rankCount.Count == 4)
-            {
-                AvailableProjects.Add(rankCount, Projects.OneHundred);
-            }
-        }
-
-        List<Card> aceCount = OwnedCards.Where(a => a.Rank == CardRank.Ace).ToList();
-
-        if (type == BalootGameType.Hokum)
-        {
-            AvailableProjects.Add(aceCount, Projects.OneHundred);
-        }
-        else
-        {
-            AvailableProjects.Add(aceCount, Projects.FourHundred);
-        }
-
+        return AvailableProjects;
     }
 
-    public void CheckCount(int count,int index)
+    public void CheckCount(Dictionary<List<Card>, Projects> AvailableProjects, int count, int index)
     {
         switch (count)
         {
             case 2:
-                AvailableProjects.Add(AddProjectCardsToList(index, 3), Projects.Sira);
+                AddAvailableProject(AvailableProjects, index, count + 1, Projects.Sira);
                 break;
             case 3:
-                AvailableProjects.Add(AddProjectCardsToList(index, 4), Projects.Fifty);
+                AddAvailableProject(AvailableProjects, index, count + 1, Projects.Fifty);
                 goto case 2; // falls through to previous case
             case 4:
-                AvailableProjects.Add(AddProjectCardsToList(index, 5), Projects.OneHundred);
+                AddAvailableProject(AvailableProjects, index, count + 1, Projects.OneHundred);
                 goto case 3; // falls through to previous case
         }
     }
 
-    private List<Card> AddProjectCardsToList(int i,int num)
+    private void AddAvailableProject(Dictionary<List<Card>, Projects> AvailableProjects, int index, int count, Projects project)
     {
-        List<Card> list = new List<Card>();
-        for (int j = 0; j < num; j++)
+        if (ProjectsCount.ContainsKey(project) && ProjectsCount[project] > 0)
         {
-            list.Add(OwnedCards[i - i]);
+            AvailableProjects.Add(startCards.GetRange(index - count, count), project);
+            ProjectsCount[project]--;
+            startCards.RemoveRange(index - count, count);
         }
-
-        return list;
     }
 }
 
 public enum Projects
 {
-    Sira = 4,
-    Fifty = 10,
-    OneHundred = 20,
-    FourHundred = 40
+    Sira = 0,
+    Fifty = 1,
+    OneHundred = 2,
+    FourHundred = 3
 }

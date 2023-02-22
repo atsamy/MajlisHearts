@@ -22,7 +22,7 @@ public class GameScriptBase : MonoBehaviour
     protected const int Seconds = 10;
     //protected const int FinishScore = 150;
 
-    protected RoundScriptBase RoundScript;
+    public RoundScriptBase RoundScript;
 
     public PlayerBase[] Players;
     [HideInInspector]
