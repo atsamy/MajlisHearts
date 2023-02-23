@@ -235,7 +235,7 @@ public class UIManager : MonoBehaviour
         this.mainPlayer= mainPlayer;
     }
 
-    public void Player_OnCardReady(int playerIndex, Card card)
+    public virtual void Player_OnCardReady(int playerIndex, Card card)
     {
         GameSFXManager.Instance.PlayClipRandom("Card");
         int index = CorrectIndex(playerIndex);
@@ -247,10 +247,6 @@ public class UIManager : MonoBehaviour
         if (playerIndex != Game.MainPlayerIndex)
         {
             CardsUI.CardsPlayed(index, card);
-        }
-        else
-        {
-            MainPlayerPlayed(Game.RoundScript.RoundInfo.TrickNumber);
         }
     }
 
@@ -267,11 +263,6 @@ public class UIManager : MonoBehaviour
         {
             CardsUI.SetPlayableCards(info, mainPlayer);
         }
-    }
-
-    protected virtual void MainPlayerPlayed(int trickNumber)
-    {
-
     }
 
     void MessageRecieved(int playerIndex, object message)

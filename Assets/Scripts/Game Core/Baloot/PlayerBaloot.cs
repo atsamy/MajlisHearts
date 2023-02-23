@@ -9,13 +9,16 @@ public class PlayerBaloot : PlayerBase
     public delegate void TypeSelected(int playerIndex, BalootGameType type);
     public TypeSelected OnTypeSelected;
 
-    Dictionary<Projects, int> ProjectsCount;
     List<Card> startCards;
-    //Dictionary<List<Card>, Projects> AvailableProjects;
+
+    public int ProjectPower { get; protected set; }
+    public int ProjectScore { get; protected set; }
+    public Dictionary<List<Card>, Projects> PlayerProjects { get; private set; }
     public PlayerBaloot(int index) : base(index)
     {
-        ProjectsCount = new();
-        //AvailableProjects = new();
+        ProjectPower = 0;
+        ProjectScore = 0;
+        PlayerProjects = new();
     }
 
     public virtual void CheckGameType()
@@ -26,7 +29,9 @@ public class PlayerBaloot : PlayerBase
     public override void Reset()
     {
         base.Reset();
-        ProjectsCount.Clear();
+        PlayerProjects.Clear();
+        ProjectPower = 0;
+        ProjectScore = 0;
     }
 
     public virtual void SelectType(BalootGameType type)
@@ -34,14 +39,9 @@ public class PlayerBaloot : PlayerBase
         OnTypeSelected?.Invoke(index, type);
     }
 
-    public void AddProject(Projects project, int count)
+    public virtual void ChooseProjects(BalootGameType type)
     {
-        if (count == 0)
-        {
-            ProjectsCount.Remove(project);
-            return;
-        }
-        ProjectsCount[project] = count;
+
     }
 
     public void SetStartCards()
@@ -49,43 +49,36 @@ public class PlayerBaloot : PlayerBase
         startCards = OwnedCards.OrderBy(a => a.Shape).ThenByDescending(a => a.Rank).ToList();
     }
 
-    public Dictionary<List<Card>, Projects> CheckAvailableProjects(BalootGameType type)
+    public List<Project> GetAllProjects(BalootGameType type)
     {
-        if (ProjectsCount.Count == 0)
-            return new Dictionary<List<Card>, Projects>();
+        List<Project> allProjects = new List<Project>();
+        List<Card> aceCount = startCards.Where(a => a.Rank == CardRank.Ace).ToList();
 
-         
-        Dictionary<List<Card>, Projects> AvailableProjects = new ();
-        //order cards
-        if (ProjectsCount.ContainsKey(Projects.FourHundred) || ProjectsCount.ContainsKey(Projects.OneHundred))
+        if (aceCount.Count == 4)
         {
-            List<Card> aceCount = startCards.Where(a => a.Rank == CardRank.Ace).ToList();
-
-            if (aceCount.Count == 4)
+            if (type == BalootGameType.Hokum)
             {
-                if (type == BalootGameType.Hokum)
-                {
-                    AvailableProjects.Add(aceCount, Projects.OneHundred);
-                }
-                else
-                {
-                    AvailableProjects.Add(aceCount, Projects.FourHundred);
-                }
-
-                startCards.RemoveAll(a => a.Rank == CardRank.Ace);
+                allProjects.Add(new Project(Projects.OneHundred, aceCount, 100, 44));
+            }
+            else
+            {
+                allProjects.Add(new Project(Projects.FourHundred, aceCount, 400, 44));
             }
 
-            for (int i = 8; i < 12; i++)
-            {
-                List<Card> rankCount = startCards.Where(a => a.Rank == (CardRank)i).ToList();
+            startCards.RemoveAll(a => a.Rank == CardRank.Ace);
+        }
 
-                if (rankCount.Count == 4)
-                {
-                    AvailableProjects.Add(rankCount, Projects.OneHundred);
-                    startCards.RemoveAll(a => a.Rank == (CardRank)i);
-                }
+        for (int i = 8; i < 12; i++)
+        {
+            List<Card> rankCount = startCards.Where(a => a.Rank == (CardRank)i).ToList();
+
+            if (rankCount.Count == 4)
+            {
+                allProjects.Add(new Project(Projects.OneHundred, rankCount, 100, 40 + (i - 8)));
+                startCards.RemoveAll(a => a.Rank == (CardRank)i);
             }
         }
+
 
         int count = 0;
 
@@ -99,44 +92,45 @@ public class PlayerBaloot : PlayerBase
                 }
                 else
                 {
-                    CheckCount(AvailableProjects, count, i);
+                    CheckCount(count, i,allProjects);
                     count = 0;
                 }
             }
             else
             {
-                CheckCount(AvailableProjects, count, i);
+                CheckCount(count, i,allProjects);
                 count = 0;
             }
         }
 
-        return AvailableProjects;
+        return allProjects;
     }
 
-    public void CheckCount(Dictionary<List<Card>, Projects> AvailableProjects, int count, int index)
+    public void CheckCount(int count, int index, List<Project> allProjects)
     {
         switch (count)
         {
             case 2:
-                AddAvailableProject(AvailableProjects, index, count + 1, Projects.Sira);
+                AddAvailableProject(index, count + 1, 20, Projects.Sira, allProjects);
                 break;
             case 3:
-                AddAvailableProject(AvailableProjects, index, count + 1, Projects.Fifty);
+                AddAvailableProject(index, count + 1, 50, Projects.Fifty, allProjects);
                 goto case 2; // falls through to previous case
             case 4:
-                AddAvailableProject(AvailableProjects, index, count + 1, Projects.OneHundred);
+                AddAvailableProject(index, count + 1, 100, Projects.OneHundred, allProjects);
                 goto case 3; // falls through to previous case
         }
     }
 
-    private void AddAvailableProject(Dictionary<List<Card>, Projects> AvailableProjects, int index, int count, Projects project)
+    private void AddAvailableProject(int index, int count, int score, Projects project, List<Project> allProjects)
     {
-        if (ProjectsCount.ContainsKey(project) && ProjectsCount[project] > 0)
-        {
-            AvailableProjects.Add(startCards.GetRange(index - count, count), project);
-            ProjectsCount[project]--;
-            startCards.RemoveRange(index - count, count);
-        }
+        allProjects.Add(new Project(project, startCards.GetRange(index - count, count), score, ((int)project + ((int)startCards[index].Rank - 6))));
+        startCards.RemoveRange(index - count, count);
+    }
+
+    internal void RemoveProjects()
+    {
+        PlayerProjects.Clear();
     }
 }
 
@@ -146,4 +140,20 @@ public enum Projects
     Fifty = 1,
     OneHundred = 2,
     FourHundred = 3
+}
+
+public class Project
+{
+    public Projects projectName;
+    public List<Card> Cards;
+    public int Score;
+    public int Power;
+
+    public Project(Projects projectName, List<Card> Cards, int Score, int Power)
+    {
+        this.projectName = projectName;
+        this.Cards = Cards;
+        this.Score = Score;
+        this.Power = Power;
+    }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class BalootAIPlayer : PlayerBaloot
+public class AIPlayerBaloot : PlayerBaloot
 {
     public bool FakePlayer { private get; set; }
 
-    public BalootAIPlayer(int index) : base(index)
+    public AIPlayerBaloot(int index) : base(index)
     {
         isPlayer = false;
     }
@@ -17,6 +17,18 @@ public class BalootAIPlayer : PlayerBaloot
     {
         base.SetTurn(info);
         playCard(info);
+    }
+
+    public override void ChooseProjects(BalootGameType type)
+    {
+        List<Project> projects = GetAllProjects(type);
+        
+        foreach (Project project in projects) 
+        {
+            PlayerProjects.Add(project.Cards,project.projectName);
+            ProjectScore += project.Score;
+            ProjectPower += project.Power;
+        }
     }
 
     public override void CheckGameType()

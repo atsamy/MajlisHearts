@@ -23,7 +23,7 @@ public class UIManagerBaloot : UIManager
 
     [SerializeField]
     TextMeshProUGUI[] typeTexts;
-    BalootMainPlayer mainPlayer;
+    MainPlayerBaloot mainPlayer;
 
     private void OnEnable()
     {
@@ -41,8 +41,21 @@ public class UIManagerBaloot : UIManager
         gameTypePanel.OnOtherHokumSelected += GameTypePanel_OnOtherHokumSelected;
         selectShapePanel.OnShapeSelected += SelectShapePanel_OnShapeSelected;
         projectsPanel.OnProjectAdded += ProjectsPanel_OnProjectAdded;
+        balootGame.OnRevealProject += BalootGame_OnRevealProject;
+        balootGame.OnHideProject += BalootGame_OnHideProject;
 
         SetCardManager(balootCardsUI);
+    }
+
+    private void BalootGame_OnHideProject()
+    {
+        projectsPanel.gameObject.SetActive(false);
+    }
+
+    private void BalootGame_OnRevealProject(int index)
+    {
+        int correctIndex = CorrectIndex(index);
+        balootCardsUI.RevealCards(correctIndex, ((PlayerBaloot)Game.Players[correctIndex]).PlayerProjects);
     }
 
     private void Update()
@@ -93,7 +106,7 @@ public class UIManagerBaloot : UIManager
     {
         if (!init)
         {
-            mainPlayer = (BalootMainPlayer)Game.Players[Game.MainPlayerIndex];
+            mainPlayer = (MainPlayerBaloot)Game.Players[Game.MainPlayerIndex];
             mainPlayer.OnWaitSelectType += MainPlayer_OnWaitSelectType;
             //mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
             //mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
@@ -114,20 +127,6 @@ public class UIManagerBaloot : UIManager
 
 
         //SetScore();
-    }
-
-    protected override void MainPlayerPlayed(int trickNumber)
-    {
-        if (trickNumber == 0)
-        {
-            projectsPanel.gameObject.SetActive(false);
-        }
-        else if (trickNumber == 1) 
-        {
-            Dictionary<List<Card>, Projects> projects = mainPlayer.CheckAvailableProjects(balootGame.balootRoundScript.RoundType);
-            print("no of projects " + projects.Count);
-            balootCardsUI.RevealCards(0, projects);
-        }
     }
 
     protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
@@ -155,6 +154,7 @@ public class UIManagerBaloot : UIManager
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape);
         else
             gameInfoPanel.ShowSuns();
+
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }

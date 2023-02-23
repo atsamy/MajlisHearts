@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameScriptBaloot : GameScriptBase
 {
     public static GameScriptBaloot Instance;
-    BalootMainPlayer myPlayer => (BalootMainPlayer)Players[0];
+    MainPlayerBaloot myPlayer => (MainPlayerBaloot)Players[0];
 
     public delegate void StartCardsReady(Card balootCard);
     public event StartCardsReady OnStartCardsReady;
@@ -16,6 +16,10 @@ public class GameScriptBaloot : GameScriptBase
 
     public delegate void RestartDeal();
     public event RestartDeal OnRestartDeal;
+
+
+    public event Action<int> OnRevealProject;
+    public event Action OnHideProject;
 
     public RoundScriptBaloot balootRoundScript => (RoundScriptBaloot)RoundScript;
 
@@ -43,13 +47,13 @@ public class GameScriptBaloot : GameScriptBase
         {
             if (i == 0)
             {
-                Players[i] = new BalootMainPlayer(i);
+                Players[i] = new MainPlayerBaloot(i);
                 //Players[i].Avatar = AvatarManager.Instance.playerAvatar;
                 Players[i].Name = GameManager.Instance.MyPlayer.Name;
             }
             else
             {
-                Players[i] = new BalootAIPlayer(i);
+                Players[i] = new AIPlayerBaloot(i);
                 //Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
                 Players[i].Name = "Player " + i;
             }
@@ -172,6 +176,14 @@ public class GameScriptBaloot : GameScriptBase
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
+        if ((playerIndex == MainPlayerIndex) && RoundScript.RoundInfo.TrickNumber == 0)
+        {
+            OnHideProject?.Invoke();
+        }
+        if (RoundScript.RoundInfo.TrickNumber == 1)
+        {
+            OnRevealProject?.Invoke(playerIndex);
+        }
         RoundScript.OnCardReady(playerIndex, card);
     }
 
@@ -191,10 +203,24 @@ public class GameScriptBaloot : GameScriptBase
             case EventTypeBaloot.CardsDealtFinished:
                 SetCardsReady();
                 SetStartGame(false);
-                myPlayer.SetStartCards();
+                foreach (PlayerBaloot item in Players)
+                {
+                    item.SetStartCards();
+                }
                 break;
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
+
+                if (RoundScript.RoundInfo.TrickNumber == 1)
+                {
+                    foreach (PlayerBaloot item in Players)
+                    {
+                        item.ChooseProjects(balootRoundScript.RoundType);
+                    }
+
+                    CompareProjects();
+                }
+
                 break;
             case EventTypeBaloot.DealFinished:
                 Deal_OnDealFinished();
@@ -203,6 +229,51 @@ public class GameScriptBaloot : GameScriptBase
                 TeamsScore[1] = 0;
                 break;
         }
+    }
+
+    private void CompareProjects()
+    {
+        int bestScore = 0;
+        int bestPower = 0;
+        int winIndex = -1;
+
+        for (int i = 0; i < Players.Length; i++)
+        {
+            if (((PlayerBaloot)Players[i]).ProjectScore > bestScore)
+            {
+                winIndex = i;
+                bestScore = ((PlayerBaloot)Players[i]).ProjectScore;
+                bestPower = ((PlayerBaloot)Players[i]).ProjectPower;
+            }
+            else if (((PlayerBaloot)Players[i]).ProjectScore == bestScore && bestScore > 0)
+            {
+                if (((PlayerBaloot)Players[i]).ProjectPower > bestPower)
+                {
+                    winIndex = i;
+                    bestPower = ((PlayerBaloot)Players[i]).ProjectPower;
+                }
+                else if (((PlayerBaloot)Players[i]).ProjectPower == bestPower)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        int nearestPlayer = (j + balootRoundScript.StartIndex) % 4;
+
+                        if (nearestPlayer == i)
+                        {
+                            winIndex = i;
+                            break;
+                        }
+                        else if (nearestPlayer == winIndex)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        ((PlayerBaloot)Players[(winIndex + 1) % 4]).RemoveProjects();
+        ((PlayerBaloot)Players[(winIndex + 3) % 4]).RemoveProjects();
     }
 
     private async void RestartGame()
