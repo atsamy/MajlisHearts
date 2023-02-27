@@ -2,18 +2,31 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
+using static UIParticleSystem;
 
 public class PlayerBaloot : PlayerBase
 {
     public delegate void TypeSelected(int playerIndex, BalootGameType type);
     public TypeSelected OnTypeSelected;
 
+    public event Action BalootCardsPlayed;
+
+    public delegate void DoubleSelected(int playerIndex,bool isDouble, int value);
+    public DoubleSelected OnDoubleSelected;
+
+    //public event Action<bool,int,int> OnDoubleSelected;
+
     List<Card> startCards;
 
     public int ProjectPower { get; protected set; }
     public int ProjectScore { get; protected set; }
     public Dictionary<List<Card>, Projects> PlayerProjects { get; private set; }
+
+    bool haveBalootCards;
+    CardShape hokumShape;
+    int balootSequence = 0;
     public PlayerBaloot(int index) : base(index)
     {
         ProjectPower = 0;
@@ -24,6 +37,48 @@ public class PlayerBaloot : PlayerBase
     public virtual void CheckGameType()
     {
 
+    }
+
+    public virtual void CheckDouble(int value)
+    {
+        //await Task.Delay(100);
+    }
+
+    public virtual void SelectDouble(bool value,int doubleValue)
+    {
+        OnDoubleSelected?.Invoke(index,value,doubleValue);
+    }
+
+    public override void ChooseCard(Card card)
+    {
+        base.ChooseCard(card);
+        
+        if (haveBalootCards)
+        {
+            if (card.Shape == hokumShape && (card.Rank == CardRank.King || card.Rank == CardRank.Queen))
+            {
+                balootSequence++;
+
+                if (balootSequence == 2)
+                {
+                    BalootCardsPlayed?.Invoke();
+                    ProjectScore += 20;
+                    balootSequence = 0;
+                }
+            }
+            else
+            {
+                balootSequence = 0;
+            }
+        }
+    }
+
+    public void CheckBalootCards(CardShape shape)
+    {
+        haveBalootCards = OwnedCards.Contains(new Card(shape,CardRank.King)) 
+            && OwnedCards.Contains(new Card(shape, CardRank.Queen));
+
+        hokumShape = shape;
     }
 
     public override void Reset()
@@ -76,6 +131,11 @@ public class PlayerBaloot : PlayerBase
             {
                 allProjects.Add(new Project(Projects.OneHundred, rankCount, 100, 40 + (i - 8)));
                 startCards.RemoveAll(a => a.Rank == (CardRank)i);
+
+                if (i == 10 || i == 11)
+                {
+                    haveBalootCards = false;
+                }
             }
         }
 
@@ -115,15 +175,30 @@ public class PlayerBaloot : PlayerBase
                 break;
             case 3:
                 AddAvailableProject(index, count + 1, 50, Projects.Fifty, allProjects);
-                goto case 2; // falls through to previous case
+                goto case 2; //falls through to previous case
             case 4:
                 AddAvailableProject(index, count + 1, 100, Projects.OneHundred, allProjects);
-                goto case 3; // falls through to previous case
+
+                if (haveBalootCards)
+                {
+                    if (allProjects.Last().Cards.Contains(new Card(hokumShape, CardRank.King)) ||
+                    allProjects.Last().Cards.Contains(new Card(hokumShape, CardRank.Queen)))
+                    {
+                        haveBalootCards = false;
+                    }
+                }
+                goto case 3; //falls through to previous case
         }
     }
 
     private void AddAvailableProject(int index, int count, int score, Projects project, List<Project> allProjects)
     {
+        //bug here
+        if (index - count < 0)
+        {
+            Debug.LogError("index:" + index + " count:" + count + " both is less than zero");
+            return;
+        }
         allProjects.Add(new Project(project, startCards.GetRange(index - count, count), score, ((int)project + ((int)startCards[index].Rank - 6))));
         startCards.RemoveRange(index - count, count);
     }
@@ -131,6 +206,11 @@ public class PlayerBaloot : PlayerBase
     internal void RemoveProjects()
     {
         PlayerProjects.Clear();
+    }
+
+    internal virtual void CancelDouble()
+    {
+
     }
 }
 

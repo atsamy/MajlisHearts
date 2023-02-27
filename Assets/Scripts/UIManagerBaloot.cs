@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,6 @@ public class UIManagerBaloot : UIManager
     GameScriptBaloot balootGame => (GameScriptBaloot)Game;
     //public static BalootUIManager Instance;
     BalootCardsUIManager balootCardsUI => (BalootCardsUIManager)CardsUI;
-    bool init;
 
     [SerializeField]
     GameTypePanel gameTypePanel;
@@ -20,10 +20,15 @@ public class UIManagerBaloot : UIManager
     GameInfoPanel gameInfoPanel;
     [SerializeField]
     ProjectsPanel projectsPanel;
+    [SerializeField]
+    DoubleHokumPanel doubleHokumPanel;
 
     [SerializeField]
     TextMeshProUGUI[] typeTexts;
     MainPlayerBaloot mainPlayer;
+
+    [SerializeField]
+    GameObject baloot;
 
     private void OnEnable()
     {
@@ -41,15 +46,82 @@ public class UIManagerBaloot : UIManager
         gameTypePanel.OnOtherHokumSelected += GameTypePanel_OnOtherHokumSelected;
         selectShapePanel.OnShapeSelected += SelectShapePanel_OnShapeSelected;
         projectsPanel.OnProjectAdded += ProjectsPanel_OnProjectAdded;
+        doubleHokumPanel.OnDoublePressed += DoubleHokumPanel_OnDoublePressed;
         balootGame.OnRevealProject += BalootGame_OnRevealProject;
         balootGame.OnHideProject += BalootGame_OnHideProject;
+        balootGame.OnRoundDoubled += BalootGame_OnRoundDoubled;
 
         SetCardManager(balootCardsUI);
+    }
+
+    private void BalootGame_OnRoundDoubled(int playerIndex, int doubleValue)
+    {
+        string text = "";
+        switch (doubleValue)
+        {
+            case 2:
+                text = "Double";
+                break;
+            case 3:
+                text = "Triple";
+                break;
+            case 4:
+                text = "Quadruple";
+                break;
+            case 5:
+                text = "Qahwa";
+                break;
+        }
+
+        ShowPlayerText(playerIndex, text);
+    }
+
+    private void ShowPlayerText(int playerIndex, string message)
+    {
+        playerIndex = CorrectIndex(playerIndex);
+
+        typeTexts[playerIndex].text = message;
+        typeTexts[playerIndex].transform.parent.gameObject.SetActive(true);
+
+        StartCoroutine(ShowTypeAnimation(playerIndex));
+    }
+
+    private void DoubleHokumPanel_OnDoublePressed(bool isDouble, int value)
+    {
+        mainPlayer.SelectDouble(isDouble, value);
     }
 
     private void BalootGame_OnHideProject()
     {
         projectsPanel.gameObject.SetActive(false);
+    }
+
+    protected override void Game_OnGameReady()
+    {
+        mainPlayer = (MainPlayerBaloot)Game.Players[Game.MainPlayerIndex];
+        mainPlayer.OnWaitSelectType += MainPlayer_OnWaitSelectType;
+        mainPlayer.WaitOthers += MainPlayer_WaitOthers;
+        mainPlayer.OnCheckDouble += MainPlayer_OnCheckDouble;
+        mainPlayer.OnCancelDouble += MainPlayer_OnCancelDouble;
+
+        balootCardsUI.SetMainPlayer(mainPlayer);
+
+        SetPlayers(Game.Players, mainPlayer);
+
+        foreach (PlayerBaloot item in Game.Players)
+        {
+            item.BalootCardsPlayed += Item_BalootCardsPlayed;
+        }
+    }
+
+    private void MainPlayer_OnCancelDouble()
+    {
+        doubleHokumPanel.gameObject.SetActive(false);   
+    }
+
+    private void MainPlayer_OnCheckDouble(int doubleValue)
+    {
+        doubleHokumPanel.Show(doubleValue);
     }
 
     private void BalootGame_OnRevealProject(int index)
@@ -68,7 +140,7 @@ public class UIManagerBaloot : UIManager
 
     private void ProjectsPanel_OnProjectAdded(Projects project, int count)
     {
-        mainPlayer.AddProject(project,count);
+        mainPlayer.AddProject(project, count);
     }
 
     private void GameTypePanel_OnOtherHokumSelected()
@@ -90,10 +162,7 @@ public class UIManagerBaloot : UIManager
 
     private void BalootGame_OnPlayerSelectedType(int index, BalootGameType type)
     {
-        typeTexts[index].text= type.ToString();
-        typeTexts[index].transform.parent.gameObject.SetActive(true);
-
-        StartCoroutine(ShowTypeAnimation(index));
+        ShowPlayerText(index, type.ToString());
     }
 
     IEnumerator ShowTypeAnimation(int playerIndex)
@@ -104,30 +173,18 @@ public class UIManagerBaloot : UIManager
 
     private void BalootUIManager_OnStartCardsReady(Card balootCard)
     {
-        if (!init)
-        {
-            mainPlayer = (MainPlayerBaloot)Game.Players[Game.MainPlayerIndex];
-            mainPlayer.OnWaitSelectType += MainPlayer_OnWaitSelectType;
-            //mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
-            //mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
-            balootCardsUI.SetMainPlayer(mainPlayer);
-
-            SetPlayers(Game.Players, mainPlayer);
-            init = true;
-
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    ((BalootPlayer)game.Players[i]).OnTypeSelected +=  
-            //}
-        }
-
         balootCardsUI.AddBalootCard(balootCard);
         balootCardsUI.ShowPlayerCards(mainPlayer, false, 5);
-
-
-        //SetScore();
     }
+
+    private async void Item_BalootCardsPlayed()
+    {
+        baloot.SetActive(true);
+        await Task.Delay(1000);
+        baloot.SetActive(false);
+    }
+
+
 
     protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)
     {
@@ -143,7 +200,7 @@ public class UIManagerBaloot : UIManager
 
     private void GameTypePanel_OnGameTypeSelected(BalootGameType type)
     {
-        mainPlayer.SelectType(type);    
+        mainPlayer.SelectType(type);
     }
 
     public override void Game_OnCardsReady()
@@ -156,13 +213,14 @@ public class UIManagerBaloot : UIManager
             gameInfoPanel.ShowSuns();
 
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
+        doubleHokumPanel.gameObject.SetActive(false);
         //cardsUIManager.ShowPlayerCards(mainPlayer, true);
     }
 
     private void MainPlayer_OnWaitSelectType()
     {
-        gameTypePanel.Show(balootGame.balootRoundScript.BiddingRound, 
-            balootGame.balootRoundScript.HokumIndex,Game.MainPlayerIndex);
+        gameTypePanel.Show(balootGame.balootRoundScript.BiddingRound,
+            balootGame.balootRoundScript.HokumIndex, Game.MainPlayerIndex);
     }
 
     public override void SetScore()

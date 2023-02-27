@@ -8,6 +8,8 @@ using UnityEngine;
 public class MainPlayerBaloot : PlayerBaloot
 {
     public event Action WaitOthers;
+    public event Action<int> OnCheckDouble;
+    public event Action OnCancelDouble;
 
     public delegate void WaitPassCards();
     public event WaitPassCards OnWaitSelectType;
@@ -25,6 +27,13 @@ public class MainPlayerBaloot : PlayerBaloot
         base.Reset();
         ProjectsCount.Clear();
     }
+
+    public override void CheckDouble(int value)
+    {
+        OnCheckDouble?.Invoke(value);
+    }
+
+
 
     public void AddProject(Projects project, int count)
     {
@@ -56,6 +65,11 @@ public class MainPlayerBaloot : PlayerBaloot
                 }
             }
         }
+    }
+
+    internal override void CancelDouble()
+    {
+        OnCancelDouble?.Invoke();
     }
 
     protected override void WaitForOthers()

@@ -10,6 +10,9 @@ public class GameScriptBase : MonoBehaviour
     public delegate void StartPlaying(bool isMulti);
     public event StartPlaying OnStartPlaying;
 
+    public delegate void GameReady();
+    public event GameReady OnGameReady;
+
     public delegate void DealFinished(bool hostPlayer, bool gameFinished);
     public event DealFinished OnDealFinished;
 
@@ -32,6 +35,11 @@ public class GameScriptBase : MonoBehaviour
     {
         OnSetPlayEnvironment?.Invoke(Resources.Load<Sprite>("TableTop/Tables/" + tableTop),
             Resources.Load<Sprite>("CardBack/" + cardBack));
+    }
+
+    public void SetGameReady()
+    {
+        OnGameReady?.Invoke();
     }
 
     public void SetDealFinished(bool hostPlayer)

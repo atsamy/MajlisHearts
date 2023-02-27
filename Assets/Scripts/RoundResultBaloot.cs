@@ -15,6 +15,10 @@ public class RoundResultBaloot : RoundResult
     [SerializeField]
     TextMeshProUGUI pointsTeam2;
     [SerializeField]
+    TextMeshProUGUI projectsTeam1;
+    [SerializeField]
+    TextMeshProUGUI projectsTeam2;
+    [SerializeField]
     TextMeshProUGUI totalPointsTeam1;
     [SerializeField]
     TextMeshProUGUI totalPointsTeam2;
@@ -31,5 +35,11 @@ public class RoundResultBaloot : RoundResult
 
         pointsTeam1.text = ((GameScriptBaloot)game).TeamsScore[0].ToString();
         pointsTeam2.text = ((GameScriptBaloot)game).TeamsScore[1].ToString();
+
+        projectsTeam1.text = (((PlayerBaloot)game.Players[0]).ProjectScore + 
+            ((PlayerBaloot)game.Players[2]).ProjectScore).ToString();
+
+        projectsTeam2.text = (((PlayerBaloot)game.Players[1]).ProjectScore +
+            ((PlayerBaloot)game.Players[3]).ProjectScore).ToString();
     }
 }

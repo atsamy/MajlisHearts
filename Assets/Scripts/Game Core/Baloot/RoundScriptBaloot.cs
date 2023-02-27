@@ -1,3 +1,4 @@
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ public class RoundScriptBaloot : RoundScriptBase
     public int BidingTeam { get; internal set; }
     public int BiddingRound { get; private set; }
     public int HokumIndex { get; private set; }
+
+    public event System.Action<int, BalootGameType> OnGameTypeSelected;
 
     public RoundScriptBaloot()
     {
@@ -170,6 +173,8 @@ public class RoundScriptBaloot : RoundScriptBase
         }
 
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtFinished);
+
+        players[StartIndex].SetTurn(RoundInfo);
     }
 
     public override void StartNewRound()
@@ -201,15 +206,19 @@ public class RoundScriptBaloot : RoundScriptBase
     internal void SetGameType(int index, BalootGameType type)
     {
         balootRoundInfo.BalootRoundType = type;
-        DealContinue(index);
-        players[StartIndex].SetTurn(RoundInfo);
         playingIndex = StartIndex;
-
         BidingTeam = (index == 0 || index == 2) ? 0 : 1;
+
+        OnGameTypeSelected?.Invoke(index,type);
     }
 
+    //internal void ContinueDeal(int index)
+    //{
+    //    DealContinue(index);
+    //}
 
-    bool hokumConfirmed;
+
+    //bool hokumConfirmed;
     internal void PlayerSelectedType(int index, BalootGameType type)
     {
         if (index == StartIndex)

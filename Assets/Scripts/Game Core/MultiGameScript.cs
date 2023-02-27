@@ -168,6 +168,8 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
         }
+
+
     }
 
     void GameScript_OnPlayerTurn(int index,RoundInfo info)
@@ -211,6 +213,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             yield return null;
         }
 
+        SetGameReady();
         StartGame();
     }
 

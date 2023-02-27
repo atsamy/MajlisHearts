@@ -17,8 +17,6 @@ public class UIManagerHearts : UIManager
     [SerializeField]
     DoublePanelScript doublePanel;
 
-    bool init;
-
     private void OnEnable()
     {
         Instance = this;
@@ -34,20 +32,19 @@ public class UIManagerHearts : UIManager
         doublePanel.OnDoubleCardSet += SetDoubleCard;
     }
 
+    protected override void Game_OnGameReady()
+    {
+        mainPlayer = (MainPlayer)Game.Players[Game.MainPlayerIndex];
+        mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
+        mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
+        mainPlayer.WaitOthers += MainPlayer_WaitOthers;
+        CardsUI.SetMainPlayer(mainPlayer);
+
+        SetPlayers(Game.Players, mainPlayer);
+    }
 
     public override void Game_OnCardsReady()
     {
-        if (!init)
-        {
-            mainPlayer = (MainPlayer)Game.Players[Game.MainPlayerIndex];
-            mainPlayer.OnWaitPassCards += MainPlayer_OnWaitPassCards;
-            mainPlayer.OnWaitDoubleCards += MainPlayer_OnWaitDoubleCards;
-            mainPlayer.WaitOthers += MainPlayer_WaitOthers;
-            CardsUI.SetMainPlayer(mainPlayer);
-
-            SetPlayers(Game.Players, mainPlayer);
-            init = true;
-        }
         SetScore();
         CardsUI.ShowPlayerCards(mainPlayer, true,13);
     }

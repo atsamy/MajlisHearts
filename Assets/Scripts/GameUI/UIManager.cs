@@ -33,11 +33,17 @@ public class UIManager : MonoBehaviour
         Game.OnTrickFinished += Game_OnTrickFinished;
         Game.OnStartPlaying += Game_OnStartPlaying;
         Game.OnSetPlayEnvironment += Game_OnSetPlayEnvironment;
+        Game.OnGameReady += Game_OnGameReady;
         //remove later
         CardsUI.SetCardBack(UIElementsHolder.CardBack);
 
         //uncomment later
         //FadeScreen.Instance?.FadeOut(2);
+    }
+
+    protected virtual void Game_OnGameReady()
+    {
+
     }
 
     public virtual void Game_OnCardsReady()

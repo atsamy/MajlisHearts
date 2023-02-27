@@ -56,6 +56,7 @@ public class GameScript : GameScriptBase
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
              GameManager.Instance.EquippedItem["CardBack"]);
 
+        SetGameReady();
         StartGame();
     }
 

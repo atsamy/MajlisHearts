@@ -7,7 +7,7 @@ using UnityEngine;
 public class AIPlayerBaloot : PlayerBaloot
 {
     public bool FakePlayer { private get; set; }
-
+    bool cancelDouble;
     public AIPlayerBaloot(int index) : base(index)
     {
         isPlayer = false;
@@ -19,27 +19,35 @@ public class AIPlayerBaloot : PlayerBaloot
         playCard(info);
     }
 
+    public override async void CheckDouble(int value)
+    {
+        await Task.Delay(2000);
+
+        if (!cancelDouble)
+            SelectDouble(true, value);
+    }
+
     public override void ChooseProjects(BalootGameType type)
     {
         List<Project> projects = GetAllProjects(type);
-        
-        foreach (Project project in projects) 
+
+        foreach (Project project in projects)
         {
-            PlayerProjects.Add(project.Cards,project.projectName);
+            PlayerProjects.Add(project.Cards, project.projectName);
             ProjectScore += project.Score;
             ProjectPower += project.Power;
         }
     }
 
-    public override void CheckGameType()
-    {
-        SelectTypeWait();
-    }
-
-    async void SelectTypeWait()
+    public override async void CheckGameType()
     {
         await Task.Delay(1000);
-        SelectType(BalootGameType.Pass);
+        SelectType(index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
+    }
+
+    internal override void CancelDouble()
+    {
+        cancelDouble = true;
     }
 
     async void playCard(RoundInfo info)
@@ -57,7 +65,7 @@ public class AIPlayerBaloot : PlayerBaloot
             if (FakePlayer)
                 await Task.Delay(600);
 
-            ChooseCard(OwnedCards[Random.Range(0,OwnedCards.Count)]);
+            ChooseCard(OwnedCards[Random.Range(0, OwnedCards.Count)]);
             return;
         }
 
@@ -280,5 +288,11 @@ public class AIPlayerBaloot : PlayerBaloot
         }
 
         return avoidWeight;
+    }
+
+    public override void Reset()
+    {
+        cancelDouble = false;
+        base.Reset();
     }
 }
