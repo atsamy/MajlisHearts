@@ -173,8 +173,7 @@ public class UIManagerBaloot : UIManager
 
     private void BalootUIManager_OnStartCardsReady(Card balootCard)
     {
-        balootCardsUI.AddBalootCard(balootCard);
-        balootCardsUI.ShowPlayerCards(mainPlayer, false, 5);
+        balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard);
     }
 
     private async void Item_BalootCardsPlayed()
@@ -205,10 +204,10 @@ public class UIManagerBaloot : UIManager
 
     public override void Game_OnCardsReady()
     {
-        balootCardsUI.AddRemaingCards(mainPlayer);
+        balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
-            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape);
+            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape,balootGame.DoubleValue);
         else
             gameInfoPanel.ShowSuns();
 

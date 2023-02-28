@@ -14,7 +14,7 @@ public class PlayerCardsLayout : MonoBehaviour
 
     public bool IsVertical;
 
-    public void SetLocations()
+    public void SetLocations(float speed)
     {
         float count = transform.childCount;
         //print(count);
@@ -26,9 +26,14 @@ public class PlayerCardsLayout : MonoBehaviour
             float x = location * spacing;
             float rot = location * -rotationFactor + rotation;
 
-            transform.GetChild(i).DOLocalMove(new Vector3(IsVertical?y:x,IsVertical?x:y, 0),0.15f);
-            transform.GetChild(i).DORotate(new Vector3(0, 0, rot), 0.15f);
+            transform.GetChild(i).DOLocalMove(new Vector3(IsVertical?y:x,IsVertical?x:y, 0), speed);
+            transform.GetChild(i).DORotate(new Vector3(0, 0, rot), speed);
         }
+    }
+
+    public void SetLocations()
+    {
+        SetLocations(0.15f);
     }
 
     public void RemoveCards()

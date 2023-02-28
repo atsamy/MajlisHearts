@@ -42,7 +42,7 @@ public class AIPlayerBaloot : PlayerBaloot
     public override async void CheckGameType()
     {
         await Task.Delay(1000);
-        SelectType(index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
+        SelectType(BalootGameType.Pass);// index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
     }
 
     internal override void CancelDouble()

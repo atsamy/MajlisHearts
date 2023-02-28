@@ -27,7 +27,7 @@ public class CardsUIManager : MonoBehaviour
             playableCards[Random.Range(0, playableCards.Count)].Pressed();
         };
 
-        cardElementsHolder.playersDetails[0].SetPlayer(mainPlayer.Avatar,mainPlayer.Name,0);
+        cardElementsHolder.playersDetails[0].SetPlayer(mainPlayer.Avatar, mainPlayer.Name, 0);
     }
 
     public void WaitPlayer(int index)
@@ -54,28 +54,9 @@ public class CardsUIManager : MonoBehaviour
         }
     }
 
-    public virtual void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable,int count)
+    public virtual void ShowPlayerCards(PlayerBase mainPlayer, bool setInteractable, int count)
     {
-        //playerCardsUI = new List<CardUI>();
-        //playableCards = new List<CardUI>();
 
-        //for (int i = 0; i < count; i++)
-        //{
-        //    GameObject newCard = Instantiate(playerCard, CardsHolder[0].transform);
-        //    playerCardsUI.Add(newCard.GetComponent<CardUI>());
-
-        //    Card card = mainPlayer.OwnedCards[i];
-
-        //    playerCardsUI.Last().Set(cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
-        //    {
-        //         AddToPassCards(newCard.GetComponent<CardUI>());
-        //    });
-
-        //    playerCardsUI.Last().SetInteractable(setInteractable);
-        //}
-
-        //AddCards(count);
-        //OrganizeCards();
     }
 
     internal void SetCardBack(Sprite cardBack)
@@ -115,10 +96,10 @@ public class CardsUIManager : MonoBehaviour
 
         DeckCard deckCard = new DeckCard(playedCard.gameObject, card);
 
-        int offset = (playerIndex == 1 || playerIndex == 3) ?90:0;
+        int offset = (playerIndex == 1 || playerIndex == 3) ? 90 : 0;
 
-        playedCard.DOLocalMove(Vector3.zero + new Vector3(Random.Range(-10,10), Random.Range(-10, 10),0), 0.5f);
-        playedCard.DORotate(new Vector3(0,0,Random.Range(-40,40) + offset), 0.5f);
+        playedCard.DOLocalMove(Vector3.zero + new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0), 0.5f);
+        playedCard.DORotate(new Vector3(0, 0, Random.Range(-40, 40) + offset), 0.5f);
         playedCard.DOScaleX(0, 0.1f).OnComplete(() =>
         {
             playedCard.DOScaleX(1, 0.15f);
@@ -193,12 +174,12 @@ public class CardsUIManager : MonoBehaviour
 
     public void AddCards(int count)
     {
-        AddVerticalCards(cardElementsHolder.CardsHolder[1], cardBack,90, count);
-        AddVerticalCards(cardElementsHolder.CardsHolder[3], cardBack,-90, count);
+        AddVerticalCards(cardElementsHolder.CardsHolder[1], cardBack, 90, count);
+        AddVerticalCards(cardElementsHolder.CardsHolder[3], cardBack, -90, count);
         AddHorizontalCards(cardElementsHolder.CardsHolder[2], cardBack, count);
     }
 
-    void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack,int rotation,int count)
+    void AddVerticalCards(PlayerCardsLayout parent, GameObject CardBack, int rotation, int count)
     {
         parent.IsVertical = true;
         for (int i = 0; i < count; i++)
@@ -208,7 +189,32 @@ public class CardsUIManager : MonoBehaviour
             newCard.transform.eulerAngles = new Vector3(0, 0, rotation);
         }
 
-        parent.SetLocations();
+        parent.SetLocations(0.15f);
+    }
+
+    protected void AddVerticalCardsInOrigin(PlayerCardsLayout parent, GameObject CardBack,int rot, int count, Vector3 originPosition)
+    {
+        parent.IsVertical = true;
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newCard = Instantiate(CardBack, parent.transform);
+            newCard.transform.position = originPosition;
+            newCard.transform.eulerAngles = new Vector3(0, 0, 180);
+        }
+
+        parent.SetLocations(0.3f);
+    }
+
+    protected void AddHorizontalCardsInOrigin(PlayerCardsLayout parent, GameObject CardBack, int count, Vector3 originPosition)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject newCard = Instantiate(CardBack, parent.transform);
+            newCard.transform.position = originPosition;
+            newCard.transform.eulerAngles = new Vector3(0, 0, 180);
+        }
+
+        parent.SetLocations(0.3f);
     }
 
     void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack, int count)
@@ -220,7 +226,7 @@ public class CardsUIManager : MonoBehaviour
             newCard.transform.eulerAngles = new Vector3(0, 0, 180);
         }
 
-        parent.SetLocations();
+        parent.SetLocations(0.15f);
     }
 
     public void SetPlayableCards(RoundInfo info, PlayerBase player)

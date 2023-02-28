@@ -39,7 +39,8 @@ public class GameScriptBaloot : GameScriptBase
     int declarerIndex = 0;
     int doublerIndex = -2;
 
-    int doubleValue;
+    [HideInInspector]
+    public int DoubleValue;
     private void Awake()
     {
         Instance = this;
@@ -88,6 +89,7 @@ public class GameScriptBaloot : GameScriptBase
     {
         if (isDouble)
         {
+            DoubleValue = value + 2;
             if (value == 3)
             {
                 balootRoundScript.DealContinue(declarerIndex);
@@ -107,18 +109,18 @@ public class GameScriptBaloot : GameScriptBase
                 ((PlayerBaloot)Players[(playerIndex + 2) % 4]).CancelDouble();
             }
 
-            doubleValue = value + 2;
-            OnRoundDoubled?.Invoke(playerIndex, doubleValue);
+
+            OnRoundDoubled?.Invoke(playerIndex, DoubleValue);
         }
         else
         {
-            if (doubleValue == 0 && doublerIndex == -1)
+            if (DoubleValue == 0 && doublerIndex == -1)
             {
                 doublerIndex = -2;
                 return;
             }
             balootRoundScript.DealContinue(declarerIndex);
-            doubleValue = value + 1;
+            DoubleValue = value + 1;
         }
     }
 
@@ -183,7 +185,7 @@ public class GameScriptBaloot : GameScriptBase
         {
             TeamsTotalScore[i] += TeamsScore[i];
 
-            if (TeamsTotalScore[i] >= 152)
+            if (TeamsTotalScore[i] >= 152 || DoubleValue == 5)
             {
                 finished = true;
             }
@@ -220,8 +222,8 @@ public class GameScriptBaloot : GameScriptBase
         TeamsScore[0] += ProjectsScore[0] / 5;
         TeamsScore[1] += ProjectsScore[1] / 5;
 
-        TeamsScore[0] *= doubleValue;
-        TeamsScore[1] *= doubleValue;
+        TeamsScore[0] *= DoubleValue;
+        TeamsScore[1] *= DoubleValue;
     }
 
     private int CalculatePointsSuns(int total)

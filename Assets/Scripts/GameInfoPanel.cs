@@ -13,6 +13,8 @@ public class GameInfoPanel : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI gameTypeText;
     [SerializeField]
+    TextMeshProUGUI doubleText;
+    [SerializeField]
     Image hokumShape;
 
     [SerializeField]
@@ -25,13 +27,32 @@ public class GameInfoPanel : MonoBehaviour
         hokumShape.gameObject.SetActive(false);
     }
 
-    public void ShowHokum(CardShape cardShape)
+    public void ShowHokum(CardShape cardShape,int doubler)
     {
-        print(cardShape);
+        print(doubler);
         Show();
         gameTypeText.text = "Hokum";
         hokumShape.sprite = shapes[(int)cardShape];
         hokumShape.gameObject.SetActive(true);
+
+        switch (doubler) 
+        {
+            case 0:
+                doubleText.text = "";
+                break;
+                case 2:
+                doubleText.text = "x2";
+                break;
+                case 3:
+                doubleText.text = "x3";
+                break;
+                case 4:
+                doubleText.text = "x4";
+                break;
+                case 5:
+                doubleText.text = "Qahwa";
+                break;
+        }
     }
 
     private void Show()
