@@ -260,6 +260,11 @@ public class RoundScriptBaloot : RoundScriptBase
                 break;
         }
     }
+
+    internal void StartFirstTurn()
+    {
+        players[StartIndex].SetTurn(RoundInfo);
+    }
 }
 
 public class BalootRoundInfo : RoundInfo

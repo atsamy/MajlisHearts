@@ -192,31 +192,6 @@ public class CardsUIManager : MonoBehaviour
         parent.SetLocations(0.15f);
     }
 
-    protected void AddVerticalCardsInOrigin(PlayerCardsLayout parent, GameObject CardBack,int rot, int count, Vector3 originPosition)
-    {
-        parent.IsVertical = true;
-        for (int i = 0; i < count; i++)
-        {
-            GameObject newCard = Instantiate(CardBack, parent.transform);
-            newCard.transform.position = originPosition;
-            newCard.transform.eulerAngles = new Vector3(0, 0, 180);
-        }
-
-        parent.SetLocations(0.3f);
-    }
-
-    protected void AddHorizontalCardsInOrigin(PlayerCardsLayout parent, GameObject CardBack, int count, Vector3 originPosition)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            GameObject newCard = Instantiate(CardBack, parent.transform);
-            newCard.transform.position = originPosition;
-            newCard.transform.eulerAngles = new Vector3(0, 0, 180);
-        }
-
-        parent.SetLocations(0.3f);
-    }
-
     void AddHorizontalCards(PlayerCardsLayout parent, GameObject CardBack, int count)
     {
         for (int i = 0; i < count; i++)

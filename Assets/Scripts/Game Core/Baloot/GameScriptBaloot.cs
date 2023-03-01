@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class GameScriptBaloot : GameScriptBase
     public static GameScriptBaloot Instance;
     //MainPlayerBaloot myPlayer => (MainPlayerBaloot)Players[0];
 
-    public delegate void StartCardsReady(Card balootCard);
+    public delegate void StartCardsReady(Card balootCard,int startIndex);
     public event StartCardsReady OnStartCardsReady;
 
     public delegate void PlayerSelectedType(int index, BalootGameType type);
@@ -36,7 +37,8 @@ public class GameScriptBaloot : GameScriptBase
     [HideInInspector]
     public int[] TeamsTotalScore;
 
-    int declarerIndex = 0;
+    [HideInInspector]
+    public int DeclarerIndex = 0;
     int doublerIndex = -2;
 
     [HideInInspector]
@@ -92,11 +94,11 @@ public class GameScriptBaloot : GameScriptBase
             DoubleValue = value + 2;
             if (value == 3)
             {
-                balootRoundScript.DealContinue(declarerIndex);
+                balootRoundScript.DealContinue(DeclarerIndex);
             }
-            else if (playerIndex != declarerIndex)
+            else if (playerIndex != DeclarerIndex)
             {
-                ((PlayerBaloot)Players[declarerIndex]).CheckDouble(value + 1);
+                ((PlayerBaloot)Players[DeclarerIndex]).CheckDouble(value + 1);
                 doublerIndex = playerIndex;
             }
             else
@@ -119,14 +121,14 @@ public class GameScriptBaloot : GameScriptBase
                 doublerIndex = -2;
                 return;
             }
-            balootRoundScript.DealContinue(declarerIndex);
+            balootRoundScript.DealContinue(DeclarerIndex);
             DoubleValue = value + 1;
         }
     }
 
     private void BalootRoundScript_OnGameTypeSelected(int index, BalootGameType gameType)
     {
-        declarerIndex = index;
+        DeclarerIndex = index;
         doublerIndex = -1;
 
         if (gameType == BalootGameType.Hokum)
@@ -271,25 +273,13 @@ public class GameScriptBaloot : GameScriptBase
         switch (eventType)
         {
             case EventTypeBaloot.CardsDealtBegin:
-                OnStartCardsReady?.Invoke(balootRoundScript.BalootCard);
-                ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType();
+                DealCards();
                 break;
             case EventTypeBaloot.RestartDeal:
                 RestartGame();
-
                 break;
             case EventTypeBaloot.CardsDealtFinished:
-                for (int i = 0; i < Players.Length; i++)
-                {
-                    Players[i].Score = 0;
-                    ((PlayerBaloot)Players[i]).SetStartCards();
-                    if (balootRoundScript.RoundType == BalootGameType.Hokum)
-                    {
-                        ((PlayerBaloot)Players[i]).CheckBalootCards(balootRoundScript.HokumShape);
-                    }
-                }
-                SetCardsReady();
-                SetStartGame(false);
+                DealRemaingCards();
                 break;
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
@@ -312,6 +302,31 @@ public class GameScriptBaloot : GameScriptBase
                 TeamsScore[1] = 0;
                 break;
         }
+    }
+
+    private async void DealRemaingCards()
+    {
+        for (int i = 0; i < Players.Length; i++)
+        {
+            Players[i].Score = 0;
+            ((PlayerBaloot)Players[i]).SetStartCards();
+            if (balootRoundScript.RoundType == BalootGameType.Hokum)
+            {
+                ((PlayerBaloot)Players[i]).CheckBalootCards(balootRoundScript.HokumShape);
+            }
+        }
+        SetCardsReady();
+        await Task.Delay(2200);
+        balootRoundScript.StartFirstTurn();
+        
+        SetStartGame(false);
+    }
+
+    private async void DealCards()
+    {
+        OnStartCardsReady?.Invoke(balootRoundScript.BalootCard, balootRoundScript.StartIndex);
+        await Task.Delay(4000);
+        ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType();
     }
 
     private void CompareProjects()

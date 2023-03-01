@@ -171,9 +171,9 @@ public class UIManagerBaloot : UIManager
         typeTexts[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
-    private void BalootUIManager_OnStartCardsReady(Card balootCard)
+    private void BalootUIManager_OnStartCardsReady(Card balootCard,int startIndex)
     {
-        balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard);
+        balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
     }
 
     private async void Item_BalootCardsPlayed()
@@ -204,7 +204,7 @@ public class UIManagerBaloot : UIManager
 
     public override void Game_OnCardsReady()
     {
-        balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType);
+        balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape,balootGame.DoubleValue);

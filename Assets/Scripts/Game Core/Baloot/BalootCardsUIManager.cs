@@ -15,14 +15,12 @@ public class BalootCardsUIManager : CardsUIManager
 
     [SerializeField]
     ProjectCards[] projectCards;
-    public async void ShowPlayerCardsBaloot(PlayerBase mainPlayer, Card balootCard)
+    public async void ShowPlayerCardsBaloot(PlayerBase mainPlayer, Card balootCard, int startIndex)
     {
         playerCardsUI = new List<CardUI>();
         playableCards = new List<CardUI>();
 
         deck = new GameObject[2];
-
-        //Vector3 originPos = new Vector3(Screen.width / 2, Screen.height / 2);
 
         for (int i = 0; i < 2; i++)
         {
@@ -32,41 +30,63 @@ public class BalootCardsUIManager : CardsUIManager
 
         for (int i = 0; i < 2; i++)
         {
-            for (int j = 0; j < (3 - i); j++)
+            await ShuffleCards(mainPlayer, startIndex, 3 - i, i * 3, () => 
             {
-                GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
-                playerCardsUI.Add(newCard.GetComponent<CardUI>());
-
-                Card card = mainPlayer.OwnedCards[j + (i * 3)];
-
-                playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
-                {
-                    mainPlayer.ChooseCard(card);
-                    //AddToPassCards(newCard.GetComponent<CardUI>());
-                });
-
-                playerCardsUI.Last().SetInteractable(false);
-
-                newCard.transform.position = deckParent.position;
-                //newCard.transform.DOLocalMove(Vector3.zero, 0.25f);
-            }
-
-            cardElementsHolder.CardsHolder[0].SetLocations(0.3f);
-            await Task.Delay(500);
-            AddVerticalCardsInOrigin(cardElementsHolder.CardsHolder[1], cardBack, 90, (3 - i), deckParent.position);
-            await Task.Delay(500);
-            AddHorizontalCardsInOrigin(cardElementsHolder.CardsHolder[2], cardBack, (3 - i), deckParent.position);
-            await Task.Delay(500);
-            AddVerticalCardsInOrigin(cardElementsHolder.CardsHolder[3], cardBack, -90, (3 - i), deckParent.position);
-            await Task.Delay(500);
-
-
+                OrganizeCards();
+            },null);
         }
-        //await Task.Delay(300);
-
-        OrganizeCards();
 
         AddBalootCard(balootCard);
+    }
+
+    private async Task ShuffleCards(PlayerBase mainPlayer, int startIndex, int count, int round,Action organizeCards,Action LastCards)
+    {
+        for (int j = startIndex; j < 4 + startIndex; j++)
+        {
+            int index = j % 4;
+
+            List<GameObject> newCards = InitCards(count, cardElementsHolder.CardsHolder[index], deckParent.position, j == 0 ? cardElementsHolder.playerCard : cardBack);
+
+            if (index == 0)
+            {
+                for (int k = 0; k < newCards.Count; k++)
+                {
+                    CardUI cardUI = newCards[k].GetComponent<CardUI>();
+                    playerCardsUI.Add(cardUI);
+                    Card card = mainPlayer.OwnedCards[k + round];
+                    playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+                    {
+                        mainPlayer.ChooseCard(card);
+                        MainPlayerCard(cardUI);
+                    });
+                    cardUI.SetInteractable(false);
+                }
+                organizeCards?.Invoke();
+            }
+
+            cardElementsHolder.CardsHolder[index].SetLocations(0.3f);
+
+            if (j == 3 + startIndex)
+            {
+                LastCards?.Invoke();
+            }
+
+            await Task.Delay(500);
+        }
+    }
+
+    private List<GameObject> InitCards(int count, PlayerCardsLayout cardsLayout, Vector3 position, GameObject Card)
+    {
+        List<GameObject> cards = new List<GameObject>();
+        for (int j = 0; j < count; j++)
+        {
+            GameObject newCard = Instantiate(Card, cardsLayout.transform);
+            newCard.transform.position = position;
+
+            cards.Add(newCard);
+        }
+
+        return cards;
     }
 
     public void RevealCards(int playerIndex, Dictionary<List<Card>, Projects> AllProjects)
@@ -110,42 +130,29 @@ public class BalootCardsUIManager : CardsUIManager
         return true;
     }
 
-    internal void AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType)
+    internal async void AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType,int startIndex)
     {
         deck[1].gameObject.SetActive(false);
 
-        AddCards(3);
-
-        for (int i = 5; i < 8; i++)
+        await ShuffleCards(mainPlayer, startIndex, 3, 5, () => 
         {
-            GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
-            playerCardsUI.Add(newCard.GetComponent<CardUI>());
+            if (balootGameType == BalootGameType.Hokum)
+                OrganizeCards(CardHelper.HokumRank);
+            else
+                OrganizeCards(CardHelper.SunRank);
+        }, () => 
+        {
+            deck[0].gameObject.SetActive(false);
+        });
 
-            Card card = mainPlayer.OwnedCards[i];
-
-            playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
-            {
-                mainPlayer.ChooseCard(card);
-                //AddToPassCards(newCard.GetComponent<CardUI>());
-            });
-
-            playerCardsUI.Last().SetInteractable(false);
-        }
-
-        //fix
-        //StartCoroutine(UpdateCards(mainPlayer));
-        SetPlayerCards(mainPlayer);
-
-        if (balootGameType == BalootGameType.Hokum)
-            OrganizeCards(CardHelper.HokumRank);
-        else
-            OrganizeCards(CardHelper.SunRank);
-
-        //for (int i = 1; i < cardElementsHolder.CardsHolder.Length; i++)
+        //foreach (var item in playerCardsUI)
         //{
-        //    cardElementsHolder.CardsHolder[i].SetLocations();
+        //    item.SetOnPressed((card) =>
+        //    {
+        //        mainPlayer.ChooseCard(card);
+        //        MainPlayerCard(item);
+        //    });
         //}
-        deck[0].gameObject.SetActive(false);
 
     }
 
