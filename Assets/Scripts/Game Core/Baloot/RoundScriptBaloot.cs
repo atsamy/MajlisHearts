@@ -16,6 +16,7 @@ public class RoundScriptBaloot : RoundScriptBase
     public BalootGameType RoundType => balootRoundInfo.BalootRoundType;
 
     public int BidingTeam { get; internal set; }
+    public int OtherTeam => (BidingTeam + 1) % 2;
     public int BiddingRound { get; private set; }
     public int HokumIndex { get; private set; }
 
@@ -174,7 +175,7 @@ public class RoundScriptBaloot : RoundScriptBase
 
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtFinished);
 
-        players[StartIndex].SetTurn(RoundInfo);
+        //players[StartIndex].SetTurn(RoundInfo);
     }
 
     public override void StartNewRound()
@@ -261,7 +262,7 @@ public class RoundScriptBaloot : RoundScriptBase
         }
     }
 
-    internal void StartFirstTurn()
+    internal override void StartFirstTurn()
     {
         players[StartIndex].SetTurn(RoundInfo);
     }

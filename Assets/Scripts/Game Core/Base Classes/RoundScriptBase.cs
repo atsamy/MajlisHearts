@@ -47,6 +47,11 @@ public class RoundScriptBase
         
     }
 
+    internal virtual void StartFirstTurn()
+    {
+
+    }
+
     public virtual void Deal()
     {
         

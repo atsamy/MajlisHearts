@@ -22,11 +22,11 @@ public class PlayerCardsLayout : MonoBehaviour
         {
             float location = i - ((count - 1) / 2);
 
-            float y = Mathf.Abs(location) * - (2 + Mathf.Abs(location)) * (rotationFactor / 1.5f);
+            float y = Mathf.Abs(location) * -(2 + Mathf.Abs(location)) * (rotationFactor / 1.5f) * (IsVertical ? -1 : 1);
             float x = location * spacing;
             float rot = location * -rotationFactor + rotation;
 
-            transform.GetChild(i).DOLocalMove(new Vector3(IsVertical?y:x,IsVertical?x:y, 0), speed);
+            transform.GetChild(i).DOLocalMove(new Vector3(IsVertical ? y : x, IsVertical ? x : y, 0), speed);
             transform.GetChild(i).DORotate(new Vector3(0, 0, rot), speed);
         }
     }

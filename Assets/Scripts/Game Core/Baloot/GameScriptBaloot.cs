@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEditorInternal;
 using UnityEngine;
@@ -43,6 +44,8 @@ public class GameScriptBaloot : GameScriptBase
 
     [HideInInspector]
     public int DoubleValue;
+
+    public int WinningTeam;
     private void Awake()
     {
         Instance = this;
@@ -161,19 +164,26 @@ public class GameScriptBaloot : GameScriptBase
                 total[1] = CalculatePointsHokum(total[1]);
 
 
-                if (total[balootRoundScript.BidingTeam] > total[(balootRoundScript.BidingTeam + 1) % 2] + 8)
+                if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam] + 8)
                 {
                     TeamsScore[0] = total[0];
                     TeamsScore[1] = total[1];
+
+                    WinningTeam = balootRoundScript.BidingTeam;
                 }
                 else
                 {
                     TeamsScore[balootRoundScript.BidingTeam] = 0;
-                    TeamsScore[(balootRoundScript.BidingTeam + 1) % 2] = 16;
+                    TeamsScore[balootRoundScript.OtherTeam] = 16;
+
+                    WinningTeam = balootRoundScript.OtherTeam;
                 }
 
                 TeamsScore[0] += ProjectsScore[0] / 10;
                 TeamsScore[1] += ProjectsScore[1] / 10;
+
+                TeamsScore[0] *= DoubleValue;
+                TeamsScore[1] *= DoubleValue;
 
                 break;
             case BalootGameType.Ashkal:
@@ -187,12 +197,24 @@ public class GameScriptBaloot : GameScriptBase
         {
             TeamsTotalScore[i] += TeamsScore[i];
 
-            if (TeamsTotalScore[i] >= 152 || DoubleValue == 5)
+            if (TeamsTotalScore[i] >= 152)
             {
-                finished = true;
+                if (!finished)
+                {
+                    finished = true;
+                    WinningTeam = i;
+                }
+                else
+                {
+                    WinningTeam = TeamsTotalScore[0] > TeamsTotalScore[1] ? 0 : 1;
+                }
             }
+        }
 
-
+        if (DoubleValue == 5)
+        {
+            WinningTeam = TeamsScore[0] > TeamsScore[1] ? 0 : 1;
+            finished = true;
         }
 
         return finished;
@@ -210,22 +232,23 @@ public class GameScriptBaloot : GameScriptBase
         ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
         total[1] = CalculatePointsSuns(total[1]);
 
-        if (total[balootRoundScript.BidingTeam] > total[(balootRoundScript.BidingTeam + 1) % 2] + 13)
+        if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam] + 13)
         {
             TeamsScore[0] = total[0];
             TeamsScore[1] = total[1];
+
+            WinningTeam = balootRoundScript.BidingTeam;
         }
         else
         {
             TeamsScore[balootRoundScript.BidingTeam] = 0;
-            TeamsScore[(balootRoundScript.BidingTeam + 1) % 2] = 26;
+            TeamsScore[balootRoundScript.OtherTeam] = 26;
+
+            WinningTeam = balootRoundScript.OtherTeam;
         }
 
         TeamsScore[0] += ProjectsScore[0] / 5;
         TeamsScore[1] += ProjectsScore[1] / 5;
-
-        TeamsScore[0] *= DoubleValue;
-        TeamsScore[1] *= DoubleValue;
     }
 
     private int CalculatePointsSuns(int total)
@@ -304,7 +327,7 @@ public class GameScriptBaloot : GameScriptBase
         }
     }
 
-    private async void DealRemaingCards()
+    private void DealRemaingCards()
     {
         for (int i = 0; i < Players.Length; i++)
         {
@@ -316,16 +339,15 @@ public class GameScriptBaloot : GameScriptBase
             }
         }
         SetCardsReady();
-        await Task.Delay(2200);
-        balootRoundScript.StartFirstTurn();
-        
-        SetStartGame(false);
     }
 
-    private async void DealCards()
+    private void DealCards()
     {
         OnStartCardsReady?.Invoke(balootRoundScript.BalootCard, balootRoundScript.StartIndex);
-        await Task.Delay(4000);
+    }
+
+    public void CheckType()
+    {
         ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType();
     }
 
@@ -377,7 +399,7 @@ public class GameScriptBaloot : GameScriptBase
     private async void RestartGame()
     {
         OnRestartDeal?.Invoke();
-        await System.Threading.Tasks.Task.Delay(1500);
+        await Task.Delay(1500);
         StartGame();
     }
 }

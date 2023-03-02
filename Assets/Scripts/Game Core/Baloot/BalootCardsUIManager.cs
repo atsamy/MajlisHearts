@@ -15,7 +15,7 @@ public class BalootCardsUIManager : CardsUIManager
 
     [SerializeField]
     ProjectCards[] projectCards;
-    public async void ShowPlayerCardsBaloot(PlayerBase mainPlayer, Card balootCard, int startIndex)
+    public async Task ShowPlayerCardsBaloot(PlayerBase mainPlayer, Card balootCard, int startIndex)
     {
         playerCardsUI = new List<CardUI>();
         playableCards = new List<CardUI>();
@@ -45,7 +45,7 @@ public class BalootCardsUIManager : CardsUIManager
         {
             int index = j % 4;
 
-            List<GameObject> newCards = InitCards(count, cardElementsHolder.CardsHolder[index], deckParent.position, j == 0 ? cardElementsHolder.playerCard : cardBack);
+            List<GameObject> newCards = InitCards(count, cardElementsHolder.CardsHolder[index], deckParent.position, index == 0 ? cardElementsHolder.playerCard : cardBack);
 
             if (index == 0)
             {
@@ -54,7 +54,7 @@ public class BalootCardsUIManager : CardsUIManager
                     CardUI cardUI = newCards[k].GetComponent<CardUI>();
                     playerCardsUI.Add(cardUI);
                     Card card = mainPlayer.OwnedCards[k + round];
-                    playerCardsUI.Last().Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
+                    cardUI.Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
                     {
                         mainPlayer.ChooseCard(card);
                         MainPlayerCard(cardUI);
@@ -130,7 +130,7 @@ public class BalootCardsUIManager : CardsUIManager
         return true;
     }
 
-    internal async void AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType,int startIndex)
+    internal async Task AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType,int startIndex)
     {
         deck[1].gameObject.SetActive(false);
 

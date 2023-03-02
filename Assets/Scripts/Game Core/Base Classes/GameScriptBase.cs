@@ -72,6 +72,7 @@ public class GameScriptBase : MonoBehaviour
 
     public void SetStartGame(bool isMulti)
     {
+        RoundScript.StartFirstTurn();
         OnStartPlaying?.Invoke(isMulti);
     }
 

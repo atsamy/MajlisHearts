@@ -171,9 +171,11 @@ public class UIManagerBaloot : UIManager
         typeTexts[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
-    private void BalootUIManager_OnStartCardsReady(Card balootCard,int startIndex)
+    private async void BalootUIManager_OnStartCardsReady(Card balootCard,int startIndex)
     {
-        balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
+        UIElementsHolder.ScoresHolder.SetActive(true);
+        await balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
+        balootGame.CheckType();
     }
 
     private async void Item_BalootCardsPlayed()
@@ -202,9 +204,9 @@ public class UIManagerBaloot : UIManager
         mainPlayer.SelectType(type);
     }
 
-    public override void Game_OnCardsReady()
+    public override async void Game_OnCardsReady()
     {
-        balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
+        await balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape,balootGame.DoubleValue);
@@ -213,7 +215,8 @@ public class UIManagerBaloot : UIManager
 
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         doubleHokumPanel.gameObject.SetActive(false);
-        //cardsUIManager.ShowPlayerCards(mainPlayer, true);
+
+        Game.SetStartGame(false);
     }
 
     private void MainPlayer_OnWaitSelectType()

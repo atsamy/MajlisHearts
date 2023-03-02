@@ -116,7 +116,7 @@ public class GameScript : GameScriptBase
                 break;
             case EventType.DoubleCardsFinished:
                 SetStartGame(false);
-                RoundScript.SetTurn();
+                //RoundScript.SetTurn();
                 break;
             case EventType.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);

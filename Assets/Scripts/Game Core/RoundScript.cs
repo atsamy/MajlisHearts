@@ -113,6 +113,11 @@ public class RoundScriptHeats: RoundScriptBase
         }
     }
 
+    internal override void StartFirstTurn()
+    {
+        players[playingIndex].SetTurn(RoundInfo);
+    }
+
     public override void SetTurn()
     {
         if (RoundInfo.TrickNumber < 13)
