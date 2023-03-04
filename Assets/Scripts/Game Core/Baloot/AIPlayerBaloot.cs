@@ -8,6 +8,8 @@ public class AIPlayerBaloot : PlayerBaloot
 {
     public bool FakePlayer { private get; set; }
     bool cancelDouble;
+
+    BalootGameType balootGameType;
     public AIPlayerBaloot(int index) : base(index)
     {
         isPlayer = false;
@@ -24,7 +26,7 @@ public class AIPlayerBaloot : PlayerBaloot
         await Task.Delay(2000);
 
         if (!cancelDouble)
-            SelectDouble(true, value);
+            SelectDouble(false, value);
     }
 
     public override void ChooseProjects(BalootGameType type)
@@ -52,9 +54,6 @@ public class AIPlayerBaloot : PlayerBaloot
 
     async void playCard(RoundInfo info)
     {
-        //int dedduct = (3000 - OwnedCards.Count * 230);
-        //int time = FakePlayer ? Random.Range(1000, 4000 - dedduct) : 1000;
-        //await Task.Delay(time);
         if (!FakePlayer)
             await Task.Delay(1000);
 
@@ -91,54 +90,10 @@ public class AIPlayerBaloot : PlayerBaloot
             }
             else
             {
-                //specificShape = OwnedCards.Where(a => a.Shape == CardShape.Heart).OrderBy(a => a.Rank).ToList();
-                //bool isTeamPlayer = checkIfTeamPlayer(info, hand);
-
                 ChooseCard(OwnedCards[Random.Range(0, OwnedCards.Count)]);
-                //if (OwnedCards.Contains(Card.QueenOfSpades))// && info.roundNumber != 0 && !isTeamPlayer)
-                //{
-                //    if (FakePlayer)
-                //        await Task.Delay(Random.Range(800, 1200));
-                //    ChooseCard(Card.QueenOfSpades);
-                //}
-                //else if (OwnedCards.Contains(Card.TenOfDiamonds))// && info.roundNumber != 0 && !isTeamPlayer)
-                //{
-                //    if (FakePlayer)
-                //        await Task.Delay(Random.Range(800, 1200));
-                //    ChooseCard(Card.TenOfDiamonds);
-                //}
-                //else if (specificShape.Count > 0)// && info.roundNumber != 0 && !isTeamPlayer)
-                //{
-                //    if (FakePlayer)
-                //        await Task.Delay(Random.Range(800, 1200));
-                //    ChooseCard(specificShape.Last());
-                //}
-                //else
-                //{
-                //    if (FakePlayer)
-                //        await Task.Delay(Mathf.Max(800, OwnedCards.Count * Random.Range(200, 400)));
-                //    ChooseCard(ChooseRiskyCards(info));
-                //}
             }
         }
 
-    }
-
-    public Card ChooseRiskyCards(RoundInfo info)
-    {
-        // revisit this code we need to choose hight cards from a stack with few options
-        Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
-
-        foreach (var item in OwnedCards)
-        {
-            int risk = GetRiskfactor(item, info);
-            AllCards.Add(item, risk);
-        }
-        //Debug.Log("AI Cards:"+ OwnedCards.Count + " " + AllCards.Count);
-
-        AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
-
-        return AllCards.Last().Key;
     }
 
     public Card ChooseFirstHand(RoundInfo info)
@@ -147,10 +102,18 @@ public class AIPlayerBaloot : PlayerBaloot
 
         foreach (var item in OwnedCards)
         {
-            int risk = GetRiskfactor(item, info);
-            AllCards.Add(item, risk);
+            //int risk = GetRiskfactor(item, info);
+            AllCards.Add(item, 0);
         }
-        AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+
+        if (balootGameType == BalootGameType.Hokum)
+        {
+            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+        }
+        else
+        {
+            
+        }
 
         if (AllCards.Count == 0)
         {
@@ -163,131 +126,41 @@ public class AIPlayerBaloot : PlayerBaloot
         }
 
         return AllCards.First().Key;
-        //bug here
     }
 
-    public Card ChooseSpecificShape(List<Card> specificShape, RoundInfo info)
+    public int GetCardValueSun(Card card,BalootRoundInfo roundInfo)
     {
-        Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
-
-        int risk = AvoidHand(info);
-
-        if (risk > 50)
+        if (IsWinCard(card,roundInfo) == 0)
         {
-            return GetLeastAvoidCard(info, specificShape);
+            return 200;
         }
         else
         {
-            return specificShape.Last();
+            return 0;
         }
+        //else if()
+        //CardHelper.SunValue
     }
 
-    int GetRiskfactor(Card card, RoundInfo info)
+    public int IsWinCard(Card card, BalootRoundInfo balootInfo)
     {
-        int risk = (int)card.Rank;
+        int value = 0;
 
-        List<Card> sameShape = OwnedCards.Where(a => a.Shape == card.Shape).ToList();
-
-        foreach (var item in sameShape)
+        for (int i = CardHelper.SunRank[card.Rank] + 1; i <= CardHelper.SunRank[CardRank.Ace]; i++)
         {
-            if (item.Rank < card.Rank)
-                risk--;
-        }
+            Card higherCard = new Card(card.Shape, CardHelper.SunRank.FirstOrDefault(x => x.Value == i).Key);
 
-        List<Card> groundShape = info.CardsDrawn.Where(a => a.Shape == card.Shape).ToList();
-
-        foreach (var item in groundShape)
-        {
-            if (item.Rank < card.Rank)
-                risk--;
-        }
-
-        if (((Card)card).IsQueenOfSpades || ((Card)card).IsTenOfDiamonds)
-            risk += 100;
-
-        int riskToCut = groundShape.Count + sameShape.Count;
-
-        return risk + riskToCut;
-    }
-
-    Card GetLeastAvoidCard(RoundInfo info, List<Card> specificShape)
-    {
-        Card HighestCard = new Card(info.TrickShape, CardRank.Two);
-
-        foreach (var item in info.CardsOntable)
-        {
-            if (item.Shape == info.TrickShape)
+            if (OwnedCards.Contains(higherCard) || balootInfo.CardsDrawn.Contains(higherCard))
             {
-                if (item.Rank > HighestCard.Rank)
-                {
-                    HighestCard = item;
-                }
-            }
-        }
-
-        Card chosenOne = specificShape.First();
-        bool canAvoid = false;
-
-        foreach (var item in specificShape)
-        {
-            if (item.Rank < HighestCard.Rank)
-            {
-                chosenOne = item;
-                canAvoid = true;
-            }
-        }
-
-        if (!canAvoid && info.CardsOntable.Count == 3)
-        {
-            chosenOne = specificShape.Last();
-        }
-
-        return chosenOne;
-    }
-
-    int AvoidHand(RoundInfo info)
-    {
-        int avoidWeight = 0;
-
-        if (info.CardsOntable.Count == 3)
-        {
-            foreach (var item in info.CardsOntable)
-            {
-                if (item.Shape == CardShape.Heart)
-                {
-                    avoidWeight += 50;
-                }
-                else if (item.IsQueenOfSpades)
-                {
-                    avoidWeight += 100;
-                }
-                else if (item.IsTenOfDiamonds)
-                {
-                    avoidWeight += 100;
-                }
-            }
-        }
-        else
-        {
-            if (info.TrickShape == CardShape.Spade && !info.QueenOfSpade)
-            {
-                avoidWeight += 100;
-            }
-            else if (info.TrickShape == CardShape.Diamond && !info.TenOfDiamonds)
-            {
-                avoidWeight += 100;
-            }
-            else if (info.TrickShape == CardShape.Heart)
-            {
-                avoidWeight += 100;
+                continue;
             }
             else
             {
-                avoidWeight = info.ShapesOnGround[info.TrickShape] + GetShapeCount(info.TrickShape);
+                value++;
             }
         }
 
-        return avoidWeight;
+        return value;
     }
 
     public override void Reset()

@@ -142,8 +142,6 @@ public class AIPlayer : Player
             ShapesValue.Add(shape, totalValue);
         }
 
-
-
         foreach (var item in OwnedCards)
         {
             weightedCards.Add(item, CalculatePassCardsRisk(item, ShapesValue[item.Shape]));
