@@ -32,6 +32,8 @@ public class DealResult : MonoBehaviour
     Image timerFill;
     [SerializeField]
     TextMeshProUGUI timerText;
+    [SerializeField]
+    int counterTime = 10;
 
     //private void Start()
     //{
@@ -59,7 +61,7 @@ public class DealResult : MonoBehaviour
             //Footer.SetActive(false);
             //buttonText.text = LanguageManager.Instance.GetString("nextround");
             timerButton.SetActive(true);
-            StartCoroutine(CountNextRound(5));
+            StartCoroutine(CountNextRound(counterTime));
         }
 
         bool isTeam = GameManager.Instance.IsTeam;
