@@ -22,6 +22,9 @@ public class PlayfabManager : MonoBehaviour
     public delegate void UserDataReturned(Dictionary<string, UserDataRecord> userData);
     public event UserDataReturned OnUserDataReturned;
 
+    public delegate void UserStatsReturned(List<StatisticValue> statisticValues);
+    public event UserStatsReturned OnUserStatsReturned;
+
     public delegate void CatalogReturned(List<CatalogItem> catalog);
     public event CatalogReturned OnCatalogReturned;
 
@@ -56,7 +59,7 @@ public class PlayfabManager : MonoBehaviour
     {
 #if UNITY_ANDROID
         Debug.Log("Login Android"); //Application.identifier };
-    var request = new LoginWithAndroidDeviceIDRequest { CreateAccount = true, AndroidDeviceId = SystemInfo.deviceUniqueIdentifier };
+        var request = new LoginWithAndroidDeviceIDRequest { CreateAccount = true, AndroidDeviceId = SystemInfo.deviceUniqueIdentifier };
 
         PlayFabClientAPI.LoginWithAndroidDeviceID(request,
             (result) => SetupSessionData((titleData) =>
@@ -167,7 +170,7 @@ public class PlayfabManager : MonoBehaviour
     //        });
     //}
 
-    public void AddFriend(string name,Action<bool,string> success)
+    public void AddFriend(string name, Action<bool, string> success)
     {
         PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest() { TitleDisplayName = name }, (result) =>
         {
@@ -185,18 +188,18 @@ public class PlayfabManager : MonoBehaviour
                 (error) =>
                 {
                     Debug.Log("add friend Error: " + error.ErrorMessage);
-                    success?.Invoke(false,null);
+                    success?.Invoke(false, null);
                 });
 
-        },(error) =>
+        }, (error) =>
         {
             Debug.Log("add friend Error: " + error.ErrorMessage);
         });
     }
 
-    internal void AcceptFriendRequest(string friendPlayFabID,string friendName,Action<bool,string> success)
+    internal void AcceptFriendRequest(string friendPlayFabID, string friendName, Action<bool, string> success)
     {
-        Debug.Log(string.Format("friends {0} {1}",friendPlayFabID, friendName));
+        Debug.Log(string.Format("friends {0} {1}", friendPlayFabID, friendName));
 
         PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest()
@@ -216,7 +219,7 @@ public class PlayfabManager : MonoBehaviour
                 });
     }
 
-    internal void DenyFriendRequest(string friendPlayFabID,Action<bool> result = null)
+    internal void DenyFriendRequest(string friendPlayFabID, Action<bool> result = null)
     {
         PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest()
@@ -253,7 +256,7 @@ public class PlayfabManager : MonoBehaviour
         (error) =>
         {
             onFriendsReturned?.Invoke(null);
-        }); ;
+        });
     }
 
     internal void LoginWithGoogle(string authCode)
@@ -269,6 +272,39 @@ public class PlayfabManager : MonoBehaviour
         }), (errorResult) =>
         {
             Debug.LogError(errorResult.GenerateErrorReport());
+        });
+    }
+
+    internal void GetHeartsLeaderboard(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    {
+        GetLeaderboardRequest getLeaderboardRequest = new GetLeaderboardRequest()
+        {
+            StatisticName = "HeartsPoints",
+            StartPosition = 0,
+            MaxResultsCount = 10
+        };
+        PlayFabClientAPI.GetLeaderboard(getLeaderboardRequest, (result) =>
+        {
+            leaderBoardResult?.Invoke(result.Leaderboard);
+        }, (error) =>
+        {
+            Debug.LogError(error.ErrorMessage);
+        });
+    }
+
+    internal void UpdateStats(string statName, int value, Action<bool> requestResult)
+    {
+        UpdatePlayerStatisticsRequest request = new UpdatePlayerStatisticsRequest()
+        {
+            Statistics = new List<StatisticUpdate> { new StatisticUpdate() { Value = value, StatisticName = statName } }
+        };
+        PlayFabClientAPI.UpdatePlayerStatistics(request, (result) =>
+        {
+            requestResult?.Invoke(true);
+        }, (error) =>
+        {
+            Debug.LogError($"UpdatePlayerStatistics: {error.ErrorMessage}");
+            requestResult?.Invoke(false);
         });
     }
 
@@ -491,15 +527,16 @@ public class PlayfabManager : MonoBehaviour
         );
     }
 
-    internal void GetPlayerStats(Action<List<StatisticValue>> onData)
+    internal void GetPlayerStats()
     {
         PlayFabClientAPI.GetPlayerStatistics(
             new GetPlayerStatisticsRequest()
             {
+                StatisticNames = new List<string>() { "HeartsPoints" }
             },
             (response) =>
             {
-                onData?.Invoke(response.Statistics);
+                OnUserStatsReturned?.Invoke(response.Statistics);
             },
             (error) =>
             {

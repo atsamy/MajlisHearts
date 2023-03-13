@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         Coins -= value;
         OnCoinsChanged?.Invoke(Coins);
-        PlayfabManager.instance.DeductCurrency("SC",value,(result)=>
+        PlayfabManager.instance.DeductCurrency("SC", value, (result) =>
         {
 
         });
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
     {
         Gems -= value;
         OnGemsChanged?.Invoke(Gems);
-        PlayfabManager.instance.DeductCurrency("HC",value, (result) =>
+        PlayfabManager.instance.DeductCurrency("HC", value, (result) =>
         {
 
         });
@@ -113,15 +113,25 @@ public class GameManager : MonoBehaviour
 
     public float AddPoints(int value)
     {
-        //int Level = MyPlayer.Level;
         MyPlayer.Points += value;
-        //int newLevel = MyPlayer.Level;
 
         PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() {
             { "Points",MyPlayer.Points.ToString()}
         });
 
-        //progress = ;
+        if (MyPlayer.GamePoints.ContainsKey("HeartsPoints"))
+        {
+            MyPlayer.GamePoints["HeartsPoints"] += value;
+        }
+        else
+        {
+            MyPlayer.GamePoints.Add("HeartsPoints", value);
+        }
+
+        PlayfabManager.instance.UpdateStats("HeartsPoints", MyPlayer.GamePoints["HeartsPoints"], (result) =>
+        {
+
+        });
 
         return (float)value / LevelFactor;
     }
@@ -182,7 +192,7 @@ public class GameManager : MonoBehaviour
 
     public void OnApplicationFocus(bool focus)
     {
-        #if UNITY_ANDROID
+#if UNITY_ANDROID
         if (!focus)
         {
             AndroidNotificationChannel notificationChannel = new AndroidNotificationChannel()
@@ -214,14 +224,14 @@ public class GameManager : MonoBehaviour
         {
             AndroidNotificationCenter.CancelAllNotifications();
         }
-        #endif
+#endif
     }
 
     internal void SetMajlisName(string text)
     {
         MyPlayer.MajlisName = text;
 
-        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() { {"majlisName",text } });
+        PlayfabManager.instance.SetPlayerData(new Dictionary<string, string>() { { "majlisName", text } });
     }
 }
 
@@ -233,6 +243,8 @@ public class PlayerInfo
     public string Avatar;
     public int Points;
 
+    public Dictionary<string, int> GamePoints;
+
     public float CurrentPogress { get { return (float)(Points % GameManager.LevelFactor) / GameManager.LevelFactor; } }
 
     public int LevelPoints { get { return (int)GameManager.LevelFactor * (Level + 1); } }
@@ -240,6 +252,11 @@ public class PlayerInfo
     public int Level
     {
         get { return Mathf.FloorToInt(Points / GameManager.LevelFactor) + 1; }
+    }
+
+    public PlayerInfo()
+    {
+        GamePoints = new Dictionary<string, int>();
     }
 }
 

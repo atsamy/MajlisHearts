@@ -38,6 +38,7 @@ public class LoginManager : MonoBehaviour
 
         playfab.OnPlayerLoggedIn += Playfab_OnPlayerLoggedIn;
         playfab.OnUserDataReturned += Playfab_OnUserDataReturned;
+        playfab.OnUserStatsReturned += Playfab_OnUserStatsReturned;
         playfab.OnInventoryReturned += Playfab_OnInventoryReturned;
         playfab.OnConnectionError += Playfab_OnConnectionError;
         playfab.OnCatalogReturned += Playfab_OnCatalogReturned;
@@ -65,6 +66,7 @@ public class LoginManager : MonoBehaviour
     {
         playfab.OnPlayerLoggedIn -= Playfab_OnPlayerLoggedIn;
         playfab.OnUserDataReturned -= Playfab_OnUserDataReturned;
+        playfab.OnUserStatsReturned -= Playfab_OnUserStatsReturned;
         playfab.OnInventoryReturned -= Playfab_OnInventoryReturned;
         playfab.OnConnectionError -= Playfab_OnConnectionError;
         playfab.OnCatalogReturned -= Playfab_OnCatalogReturned;
@@ -73,7 +75,7 @@ public class LoginManager : MonoBehaviour
 
     public void LogIn()
     {
-        
+
         loginValue = PlayerPrefs.GetInt("login", 0);
 
         if ((Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer) && !forceDeviceLogin)// || Application.platform == RuntimePlatform.IPhonePlayer)
@@ -167,7 +169,7 @@ public class LoginManager : MonoBehaviour
                 //    print("code:"+code);
                 PlayfabManager.instance.LoginWithGoogle(serverAuthCode);
                 //});
-                
+
 #elif UNITY_IOS
                 //playfab.DeviceLogin();
                 playfab.LoginWithApple();
@@ -180,7 +182,7 @@ public class LoginManager : MonoBehaviour
         });
     }
 
-    private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo,bool newUser)
+    private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo, bool newUser)
     {
         fillBar.DOFillAmount(0.2f, 0.2f);
         if (newUser)
@@ -190,7 +192,7 @@ public class LoginManager : MonoBehaviour
         }
         else if (string.IsNullOrEmpty(userInfo.DisplayName))
         {
-            print("lang:"+LanguageManager.Instance.CurrentLanguage);
+            print("lang:" + LanguageManager.Instance.CurrentLanguage);
             ShowUserNamePanel();
         }
         else
@@ -253,6 +255,16 @@ public class LoginManager : MonoBehaviour
                     break;
             }
         }
+        playfab.GetPlayerStats();
+    }
+
+    private void Playfab_OnUserStatsReturned(List<StatisticValue> statisticValues)
+    {
+        foreach (var item in statisticValues)
+        {
+            GameManager.Instance.MyPlayer.GamePoints.Add(item.StatisticName, item.Value);
+        }
+
         playfab.GetTitleData();
     }
 
