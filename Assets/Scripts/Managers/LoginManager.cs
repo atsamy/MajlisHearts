@@ -25,7 +25,7 @@ public class LoginManager : MonoBehaviour
     PlayfabManager playfab;
     int loginValue;
 
-    bool newUser;
+    //bool newUser;
 
     [SerializeField]
     bool forceDeviceLogin;
@@ -122,6 +122,10 @@ public class LoginManager : MonoBehaviour
             {
                 GameManager.Instance.GameData = JsonUtility.FromJson<GameData>(item.Value);
             }
+            else if (item.Key == "Gems")
+            {
+                Purchaser.Instance.GemsPrices = JsonUtility.FromJson<Wrapper<int>>(item.Value).array;
+            }
         }
         playfab.GetCatalog();
     }
@@ -187,7 +191,7 @@ public class LoginManager : MonoBehaviour
         fillBar.DOFillAmount(0.2f, 0.2f);
         if (newUser)
         {
-            this.newUser = true;
+            //this.newUser = true;
             SetLanguageAndUserName();
         }
         else if (string.IsNullOrEmpty(userInfo.DisplayName))

@@ -31,6 +31,8 @@ public class MainPanelScript : MonoBehaviour
     MenuScene Profile;
     [SerializeField]
     Image fillLevel;
+    [SerializeField]
+    GameObject infoPanel;
 
     RectTransform coinsRect;
 
@@ -125,5 +127,16 @@ public class MainPanelScript : MonoBehaviour
     {
         GameManager.Instance.OnCoinsChanged -= OnCurrencyChanged;
         GameManager.Instance.OnGemsChanged -= OnGemsChanged;
+    }
+
+    public void SwitchProgressInfo(bool value)
+    {
+        gems.SetActive(!value);
+        coins.SetActive(!value);
+
+        header.SetActive(!value);
+        main.SetActive(!value);
+
+        infoPanel.SetActive(value);
     }
 }

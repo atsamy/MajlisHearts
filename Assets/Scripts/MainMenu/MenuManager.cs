@@ -25,14 +25,15 @@ public class MenuManager : MonoBehaviour
 
     public FriendRequestPopup FriendRequestPopup;
 
+    [SerializeField]
+    Popup popup;
 
     internal void OpenStore(int index)
     {
         StoreScene.Open(index);
     }
 
-    [SerializeField]
-    Popup popup;
+
 
     public MenuScene CurrentScene { get; internal set; }
 
