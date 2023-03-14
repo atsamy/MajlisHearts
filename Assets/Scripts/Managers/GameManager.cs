@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
         return Inventory.Contains(new InventoryItem(category, id));
     }
 
-    public float AddPoints(int value)
+    public float AddPoints(int value,int points)
     {
         MyPlayer.Points += value;
 
@@ -121,11 +121,11 @@ public class GameManager : MonoBehaviour
 
         if (MyPlayer.GamePoints.ContainsKey("HeartsPoints"))
         {
-            MyPlayer.GamePoints["HeartsPoints"] += value;
+            MyPlayer.GamePoints["HeartsPoints"] += points;
         }
         else
         {
-            MyPlayer.GamePoints.Add("HeartsPoints", value);
+            MyPlayer.GamePoints.Add("HeartsPoints", points);
         }
 
         PlayfabManager.instance.UpdateStats("HeartsPoints", MyPlayer.GamePoints["HeartsPoints"], (result) =>

@@ -23,6 +23,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
     public static Purchaser Instance;
 
     Action purchaseComplete;
+    internal int[] GemsPrices;
 
     void Start()
     {

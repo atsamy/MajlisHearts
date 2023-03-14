@@ -120,6 +120,10 @@ public class LoginManager : MonoBehaviour
             {
                 GameManager.Instance.GameData = JsonUtility.FromJson<GameData>(item.Value);
             }
+            else if (item.Key == "Gems")
+            {
+                Purchaser.Instance.GemsPrices = JsonUtility.FromJson<Wrapper<int>>(item.Value).array;
+            }
         }
         playfab.GetCatalog();
     }

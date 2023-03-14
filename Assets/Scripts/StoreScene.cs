@@ -9,6 +9,8 @@ public class StoreScene : MenuScene
     public GameObject[] ContentPanels;
 
     public StoreItem[] CurrencyStoreItems;
+    public StoreItem[] GemsStoreItems;
+
     public StoreItem WatchVideoBtn;
 
     [SerializeField]
@@ -31,7 +33,7 @@ public class StoreScene : MenuScene
     {
         WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 100, 0, (index) =>
         {
-            AdsManager.Instance.ShowRewardedAd((result)=>
+            AdsManager.Instance.ShowRewardedAd((result) =>
             {
                 if (result)
                 {
@@ -40,6 +42,34 @@ public class StoreScene : MenuScene
                 }
             });
         });
+
+        for (int i = 0; i < GemsStoreItems.Length; i++)
+        {
+            int[] gemsPrices = Purchaser.Instance.GemsPrices;
+            GemsStoreItems[i].Set(gemsPrices[i * 2].ToString(),
+                gemsPrices[(i * 2) + 1], i, (index) =>
+                {
+                    if (GameManager.Instance.Coins >= gemsPrices[index * 2])
+                    {
+                        MenuManager.Instance.OpenPopup("buygems", false, false, () =>
+                        {
+                            GameManager.Instance.DeductCoins(gemsPrices[index * 2]);
+                            GameManager.Instance.AddGems(gemsPrices[index * 2 + 1]);
+
+                            SFXManager.Instance.PlayClip("Coins");
+                        });
+
+
+                    }
+                    else
+                    {
+                        MenuManager.Instance.OpenPopup("nocoins", false, false, () =>
+                        {
+                            transform.GetComponentInParent<StoreScene>().TabPressed(0);
+                        });
+                    }
+                });
+        }
 
         avatarContent.itemEquipped += (item) =>
         {
@@ -60,14 +90,14 @@ public class StoreScene : MenuScene
     {
         base.Open();
         MenuManager.Instance.HideMain(false, false);
-        Purchaser.Instance.GetAllPrices((prices,amounts) =>
+        Purchaser.Instance.GetAllPrices((prices, amounts) =>
         {
             for (int i = 0; i < CurrencyStoreItems.Length; i++)
             {
                 //Debug.Log("item " + i + " price " + prices[i] + " amount " + amounts[i]);
                 CurrencyStoreItems[i].Set(prices[i], amounts[i], i, (index) =>
                 {
-                    Purchaser.Instance.BuyCurrency(index, () => 
+                    Purchaser.Instance.BuyCurrency(index, () =>
                     {
                         SFXManager.Instance.PlayClip("Coins");
                         GameManager.Instance.AddCoins(amounts[index]);

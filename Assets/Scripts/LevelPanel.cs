@@ -109,7 +109,7 @@ public class LevelPanel : MonoBehaviour
 
         //StartCoroutine(CountNumbers(startGems,startCoins,gems, reward, 1f));
 
-        float progress = GameManager.Instance.AddPoints(score);
+        float progress = GameManager.Instance.AddPoints(score,GetPoints(rank));
         float totalProgress = MathF.Min(1, currentProgress + progress);
         bool isNewLevel = currentProgress + progress >= 1;
 
@@ -206,6 +206,14 @@ public class LevelPanel : MonoBehaviour
         1 => 100,
         2 => 50,
         _ => 20
+    };
+
+    int GetPoints(int rank) => rank switch
+    {
+        0 => 3,
+        1 => 2,
+        2 => 1,
+        _ => 0
     };
 
     public void NextPressed()
