@@ -10,6 +10,8 @@ public class AIPlayerBaloot : PlayerBaloot
     bool cancelDouble;
 
     BalootGameType balootGameType;
+    Dictionary<CardRank, int> rankAdjust => (balootGameType == BalootGameType.Hokum) ? CardHelper.HokumRank : CardHelper.SunRank;
+
     public AIPlayerBaloot(int index) : base(index)
     {
         isPlayer = false;
@@ -44,7 +46,7 @@ public class AIPlayerBaloot : PlayerBaloot
     public override async void CheckGameType()
     {
         await Task.Delay(1000);
-        SelectType( index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
+        SelectType(index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
     }
 
     internal override void CancelDouble()
@@ -58,95 +60,207 @@ public class AIPlayerBaloot : PlayerBaloot
             await Task.Delay(1000);
 
         int hand = info.CardsOntable.Count;
-
-        if (hand == 0 && info.TrickNumber == 0)
-        {
-            if (FakePlayer)
-                await Task.Delay(600);
-
-            ChooseCard(OwnedCards[Random.Range(0, OwnedCards.Count)]);
-            return;
-        }
+        BalootRoundInfo roundInfo = info as BalootRoundInfo;
 
         shapeCount = shapeCount.OrderByDescending(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
 
+        if (FakePlayer)
+            await Task.Delay(Mathf.Max(800, OwnedCards.Count * Random.Range(250, 300)));
+
         if (hand == 0)
         {
-            if (FakePlayer)
-                await Task.Delay(Mathf.Max(800, OwnedCards.Count * Random.Range(250, 300)));
-
-            ChooseCard(OwnedCards[Random.Range(0, OwnedCards.Count)]);
+            ChooseCard(ChooseWinCard(roundInfo, OwnedCards));
         }
         else
         {
             List<Card> specificShape = OwnedCards.Where(a => a.Shape == info.TrickShape).OrderBy(a => a.Rank).ToList();
 
-            if (specificShape.Count > 0)
+            switch (hand)
             {
-                if (FakePlayer)
-                    await Task.Delay(Mathf.Max(800, specificShape.Count * Random.Range(300, 400)));
-
-                ChooseCard(specificShape[Random.Range(0, specificShape.Count)]);
-            }
-            else
-            {
-                ChooseCard(OwnedCards[Random.Range(0, OwnedCards.Count)]);
+                case 1:
+                    ChooseWinCard(roundInfo, specificShape);
+                    break;
+                case 2:
+                    //check if my team player card is winning or not
+                    //then decide if i should try to win
+                    if (isTeamPlayerWinning(roundInfo))
+                    {
+                        ChooseCard(ChooseLoseCard(roundInfo, specificShape));
+                    }
+                    else
+                    {
+                        ChooseCard(ChooseWinCard(roundInfo, specificShape));
+                    }
+                    break;
+                case 3:
+                    //check if my team player card is winning or not
+                    //then find the least winnig card if available
+                    if (isTeamPlayerWinning(roundInfo))
+                    {
+                        ChooseCard(ChooseLoseCard(roundInfo, specificShape));
+                    }
+                    else
+                    {
+                        ChooseCard(ChooseLeastWinCard(roundInfo, specificShape));
+                    }
+                    break;
             }
         }
-
     }
 
-    public Card ChooseFirstHand(RoundInfo info)
+    //revise please
+    public Card ChooseWinCard(BalootRoundInfo info, List<Card> shapeCards)
     {
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
-
-        foreach (var item in OwnedCards)
-        {
-            //int risk = GetRiskfactor(item, info);
-            AllCards.Add(item, 0);
-        }
+        Card choosenCard;
 
         if (balootGameType == BalootGameType.Hokum)
         {
-            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
-        }
-        else
-        {
-            
-        }
-
-        if (AllCards.Count == 0)
-        {
-            foreach (var item in OwnedCards)
+            foreach (var item in shapeCards)
             {
-                Debug.Log(item);
+                int value = FirstCardValue(item, info);
+
+                if (item.Shape == info.HokumShape)
+                {
+                    if (value != 0)
+                    {
+                        value += 100;
+                    }
+                }
+                else
+                {
+                    int shapeCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == item.Shape) + ShapeCount[item.Shape]);
+                    int hokumCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == info.HokumShape) + ShapeCount[info.HokumShape]);
+
+                    value = Mathf.Max(0, value + hokumCardsOutside - shapeCardsOutside);
+                }
+
+                AllCards.Add(item, value);
             }
 
-            return null;
-        }
-
-        return AllCards.First().Key;
-    }
-
-    public int GetCardValueSun(Card card,BalootRoundInfo roundInfo)
-    {
-        if (IsWinCard(card,roundInfo) == 0)
-        {
-            return 200;
+            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+            choosenCard = AllCards.First().Key;
         }
         else
         {
-            return 0;
+            foreach (var item in shapeCards)
+            {
+                AllCards.Add(item, FirstCardValue(item, info));
+            }
+
+            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+
+            if (AllCards.ElementAt(0).Value != 0)
+            {
+                choosenCard = AllCards.Last().Key;
+            }
+            else
+            {
+                choosenCard = AllCards.First().Key;
+            }
         }
-        //else if()
-        //CardHelper.SunValue
+
+        return choosenCard;
     }
 
-    public int IsWinCard(Card card, BalootRoundInfo balootInfo)
+    public Card ChooseLoseCard(BalootRoundInfo info, List<Card> shapeCards)
+    {
+        if (shapeCards.Count > 0)
+        {
+            return shapeCards.OrderBy(a => rankAdjust[a.Rank]).ToList().First();
+        }
+        else
+        {
+            Dictionary<Card, int> allCardsValues = new Dictionary<Card, int>();
+
+            foreach (var item in OwnedCards)
+            {
+                if (balootGameType == BalootGameType.Hokum)
+                {
+                    if (item.Shape == info.HokumShape)
+                    {
+                        allCardsValues.Add(item, rankAdjust[item.Rank] + 100);
+                    }
+                    else
+                    {
+                        allCardsValues.Add(item, rankAdjust[item.Rank]);
+                    }
+                }
+                else
+                {
+                    allCardsValues.Add(item, rankAdjust[item.Rank]);
+                }
+            }
+            return allCardsValues.OrderBy(a => a.Value).First().Key;
+        }
+    }
+
+    public Card ChooseLeastWinCard(BalootRoundInfo info, List<Card> shapeCards)
+    {
+        if (shapeCards.Count > 0)
+        {
+            List<Card> cards = shapeCards.OrderBy(a => rankAdjust[a.Rank]).ToList();
+
+            Card winningCard = info.CardsOntable[0];
+
+            for (int i = 1; i < info.CardsOntable.Count; i++)
+            {
+                if (balootGameType == BalootGameType.Hokum && info.CardsOntable[i].Shape == info.HokumShape)
+                {
+                    if (winningCard.Shape == info.HokumShape)
+                    {
+                        if (info.CardsOntable[i].Rank > winningCard.Rank)
+                        {
+                            winningCard = info.CardsOntable[i];
+                        }
+                    }
+                    else
+                    {
+                        winningCard = info.CardsOntable[i];
+                    }
+                }
+                else if (info.CardsOntable[i].Shape == info.TrickShape && rankAdjust[info.CardsOntable[i].Rank] > rankAdjust[winningCard.Rank])
+                {
+                    winningCard = info.CardsOntable[i];
+                }
+            }
+
+            foreach (var item in cards)
+            {
+                if (rankAdjust[item.Rank] > rankAdjust[winningCard.Rank])
+                {
+                    return item;
+                }
+            }
+
+            return cards.First();
+        }
+        else
+        {
+            if (balootGameType == BalootGameType.Hokum && ShapeCount[info.HokumShape] > 0)
+            {
+                return OwnedCards.Where(a => a.Shape == info.HokumShape).OrderBy(a => rankAdjust[a.Rank]).First();
+            }
+            else
+            {
+                // instead of using the weakest card the player can also get rid of cards
+                // from shape with least cards if the player
+                return OwnedCards.OrderBy(a => rankAdjust[a.Rank]).First();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Return an int number that determine the probability of the card winning 0 means that it will sure win
+    /// </summary>
+    /// <param name="card"></param>
+    /// <param name="balootInfo"></param>
+    /// <returns></returns>
+    public int FirstCardValue(Card card, BalootRoundInfo balootInfo)
     {
         int value = 0;
 
-        for (int i = CardHelper.SunRank[card.Rank] + 1; i <= CardHelper.SunRank[CardRank.Ace]; i++)
+        for (int i = rankAdjust[card.Rank] + 1; i <= rankAdjust[CardRank.Ace]; i++)
         {
             Card higherCard = new Card(card.Shape, CardHelper.SunRank.FirstOrDefault(x => x.Value == i).Key);
 
@@ -161,6 +275,53 @@ public class AIPlayerBaloot : PlayerBaloot
         }
 
         return value;
+    }
+
+    bool isTeamPlayerWinning(BalootRoundInfo info)
+    {
+        Card teamPlayerCard = info.CardsOntable[info.CardsOntable.Count - 2];
+
+        if (balootGameType == BalootGameType.Hokum)
+        {
+            if (teamPlayerCard.Shape != info.TrickShape && teamPlayerCard.Shape != info.HokumShape)
+            {
+                return false;
+            }
+            else if (teamPlayerCard.Shape == info.HokumShape)
+            {
+                foreach (var item in info.CardsOntable)
+                {
+                    if (CardHelper.HokumRank[item.Rank] > CardHelper.HokumRank[teamPlayerCard.Rank] && item.Shape == info.HokumShape)
+                        return false;
+                }
+            }
+            else
+            {
+                foreach (var item in info.CardsOntable)
+                {
+                    if (CardHelper.HokumRank[item.Rank] > CardHelper.HokumRank[teamPlayerCard.Rank] && item.Shape == info.TrickShape)
+                        return false;
+                    else if (item.Shape == info.HokumShape)
+                        return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            if (teamPlayerCard.Shape != info.TrickShape)
+                return false;
+            else
+            {
+                foreach (var item in info.CardsOntable)
+                {
+                    if (CardHelper.SunRank[item.Rank] > CardHelper.SunRank[teamPlayerCard.Rank] && item.Shape == info.TrickShape)
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 
     public override void Reset()

@@ -9,7 +9,7 @@ public class RoundScriptBaloot : RoundScriptBase
     public int StartIndex;
     BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
 
-    public CardShape HokumShape;
+
     public Card BalootCard;
     List<Card> AllCards;
 
@@ -81,9 +81,9 @@ public class RoundScriptBaloot : RoundScriptBase
                         winningCard = currentCard;
                     }
                 }
-                else if (currentCard.Shape == HokumShape)
+                else if (currentCard.Shape == balootRoundInfo.HokumShape)
                 {
-                    if (winningCard.Shape != HokumShape)
+                    if (winningCard.Shape != balootRoundInfo.HokumShape)
                     {
                         winningCard = currentCard;
                         index = cardsOnDeck.ElementAt(i).Key;
@@ -183,8 +183,9 @@ public class RoundScriptBaloot : RoundScriptBase
         IncrementStartIndex();
 
         Deal();
-        HokumShape = BalootCard.Shape;
+
         RoundInfo = new BalootRoundInfo();
+        balootRoundInfo.HokumShape = BalootCard.Shape;
 
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtBegin);
     }
@@ -271,6 +272,7 @@ public class RoundScriptBaloot : RoundScriptBase
 public class BalootRoundInfo : RoundInfo
 {
     public BalootGameType BalootRoundType;
+    public CardShape HokumShape;
 
     public BalootRoundInfo() : base()
     {
