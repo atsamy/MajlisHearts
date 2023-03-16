@@ -76,6 +76,7 @@ public class LeaderboardEntry : MonoBehaviour
         }
         else
         {
+            print(avatarName);
             avatar.sprite = AvatarManager.Instance.GetAvatarSprite(avatarName);
         }
     }
