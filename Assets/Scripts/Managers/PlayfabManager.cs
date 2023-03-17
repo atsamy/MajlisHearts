@@ -281,9 +281,55 @@ public class PlayfabManager : MonoBehaviour
         {
             StatisticName = "HeartsPoints",
             StartPosition = 0,
-            MaxResultsCount = 10
+            MaxResultsCount = 10,
+            ProfileConstraints = new PlayerProfileViewConstraints()
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
         };
         PlayFabClientAPI.GetLeaderboard(getLeaderboardRequest, (result) =>
+        {
+            leaderBoardResult?.Invoke(result.Leaderboard);
+        }, (error) =>
+        {
+            Debug.LogError(error.ErrorMessage);
+        });
+    }
+
+    internal void GetHeartsFriendsLeaderboard(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    {
+        GetFriendLeaderboardRequest getLeaderboardRequest = new GetFriendLeaderboardRequest()
+        {
+            StatisticName = "HeartsPoints",
+            ProfileConstraints = new PlayerProfileViewConstraints()
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
+        };
+        PlayFabClientAPI.GetFriendLeaderboard(getLeaderboardRequest, (result) =>
+        {
+            leaderBoardResult?.Invoke(result.Leaderboard);
+        }, (error) =>
+        {
+            Debug.LogError(error.ErrorMessage);
+        });
+    }
+
+    internal void GetHeartsLeaderboardAroundPlayer(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    {
+        GetLeaderboardAroundPlayerRequest getLeaderboardRequest = new GetLeaderboardAroundPlayerRequest()
+        {
+            MaxResultsCount = 10,
+            StatisticName = "HeartsPoints",
+            ProfileConstraints = new PlayerProfileViewConstraints()
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
+        };
+        PlayFabClientAPI.GetLeaderboardAroundPlayer(getLeaderboardRequest, (result) =>
         {
             leaderBoardResult?.Invoke(result.Leaderboard);
         }, (error) =>
@@ -545,7 +591,6 @@ public class PlayfabManager : MonoBehaviour
             }
         );
     }
-
 }
 
 

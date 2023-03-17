@@ -51,15 +51,14 @@ public class StoreScene : MenuScene
                 {
                     if (GameManager.Instance.Coins >= gemsPrices[index * 2])
                     {
-                        MenuManager.Instance.OpenPopup("buygems", false, false, () =>
+                        string message = string.Format(LanguageManager.Instance.GetString("gemsconfirmation"), gemsPrices[index * 2 + 1], gemsPrices[index * 2]);
+                        MenuManager.Instance.OpenPopupMessage(message, false, false, () =>
                         {
                             GameManager.Instance.DeductCoins(gemsPrices[index * 2]);
                             GameManager.Instance.AddGems(gemsPrices[index * 2 + 1]);
 
                             SFXManager.Instance.PlayClip("Coins");
                         });
-
-
                     }
                     else
                     {

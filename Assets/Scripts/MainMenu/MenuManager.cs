@@ -245,6 +245,21 @@ public class MenuManager : MonoBehaviour
         SFXManager.Instance.PlayClip("Popup");
     }
 
+    public void OpenPopupMessage(string message, bool hideCoins = true, bool hideGems = true, Action OnOkPressed = null, Action OnCancelPressed = null)
+    {
+        HideMain(hideGems, hideCoins);
+        popup.ShowWithMessage(message, () =>
+        {
+            OnOkPressed?.Invoke();
+            SFXManager.Instance.PlayClip("OK");
+        }, () =>
+        {
+            OnCancelPressed?.Invoke();
+            SFXManager.Instance.PlayClip("Close");
+        });
+        SFXManager.Instance.PlayClip("Popup");
+    }
+
     public void ShowFullDescription(string id)
     {
         popup.ShowWithCode(id, () => { popup.Close(); });

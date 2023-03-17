@@ -30,6 +30,8 @@ public class MainPanelScript : MonoBehaviour
     [SerializeField]
     MenuScene Profile;
     [SerializeField]
+    MenuScene leaderBoard;
+    [SerializeField]
     Image fillLevel;
     [SerializeField]
     GameObject infoPanel;
@@ -121,6 +123,12 @@ public class MainPanelScript : MonoBehaviour
     {
         MenuManager.Instance.HideMain(true, true);
         Profile.Open();
+    }
+
+    public void OpenLeaderboard()
+    {
+        MenuManager.Instance.HideMain(true, true);
+        leaderBoard.Open();
     }
 
     private void OnDisable()
