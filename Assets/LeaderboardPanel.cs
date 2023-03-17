@@ -22,7 +22,7 @@ public class LeaderboardPanel : MenuScene
             foreach (var entry in entries) 
             {
                 LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, contents[0]).GetComponent<LeaderboardEntry>();
-                newEntry.Set(entry.Position + 1,entry.DisplayName,entry.StatValue,entry.Profile.AvatarUrl);
+                newEntry.Set(entry.Position + 1,entry.Profile.DisplayName,entry.StatValue,entry.Profile.AvatarUrl);
             }
         });
 

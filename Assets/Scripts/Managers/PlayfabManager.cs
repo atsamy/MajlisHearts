@@ -282,8 +282,11 @@ public class PlayfabManager : MonoBehaviour
             StatisticName = "HeartsPoints",
             StartPosition = 0,
             MaxResultsCount = 10,
-            ProfileConstraints = new PlayerProfileViewConstraints() 
-            { ShowAvatarUrl= true }
+            ProfileConstraints = new PlayerProfileViewConstraints()
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
         };
         PlayFabClientAPI.GetLeaderboard(getLeaderboardRequest, (result) =>
         {
@@ -300,7 +303,10 @@ public class PlayfabManager : MonoBehaviour
         {
             StatisticName = "HeartsPoints",
             ProfileConstraints = new PlayerProfileViewConstraints()
-            { ShowAvatarUrl = true }
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
         };
         PlayFabClientAPI.GetFriendLeaderboard(getLeaderboardRequest, (result) =>
         {
@@ -315,10 +321,13 @@ public class PlayfabManager : MonoBehaviour
     {
         GetLeaderboardAroundPlayerRequest getLeaderboardRequest = new GetLeaderboardAroundPlayerRequest()
         {
-            MaxResultsCount= 10,
+            MaxResultsCount = 10,
             StatisticName = "HeartsPoints",
             ProfileConstraints = new PlayerProfileViewConstraints()
-            { ShowAvatarUrl = true }
+            {
+                ShowAvatarUrl = true,
+                ShowDisplayName = true
+            }
         };
         PlayFabClientAPI.GetLeaderboardAroundPlayer(getLeaderboardRequest, (result) =>
         {
