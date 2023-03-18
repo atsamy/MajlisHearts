@@ -150,7 +150,7 @@ public class UIManagerBaloot : UIManager
 
     private void SelectShapePanel_OnShapeSelected(CardShape shape)
     {
-        balootGame.balootRoundScript.HokumShape = shape;
+        balootGame.balootRoundScript.balootRoundInfo.HokumShape = shape;
         mainPlayer.SelectType(BalootGameType.Hokum);
     }
 
@@ -209,7 +209,7 @@ public class UIManagerBaloot : UIManager
         await balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
-            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.HokumShape,balootGame.DoubleValue);
+            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape, balootGame.DoubleValue);
         else
             gameInfoPanel.ShowSuns();
 
@@ -219,10 +219,9 @@ public class UIManagerBaloot : UIManager
         Game.SetStartGame(false);
     }
 
-    private void MainPlayer_OnWaitSelectType()
+    private void MainPlayer_OnWaitSelectType(RoundScriptBaloot roundScript)
     {
-        gameTypePanel.Show(balootGame.balootRoundScript.BiddingRound,
-            balootGame.balootRoundScript.HokumIndex, Game.MainPlayerIndex);
+        gameTypePanel.Show(roundScript.BiddingRound,roundScript.HokumIndex, Game.MainPlayerIndex);
     }
 
     public override void SetScore()

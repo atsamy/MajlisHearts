@@ -34,7 +34,7 @@ public class PlayerBaloot : PlayerBase
         PlayerProjects = new();
     }
 
-    public virtual void CheckGameType()
+    public virtual void CheckGameType(RoundScriptBaloot roundScriptBaloot)
     {
 
     }

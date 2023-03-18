@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class AIPlayerBaloot : PlayerBaloot
 {
@@ -12,9 +13,12 @@ public class AIPlayerBaloot : PlayerBaloot
     BalootGameType balootGameType;
     Dictionary<CardRank, int> rankAdjust => (balootGameType == BalootGameType.Hokum) ? CardHelper.HokumRank : CardHelper.SunRank;
 
+
+    float riskTaking;
     public AIPlayerBaloot(int index) : base(index)
     {
         isPlayer = false;
+        riskTaking = Random.value;
     }
 
     public override void SetTurn(RoundInfo info)
@@ -43,10 +47,169 @@ public class AIPlayerBaloot : PlayerBaloot
         }
     }
 
-    public override async void CheckGameType()
+    public override async void CheckGameType(RoundScriptBaloot roundScript)
     {
         await Task.Delay(1000);
-        SelectType(index == 1 ? BalootGameType.Hokum : BalootGameType.Pass);
+
+        List<Card> allcards = new List<Card>(OwnedCards);
+        allcards.Add(roundScript.BalootCard);
+
+        int sunScore = SunsScore(allcards);
+
+        if (roundScript.BiddingRound == 0)
+        {
+            if (roundScript.HokumIndex == -1)
+            {
+                int hokumScore = HokumScore(allcards, roundScript.BalootCard.Shape);
+
+                if (sunScore >= 30)
+                {
+                    SelectType(BalootGameType.Sun);
+                }
+                else if (hokumScore >= 30)
+                {
+                    SelectType(BalootGameType.Hokum);
+                }
+                else
+                {
+                    SelectType(BalootGameType.Pass);
+                }
+            }
+            else if (roundScript.HokumIndex != index)
+            {
+                if (sunScore >= 25 && Random.value > riskTaking)
+                {
+                    SelectType(BalootGameType.Sun);
+                }
+                else
+                {
+                    SelectType(BalootGameType.Pass);
+                }
+            }
+            else
+            {
+                SelectType(BalootGameType.Hokum);
+            }
+        }
+        else
+        {
+            if (roundScript.HokumIndex == -1)
+            {
+                CardShape cardShape;
+                int hokumScore = OtherHokumScore(allcards, out cardShape);
+
+                if (sunScore >= 30)
+                {
+                    SelectType(BalootGameType.Sun);
+                }
+                else if (hokumScore >= 30)
+                {
+                    roundScript.balootRoundInfo.HokumShape = cardShape;
+                    SelectType(BalootGameType.Hokum);
+                }
+                else
+                {
+                    SelectType(BalootGameType.Pass);
+                }
+            }
+            else if (roundScript.HokumIndex != index)
+            {
+                SelectType(BalootGameType.Pass);
+            }
+            else
+            {
+                SelectType(BalootGameType.Hokum);
+            }
+        }
+    }
+
+    int SunsScore(List<Card> allCards)
+    {
+        int score = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            List<Card> shapeCard = allCards.Where(a => a.Shape == (CardShape)i).OrderByDescending(
+                a => CardHelper.SunRank[a.Rank]).ToList();
+
+            foreach (var item in shapeCard)
+            {
+                int value = CardValue(item, new List<Card>());
+
+                score += value == 0 ? 10 : 0;
+                score += (value == 1 && shapeCard.Count > 1) ? 5 : 0;
+                score += (value == 2 && shapeCard.Count > 2) ? 5 : 0;
+            }
+        }
+
+        //maximum score 90
+        //average win 30
+
+        return score;
+    }
+
+    public int HokumScore(List<Card> allCards, CardShape shape)
+    {
+        int score = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            List<Card> shapeCard = allCards.Where(a => a.Shape == (CardShape)i).OrderByDescending(
+                a => CardHelper.HokumRank[a.Rank]).ToList();
+
+            if ((CardShape)i == shape)
+            {
+                // add score depends on how many cards i have
+                score += (shapeCard.Count) * 5;
+                foreach (var item in shapeCard)
+                {
+                    int value = CardValue(item, new List<Card>());
+                    score += value == 0 ? 10 : 0;
+                    score += (value == 1 && shapeCard.Count > 1) ? 5 : 0;
+                    score += (value == 2 && shapeCard.Count > 2) ? 5 : 0;
+                }
+            }
+            else
+            {
+                foreach (var item in shapeCard)
+                {
+                    int value = CardValue(item, new List<Card>());
+                    score += value == 0 ? 5 : value;
+                }
+            }
+        }
+        //maximum score 90
+        //average win 30
+        return score;
+    }
+
+    public int OtherHokumScore(List<Card> allCards,out CardShape shape)
+    {
+        int score = 0;
+        int bestScore = 0;
+
+        shape = CardShape.Spade;
+
+        for (int i = 0; i < 4; i++)
+        {
+            List<Card> shapeCard = allCards.Where(a => a.Shape == (CardShape)i).OrderByDescending(
+                a => CardHelper.HokumRank[a.Rank]).ToList();
+
+
+            foreach (var item in shapeCard)
+            {
+                int value = CardValue(item, new List<Card>());
+                score += value == 0 ? 10 : value;
+            }
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                shape = (CardShape)i;
+            }
+        }
+
+        return bestScore;
     }
 
     internal override void CancelDouble()
@@ -118,13 +281,13 @@ public class AIPlayerBaloot : PlayerBaloot
         {
             foreach (var item in shapeCards)
             {
-                int value = FirstCardValue(item, info);
+                int value = CardValue(item, info.CardsDrawn);
 
                 if (item.Shape == info.HokumShape)
                 {
                     if (value != 0)
                     {
-                        value += 100;
+                        value = (100 - value);
                     }
                 }
                 else
@@ -132,7 +295,14 @@ public class AIPlayerBaloot : PlayerBaloot
                     int shapeCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == item.Shape) + ShapeCount[item.Shape]);
                     int hokumCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == info.HokumShape) + ShapeCount[info.HokumShape]);
 
-                    value = Mathf.Max(0, value + hokumCardsOutside - shapeCardsOutside);
+                    if (value == 0)
+                    {
+                        value = Mathf.Max(0, value + hokumCardsOutside - shapeCardsOutside);
+                    }
+                    else
+                    {
+                        value = (50 - value);
+                    }
                 }
 
                 AllCards.Add(item, value);
@@ -140,12 +310,14 @@ public class AIPlayerBaloot : PlayerBaloot
 
             AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
             choosenCard = AllCards.First().Key;
+
+            //if not win lose
         }
         else
         {
             foreach (var item in shapeCards)
             {
-                AllCards.Add(item, FirstCardValue(item, info));
+                AllCards.Add(item, CardValue(item, info.CardsDrawn));
             }
 
             AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -256,7 +428,7 @@ public class AIPlayerBaloot : PlayerBaloot
     /// <param name="card"></param>
     /// <param name="balootInfo"></param>
     /// <returns></returns>
-    public int FirstCardValue(Card card, BalootRoundInfo balootInfo)
+    public int CardValue(Card card, List<Card> CardsDrawn)
     {
         int value = 0;
 
@@ -264,7 +436,7 @@ public class AIPlayerBaloot : PlayerBaloot
         {
             Card higherCard = new Card(card.Shape, CardHelper.SunRank.FirstOrDefault(x => x.Value == i).Key);
 
-            if (OwnedCards.Contains(higherCard) || balootInfo.CardsDrawn.Contains(higherCard))
+            if (OwnedCards.Contains(higherCard) || CardsDrawn.Contains(higherCard))
             {
                 continue;
             }

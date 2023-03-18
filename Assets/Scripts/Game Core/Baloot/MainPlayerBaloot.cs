@@ -11,8 +11,8 @@ public class MainPlayerBaloot : PlayerBaloot
     public event Action<int> OnCheckDouble;
     public event Action OnCancelDouble;
 
-    public delegate void WaitPassCards();
-    public event WaitPassCards OnWaitSelectType;
+    public delegate void WaitSelectType(RoundScriptBaloot roundScript);
+    public event WaitSelectType OnWaitSelectType;
 
     Dictionary<Projects, int> ProjectsCount;
 
@@ -77,9 +77,9 @@ public class MainPlayerBaloot : PlayerBaloot
         WaitOthers?.Invoke();
     }
 
-    public override void CheckGameType()
+    public override void CheckGameType(RoundScriptBaloot roundScript)
     {
-        OnWaitSelectType?.Invoke();
+        OnWaitSelectType?.Invoke(roundScript);
     }
 
     internal void ForcePlay()

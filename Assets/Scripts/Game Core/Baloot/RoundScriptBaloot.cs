@@ -7,7 +7,7 @@ using UnityEngine;
 public class RoundScriptBaloot : RoundScriptBase
 {
     public int StartIndex;
-    BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
+    public BalootRoundInfo balootRoundInfo => (BalootRoundInfo)RoundInfo;
 
 
     public Card BalootCard;
@@ -237,7 +237,7 @@ public class RoundScriptBaloot : RoundScriptBase
                 if (HokumIndex == -1)
                 {
                     HokumIndex = index;
-                    ((PlayerBaloot)players[nextIndex]).CheckGameType();
+                    ((PlayerBaloot)players[nextIndex]).CheckGameType(this);
                 }
                 else
                     SetGameType(index, type);
@@ -257,7 +257,7 @@ public class RoundScriptBaloot : RoundScriptBase
                 }
                 else
                 {
-                    ((PlayerBaloot)players[nextIndex]).CheckGameType();
+                    ((PlayerBaloot)players[nextIndex]).CheckGameType(this);
                 }
                 break;
         }

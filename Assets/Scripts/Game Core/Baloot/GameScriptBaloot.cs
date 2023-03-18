@@ -164,7 +164,7 @@ public class GameScriptBaloot : GameScriptBase
                 total[1] = CalculatePointsHokum(total[1]);
 
 
-                if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam] + 8)
+                if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
                 {
                     TeamsScore[0] = total[0];
                     TeamsScore[1] = total[1];
@@ -232,7 +232,7 @@ public class GameScriptBaloot : GameScriptBase
         ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
         total[1] = CalculatePointsSuns(total[1]);
 
-        if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam] + 13)
+        if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
         {
             TeamsScore[0] = total[0];
             TeamsScore[1] = total[1];
@@ -253,17 +253,7 @@ public class GameScriptBaloot : GameScriptBase
 
     private int CalculatePointsSuns(int total)
     {
-        if (total % 5 == 0)
-        {
-            total *= 2;
-            total /= 10;
-        }
-        else
-        {
-            total = Mathf.RoundToInt((float)total / 10) * 2;
-        }
-
-        return total;
+        return Mathf.RoundToInt(((float)total / 10) * 2);
     }
 
     private int CalculatePointsHokum(int total)
@@ -335,7 +325,7 @@ public class GameScriptBaloot : GameScriptBase
             ((PlayerBaloot)Players[i]).SetStartCards();
             if (balootRoundScript.RoundType == BalootGameType.Hokum)
             {
-                ((PlayerBaloot)Players[i]).CheckBalootCards(balootRoundScript.HokumShape);
+                ((PlayerBaloot)Players[i]).CheckBalootCards(balootRoundScript.balootRoundInfo.HokumShape);
             }
         }
         SetCardsReady();
@@ -348,7 +338,7 @@ public class GameScriptBaloot : GameScriptBase
 
     public void CheckType()
     {
-        ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType();
+        ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
     }
 
     private void CompareProjects()
