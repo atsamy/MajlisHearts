@@ -30,20 +30,26 @@ public class AIPlayerBaloot : PlayerBaloot
     public override async void CheckDouble(int value)
     {
         await Task.Delay(2000);
-
+        //somehow here leads to a case of double deal continue
         if (!cancelDouble)
             SelectDouble(false, value);
     }
 
     public override void ChooseProjects(BalootGameType type)
     {
-        List<Project> projects = GetAllProjects(type);
-
-        foreach (Project project in projects)
+        if (type != BalootGameType.Hokum)
         {
-            PlayerProjects.Add(project.Cards, project.projectName);
-            ProjectScore += project.Score;
-            ProjectPower += project.Power;
+            CheckFourhundredProject();
+        }
+        else
+        {
+            CheckOneHundredProject(type);
+
+            CheckSequenceProject(Projects.OneHundred);
+            CheckSequenceProject(Projects.Fifty);
+            CheckSequenceProject(Projects.Fifty);
+            CheckSequenceProject(Projects.Sira);
+            CheckSequenceProject(Projects.Sira);
         }
     }
 
@@ -105,6 +111,7 @@ public class AIPlayerBaloot : PlayerBaloot
                 else if (hokumScore >= 30)
                 {
                     roundScript.balootRoundInfo.HokumShape = cardShape;
+                    Debug.Log(cardShape);
                     SelectType(BalootGameType.Hokum);
                 }
                 else
@@ -160,7 +167,8 @@ public class AIPlayerBaloot : PlayerBaloot
             if ((CardShape)i == shape)
             {
                 // add score depends on how many cards i have
-                score += (shapeCard.Count) * 5;
+                score += shapeCard.Count > 2 ? (shapeCard.Count) * 5 : 0;
+
                 foreach (var item in shapeCard)
                 {
                     int value = CardValue(item, new List<Card>());
@@ -174,7 +182,7 @@ public class AIPlayerBaloot : PlayerBaloot
                 foreach (var item in shapeCard)
                 {
                     int value = CardValue(item, new List<Card>());
-                    score += value == 0 ? 5 : value;
+                    score += value == 0 ? 5 : 0;
                 }
             }
         }
@@ -183,7 +191,7 @@ public class AIPlayerBaloot : PlayerBaloot
         return score;
     }
 
-    public int OtherHokumScore(List<Card> allCards,out CardShape shape)
+    public int OtherHokumScore(List<Card> allCards, out CardShape shape)
     {
         int score = 0;
         int bestScore = 0;
@@ -241,7 +249,7 @@ public class AIPlayerBaloot : PlayerBaloot
             switch (hand)
             {
                 case 1:
-                    ChooseWinCard(roundInfo, specificShape);
+                    ChooseCard(ChooseWinCard(roundInfo, specificShape));
                     break;
                 case 2:
                     //check if my team player card is winning or not
@@ -275,64 +283,101 @@ public class AIPlayerBaloot : PlayerBaloot
     public Card ChooseWinCard(BalootRoundInfo info, List<Card> shapeCards)
     {
         Dictionary<Card, int> AllCards = new Dictionary<Card, int>();
-        Card choosenCard;
+        //Card choosenCard;
 
         if (balootGameType == BalootGameType.Hokum)
         {
-            foreach (var item in shapeCards)
+            if (shapeCards.Count > 0)
             {
-                int value = CardValue(item, info.CardsDrawn);
-
-                if (item.Shape == info.HokumShape)
+                foreach (var item in shapeCards)
                 {
-                    if (value != 0)
-                    {
-                        value = (100 - value);
-                    }
-                }
-                else
-                {
-                    int shapeCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == item.Shape) + ShapeCount[item.Shape]);
-                    int hokumCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == info.HokumShape) + ShapeCount[info.HokumShape]);
+                    int value = CardValue(item, info.CardsDrawn);
 
-                    if (value == 0)
+                    if (item.Shape == info.HokumShape)
                     {
-                        value = Mathf.Max(0, value + hokumCardsOutside - shapeCardsOutside);
+                        if (value != 0)
+                        {
+                            value = (100 - value);
+                        }
                     }
                     else
                     {
-                        value = (50 - value);
+                        int shapeCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == item.Shape) + ShapeCount[item.Shape]);
+                        int hokumCardsOutside = 8 - (info.CardsDrawn.Count(a => a.Shape == info.HokumShape) + ShapeCount[info.HokumShape]);
+
+                        if (value == 0)
+                        {
+                            value = Mathf.Max(0, value + hokumCardsOutside - shapeCardsOutside);
+                        }
+                        else
+                        {
+                            value = (50 - value);
+                        }
                     }
+
+                    AllCards.Add(item, value);
                 }
 
-                AllCards.Add(item, value);
+                AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+                return AllCards.First().Key;
             }
+            else
+            {
+                if (info.TrickShape != info.HokumShape)
+                {
+                    if (shapeCount[info.HokumShape] > 0)
+                    {
+                        List<Card> hokumCards = OwnedCards.Where(a => a.Shape == info.HokumShape).OrderBy(a => CardHelper.HokumRank[a.Rank]).ToList();
 
-            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
-            choosenCard = AllCards.First().Key;
+                        if (info.CardsOntable.Any(a => a.Shape == info.HokumShape))
+                        {
+                            Card hokumCard = info.CardsOntable.Find(a => a.Shape == info.HokumShape);
 
+                            foreach (var item in hokumCards)
+                            {
+                                if (CardHelper.HokumRank[item.Rank] > CardHelper.HokumRank[hokumCard.Rank])
+                                {
+                                    return item;
+                                }
+                            }
+
+                            return ChooseLoseCard(info, shapeCards);
+                        }
+
+                        return hokumCards.First();
+                    }
+                    return ChooseLoseCard(info, shapeCards);
+                }
+                return ChooseLoseCard(info, shapeCards);
+            }
             //if not win lose
         }
         else
         {
-            foreach (var item in shapeCards)
+            if (shapeCards.Count > 0)
             {
-                AllCards.Add(item, CardValue(item, info.CardsDrawn));
-            }
+                foreach (var item in shapeCards)
+                {
+                    // check bug here
+                    AllCards.Add(item, CardValue(item, info.CardsDrawn));
+                }
 
-            AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
-
-            if (AllCards.ElementAt(0).Value != 0)
-            {
-                choosenCard = AllCards.Last().Key;
+                AllCards = AllCards.OrderBy(a => a.Value).ToDictionary(x => x.Key, x => x.Value);
+                //index error
+                if (AllCards.ElementAt(0).Value != 0)
+                {
+                    return AllCards.Last().Key;
+                }
+                else
+                {
+                    return AllCards.First().Key;
+                }
             }
             else
             {
-                choosenCard = AllCards.First().Key;
+                return ChooseLoseCard(info, shapeCards);
             }
         }
-
-        return choosenCard;
     }
 
     public Card ChooseLoseCard(BalootRoundInfo info, List<Card> shapeCards)

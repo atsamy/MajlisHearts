@@ -90,6 +90,28 @@ public class GameScriptBaloot : GameScriptBase
         StartGame();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Keypad1))
+            PrintCard(1);
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
+            PrintCard(2);
+        else if (Input.GetKeyDown(KeyCode.Keypad3))
+            PrintCard(3);
+    }
+
+    void PrintCard(int index)
+    {
+        foreach (var item in Players[index].ShapeCount)
+        {
+            print(item);
+        }
+        foreach (var item in Players[index].OwnedCards)
+        {
+            print(item);
+        }
+    }
+
     private void GameScriptBaloot_OnDoubleSelected(int playerIndex, bool isDouble, int value)
     {
         if (isDouble)
@@ -119,6 +141,8 @@ public class GameScriptBaloot : GameScriptBase
         }
         else
         {
+            //check bug here the first condition is not true for first player
+            //print(string.Format("double values: {0} {1}" ,doublerIndex , DoubleValue));
             if (DoubleValue == 0 && doublerIndex == -1)
             {
                 doublerIndex = -2;
@@ -133,6 +157,7 @@ public class GameScriptBaloot : GameScriptBase
     {
         DeclarerIndex = index;
         doublerIndex = -1;
+        DoubleValue = 0;
 
         if (gameType == BalootGameType.Hokum)
         {

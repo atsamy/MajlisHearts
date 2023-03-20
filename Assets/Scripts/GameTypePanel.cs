@@ -33,7 +33,7 @@ public class GameTypePanel : MonoBehaviour
     public void Show(int round,int hokumIndex,int playerIndex)
     {
         gameObject.SetActive(true);
-        //print(hokumIndex);
+        print("round: " + round);
         if (hokumIndex != -1)
         {
             if (hokumIndex == playerIndex)
@@ -47,6 +47,10 @@ public class GameTypePanel : MonoBehaviour
             else
             {
                 hokumButton.SetActive(false);
+                if (round == 1)
+                {
+                    passText.text = "Nothing";
+                }
             }
         }
         else if (round == 1)

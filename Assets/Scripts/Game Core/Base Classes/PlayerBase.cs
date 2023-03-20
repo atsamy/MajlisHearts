@@ -77,6 +77,12 @@ public class PlayerBase
 
     public void AddCard(Card card)
     {
+        if (OwnedCards.Contains(card))
+        {
+            Debug.LogError("player already has card");
+            return;
+        }
+
         OwnedCards.Add(card);
         shapeCount[card.Shape]++;
     }

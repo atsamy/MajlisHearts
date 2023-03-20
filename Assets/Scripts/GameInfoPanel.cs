@@ -29,7 +29,7 @@ public class GameInfoPanel : MonoBehaviour
 
     public void ShowHokum(CardShape cardShape,int doubler)
     {
-        print(doubler);
+        //print(doubler);
         Show();
         gameTypeText.text = "Hokum";
         hokumShape.sprite = shapes[(int)cardShape];

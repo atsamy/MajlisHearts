@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Services.Analytics;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class MainPlayerBaloot : PlayerBaloot
@@ -47,22 +48,11 @@ public class MainPlayerBaloot : PlayerBaloot
 
     public override void ChooseProjects(BalootGameType type)
     {
-        List<Project> allProjects = GetAllProjects(type);
-
-        foreach (var project in allProjects)
+        foreach (var item in ProjectsCount)
         {
-            if (ProjectsCount.ContainsKey(project.projectName))
+            for (int i = 0; i < item.Value; i++)
             {
-                ProjectsCount[project.projectName]--;
-                PlayerProjects.Add(project.Cards, project.projectName);
-
-                ProjectScore += project.Score;
-                ProjectPower += project.Power;
-
-                if (ProjectsCount[project.projectName] == 0)
-                {
-                    ProjectsCount.Remove(project.projectName);
-                }
+                CheckForProject(type, item.Key);
             }
         }
     }

@@ -160,8 +160,8 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public void DealContinue(int playerIndex)
     {
+        //Debug.Log("deal continue called");
         players[playerIndex].AddCard(BalootCard);
-
         int index = playerIndex;
 
         while (AllCards.Count > 0)
@@ -186,7 +186,6 @@ public class RoundScriptBaloot : RoundScriptBase
 
         RoundInfo = new BalootRoundInfo();
         balootRoundInfo.HokumShape = BalootCard.Shape;
-
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtBegin);
     }
 
@@ -223,7 +222,13 @@ public class RoundScriptBaloot : RoundScriptBase
     //bool hokumConfirmed;
     internal void PlayerSelectedType(int index, BalootGameType type)
     {
-        if (index == StartIndex)
+        //but only increment when all players
+        int lastIndex = StartIndex - 1;
+
+        if (lastIndex < 0)
+            lastIndex += 4;
+
+        if (index == lastIndex)
             BiddingRound++;
 
         int nextIndex = (index + 1) % 4;
@@ -240,7 +245,9 @@ public class RoundScriptBaloot : RoundScriptBase
                     ((PlayerBaloot)players[nextIndex]).CheckGameType(this);
                 }
                 else
+                {
                     SetGameType(index, type);
+                }
                 break;
             case BalootGameType.Ashkal:
                 SetGameType((index + 2) % 4, BalootGameType.Sun);
