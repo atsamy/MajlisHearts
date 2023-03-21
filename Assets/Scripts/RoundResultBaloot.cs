@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,5 +52,11 @@ public class RoundResultBaloot : RoundResult
 
         teamOneCrown.SetActive(balootGame.WinningTeam == 0);
         teamTwoCrown.SetActive(balootGame.WinningTeam == 1);
+
+        for (int i = 0; i < singlePlayers.Length; i++)
+        {
+            singlePlayers[i].Set(game.Players[i],false);
+        }
+
     }
 }

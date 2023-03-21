@@ -20,6 +20,12 @@ public class Player:PlayerBase
 
     }
 
+    public override void SetTotalScore()
+    {
+        totalScore += dealScore;
+        dealScore = 0;
+    }
+
     public async void CheckForDoubleCards()
     {
         await System.Threading.Tasks.Task.Delay(2000);

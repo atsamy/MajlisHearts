@@ -56,7 +56,8 @@ public class AIPlayerBaloot : PlayerBaloot
     public override async void CheckGameType(RoundScriptBaloot roundScript)
     {
         await Task.Delay(1000);
-
+        //SelectType(BalootGameType.Pass);
+        //return;
         List<Card> allcards = new List<Card>(OwnedCards);
         allcards.Add(roundScript.BalootCard);
 
@@ -268,10 +269,12 @@ public class AIPlayerBaloot : PlayerBaloot
                     //then find the least winnig card if available
                     if (isTeamPlayerWinning(roundInfo))
                     {
+                        //Debug.Log("Team player winning choose lose card");
                         ChooseCard(ChooseLoseCard(roundInfo, specificShape));
                     }
                     else
                     {
+                        //Debug.Log("Team player not winning choose win card");
                         ChooseCard(ChooseLeastWinCard(roundInfo, specificShape));
                     }
                     break;
@@ -545,5 +548,10 @@ public class AIPlayerBaloot : PlayerBaloot
     {
         cancelDouble = false;
         base.Reset();
+    }
+
+    internal void SetGameType(BalootGameType roundType)
+    {
+        balootGameType = roundType;
     }
 }

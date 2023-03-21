@@ -161,9 +161,9 @@ public class GameScript : GameScriptBase
     {
         bool isGameOver = false;
 
-        foreach (var item in Players)
+        foreach (Player item in Players)
         {
-            if (!((Player)item).DidLead)
+            if (!item.DidLead)
                 item.IncrementScore(-15);
 
             item.SetTotalScore();

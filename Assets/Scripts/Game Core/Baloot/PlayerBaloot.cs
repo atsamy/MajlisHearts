@@ -45,6 +45,12 @@ public class PlayerBaloot : PlayerBase
 
     }
 
+    public override void SetTotalScore()
+    {
+        totalScore = dealScore;
+        dealScore = 0;
+    }
+
     public virtual void CheckDouble(int value)
     {
         //await Task.Delay(100);

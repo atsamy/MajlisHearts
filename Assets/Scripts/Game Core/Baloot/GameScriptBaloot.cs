@@ -172,10 +172,13 @@ public class GameScriptBaloot : GameScriptBase
 
     public override bool SetFinalScore()
     {
+        int team1TrickCount = Players[0].TricksCount + Players[2].TricksCount;
+        print("team 1 count: " + team1TrickCount);
+
         switch (balootRoundScript.RoundType)
         {
             case BalootGameType.Sun:
-                SetScoreSuns();
+                SetScoreSuns(team1TrickCount);
                 break;
             case BalootGameType.Hokum:
                 int[] total = new int[2];
@@ -188,20 +191,34 @@ public class GameScriptBaloot : GameScriptBase
                 ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
                 total[1] = CalculatePointsHokum(total[1]);
 
-
-                if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+                if (team1TrickCount == 8)
                 {
-                    TeamsScore[0] = total[0];
-                    TeamsScore[1] = total[1];
-
-                    WinningTeam = balootRoundScript.BidingTeam;
+                    TeamsScore[0] = 25;
+                    TeamsScore[1] = 0;
+                    WinningTeam = 0;
+                }
+                else if (team1TrickCount == 0)
+                {
+                    TeamsScore[0] = 0;
+                    TeamsScore[1] = 25;
+                    WinningTeam = 1;
                 }
                 else
                 {
-                    TeamsScore[balootRoundScript.BidingTeam] = 0;
-                    TeamsScore[balootRoundScript.OtherTeam] = 16;
+                    if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+                    {
+                        TeamsScore[0] = total[0];
+                        TeamsScore[1] = total[1];
 
-                    WinningTeam = balootRoundScript.OtherTeam;
+                        WinningTeam = balootRoundScript.BidingTeam;
+                    }
+                    else
+                    {
+                        TeamsScore[balootRoundScript.BidingTeam] = 0;
+                        TeamsScore[balootRoundScript.OtherTeam] = 16;
+
+                        WinningTeam = balootRoundScript.OtherTeam;
+                    }
                 }
 
                 TeamsScore[0] += ProjectsScore[0] / 10;
@@ -212,7 +229,7 @@ public class GameScriptBaloot : GameScriptBase
 
                 break;
             case BalootGameType.Ashkal:
-                SetScoreSuns();
+                SetScoreSuns(team1TrickCount);
                 break;
         }
 
@@ -242,10 +259,15 @@ public class GameScriptBaloot : GameScriptBase
             finished = true;
         }
 
+        foreach (PlayerBaloot player in Players)
+        {
+            player.SetTotalScore();
+        }
+
         return finished;
     }
 
-    private void SetScoreSuns()
+    private void SetScoreSuns(int team1TrickCount)
     {
         int[] total = new int[2];
 
@@ -257,21 +279,35 @@ public class GameScriptBaloot : GameScriptBase
         ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
         total[1] = CalculatePointsSuns(total[1]);
 
-        if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+        if (team1TrickCount == 8)
         {
-            TeamsScore[0] = total[0];
-            TeamsScore[1] = total[1];
-
-            WinningTeam = balootRoundScript.BidingTeam;
+            TeamsScore[0] = 44;
+            TeamsScore[1] = 0;
+            WinningTeam = 0;
+        }
+        else if (team1TrickCount == 0)
+        {
+            TeamsScore[0] = 0;
+            TeamsScore[1] = 44;
+            WinningTeam = 1;
         }
         else
         {
-            TeamsScore[balootRoundScript.BidingTeam] = 0;
-            TeamsScore[balootRoundScript.OtherTeam] = 26;
+            if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+            {
+                TeamsScore[0] = total[0];
+                TeamsScore[1] = total[1];
 
-            WinningTeam = balootRoundScript.OtherTeam;
+                WinningTeam = balootRoundScript.BidingTeam;
+            }
+            else
+            {
+                TeamsScore[balootRoundScript.BidingTeam] = 0;
+                TeamsScore[balootRoundScript.OtherTeam] = 26;
+
+                WinningTeam = balootRoundScript.OtherTeam;
+            }
         }
-
         TeamsScore[0] += ProjectsScore[0] / 5;
         TeamsScore[1] += ProjectsScore[1] / 5;
     }
@@ -344,15 +380,15 @@ public class GameScriptBaloot : GameScriptBase
 
     private void DealRemaingCards()
     {
-        for (int i = 0; i < Players.Length; i++)
+        foreach (PlayerBaloot player in Players)
         {
-            Players[i].Score = 0;
-            ((PlayerBaloot)Players[i]).SetStartCards();
+            player.SetStartCards();
             if (balootRoundScript.RoundType == BalootGameType.Hokum)
             {
-                ((PlayerBaloot)Players[i]).CheckBalootCards(balootRoundScript.balootRoundInfo.HokumShape);
+                player.CheckBalootCards(balootRoundScript.balootRoundInfo.HokumShape);
             }
         }
+
         SetCardsReady();
     }
 

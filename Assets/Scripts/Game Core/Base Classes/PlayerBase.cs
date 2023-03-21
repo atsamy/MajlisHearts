@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Player;
 
 public class PlayerBase
 {
@@ -29,6 +27,8 @@ public class PlayerBase
     public string Name;
 
     protected bool isPlayer;
+
+    public int TricksCount { get; private set; }
 
     public bool IsPlayer { get => isPlayer; }
     public Action OnForcePlay;
@@ -90,23 +90,28 @@ public class PlayerBase
     public virtual void Reset()
     {
         OwnedCards.Clear();
-
+        TricksCount = 0;
         for (int i = 0; i < 4; i++)
         {
             shapeCount[(CardShape)i] = 0;
         }
     }
 
-    public void SetTotalScore()
+    public virtual void SetTotalScore()
     {
-        totalScore += dealScore;
-        dealScore = 0;
+
     }
 
     public virtual void IncrementScore(int score)
     {
         dealScore += score;
     }
+
+    public void IncrementTricks()
+    {
+        TricksCount++;
+    }
+
 
     protected virtual void WaitForOthers()
     {

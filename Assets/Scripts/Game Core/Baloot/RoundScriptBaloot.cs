@@ -20,6 +20,8 @@ public class RoundScriptBaloot : RoundScriptBase
     public int BiddingRound { get; private set; }
     public int HokumIndex { get; private set; }
 
+    public int AllTricks = -1;
+
     public event System.Action<int, BalootGameType> OnGameTypeSelected;
 
     public RoundScriptBaloot()
@@ -133,6 +135,7 @@ public class RoundScriptBaloot : RoundScriptBase
             int winningHand = EvaluateDeck(out value);
             cardsOnDeck.Clear();
             players[winningHand].IncrementScore(value);
+            players[winningHand].IncrementTricks();
 
             playingIndex = winningHand;
 
@@ -173,6 +176,14 @@ public class RoundScriptBaloot : RoundScriptBase
             AllCards.RemoveAt(getRandom);
         }
 
+        foreach (PlayerBaloot player in players) 
+        {
+            if (player is AIPlayerBaloot)
+            {
+                ((AIPlayerBaloot)player).SetGameType(RoundType);
+            }
+        }
+
         OnEvent?.Invoke((int)EventTypeBaloot.CardsDealtFinished);
 
         //players[StartIndex].SetTurn(RoundInfo);
@@ -181,7 +192,7 @@ public class RoundScriptBaloot : RoundScriptBase
     public override void StartNewRound()
     {
         IncrementStartIndex();
-
+        BiddingRound = 0;
         Deal();
 
         RoundInfo = new BalootRoundInfo();

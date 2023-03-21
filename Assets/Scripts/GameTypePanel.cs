@@ -33,7 +33,6 @@ public class GameTypePanel : MonoBehaviour
     public void Show(int round,int hokumIndex,int playerIndex)
     {
         gameObject.SetActive(true);
-        print("round: " + round);
         if (hokumIndex != -1)
         {
             if (hokumIndex == playerIndex)
