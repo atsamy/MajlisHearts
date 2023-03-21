@@ -287,6 +287,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
 
     public void SendGameStartEvent()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
         string[] playersOrder = new string[4];
 
         for (int i = 0; i < 4; i++)
