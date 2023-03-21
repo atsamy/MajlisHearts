@@ -173,7 +173,7 @@ public class GameScriptBaloot : GameScriptBase
     public override bool SetFinalScore()
     {
         int team1TrickCount = Players[0].TricksCount + Players[2].TricksCount;
-        print("team 1 count: " + team1TrickCount);
+        //print("team 1 count: " + team1TrickCount);
 
         switch (balootRoundScript.RoundType)
         {
