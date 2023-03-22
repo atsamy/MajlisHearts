@@ -14,9 +14,7 @@ public class GameScript : GameScriptBase
     public event CardDoubled OnCardDoubled;
 
     public static GameScript Instance;
-    protected Coroutine playerTimer;
 
-    public MainPlayer MyPlayer => (MainPlayer)Players[MainPlayerIndex];
     //public new RoundScript RoundScript;
     private void Awake()
     {
@@ -73,17 +71,6 @@ public class GameScript : GameScriptBase
     private void OnDisable()
     {
 
-    }
-
-    //private void MainPlayerTurn(int index, RoundInfo info)
-    //{
-    //    //playerTimer = StartCoroutine(StartTimer());
-    //}
-
-    protected IEnumerator StartTimer()
-    {
-        yield return new WaitForSeconds(Seconds);
-        MyPlayer.ForcePlay();
     }
 
     private void GameScript_OnDoubleCard(Card card, bool value, int playerIndex)
@@ -175,5 +162,11 @@ public class GameScript : GameScriptBase
         }
 
         return isGameOver;
+    }
+
+    internal override PlayerBase InstantiateMainPlayer(int index)
+    {
+        MainPlayerIndex = index;
+        return new MainPlayer(index);
     }
 }

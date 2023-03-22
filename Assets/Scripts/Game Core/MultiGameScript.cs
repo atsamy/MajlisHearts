@@ -27,7 +27,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     const int doubleCardCode = 45;
     const int checkDoubleCode = 46;
     const int messageCode = 47;
-    const int recievedCardsCode = 48;
+    //const int recievedCardsCode = 48;
     const int playerTurnCode = 49;
 
     public delegate void messageRecieved(int playerIndex, object message);
@@ -93,7 +93,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             {
                 if (i == 0)
                 {
-                    Players[i] = new MainPlayer(i);
+                    Players[i] = new PlayerBase(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.playerAvatar;//lookUpAvatar[i];
                 }
@@ -149,11 +149,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
-        ((RoundScriptHeats)RoundScript).SetPlayers(Players);
+        RoundScript.SetPlayers(Players);
         ((RoundScriptHeats)RoundScript).OnEvent += Deal_OnEvent;
 
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        hash.Add("LoadedGame", 1);
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable
+        {
+            { "LoadedGame", 1 }
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
 
         if (PhotonNetwork.IsMasterClient)
@@ -168,15 +170,13 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
         }
-
-
     }
 
     void GameScript_OnPlayerTurn(int index,RoundInfo info)
     {
         if (index == MainPlayerIndex)
         {
-            playerTimer = StartCoroutine(StartTimer());
+            StartTimer();//playerTimer = StartCoroutine(StartTimer());
         }
         if (PhotonNetwork.IsMasterClient)
         {
@@ -308,7 +308,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
 
                 SetCardsReady();
-                MyPlayer.SelectPassCards();
+                ((MainPlayer)MyPlayer).SelectPassCards();
                 break;
             case passCardsCode:
                 List<Card> passedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
@@ -330,7 +330,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 else
                 {
                     //print("recieved my cards");
-                    MyPlayer.AddPassCards(passedCards);
+                    ((MainPlayer)MyPlayer).AddPassCards(passedCards);
 
                     //RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
                     //PhotonNetwork.RaiseEvent(recievedCardsCode, null, raiseEventOptions, SendOptions.SendReliable);
@@ -367,7 +367,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             case checkDoubleCode:
                 //make sure people recieved passed cards first
                 SetCardsPassed();
-                MyPlayer.CheckForDoubleCards();
+                ((MainPlayer)MyPlayer).CheckForDoubleCards();
                 break;
             case messageCode:
                 int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;

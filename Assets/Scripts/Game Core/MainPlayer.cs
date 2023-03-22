@@ -47,9 +47,4 @@ public class MainPlayer : Player
     {
         WaitOthers?.Invoke();
     }
-
-    internal void ForcePlay()
-    {
-        OnForcePlay?.Invoke();
-    }
 }

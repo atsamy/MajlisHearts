@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,9 @@ public class GameScriptBase : MonoBehaviour
     public PlayerBase[] Players;
     [HideInInspector]
     public int MainPlayerIndex = 0;
+    protected Coroutine playerTimer;
+
+    public PlayerBase MyPlayer => Players[MainPlayerIndex];
 
     public void SetEnvironment(string tableTop, string cardBack)
     {
@@ -89,5 +93,31 @@ public class GameScriptBase : MonoBehaviour
     public void Deal_OnDealFinished()
     {
         SetDealFinished(true);
+    }
+
+    //private void MainPlayerTurn(int index, RoundInfo info)
+    //{
+    //    //playerTimer = StartCoroutine(StartTimer());
+    //}
+
+    public void StartTimer()
+    {
+        playerTimer = StartCoroutine(TimerRoutine());
+    }
+
+    protected IEnumerator TimerRoutine()
+    {
+        yield return new WaitForSeconds(Seconds);
+        MyPlayer.ForcePlay();
+    }
+
+    internal void StopPlayerTimer()
+    {
+        StopCoroutine(playerTimer);
+    }
+
+    internal virtual PlayerBase InstantiateMainPlayer(int index)
+    {
+        return null;
     }
 }

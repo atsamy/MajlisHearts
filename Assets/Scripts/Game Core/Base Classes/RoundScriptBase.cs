@@ -16,9 +16,35 @@ public class RoundScriptBase
 
     protected PlayerBase[] players;
 
+    int noOfCards = 0;
     public void SetPlayers(PlayerBase[] players)
     {
         this.players = players;
+    }
+
+    public void UpdateDealInfo(int playerIndex, Card card)
+    {
+        noOfCards++;
+
+        RoundInfo.CardsOntable.Add(card);
+        RoundInfo.ShapesOnGround[card.Shape]++;
+
+        cardsOnDeck.Add(playerIndex, card);
+
+        if (noOfCards == 1)
+        {
+            RoundInfo.TrickShape = card.Shape;
+        }
+        else if (noOfCards == 4)
+        {
+            int value = 0;
+            int winningHand = EvaluateDeck(out value);
+            cardsOnDeck.Clear();
+            players[winningHand].IncrementScore(value);
+
+            RoundInfo.DrawCards();
+            noOfCards = 0;
+        }
     }
 
     public virtual void SetTurn()

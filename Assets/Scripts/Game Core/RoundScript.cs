@@ -31,31 +31,31 @@ public class RoundScriptHeats: RoundScriptBase
         StartNewRound();
     }
 
-    int noOfCards = 0;
-    public void UpdateDealInfo(int playerIndex, Card card)
-    {
-        noOfCards++;
 
-        RoundInfo.CardsOntable.Add(card);
-        RoundInfo.ShapesOnGround[card.Shape]++;
+    //public void UpdateDealInfo(int playerIndex, Card card)
+    //{
+    //    noOfCards++;
 
-        cardsOnDeck.Add(playerIndex, card);
+    //    RoundInfo.CardsOntable.Add(card);
+    //    RoundInfo.ShapesOnGround[card.Shape]++;
 
-        if (noOfCards == 1)
-        {
-            RoundInfo.TrickShape = card.Shape;
-        }
-        else if (noOfCards == 4)
-        {
-            int value = 0;
-            int winningHand = EvaluateDeck(out value);
-            cardsOnDeck.Clear();
-            players[winningHand].IncrementScore(value);
+    //    cardsOnDeck.Add(playerIndex, card);
 
-            RoundInfo.DrawCards();
-            noOfCards = 0;
-        }
-    }
+    //    if (noOfCards == 1)
+    //    {
+    //        RoundInfo.TrickShape = card.Shape;
+    //    }
+    //    else if (noOfCards == 4)
+    //    {
+    //        int value = 0;
+    //        int winningHand = EvaluateDeck(out value);
+    //        cardsOnDeck.Clear();
+    //        players[winningHand].IncrementScore(value);
+
+    //        RoundInfo.DrawCards();
+    //        noOfCards = 0;
+    //    }
+    //}
 
     internal void DoubleCard(Card card, bool value)
     {

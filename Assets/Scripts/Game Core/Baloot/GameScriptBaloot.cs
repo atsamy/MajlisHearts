@@ -453,4 +453,10 @@ public class GameScriptBaloot : GameScriptBase
         await Task.Delay(1500);
         StartGame();
     }
+
+    internal override PlayerBase InstantiateMainPlayer(int index)
+    {
+        MainPlayerIndex = index;
+        return new MainPlayerBaloot(index);
+    }
 }

@@ -122,4 +122,9 @@ public class PlayerBase
     {
         return shapeCount[shape];
     }
+
+    internal void ForcePlay()
+    {
+        OnForcePlay?.Invoke();
+    }
 }
