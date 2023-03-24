@@ -116,7 +116,17 @@ public class GameScriptBase : MonoBehaviour
         StopCoroutine(playerTimer);
     }
 
-    internal virtual PlayerBase InstantiateMainPlayer(int index)
+    internal virtual PlayerBase CreateMainPlayer(int index)
+    {
+        return null;
+    }
+
+    internal virtual PlayerBase CreateAIPlayer(int index)
+    {
+        return null;
+    }
+
+    internal virtual PlayerBase CreatePlayer(int index)
     {
         return null;
     }

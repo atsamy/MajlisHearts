@@ -164,9 +164,19 @@ public class GameScript : GameScriptBase
         return isGameOver;
     }
 
-    internal override PlayerBase InstantiateMainPlayer(int index)
+    internal override PlayerBase CreateMainPlayer(int index)
     {
         MainPlayerIndex = index;
         return new MainPlayer(index);
+    }
+
+    internal override PlayerBase CreatePlayer(int index)
+    {
+        return new Player(index);
+    }
+
+    internal override PlayerBase CreateAIPlayer(int index)
+    {
+        return new AIPlayer(index);
     }
 }

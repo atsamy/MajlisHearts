@@ -17,8 +17,8 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public int BidingTeam { get; internal set; }
     public int OtherTeam => (BidingTeam + 1) % 2;
-    public int BiddingRound { get; private set; }
-    public int HokumIndex { get; private set; }
+    public int BiddingRound;
+    public int HokumIndex;
 
     public int AllTricks = -1;
 

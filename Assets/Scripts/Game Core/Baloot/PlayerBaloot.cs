@@ -2,11 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using static UIParticleSystem;
+
 
 public class PlayerBaloot : PlayerBase
 {
@@ -18,7 +15,7 @@ public class PlayerBaloot : PlayerBase
     public delegate void DoubleSelected(int playerIndex, bool isDouble, int value);
     public DoubleSelected OnDoubleSelected;
 
-    //public event Action<bool,int,int> OnDoubleSelected;
+    public event Action<CardShape> OnChangedHokumShape;
 
     protected List<Card> startCards;
 
@@ -36,13 +33,23 @@ public class PlayerBaloot : PlayerBase
         ProjectPower = 0;
         ProjectScore = 0;
         PlayerProjects = new();
+    }
 
-
+    public void SetProjects(Dictionary<List<Card>, Projects> playerProjects,int power,int score)
+    {
+        PlayerProjects = playerProjects;
+        ProjectScore = score;
+        ProjectPower= power;
     }
 
     public virtual void CheckGameType(RoundScriptBaloot roundScriptBaloot)
     {
 
+    }
+
+    public void ChangedHokumShape(CardShape shape)
+    {
+        OnChangedHokumShape?.Invoke(shape);
     }
 
     public override void SetTotalScore()

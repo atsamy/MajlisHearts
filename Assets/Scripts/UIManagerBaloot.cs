@@ -150,6 +150,7 @@ public class UIManagerBaloot : UIManager
 
     private void SelectShapePanel_OnShapeSelected(CardShape shape)
     {
+        mainPlayer.ChangedHokumShape(shape);
         balootGame.balootRoundScript.balootRoundInfo.HokumShape = shape;
         mainPlayer.SelectType(BalootGameType.Hokum);
     }

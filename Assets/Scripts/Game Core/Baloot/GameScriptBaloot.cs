@@ -77,7 +77,7 @@ public class GameScriptBaloot : GameScriptBase
             }
 
             ((PlayerBaloot)Players[i]).OnTypeSelected += Players_SelectedType;
-            ((PlayerBaloot)Players[i]).OnDoubleSelected += GameScriptBaloot_OnDoubleSelected; ;
+            ((PlayerBaloot)Players[i]).OnDoubleSelected += GameScriptBaloot_OnDoubleSelected;
             Players[i].OnCardReady += GameScript_OnCardReady;
 
         }
@@ -112,7 +112,7 @@ public class GameScriptBaloot : GameScriptBase
         }
     }
 
-    private void GameScriptBaloot_OnDoubleSelected(int playerIndex, bool isDouble, int value)
+    protected virtual void GameScriptBaloot_OnDoubleSelected(int playerIndex, bool isDouble, int value)
     {
         if (isDouble)
         {
@@ -153,7 +153,7 @@ public class GameScriptBaloot : GameScriptBase
         }
     }
 
-    private void BalootRoundScript_OnGameTypeSelected(int index, BalootGameType gameType)
+    protected virtual void BalootRoundScript_OnGameTypeSelected(int index, BalootGameType gameType)
     {
         DeclarerIndex = index;
         doublerIndex = -1;
@@ -322,7 +322,7 @@ public class GameScriptBaloot : GameScriptBase
         return Mathf.RoundToInt(total / 10);
     }
 
-    public void Players_SelectedType(int index, BalootGameType type)
+    public virtual void Players_SelectedType(int index, BalootGameType type)
     {
         OnPlayerSelectedType?.Invoke(index, type);
         balootRoundScript.PlayerSelectedType(index, type);
@@ -358,16 +358,16 @@ public class GameScriptBaloot : GameScriptBase
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
 
-                if (RoundScript.RoundInfo.TrickNumber == 1)
+                if (RoundScript.RoundInfo.TrickNumber != 1)
                 {
-                    foreach (PlayerBaloot item in Players)
-                    {
-                        item.ChooseProjects(balootRoundScript.RoundType);
-                    }
-
-                    CompareProjects();
+                    break;
+                }
+                foreach (PlayerBaloot item in Players)
+                {
+                    item.ChooseProjects(balootRoundScript.RoundType);
                 }
 
+                CompareProjects();
                 break;
             case EventTypeBaloot.DealFinished:
                 Deal_OnDealFinished();
@@ -378,7 +378,7 @@ public class GameScriptBaloot : GameScriptBase
         }
     }
 
-    private void DealRemaingCards()
+    protected void DealRemaingCards()
     {
         foreach (PlayerBaloot player in Players)
         {
@@ -392,17 +392,17 @@ public class GameScriptBaloot : GameScriptBase
         SetCardsReady();
     }
 
-    private void DealCards()
+    protected void DealCards()
     {
         OnStartCardsReady?.Invoke(balootRoundScript.BalootCard, balootRoundScript.StartIndex);
     }
 
-    public void CheckType()
+    public virtual void CheckType()
     {
         ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
     }
 
-    private void CompareProjects()
+    protected void CompareProjects()
     {
         int bestScore = 0;
         int bestPower = 0;
@@ -454,9 +454,19 @@ public class GameScriptBaloot : GameScriptBase
         StartGame();
     }
 
-    internal override PlayerBase InstantiateMainPlayer(int index)
+    internal override PlayerBase CreateMainPlayer(int index)
     {
         MainPlayerIndex = index;
         return new MainPlayerBaloot(index);
+    }
+
+    internal override PlayerBase CreatePlayer(int index)
+    {
+        return new PlayerBaloot(index);
+    }
+
+    internal override PlayerBase CreateAIPlayer(int index)
+    {
+        return new AIPlayerBaloot(index);
     }
 }

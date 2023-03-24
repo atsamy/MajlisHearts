@@ -16,7 +16,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
     float turnDuration = 40;
     PunTurnManager turnManager;
 
-    Dictionary<int, int> lookUpActors;
+    public Dictionary<int, int> LookUpActors;
 
     GameScriptBase gameScript;
 
@@ -50,7 +50,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
         gameScript.Players = new PlayerBase[4];
         //playerNumbers = PhotonNetwork.PlayerList.Length;
 
-        lookUpActors = new Dictionary<int, int>();
+        LookUpActors = new Dictionary<int, int>();
 
         //Dictionary<int, string> lookUpAvatar = new Dictionary<int, string>();
 
@@ -66,7 +66,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
                 {
                     if (playersOrder[i] == PhotonNetwork.PlayerList[j].NickName)
                     {
-                        lookUpActors.Add(i, PhotonNetwork.PlayerList[j].ActorNumber);
+                        LookUpActors.Add(i, PhotonNetwork.PlayerList[j].ActorNumber);
                         break;
                     }
                 }
@@ -81,7 +81,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
                 if (i < PhotonNetwork.PlayerList.Length)
                 {
                     playersOrder[i] = PhotonNetwork.PlayerList[i].NickName;
-                    lookUpActors.Add(i, PhotonNetwork.PlayerList[i].ActorNumber);
+                    LookUpActors.Add(i, PhotonNetwork.PlayerList[i].ActorNumber);
                 }
                 else
                 {
@@ -96,19 +96,19 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             {
                 if (i == 0)
                 {
-                    Players[i] = gameScript.InstantiateMainPlayer(0);
+                    Players[i] = gameScript.CreateMainPlayer(0);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.playerAvatar;//lookUpAvatar[i];
                 }
-                else if (lookUpActors.ContainsKey(i))
+                else if (LookUpActors.ContainsKey(i))
                 {
-                    //Players[i] = new Player(i);
+                    Players[i] = gameScript.CreatePlayer(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
                 }
                 else
                 {
-                    //Players[i] = new AIPlayer(i);
+                    Players[i] = gameScript.CreateAIPlayer(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
 
@@ -120,28 +120,26 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             {
                 if (i < playersOrder.Length && playersOrder[i] == GameManager.Instance.MyPlayer.Name)
                 {
-                    Players[i] = gameScript.InstantiateMainPlayer(i);
+                    Players[i] = gameScript.CreateMainPlayer(i);
                     Players[i].Avatar = AvatarManager.Instance.playerAvatar;
                     Players[i].Name = playersOrder[i];
                 }
                 else
                 {
-                    Players[i] = new Player(i);
+                    Players[i] = gameScript.CreatePlayer(i);
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
                     Players[i].Name = playersOrder[i];
                 }
             }
 
-    //((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
-            //((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
             Players[i].OnPlayerTurn += GameScript_OnPlayerTurn;
         }
 
         //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         //((RoundScriptHeats)RoundScript).SetPlayers(Players);
-        //((RoundScriptHeats)RoundScript).OnEvent += Deal_OnEvent;
+        //gameScript.RoundScript.OnEvent += Deal_OnEvent;
 
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable
         {
@@ -162,6 +160,14 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             gameScript.SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
         }
     }
+
+    //private void Deal_OnEvent(int index)
+    //{
+    //    switch (index) 
+    //    {
+    //        case 0:
+    //    }
+    //}
 
     async void WaitForOthers()
     {
@@ -284,7 +290,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
                 }
                 break;
             case messageCode:
-                int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
+                int index = LookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 OnMessageRecieved?.Invoke(index, photonEvent.CustomData);
                 break;
             case playerTurnCode:

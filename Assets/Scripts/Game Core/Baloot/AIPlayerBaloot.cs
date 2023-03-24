@@ -104,6 +104,8 @@ public class AIPlayerBaloot : PlayerBaloot
             {
                 CardShape cardShape;
                 int hokumScore = OtherHokumScore(allcards, out cardShape);
+                
+                ChangedHokumShape(cardShape);
 
                 if (sunScore >= 30)
                 {
