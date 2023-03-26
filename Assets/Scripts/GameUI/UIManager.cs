@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
@@ -46,9 +47,9 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public virtual void Game_OnCardsReady()
+    public virtual async Task Game_OnCardsReady()
     {
-        
+        await Task.Yield();
     }
 
     public void SetCardManager(CardsUIManager cardsUIManager)

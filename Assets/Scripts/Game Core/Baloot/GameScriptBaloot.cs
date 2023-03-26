@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class GameScriptBaloot : GameScriptBase
@@ -25,7 +24,7 @@ public class GameScriptBaloot : GameScriptBase
 
 
     public event Action<int> OnRevealProject;
-    public event Action OnHideProject;
+    public Action OnHideProject;
 
     public RoundScriptBaloot balootRoundScript => (RoundScriptBaloot)RoundScript;
 
@@ -40,11 +39,11 @@ public class GameScriptBaloot : GameScriptBase
 
     [HideInInspector]
     public int DeclarerIndex = 0;
-    int doublerIndex = -2;
+    protected int doublerIndex = -2;
 
     [HideInInspector]
     public int DoubleValue;
-
+    [HideInInspector]
     public int WinningTeam;
     private void Awake()
     {
@@ -353,7 +352,7 @@ public class GameScriptBaloot : GameScriptBase
                 RestartGame();
                 break;
             case EventTypeBaloot.CardsDealtFinished:
-                DealRemaingCards();
+                DealCardsThenStartGame();
                 break;
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
@@ -378,7 +377,13 @@ public class GameScriptBaloot : GameScriptBase
         }
     }
 
-    protected void DealRemaingCards()
+    public virtual async void DealCardsThenStartGame()
+    {
+        await DealRemaingCards();
+        SetStartGame();
+    }
+
+    protected async Task DealRemaingCards()
     {
         foreach (PlayerBaloot player in Players)
         {
@@ -389,7 +394,7 @@ public class GameScriptBaloot : GameScriptBase
             }
         }
 
-        SetCardsReady();
+        await SetCardsReady();
     }
 
     protected void DealCards()
@@ -467,6 +472,11 @@ public class GameScriptBaloot : GameScriptBase
 
     internal override PlayerBase CreateAIPlayer(int index)
     {
-        return new AIPlayerBaloot(index);
+        AIPlayerBaloot aiPlayer = new AIPlayerBaloot(index);
+
+        if (GameManager.Instance.GameType == GameType.Online)
+            aiPlayer.FakePlayer = true;
+
+        return aiPlayer;
     }
 }

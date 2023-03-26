@@ -49,6 +49,8 @@ public class MenuManager : MonoBehaviour
             MainPanel.SetAvatar();
         }
 
+        GameManager.Instance.Game = Game.Baloot;
+
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
     }

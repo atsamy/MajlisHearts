@@ -338,7 +338,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 break;
             case gameReadyCode:
                 beginIndex = (int)photonEvent.CustomData;
-                SetStartGame(true);
+                SetStartGame();
 
                 if (PhotonNetwork.IsMasterClient)
                     BeginTurn();
@@ -384,6 +384,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
                 break;
         }
+    }
+
+    public override void SetStartGame()
+    {
+        base.SetStartGame();
+        OnStartPlaying?.Invoke(true);
     }
 
     private void BeginTurn()

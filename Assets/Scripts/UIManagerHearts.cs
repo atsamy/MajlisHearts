@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -43,10 +44,12 @@ public class UIManagerHearts : UIManager
         SetPlayers(Game.Players, mainPlayer);
     }
 
-    public override void Game_OnCardsReady()
+    public override Task Game_OnCardsReady()
     {
         SetScore();
         CardsUI.ShowPlayerCards(mainPlayer, true,13);
+
+        return Task.CompletedTask;
     }
 
     protected override void Game_OnDealFinished(bool hostPlayer, bool isGameOver)

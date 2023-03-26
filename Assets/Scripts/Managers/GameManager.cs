@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameType GameType;
     [HideInInspector]
+    public Game Game;
+    [HideInInspector]
     public int Bet;
     [HideInInspector]
     public bool IsTeam;
@@ -297,4 +299,10 @@ public enum GameType
     Fake,
     Online,
     Friends
+}
+
+public enum Game
+{
+    Hearts,
+    Baloot
 }

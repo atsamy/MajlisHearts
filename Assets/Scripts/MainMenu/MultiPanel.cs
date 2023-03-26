@@ -101,10 +101,9 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         PhotonNetwork.AddCallbackTarget(this);
         BackButton.SetActive(true);
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable()
-            {
-                    { "avatar", GameManager.Instance.MyPlayer.Avatar }
-            });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable(){
+                 { "avatar", GameManager.Instance.MyPlayer.Avatar }
+        });
 
         if (!PhotonNetwork.IsConnectedAndReady)
         {
@@ -206,7 +205,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable()
         {
             { "bet", GameManager.Instance.Bet },
-            { "type", gameType}
+            { "type", gameType},
+            { "game", GameManager.Instance.Game }
         };
         RoomOptions roomOptions = new RoomOptions()
         {

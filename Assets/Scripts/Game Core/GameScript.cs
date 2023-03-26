@@ -102,7 +102,7 @@ public class GameScript : GameScriptBase
                 CheckDoubleCards();
                 break;
             case EventType.DoubleCardsFinished:
-                SetStartGame(false);
+                SetStartGame();
                 //RoundScript.SetTurn();
                 break;
             case EventType.TrickFinished:
@@ -116,6 +116,11 @@ public class GameScript : GameScriptBase
         }
     }
 
+    public override void SetStartGame()
+    {
+        base.SetStartGame();
+        OnStartPlaying?.Invoke(false);
+    }
     protected void CheckDoubleCards()
     {
         foreach (var item in Players)

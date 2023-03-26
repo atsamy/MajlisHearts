@@ -1,15 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameScriptBase : MonoBehaviour
 {
-    public delegate void CardsReady();
+    public delegate Task CardsReady();
     public event CardsReady OnCardsReady;
 
     public delegate void StartPlaying(bool isMulti);
-    public event StartPlaying OnStartPlaying;
+    public StartPlaying OnStartPlaying;
 
     public delegate void GameReady();
     public event GameReady OnGameReady;
@@ -58,9 +59,9 @@ public class GameScriptBase : MonoBehaviour
         OnTrickFinished?.Invoke(winningHand);
     }
 
-    public void SetCardsReady()
+    public async Task SetCardsReady()
     {
-        OnCardsReady?.Invoke();
+        await OnCardsReady?.Invoke();
     }
 
     public void Deal_OnTrickFinished(int winningHand)
@@ -74,10 +75,9 @@ public class GameScriptBase : MonoBehaviour
         RoundScript.StartNewRound();
     }
 
-    public void SetStartGame(bool isMulti)
+    public virtual void SetStartGame()
     {
         RoundScript.StartFirstTurn();
-        OnStartPlaying?.Invoke(isMulti);
     }
 
     public virtual void StartNextDeal()

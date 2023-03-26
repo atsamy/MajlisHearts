@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static MultiGameScript;
 
 public class MultiGameBalootScript : GameScriptBaloot
 {
@@ -15,27 +14,30 @@ public class MultiGameBalootScript : GameScriptBaloot
     MultiPlayerScript multiPlayer;
 
     const int trickFinishedCode = 41;
-    const int dealFinishedCode = 44;
+    const int roundFinishedCode = 44;
 
-    const int cardsDealtCode = 40;
+    //const int cardsDealtCode = 40;
 
-    const int doubleCardCode = 45;
-    const int checkDoubleCode = 46;
+    //const int doubleCardCode = 45;
+    //const int checkDoubleCode = 46;
 
     const int checkTypeCode = 50;
     const int dealBeginCode = 51;
-    const int playerSelectedTypeCode = 52;
-    const int typeSelectedCode = 53;
-    const int doubleSelectedCode = 54;
-    const int changedShapeCode = 55;
-    const int projectCode = 56;
+    const int dealFinishCode = 52;
+    const int playerSelectedTypeCode = 53;
+    const int typeSelectedCode = 54;
+    const int doubleSelectedCode = 55;
+    const int changedShapeCode = 56;
+    const int projectCode = 57;
+    const int continueDealCode = 58;
+    const int checkDoubleCode = 59;
+    const int RemaingCardsCode = 60;
 
     int projectsCount = 0;
     void Start()
     {
         turnManager = gameObject.AddComponent<PunTurnManager>();
-        multiPlayer = new MultiPlayerScript(turnManager, this);
-
+        multiPlayer = new MultiPlayerScript(turnManager, this, 8);
 
         for (int i = 0; i < 4; i++)
         {
@@ -44,7 +46,7 @@ public class MultiGameBalootScript : GameScriptBaloot
             ((PlayerBaloot)Players[i]).OnChangedHokumShape += MultiGameBalootScript_OnChangedHokumShape;
         }
 
-
+        MyPlayer.OnCardReady += GameScript_OnCardReady;
         RoundScript.SetPlayers(Players);
 
         balootRoundScript.OnEvent += Deal_OnEvent;
@@ -52,44 +54,48 @@ public class MultiGameBalootScript : GameScriptBaloot
         multiPlayer.OnNetworkEvent += MultiPlayer_OnNetworkEvent;
     }
 
-    private void MultiGameBalootScript_OnChangedHokumShape(CardShape shape)
+    protected override void BalootRoundScript_OnGameTypeSelected(int index, BalootGameType gameType)
     {
-        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(changedShapeCode, shape, eventOptions, SendOptions.SendReliable);
-    }
+        DeclarerIndex = index;
+        doublerIndex = -1;
+        DoubleValue = 0;
 
-    //protected override void BalootRoundScript_OnGameTypeSelected(int index, BalootGameType gameType)
-    //{
-    //    //revise
-    //    if (PhotonNetwork.IsMasterClient)
-    //    {
-    //        base.BalootRoundScript_OnGameTypeSelected(index, gameType);
-    //    }
-    //    else
-    //    {
-    //        int[] data = new int[] { index, (int)gameType, (int)balootRoundScript.balootRoundInfo.HokumShape };
-    //        RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-    //        PhotonNetwork.RaiseEvent(typeSelectedCode, data, eventOptionsDeal, SendOptions.SendReliable);
-    //    }
-    //    //base.BalootRoundScript_OnGameTypeSelected(index, gameType);
-    //}
+        if (gameType == BalootGameType.Hokum)
+        {
+            int[] indeces = new int[] { (index + 1) % 4, (index + 3) % 4 };
 
-    public override void Players_SelectedType(int index, BalootGameType type)
-    {
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        base.Players_SelectedType(index, type);
-
-        RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(playerSelectedTypeCode, new int[] { index, (int)type },
-            eventOptionsDeal, SendOptions.SendReliable);
-        //}
-        //else
-        //{
-        //    RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-        //    PhotonNetwork.RaiseEvent(playerSelectedTypeCode, new int[] { index, (int)type },
-        //        eventOptionsDeal, SendOptions.SendReliable);
-        //}
+            foreach (var item in indeces)
+            {
+                if (multiPlayer.LookUpActors.ContainsKey(item))
+                {
+                    RaiseEventOptions eventOptions = new RaiseEventOptions { TargetActors = new int[] { item } };
+                    PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { item, 0 }
+                    , eventOptions, SendOptions.SendReliable);
+                }
+                else
+                {
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        ((PlayerBaloot)Players[(index + 1) % 4]).CheckDouble(0);
+                    }
+                    else
+                    {
+                        multiPlayer.RaiseEventToMaster(checkDoubleCode,new int[] {item,0 });
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                balootRoundScript.DealContinue(index);
+            }
+            else
+            {
+                multiPlayer.RaiseEventToMaster(continueDealCode, index);
+            }
+        }
     }
 
     protected override void GameScriptBaloot_OnDoubleSelected(int playerIndex, bool isDouble, int value)
@@ -101,14 +107,52 @@ public class MultiGameBalootScript : GameScriptBaloot
         else
         {
             int[] data = new int[] { playerIndex, isDouble ? 1 : 0, value };
-            RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-            PhotonNetwork.RaiseEvent(doubleSelectedCode, data, eventOptions, SendOptions.SendReliable);
+            multiPlayer.RaiseEventToMaster(doubleSelectedCode, data);
         }
     }
+    private void GameScript_OnCardReady(int playerIndex, Card card)
+    {
+        if (RoundScript.RoundInfo.TrickNumber == 0)
+        {
+            OnHideProject?.Invoke();
+        }
+    }
+
+    private void MultiGameBalootScript_OnChangedHokumShape(CardShape shape)
+    {
+        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(changedShapeCode, shape, eventOptions, SendOptions.SendReliable);
+    }
+
+    public override void Players_SelectedType(int index, BalootGameType type)
+    {
+        base.Players_SelectedType(index, type);
+
+        RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(playerSelectedTypeCode, new int[] { index, (int)type },
+            eventOptionsDeal, SendOptions.SendReliable);
+    }
+
     private void MultiPlayer_OnNetworkEvent(EventData photonEvent)
     {
         switch (photonEvent.Code)
         {
+            case RemaingCardsCode:
+                List<Card> ownedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+                for (int i = 5; i < ownedCards.Count; i++)
+                {
+                    MyPlayer.AddCard(ownedCards[i]);
+                }
+
+                WaitCardDealing();
+                break;
+            case checkDoubleCode:
+                int[] doubleData = (int[])photonEvent.CustomData;
+                ((PlayerBaloot)Players[doubleData[0]]).CheckDouble(doubleData[1]);
+                break;
+            case continueDealCode:
+                balootRoundScript.DealContinue((int)photonEvent.CustomData);
+                break;
             case changedShapeCode:
                 balootRoundScript.balootRoundInfo.HokumShape = (CardShape)photonEvent.CustomData;
                 break;
@@ -135,27 +179,31 @@ public class MultiGameBalootScript : GameScriptBaloot
                 base.GameScriptBaloot_OnDoubleSelected(doubleSelectedData[0],
                     (doubleSelectedData[1] == 1), doubleSelectedData[2]);
                 break;
-            case cardsDealtCode:
-                projectsCount = 0;
-                List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                ((RoundScriptHeats)RoundScript).RoundInfo = new RoundInfo();
-                MyPlayer.Reset();
+            //case cardsDealtCode:
+            //    projectsCount = 0;
+            //    List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+            //    ((RoundScriptHeats)RoundScript).RoundInfo = new RoundInfo();
+            //    MyPlayer.Reset();
 
-                foreach (var item in cards)
-                {
-                    MyPlayer.AddCard(item);
-                }
+            //    foreach (var item in cards)
+            //    {
+            //        MyPlayer.AddCard(item);
+            //    }
+            //    WaitCardDealing();
 
-                SetCardsReady();
-                ((MainPlayer)MyPlayer).SelectPassCards();
-                break;
+            //    break;
             case dealBeginCode:
+                //SetGameReady();
+                //gameScript.StartGame();
                 List<Card> allCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 balootRoundScript.BalootCard = allCards.First();
                 balootRoundScript.StartIndex++;
                 allCards.RemoveAt(0);
                 MyPlayer.OwnedCards.AddRange(allCards);
                 DealCards();
+                break;
+            case dealFinishCode:
+                DealCardsThenStartGame();
                 break;
             case trickFinishedCode:
                 if (balootRoundScript.RoundInfo.TrickNumber == 1)
@@ -168,7 +216,7 @@ public class MultiGameBalootScript : GameScriptBaloot
                         PhotonNetwork.RaiseEvent(projectCode, Utils.SerializeProjects(player.PlayerProjects,
                             player.ProjectPower, player.ProjectScore), eventOptions, SendOptions.SendReliable);
                     }
-                    else 
+                    else
                     {
                         RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
                         PhotonNetwork.RaiseEvent(projectCode, null, eventOptions, SendOptions.SendReliable);
@@ -189,6 +237,19 @@ public class MultiGameBalootScript : GameScriptBaloot
                     CompareProjects();
                 break;
         }
+    }
+
+    public override async void DealCardsThenStartGame()
+    {
+        await DealRemaingCards();
+        multiPlayer.StartGame();
+    }
+
+    public async void WaitCardDealing()
+    {
+        await DealRemaingCards();
+
+        //do more stuff
     }
 
     private void Deal_OnEvent(int eventIndex)
@@ -219,7 +280,11 @@ public class MultiGameBalootScript : GameScriptBaloot
                 }
                 break;
             case EventTypeBaloot.CardsDealtFinished:
-                DealRemaingCards();
+                DealCardsContinue();
+                //send to the other players code to continue the deal
+                //begin turn
+
+                multiPlayer.StartGame();
                 break;
             case EventTypeBaloot.RestartDeal:
                 break;
@@ -231,11 +296,26 @@ public class MultiGameBalootScript : GameScriptBaloot
                 break;
             case EventTypeBaloot.DealFinished:
                 RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-                PhotonNetwork.RaiseEvent(dealFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent(roundFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
 
                 SetDealFinished(true);
                 break;
         }
+    }
+
+    private void DealCardsContinue()
+    {
+        foreach (var item in multiPlayer.LookUpActors)
+        {
+            if (item.Key == 0)
+                continue;
+
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { item.Value } };
+            PhotonNetwork.RaiseEvent(RemaingCardsCode, Utils.SerializeListOfCards(Players[item.Key].OwnedCards),
+                eventOptionsCards, SendOptions.SendReliable);
+        }
+
+        DealCardsThenStartGame();
     }
 
     public override void CheckType()

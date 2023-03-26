@@ -1,17 +1,12 @@
-using ExitGames.Client.Photon;
-using GooglePlayGames.BasicApi;
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using Photon.Realtime;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Photon.Pun.UtilityScripts;
+using ExitGames.Client.Photon;
 using System.Threading.Tasks;
-using UnityEngine;
-using static MultiGameScript;
+using Photon.Realtime;
+using System.Linq;
+using Photon.Pun;
 
-public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
+public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
     float turnDuration = 40;
     PunTurnManager turnManager;
@@ -19,6 +14,9 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
     public Dictionary<int, int> LookUpActors;
 
     GameScriptBase gameScript;
+
+    public delegate void messageRecieved(int playerIndex, object message);
+    public messageRecieved OnMessageRecieved;
 
     public delegate void NetworkEvent(EventData photonEvent);
     public event NetworkEvent OnNetworkEvent;
@@ -28,7 +26,8 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
     const int messageCode = 47;
     const int playerTurnCode = 49;
     const int trickFinishedCode = 41;
-    const int gameReadyCode = 43;
+    const int setGameReadyCode = 42;
+    const int startGameCode = 43;
     const int dealFinishedCode = 44;
 
     public int TurnNumbers = 8;
@@ -37,12 +36,14 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
     int nextIndex;
     int beginIndex;
 
-    public MultiPlayerScript(PunTurnManager turnManager,GameScriptBase gameScript)
+    public MultiPlayerScript(PunTurnManager turnManager, GameScriptBase gameScript,int turns)
     {
         PhotonNetwork.AddCallbackTarget(this);
 
-        this.turnManager = turnManager; 
+
+        this.turnManager = turnManager;
         this.gameScript = gameScript;
+        TurnNumbers = turns;
         //turnManager = gameObject.AddComponent<PunTurnManager>();
         turnManager.TurnManagerListener = this;
         turnManager.TurnDuration = turnDuration;
@@ -111,9 +112,6 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
                     Players[i] = gameScript.CreateAIPlayer(i);
                     Players[i].Name = playersOrder[i];
                     Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
-
-                    if (GameManager.Instance.GameType == GameType.Online)
-                        ((AIPlayer)Players[i]).FakePlayer = true;
                 }
             }
             else
@@ -141,7 +139,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
         //((RoundScriptHeats)RoundScript).SetPlayers(Players);
         //gameScript.RoundScript.OnEvent += Deal_OnEvent;
 
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable
+        Hashtable hash = new Hashtable
         {
             { "LoadedGame", 1 }
         };
@@ -160,14 +158,6 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             gameScript.SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
         }
     }
-
-    //private void Deal_OnEvent(int index)
-    //{
-    //    switch (index) 
-    //    {
-    //        case 0:
-    //    }
-    //}
 
     async void WaitForOthers()
     {
@@ -189,9 +179,17 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             await Task.Yield();
             //yield return null;
         }
+        //bug here only called by master client
+        //RaiseEventToOthers(setGameReadyCode, null);
+        //gameScript.SetGameReady();
+        //gameScript.StartGame();
 
-        gameScript.SetGameReady();
-        gameScript.StartGame();
+        RaiseEventToAll(setGameReadyCode, null);
+    }
+
+    public void StartGame()
+    {
+        RaiseEventToAll(startGameCode, null);
     }
 
     void GameScript_OnPlayerTurn(int index, RoundInfo info)
@@ -205,6 +203,24 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
             PhotonNetwork.RaiseEvent(playerTurnCode, index, eventOptionsCards, SendOptions.SendReliable);
         }
+    }
+
+    public void RaiseEventToOthers(byte eventCode, object data)
+    {
+        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(eventCode, data, eventOptions, SendOptions.SendReliable);
+    }
+
+    public void RaiseEventToMaster(byte eventCode, object data)
+    {
+        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
+        PhotonNetwork.RaiseEvent(eventCode, data, eventOptions, SendOptions.SendReliable);
+    }
+
+    public void RaiseEventToAll(byte eventCode, object data)
+    {
+        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(eventCode, data, eventOptions, SendOptions.SendReliable);
     }
 
     public void BeginTurn()
@@ -246,7 +262,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
         finishIndex = (finishIndex < 0 ? 3 : finishIndex);
 
         if (playerIndex == gameScript.MainPlayerIndex)
-            gameScript.StopPlayerTimer(); 
+            gameScript.StopPlayerTimer();
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -271,12 +287,19 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
     {
         switch (photonEvent.Code)
         {
-            case gameReadyCode:
-                beginIndex = (int)photonEvent.CustomData;
-                gameScript.SetStartGame(true);
+            case setGameReadyCode:
+                gameScript.SetGameReady();
 
                 if (PhotonNetwork.IsMasterClient)
-                    BeginTurn();
+                {
+                    gameScript.StartGame();
+                }
+                break;
+            case startGameCode:
+                beginIndex = (int)photonEvent.CustomData;
+                gameScript.SetStartGame();
+
+                BeginTurn();
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
@@ -286,7 +309,7 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
             case dealFinishedCode:
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                  gameScript.SetDealFinished(false);
+                    gameScript.SetDealFinished(false);
                 }
                 break;
             case messageCode:
@@ -306,12 +329,12 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-        
+
     }
 
     public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        
+
     }
 
     public void OnPlayerFinished(Photon.Realtime.Player player, int turn, object move)
@@ -350,27 +373,27 @@ public class MultiPlayerScript: IPunTurnManagerCallbacks, IOnEventCallback, IInR
 
     public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        
+
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        
+
     }
 
     public void OnTurnBegins(int turn)
     {
-        
+
     }
 
     public void OnTurnCompleted(int turn)
     {
-        
+
     }
 
     public void OnTurnTimeEnds(int turn)
     {
-        
+
     }
 
     //private void OnEnable()

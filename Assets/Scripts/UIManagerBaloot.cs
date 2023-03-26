@@ -116,7 +116,7 @@ public class UIManagerBaloot : UIManager
 
     private void MainPlayer_OnCancelDouble()
     {
-        doubleHokumPanel.gameObject.SetActive(false);   
+        doubleHokumPanel.gameObject.SetActive(false);
     }
 
     private void MainPlayer_OnCheckDouble(int doubleValue)
@@ -172,7 +172,7 @@ public class UIManagerBaloot : UIManager
         typeTexts[playerIndex].transform.parent.gameObject.SetActive(false);
     }
 
-    private async void BalootUIManager_OnStartCardsReady(Card balootCard,int startIndex)
+    private async void BalootUIManager_OnStartCardsReady(Card balootCard, int startIndex)
     {
         UIElementsHolder.ScoresHolder.SetActive(true);
         await balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
@@ -205,9 +205,9 @@ public class UIManagerBaloot : UIManager
         mainPlayer.SelectType(type);
     }
 
-    public override async void Game_OnCardsReady()
+    public override async Task Game_OnCardsReady()
     {
-        await balootCardsUI.AddRemaingCards(mainPlayer,balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
+        await balootCardsUI.AddRemaingCards(mainPlayer, balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape, balootGame.DoubleValue);
@@ -217,12 +217,13 @@ public class UIManagerBaloot : UIManager
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         doubleHokumPanel.gameObject.SetActive(false);
 
-        Game.SetStartGame(false);
+        //if (GameManager.Instance.GameType == GameType.Single)
+        //    Game.SetStartGame();
     }
 
     private void MainPlayer_OnWaitSelectType(RoundScriptBaloot roundScript)
     {
-        gameTypePanel.Show(roundScript.BiddingRound,roundScript.HokumIndex, Game.MainPlayerIndex);
+        gameTypePanel.Show(roundScript.BiddingRound, roundScript.HokumIndex, Game.MainPlayerIndex);
     }
 
     public override void SetScore()
