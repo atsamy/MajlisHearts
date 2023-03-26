@@ -5,14 +5,14 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class GameSelector : MonoBehaviour
 {
-    public bool isSingleBalootGame;
+    //public bool isSingleBalootGame;
     // Start is called before the first frame update
     void Awake()
     {
-        if (isSingleBalootGame)
-        {
+        //if (isSingleBalootGame)
+        //{
             
-        }
+        //}
         if (GameManager.Instance.Game == Game.Baloot)
         {
             if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)

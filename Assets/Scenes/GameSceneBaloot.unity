@@ -22667,7 +22667,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1247345810}
   - component: {fileID: 1247345811}
-  - component: {fileID: 1247345812}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -22699,29 +22698,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247345808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 945290a2dda414d4cb4b0362d3355865, type: 3}
+  m_Script: {fileID: 11500000, guid: 540cc9743326172439c1d20af5ffaec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainPlayerIndex: 0
-  TeamsScore: 
-  ProjectsScore: 
-  TeamsTotalScore: 
-  DeclarerIndex: 0
-  DoubleValue: 0
-  WinningTeam: 0
---- !u!114 &1247345812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247345808}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 829923da1443ae54c81b50f0870b6e52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MainPlayerIndex: 0
 --- !u!1 &1269908117
 GameObject:
   m_ObjectHideFlags: 0
@@ -28974,6 +28953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameType: 0
+  Game: 0
   Bet: 0
   IsTeam: 0
   Coins: 0

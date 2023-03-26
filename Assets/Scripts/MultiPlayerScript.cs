@@ -187,9 +187,9 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         RaiseEventToAll(setGameReadyCode, null);
     }
 
-    public void StartGame()
+    public void StartGame(int beginIndex)
     {
-        RaiseEventToAll(startGameCode, null);
+        RaiseEventToAll(startGameCode, beginIndex);
     }
 
     void GameScript_OnPlayerTurn(int index, RoundInfo info)

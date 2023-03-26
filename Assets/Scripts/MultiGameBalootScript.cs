@@ -87,6 +87,7 @@ public class MultiGameBalootScript : GameScriptBaloot
         }
         else
         {
+            //here both
             if (PhotonNetwork.IsMasterClient)
             {
                 balootRoundScript.DealContinue(index);
@@ -124,14 +125,14 @@ public class MultiGameBalootScript : GameScriptBaloot
         PhotonNetwork.RaiseEvent(changedShapeCode, shape, eventOptions, SendOptions.SendReliable);
     }
 
-    public override void Players_SelectedType(int index, BalootGameType type)
-    {
-        base.Players_SelectedType(index, type);
+    //public override void Players_SelectedType(int index, BalootGameType type)
+    //{
+    //    base.Players_SelectedType(index, type);
 
-        RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(playerSelectedTypeCode, new int[] { index, (int)type },
-            eventOptionsDeal, SendOptions.SendReliable);
-    }
+    //    RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+    //    PhotonNetwork.RaiseEvent(playerSelectedTypeCode, new int[] { index, (int)type },
+    //        eventOptionsDeal, SendOptions.SendReliable);
+    //}
 
     private void MultiPlayer_OnNetworkEvent(EventData photonEvent)
     {
@@ -165,6 +166,7 @@ public class MultiGameBalootScript : GameScriptBaloot
                 break;
             case playerSelectedTypeCode:
                 int[] data = (int[])photonEvent.CustomData;
+                //use a function to save data not send events
                 base.Players_SelectedType(data[0], (BalootGameType)data[1]);
 
                 break;
@@ -239,10 +241,11 @@ public class MultiGameBalootScript : GameScriptBaloot
         }
     }
 
+
     public override async void DealCardsThenStartGame()
     {
         await DealRemaingCards();
-        multiPlayer.StartGame();
+        multiPlayer.StartGame(balootRoundScript.StartIndex);
     }
 
     public async void WaitCardDealing()
@@ -280,11 +283,17 @@ public class MultiGameBalootScript : GameScriptBaloot
                 }
                 break;
             case EventTypeBaloot.CardsDealtFinished:
-                DealCardsContinue();
-                //send to the other players code to continue the deal
-                //begin turn
+                print("CardsDealtFinished");
+                foreach (var item in multiPlayer.LookUpActors)
+                {
+                    if (item.Key == 0)
+                        continue;
 
-                multiPlayer.StartGame();
+                    RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { item.Value } };
+                    PhotonNetwork.RaiseEvent(RemaingCardsCode, Utils.SerializeListOfCards(Players[item.Key].OwnedCards),
+                        eventOptionsCards, SendOptions.SendReliable);
+                }
+                DealCardsThenStartGame();
                 break;
             case EventTypeBaloot.RestartDeal:
                 break;
@@ -301,21 +310,6 @@ public class MultiGameBalootScript : GameScriptBaloot
                 SetDealFinished(true);
                 break;
         }
-    }
-
-    private void DealCardsContinue()
-    {
-        foreach (var item in multiPlayer.LookUpActors)
-        {
-            if (item.Key == 0)
-                continue;
-
-            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { item.Value } };
-            PhotonNetwork.RaiseEvent(RemaingCardsCode, Utils.SerializeListOfCards(Players[item.Key].OwnedCards),
-                eventOptionsCards, SendOptions.SendReliable);
-        }
-
-        DealCardsThenStartGame();
     }
 
     public override void CheckType()

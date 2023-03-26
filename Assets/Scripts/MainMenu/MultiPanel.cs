@@ -218,7 +218,8 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         roomOptions.CustomRoomPropertiesForLobby = new string[]
         {
             "bet",
-            "type"
+            "type",
+            "game"
         };
 
         PhotonNetwork.JoinRandomOrCreateRoom(roomProperties, 4, MatchmakingMode.FillRoom,
