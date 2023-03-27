@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class AIPlayer : Player
+public class AIPlayer : Player, IMergePlayer
 {
     public bool FakePlayer { private get; set; }
 
@@ -380,17 +380,33 @@ public class AIPlayer : Player
         return avoidWeight;
     }
 
-    public void MergeFromPlayer(Player player)
+    public void Merge(PlayerBase player)
     {
-        OwnedCards = player.OwnedCards;
-        Score = player.Score;
-        TotalScore = player.TotalScore;
-        shapeCount = player.ShapeCount;
-        DidLead = player.DidLead;
-        Name = player.Name;
+        Player oldPlayer = (Player)player;
 
-        OnDoubleCard = player.OnDoubleCard;
-        OnCardReady = player.OnCardReady;
-        OnPassCardsReady = player.OnPassCardsReady;
+        OwnedCards = oldPlayer.OwnedCards;
+        Score = oldPlayer.Score;
+        TotalScore = oldPlayer.TotalScore;
+        shapeCount = oldPlayer.ShapeCount;
+        DidLead = oldPlayer.DidLead;
+        Name = oldPlayer.Name;
+
+        OnDoubleCard = oldPlayer.OnDoubleCard;
+        OnCardReady = oldPlayer.OnCardReady;
+        OnPassCardsReady = oldPlayer.OnPassCardsReady;
     }
+
+    //public void MergeFromPlayer(Player player)
+    //{
+    //    OwnedCards = player.OwnedCards;
+    //    Score = player.Score;
+    //    TotalScore = player.TotalScore;
+    //    shapeCount = player.ShapeCount;
+    //    DidLead = player.DidLead;
+    //    Name = player.Name;
+
+    //    OnDoubleCard = player.OnDoubleCard;
+    //    OnCardReady = player.OnCardReady;
+    //    OnPassCardsReady = player.OnPassCardsReady;
+    //}
 }

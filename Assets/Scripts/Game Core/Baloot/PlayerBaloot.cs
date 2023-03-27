@@ -16,6 +16,7 @@ public class PlayerBaloot : PlayerBase
     public DoubleSelected OnDoubleSelected;
 
     public event Action<CardShape> OnChangedHokumShape;
+    public event Action<int> OnCheckType;
 
     protected List<Card> startCards;
 
@@ -44,7 +45,7 @@ public class PlayerBaloot : PlayerBase
 
     public virtual void CheckGameType(RoundScriptBaloot roundScriptBaloot)
     {
-
+        OnCheckType?.Invoke(index);
     }
 
     public void ChangedHokumShape(CardShape shape)

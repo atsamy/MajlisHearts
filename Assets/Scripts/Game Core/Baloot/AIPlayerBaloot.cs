@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
-public class AIPlayerBaloot : PlayerBaloot
+public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
 {
     public bool FakePlayer { private get; set; }
     bool cancelDouble;
@@ -33,6 +32,21 @@ public class AIPlayerBaloot : PlayerBaloot
         //somehow here leads to a case of double deal continue
         if (!cancelDouble)
             SelectDouble(false, value);
+    }
+
+    public void Merge(PlayerBase player)
+    {
+        PlayerBaloot oldPlayer = (PlayerBaloot)player;
+
+        OwnedCards = oldPlayer.OwnedCards;
+        Score = oldPlayer.Score;
+        TotalScore = oldPlayer.TotalScore;
+        shapeCount = oldPlayer.ShapeCount;
+        Name = oldPlayer.Name;
+
+        //OnDoubleCard = oldPlayer.OnDoubleCard;
+        OnCardReady = oldPlayer.OnCardReady;
+        //OnPassCardsReady = oldPlayer.OnPassCardsReady;
     }
 
     public override void ChooseProjects(BalootGameType type)
@@ -555,5 +569,13 @@ public class AIPlayerBaloot : PlayerBaloot
     internal void SetGameType(BalootGameType roundType)
     {
         balootGameType = roundType;
+    }
+}
+
+public interface IMergePlayer
+{
+    public void Merge(PlayerBase player)
+    {
+        
     }
 }

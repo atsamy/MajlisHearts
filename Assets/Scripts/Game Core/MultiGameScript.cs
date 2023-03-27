@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
+public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks,ILeaveRoom
 {
     float turnDuration = 40;
 
@@ -172,7 +172,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    void GameScript_OnPlayerTurn(int index,RoundInfo info)
+    void GameScript_OnPlayerTurn(int index, RoundInfo info)
     {
         if (index == MainPlayerIndex)
         {
@@ -566,25 +566,25 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
     public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        if (otherPlayer.ActorNumber == 1)
-        {
-            UIManagerHearts.Instance.HostLeft();
-        }
-        else if (PhotonNetwork.IsMasterClient)
-        {
-            int index = otherPlayer.ActorNumber - 1;
+        //    if (otherPlayer.ActorNumber == 1)
+        //    {
+        //        UIManagerHearts.Instance.HostLeft();
+        //    }
+        //    else if (PhotonNetwork.IsMasterClient)
+        //    {
+        //        int index = otherPlayer.ActorNumber - 1;
 
-            Player oldPlayer = ((Player)Players[index]);
+        //        Player oldPlayer = ((Player)Players[index]);
 
-            AIPlayer aiPlayer = new AIPlayer(index);
-            Players[index] = aiPlayer;
-            aiPlayer.MergeFromPlayer(oldPlayer);
+        //        AIPlayer aiPlayer = new AIPlayer(index);
+        //        Players[index] = aiPlayer;
+        //        aiPlayer.me(oldPlayer);
 
-            if (nextIndex == index)
-            {
-                aiPlayer.SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
-            }
-        }
+        //        if (nextIndex == index)
+        //        {
+        //            aiPlayer.SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
+        //        }
+        //    }
     }
 
     public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
@@ -601,4 +601,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
 
     }
+}
+
+public interface ILeaveRoom
+{
+    public void LeaveRoom();
 }

@@ -353,11 +353,11 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         {
             int index = otherPlayer.ActorNumber - 1;
 
-            Player oldPlayer = ((Player)Players[index]);
+            PlayerBase oldPlayer = Players[index];
 
-            AIPlayer aiPlayer = new AIPlayer(index);
+            PlayerBase aiPlayer = gameScript.CreateAIPlayer(index); //new AIPlayer(index);
             Players[index] = aiPlayer;
-            aiPlayer.MergeFromPlayer(oldPlayer);
+            ((IMergePlayer)aiPlayer).Merge(oldPlayer);
 
             if (nextIndex == index)
             {

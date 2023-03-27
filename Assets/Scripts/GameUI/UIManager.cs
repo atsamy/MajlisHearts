@@ -159,7 +159,7 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
         {
-            ((MultiGameScript)Game).LeaveRoom();
+            ((ILeaveRoom)Game).LeaveRoom();
         }
     }
 
@@ -167,6 +167,7 @@ public class UIManager : MonoBehaviour
     {
         
     }
+
     //public Player[] OrderTeamPlayers()
     //{
     //    if (!GameManager.Instance.IsTeam)
@@ -205,8 +206,6 @@ public class UIManager : MonoBehaviour
     //{
     //    UIElementsHolder.DebugCards[playerIndex].ShowWeight(card, Weight);
     //}
-
-
 
     public void SetPlayer()
     {
