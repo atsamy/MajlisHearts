@@ -24,4 +24,10 @@ public class UIElementsHolder : MonoBehaviour
     public GameObject EmojiPanel;
 
     public Sprite CardBack;
+
+    public void PauseGame()
+    {
+        PausePanel.Show();
+        GameSFXManager.Instance.PlayClip("Click");
+    }
 }

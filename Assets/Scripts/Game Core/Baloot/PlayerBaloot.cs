@@ -17,6 +17,7 @@ public class PlayerBaloot : PlayerBase
 
     public event Action<CardShape> OnChangedHokumShape;
     public event Action<int> OnCheckType;
+    public event Action<int, int> OnCheckDouble;
 
     protected List<Card> startCards;
 
@@ -36,11 +37,11 @@ public class PlayerBaloot : PlayerBase
         PlayerProjects = new();
     }
 
-    public void SetProjects(Dictionary<List<Card>, Projects> playerProjects,int power,int score)
+    public void SetProjects(Dictionary<List<Card>, Projects> playerProjects, int power, int score)
     {
         PlayerProjects = playerProjects;
         ProjectScore = score;
-        ProjectPower= power;
+        ProjectPower = power;
     }
 
     public virtual void CheckGameType(RoundScriptBaloot roundScriptBaloot)
@@ -61,6 +62,7 @@ public class PlayerBaloot : PlayerBase
 
     public virtual void CheckDouble(int value)
     {
+        OnCheckDouble?.Invoke(index, value);
         //await Task.Delay(100);
     }
 
@@ -179,7 +181,7 @@ public class PlayerBaloot : PlayerBase
                 {
                     if (count == ((int)project + 2))
                     {
-                        AddSequenceProject(i,project, count + 1);
+                        AddSequenceProject(i, project, count + 1);
                         break;
                     }
                     count = 0;
@@ -189,7 +191,7 @@ public class PlayerBaloot : PlayerBase
             {
                 if (count == ((int)project + 2))
                 {
-                    AddSequenceProject(i,project, count + 1);
+                    AddSequenceProject(i, project, count + 1);
                     break;
                 }
                 count = 0;

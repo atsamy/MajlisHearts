@@ -113,6 +113,7 @@ public class GameScriptBaloot : GameScriptBase
 
     protected virtual void GameScriptBaloot_OnDoubleSelected(int playerIndex, bool isDouble, int value)
     {
+        print(playerIndex + " " + isDouble + " " + value);
         if (isDouble)
         {
             DoubleValue = value + 2;

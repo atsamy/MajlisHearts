@@ -49,6 +49,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             if (player.IsPlayer)
             {
                 player.OnCheckType += Player_OnCheckType;
+                player.OnCheckDouble += Player_OnCheckDouble;
             }
         }
 
@@ -60,9 +61,23 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         multiPlayer.OnNetworkEvent += MultiPlayer_OnNetworkEvent;
     }
 
+    private void Player_OnCheckDouble(int index, int value)
+    {
+        if (multiPlayer.LookUpActors.ContainsKey(index))
+        {
+            RaiseEventOptions eventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[index] } };
+            PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { index, value }
+            , eventOptions, SendOptions.SendReliable);
+        }
+        else 
+        {
+            multiPlayer.RaiseEventToMaster(checkDoubleCode, new int[] { index, value });
+        }
+    }
+
     private void Player_OnCheckType(int index)
     {
-        RaiseEventCheckType(index);
+        //RaiseEventCheckType(index);
     }
 
     public void LeaveRoom()
@@ -76,6 +91,13 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         doublerIndex = -1;
         DoubleValue = 0;
 
+        print("type selected");
+
+        if (index != MainPlayerIndex && !(PhotonNetwork.IsMasterClient && Players[index] is AIPlayerBaloot))
+            return;
+
+        print("type selected cont");
+
         if (gameType == BalootGameType.Hokum)
         {
             int[] indeces = new int[] { (index + 1) % 4, (index + 3) % 4 };
@@ -84,36 +106,32 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             {
                 if (multiPlayer.LookUpActors.ContainsKey(item))
                 {
-                    RaiseEventOptions eventOptions = new RaiseEventOptions { TargetActors = new int[] { item } };
+                    RaiseEventOptions eventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[item] } };
                     PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { item, 0 }
                     , eventOptions, SendOptions.SendReliable);
                 }
-                else if (index == MainPlayerIndex)
+                else
                 {
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        ((PlayerBaloot)Players[(index + 1) % 4]).CheckDouble(0);
+                        ((PlayerBaloot)Players[item]).CheckDouble(0);
                     }
                     else
                     {
-                        multiPlayer.RaiseEventToMaster(checkDoubleCode,new int[] {item,0 });
+                        multiPlayer.RaiseEventToMaster(checkDoubleCode, new int[] { item, 0 });
                     }
                 }
             }
         }
         else
         {
-            //here both
-            if (index == MainPlayerIndex)
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    balootRoundScript.DealContinue(index);
-                }
-                else
-                {
-                    multiPlayer.RaiseEventToMaster(continueDealCode, index);
-                }
+                balootRoundScript.DealContinue(index);
+            }
+            else
+            {
+                multiPlayer.RaiseEventToMaster(continueDealCode, index);
             }
         }
     }
@@ -183,7 +201,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 balootRoundScript.HokumIndex = typeData[0];
                 balootRoundScript.BiddingRound = typeData[1];
 
-                ((PlayerBaloot)MyPlayer).CheckGameType(balootRoundScript);
+                ((PlayerBaloot)Players[typeData[2]]).CheckGameType(balootRoundScript);
                 break;
             case playerSelectedTypeCode:
                 int[] data = (int[])photonEvent.CustomData;
@@ -218,9 +236,16 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             case dealBeginCode:
                 //SetGameReady();
                 //gameScript.StartGame();
+                foreach (var item in Players)
+                {
+                    item.Reset();
+                }
+
                 List<Card> allCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 balootRoundScript.BalootCard = allCards.First();
-                balootRoundScript.StartIndex++;
+                balootRoundScript.IncrementStartIndex();
+                balootRoundScript.ResetValues();
+
                 allCards.RemoveAt(0);
                 MyPlayer.OwnedCards.AddRange(allCards);
                 DealCards();
@@ -262,6 +287,29 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         }
     }
 
+
+    private void OnDisable()
+    {
+        multiPlayer.OnDisable();
+        //multiPlayer.OnNetworkEvent -= MultiPlayer_OnNetworkEvent;
+
+        //foreach (PlayerBaloot player in Players)
+        //{
+        //    player.OnTypeSelected -= Players_SelectedType;
+        //    player.OnDoubleSelected -= GameScriptBaloot_OnDoubleSelected;
+        //    player.OnChangedHokumShape -= MultiGameBalootScript_OnChangedHokumShape;
+
+        //    if (player.IsPlayer)
+        //    {
+        //        player.OnCheckType -= Player_OnCheckType;
+        //        player.OnCheckDouble -= Player_OnCheckDouble;
+        //    }
+        //}
+
+        //MyPlayer.OnCardReady -= GameScript_OnCardReady;
+        //balootRoundScript.OnEvent -= Deal_OnEvent;
+        //balootRoundScript.OnGameTypeSelected -= BalootRoundScript_OnGameTypeSelected;
+    }
 
     public override async void DealCardsThenStartGame()
     {
@@ -333,36 +381,35 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         }
     }
 
-    public override void CheckType()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (!Players[balootRoundScript.StartIndex].IsPlayer)
-            {
-                ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
-            }
-            else
-            {
-                RaiseEventCheckType(balootRoundScript.StartIndex);
-            }
-        }
-    }
+    //public override void CheckType()
+    //{
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        if (!Players[balootRoundScript.StartIndex].IsPlayer)
+    //        {
+    //            ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
+    //        }
+    //        else
+    //        {
+    //            RaiseEventCheckType(balootRoundScript.StartIndex);
+    //        }
+    //    }
+    //}
 
-    private void RaiseEventCheckType(int index)
-    {
-        int[] data = new int[] { balootRoundScript.HokumIndex, balootRoundScript.BiddingRound };
+    //private void RaiseEventCheckType(int index)
+    //{
+    //    int[] data = new int[] { balootRoundScript.HokumIndex, balootRoundScript.BiddingRound, index };
 
-        if (multiPlayer.LookUpActors.ContainsKey(index))
-        {
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[index] } };
-            //we need to send parameters to check type
-
-            PhotonNetwork.RaiseEvent(checkTypeCode, data, raiseEventOptions, SendOptions.SendReliable);
-        }
-        else
-        {
-            //make sure the master understand that its fot ai
-            multiPlayer.RaiseEventToMaster(checkTypeCode, data);
-        }
-    }
+    //    if (multiPlayer.LookUpActors.ContainsKey(index))
+    //    {
+    //        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[index] } };
+    //        //we need to send parameters to check type
+    //        PhotonNetwork.RaiseEvent(checkTypeCode, data, raiseEventOptions, SendOptions.SendReliable);
+    //    }
+    //    else
+    //    {
+    //        //make sure the master understand that its for ai
+    //        multiPlayer.RaiseEventToMaster(checkTypeCode, data);
+    //    }
+    //}
 }

@@ -401,7 +401,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
     //    PhotonNetwork.AddCallbackTarget(this);
     //}
 
-    private void OnDisable()
+    public void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }

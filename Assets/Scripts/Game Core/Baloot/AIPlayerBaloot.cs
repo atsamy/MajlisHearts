@@ -70,10 +70,12 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
     public override async void CheckGameType(RoundScriptBaloot roundScript)
     {
         await Task.Delay(1000);
-        //SelectType(BalootGameType.Pass);
-        //return;
-        List<Card> allcards = new List<Card>(OwnedCards);
-        allcards.Add(roundScript.BalootCard);
+        SelectType(BalootGameType.Pass);
+        return;
+        List<Card> allcards = new List<Card>(OwnedCards)
+        {
+            roundScript.BalootCard
+        };
 
         int sunScore = SunsScore(allcards);
 

@@ -34,7 +34,6 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public override void Deal()
     {
-        HokumIndex = -1;
         AllCards = GetAllCards();
 
         for (int i = 0; i < players.Length; i++)
@@ -54,7 +53,7 @@ public class RoundScriptBaloot : RoundScriptBase
         AllCards.Remove(BalootCard);
     }
 
-    private void IncrementStartIndex()
+    public void IncrementStartIndex()
     {
         StartIndex++;
         StartIndex %= 4;
@@ -189,10 +188,16 @@ public class RoundScriptBaloot : RoundScriptBase
         //players[StartIndex].SetTurn(RoundInfo);
     }
 
+    public void ResetValues()
+    {
+        BiddingRound = 0;
+        HokumIndex = -1;
+    }
+
     public override void StartNewRound()
     {
+        ResetValues();
         IncrementStartIndex();
-        BiddingRound = 0;
         Deal();
 
         RoundInfo = new BalootRoundInfo();
