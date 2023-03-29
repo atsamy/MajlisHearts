@@ -13,7 +13,10 @@ public class LeaderboardPanel : MenuScene
     Button[] tabsButtons;
 
     [SerializeField]
-    Transform[] contents;
+    RectTransform[] contents;
+
+    [SerializeField]
+    ScrollRect scrollRect;
 
     private void Awake()
     {
@@ -52,6 +55,8 @@ public class LeaderboardPanel : MenuScene
             tabsButtons[i].interactable = (i != index);
             contents[i].gameObject.SetActive(i == index);
         }
+
+        scrollRect.content = contents[index];
     }
 
     public override void Close()
