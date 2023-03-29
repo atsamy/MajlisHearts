@@ -44,7 +44,7 @@ public class LeaderboardEntry : MonoBehaviour
 
     public void Set(int rank,string name,int points,string avatarName)
     {
-        nameText.text = name;
+        nameText.text = ArabicSupport.ArabicFixer.Fix(name,false,false);
         pointsText.text = points.ToString();
 
         if (rank < 4)
@@ -60,6 +60,7 @@ public class LeaderboardEntry : MonoBehaviour
         {
             cup.gameObject.SetActive(false);
             rankText.gameObject.SetActive(true);
+            rankImage.gameObject.SetActive(false);
             rankText.text = rank.ToString();
         }
 
