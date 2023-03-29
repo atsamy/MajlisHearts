@@ -453,7 +453,7 @@ public class GameScriptBaloot : GameScriptBase
         ((PlayerBaloot)Players[(winIndex + 3) % 4]).RemoveProjects();
     }
 
-    private async void RestartGame()
+    protected async void RestartGame()
     {
         OnRestartDeal?.Invoke();
         await Task.Delay(1500);
@@ -479,5 +479,10 @@ public class GameScriptBaloot : GameScriptBase
             aiPlayer.FakePlayer = true;
 
         return aiPlayer;
+    }
+
+    public void RestartEvent()
+    {
+        OnRestartDeal?.Invoke();
     }
 }

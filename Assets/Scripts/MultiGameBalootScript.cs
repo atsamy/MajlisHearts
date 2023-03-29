@@ -32,6 +32,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     const int continueDealCode = 58;
     const int checkDoubleCode = 59;
     const int RemaingCardsCode = 60;
+    //const int RestartDealCode = 61;
     //const int checkTypeCode = 61;
 
     int projectsCount = 0;
@@ -59,6 +60,8 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         balootRoundScript.OnEvent += Deal_OnEvent;
         balootRoundScript.OnGameTypeSelected += BalootRoundScript_OnGameTypeSelected;
         multiPlayer.OnNetworkEvent += MultiPlayer_OnNetworkEvent;
+
+        OnStartPlaying?.Invoke(false);
     }
 
     private void Player_OnCheckDouble(int index, int value)
@@ -207,8 +210,10 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 int[] data = (int[])photonEvent.CustomData;
                 //use a function to save data not send events
                 base.Players_SelectedType(data[0], (BalootGameType)data[1]);
-
                 break;
+            //case RestartDealCode:
+            //    RestartEvent();
+            //    break;
             //case typeSelectedCode:
             //    int[] typeSelectedData = (int[])photonEvent.CustomData;
             //    balootRoundScript.balootRoundInfo.HokumShape = (CardShape)typeSelectedData[2];
@@ -287,30 +292,6 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         }
     }
 
-
-    private void OnDisable()
-    {
-        multiPlayer.OnDisable();
-        //multiPlayer.OnNetworkEvent -= MultiPlayer_OnNetworkEvent;
-
-        //foreach (PlayerBaloot player in Players)
-        //{
-        //    player.OnTypeSelected -= Players_SelectedType;
-        //    player.OnDoubleSelected -= GameScriptBaloot_OnDoubleSelected;
-        //    player.OnChangedHokumShape -= MultiGameBalootScript_OnChangedHokumShape;
-
-        //    if (player.IsPlayer)
-        //    {
-        //        player.OnCheckType -= Player_OnCheckType;
-        //        player.OnCheckDouble -= Player_OnCheckDouble;
-        //    }
-        //}
-
-        //MyPlayer.OnCardReady -= GameScript_OnCardReady;
-        //balootRoundScript.OnEvent -= Deal_OnEvent;
-        //balootRoundScript.OnGameTypeSelected -= BalootRoundScript_OnGameTypeSelected;
-    }
-
     public override async void DealCardsThenStartGame()
     {
         await DealRemaingCards();
@@ -365,6 +346,15 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 DealCardsThenStartGame();
                 break;
             case EventTypeBaloot.RestartDeal:
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    RestartGame();
+                }
+                else
+                {
+                    RestartEvent();
+                }
+                //multiPlayer.RaiseEventToOthers(RestartDealCode, null);
                 break;
             case EventTypeBaloot.TrickFinished:
                 RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
@@ -379,6 +369,11 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 SetDealFinished(true);
                 break;
         }
+    }
+
+    private void OnDisable()
+    {
+        multiPlayer.OnDisable();
     }
 
     //public override void CheckType()
