@@ -119,7 +119,7 @@ public class UIManagerBaloot : UIManager
         doubleHokumPanel.gameObject.SetActive(false);
     }
 
-    private void MainPlayer_OnCheckDouble(int doubleValue)
+    private void MainPlayer_OnCheckDouble(int index,int doubleValue)
     {
         doubleHokumPanel.Show(doubleValue);
     }
@@ -127,7 +127,7 @@ public class UIManagerBaloot : UIManager
     private void BalootGame_OnRevealProject(int index)
     {
         int correctIndex = CorrectIndex(index);
-        balootCardsUI.RevealCards(correctIndex, ((PlayerBaloot)Game.Players[correctIndex]).PlayerProjects);
+        balootCardsUI.RevealCards(correctIndex, ((PlayerBaloot)Game.Players[index]).PlayerProjects);
     }
 
     private void Update()

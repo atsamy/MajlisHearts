@@ -1,4 +1,5 @@
 using ExitGames.Client.Photon;
+using GooglePlayGames.BasicApi;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
@@ -28,10 +29,12 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     const int typeSelectedCode = 54;
     const int doubleSelectedCode = 55;
     const int changedShapeCode = 56;
-    const int projectCode = 57;
-    const int continueDealCode = 58;
-    const int checkDoubleCode = 59;
-    const int RemaingCardsCode = 60;
+    const int checkProjectsCode = 57;
+    const int projectCode = 58;
+    const int allProjectCode = 59;
+    const int continueDealCode = 60;
+    const int checkDoubleCode = 61;
+    const int RemaingCardsCode = 62;
     //const int RestartDealCode = 61;
     //const int checkTypeCode = 61;
 
@@ -46,6 +49,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             player.OnTypeSelected += Players_SelectedType;
             player.OnDoubleSelected += GameScriptBaloot_OnDoubleSelected;
             player.OnChangedHokumShape += MultiGameBalootScript_OnChangedHokumShape;
+            player.OnCardReady += GameScript_OnCardReady;
 
             if (player.IsPlayer)
             {
@@ -54,7 +58,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             }
         }
 
-        MyPlayer.OnCardReady += GameScript_OnCardReady;
+
         RoundScript.SetPlayers(Players);
 
         balootRoundScript.OnEvent += Deal_OnEvent;
@@ -72,7 +76,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { index, value }
             , eventOptions, SendOptions.SendReliable);
         }
-        else 
+        else
         {
             multiPlayer.RaiseEventToMaster(checkDoubleCode, new int[] { index, value });
         }
@@ -153,9 +157,19 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     }
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        if (RoundScript.RoundInfo.TrickNumber == 0)
+        print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
+        if (RoundScript.RoundInfo.TrickNumber == 0 && playerIndex == MainPlayerIndex)
         {
             OnHideProject?.Invoke();
+        }
+
+        if (RoundScript.RoundInfo.TrickNumber == 1)
+        {
+            if (((PlayerBaloot)Players[playerIndex]).PlayerProjects.Count > 0)
+            {
+                print("project:" + playerIndex);
+                RevealProject(playerIndex);
+            }
         }
     }
 
@@ -177,7 +191,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
 
     private void MultiPlayer_OnNetworkEvent(EventData photonEvent)
     {
-        print(photonEvent.Code);
+        //print(photonEvent.Code);
         switch (photonEvent.Code)
         {
             case RemaingCardsCode:
@@ -211,36 +225,12 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 //use a function to save data not send events
                 base.Players_SelectedType(data[0], (BalootGameType)data[1]);
                 break;
-            //case RestartDealCode:
-            //    RestartEvent();
-            //    break;
-            //case typeSelectedCode:
-            //    int[] typeSelectedData = (int[])photonEvent.CustomData;
-            //    balootRoundScript.balootRoundInfo.HokumShape = (CardShape)typeSelectedData[2];
-            //    base.BalootRoundScript_OnGameTypeSelected(typeSelectedData[0],
-            //        (BalootGameType)typeSelectedData[1]);
-            //    break;
             case doubleSelectedCode:
                 int[] doubleSelectedData = (int[])photonEvent.CustomData;
                 base.GameScriptBaloot_OnDoubleSelected(doubleSelectedData[0],
                     (doubleSelectedData[1] == 1), doubleSelectedData[2]);
                 break;
-            //case cardsDealtCode:
-            //    projectsCount = 0;
-            //    List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-            //    ((RoundScriptHeats)RoundScript).RoundInfo = new RoundInfo();
-            //    MyPlayer.Reset();
-
-            //    foreach (var item in cards)
-            //    {
-            //        MyPlayer.AddCard(item);
-            //    }
-            //    WaitCardDealing();
-
-            //    break;
             case dealBeginCode:
-                //SetGameReady();
-                //gameScript.StartGame();
                 foreach (var item in Players)
                 {
                     item.Reset();
@@ -258,22 +248,19 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             case dealFinishCode:
                 DealCardsThenStartGame();
                 break;
-            case trickFinishedCode:
-                if (balootRoundScript.RoundInfo.TrickNumber == 1)
+            case checkProjectsCode:
+                MainPlayerBaloot player = (MainPlayerBaloot)MyPlayer;
+                player.ChooseProjects(balootRoundScript.RoundType);
+
+                if (player.PlayerProjects.Count > 0)
                 {
-                    PlayerBaloot player = (PlayerBaloot)MyPlayer;
-                    if (((PlayerBaloot)MyPlayer).PlayerProjects.Count > 0)
-                    {
-                        //send my projects
-                        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-                        PhotonNetwork.RaiseEvent(projectCode, Utils.SerializeProjects(player.PlayerProjects,
-                            player.ProjectPower, player.ProjectScore), eventOptions, SendOptions.SendReliable);
-                    }
-                    else
-                    {
-                        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient };
-                        PhotonNetwork.RaiseEvent(projectCode, null, eventOptions, SendOptions.SendReliable);
-                    }
+                    //send my projects
+                    multiPlayer.RaiseEventToMaster(projectCode, Utils.SerializeProjects(player.PlayerProjects,
+                        player.ProjectPower, player.ProjectScore));
+                }
+                else
+                {
+                    multiPlayer.RaiseEventToMaster(projectCode, null);
                 }
                 break;
             case projectCode:
@@ -286,10 +273,39 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                     ((PlayerBaloot)Players[index]).SetProjects(projects, power, score);
                 }
                 projectsCount++;
-                if (projectsCount == 4)
+                if (multiPlayer.LookUpActors.Count == projectsCount)
                     CompareProjects();
                 break;
+            case allProjectCode:
+                Dictionary<int, Dictionary<List<Card>, Projects>> allProjects = Utils.DeserializePlayersProjects((int[])photonEvent.CustomData);
+
+                for (int i = 0; i < Players.Length; i++)
+                {
+                    if (allProjects.ContainsKey(i))
+                    {
+                        ((PlayerBaloot)Players[i]).SetProjects(allProjects[i]);
+                    }
+                    else
+                    {
+                        ((PlayerBaloot)Players[i]).RemoveProjects();
+                    }
+                }
+
+                break;
         }
+    }
+
+    protected override void CompareProjects()
+    {
+        base.CompareProjects();
+
+        int[] data = Utils.SerializePlayersProjects(Players);
+        if (data.Length > 0)
+        {
+            print("projects count: " + data.Length);
+            multiPlayer.RaiseEventToOthers(allProjectCode, data);
+        }
+        //send final project to all other players
     }
 
     public override async void DealCardsThenStartGame()
@@ -357,9 +373,26 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 //multiPlayer.RaiseEventToOthers(RestartDealCode, null);
                 break;
             case EventTypeBaloot.TrickFinished:
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(trickFinishedCode, RoundScript.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
+                if (balootRoundScript.balootRoundInfo.TrickNumber == 0)
+                {
+                    ((MainPlayerBaloot)MyPlayer).ChooseProjects(balootRoundScript.RoundType);
+                    projectsCount = 1;
 
+                    print("player proj count:" + ((MainPlayerBaloot)MyPlayer).PlayerProjects.Count);
+
+                    foreach (PlayerBaloot item in Players)
+                    {
+                        if (item is AIPlayerBaloot)
+                        {
+                            item.ChooseProjects(balootRoundScript.RoundType);
+                        }
+                    }
+
+                    multiPlayer.RaiseEventToOthers(checkProjectsCode, null);
+                }
+
+                multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);
+                multiPlayer.BeginTurn(RoundScript.PlayingIndex);
                 SetTrickFinished(RoundScript.PlayingIndex);
                 break;
             case EventTypeBaloot.DealFinished:
@@ -375,36 +408,4 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     {
         multiPlayer.OnDisable();
     }
-
-    //public override void CheckType()
-    //{
-    //    if (PhotonNetwork.IsMasterClient)
-    //    {
-    //        if (!Players[balootRoundScript.StartIndex].IsPlayer)
-    //        {
-    //            ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
-    //        }
-    //        else
-    //        {
-    //            RaiseEventCheckType(balootRoundScript.StartIndex);
-    //        }
-    //    }
-    //}
-
-    //private void RaiseEventCheckType(int index)
-    //{
-    //    int[] data = new int[] { balootRoundScript.HokumIndex, balootRoundScript.BiddingRound, index };
-
-    //    if (multiPlayer.LookUpActors.ContainsKey(index))
-    //    {
-    //        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[index] } };
-    //        //we need to send parameters to check type
-    //        PhotonNetwork.RaiseEvent(checkTypeCode, data, raiseEventOptions, SendOptions.SendReliable);
-    //    }
-    //    else
-    //    {
-    //        //make sure the master understand that its for ai
-    //        multiPlayer.RaiseEventToMaster(checkTypeCode, data);
-    //    }
-    //}
 }

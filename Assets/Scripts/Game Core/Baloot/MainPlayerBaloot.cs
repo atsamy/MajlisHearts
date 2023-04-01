@@ -8,7 +8,7 @@ using UnityEngine;
 public class MainPlayerBaloot : PlayerBaloot
 {
     public event Action WaitOthers;
-    public event Action<int> OnCheckDouble;
+    //public event Action<int> OnCheckDouble;
     public event Action OnCancelDouble;
 
     public delegate void WaitSelectType(RoundScriptBaloot roundScript);
@@ -28,10 +28,10 @@ public class MainPlayerBaloot : PlayerBaloot
         ProjectsCount.Clear();
     }
 
-    public override void CheckDouble(int value)
-    {
-        OnCheckDouble?.Invoke(value);
-    }
+    //public override void CheckDouble(int value)
+    //{
+    //    OnCheckDouble?.Invoke(value);
+    //}
 
 
 
@@ -69,11 +69,6 @@ public class MainPlayerBaloot : PlayerBaloot
     public override void CheckGameType(RoundScriptBaloot roundScript)
     {
         OnWaitSelectType?.Invoke(roundScript);
-    }
-
-    internal void ForcePlay()
-    {
-        OnForcePlay?.Invoke();
     }
 
     public override void SetTurn(RoundInfo info)

@@ -150,7 +150,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         //myPlayer.OnPlayerTurn += MainPlayerTurn;
 
         RoundScript.SetPlayers(Players);
-        ((RoundScriptHeats)RoundScript).OnEvent += Deal_OnEvent;
+        ((RoundScriptHearts)RoundScript).OnEvent += Deal_OnEvent;
 
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable
         {
@@ -299,7 +299,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             case cardsDealtCode:
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
-                ((RoundScriptHeats)RoundScript).RoundInfo = new RoundInfo();
+                ((RoundScriptHearts)RoundScript).RoundInfo = new RoundInfo();
                 MyPlayer.Reset();
 
                 foreach (var item in cards)
@@ -360,7 +360,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 //look into double card index
                 int playerIndex;// = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 KeyValuePair<bool, Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData, out playerIndex);
-                ((RoundScriptHeats)RoundScript).DoubleCard(cardValue.Value, cardValue.Key);
+                ((RoundScriptHearts)RoundScript).DoubleCard(cardValue.Value, cardValue.Key);
                 //print("double card index:" + playerIndex);
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
@@ -380,7 +380,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int turnIndex = int.Parse(photonEvent.CustomData.ToString());
 
                 if (turnIndex != MainPlayerIndex)
-                    Players[turnIndex].SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
+                    Players[turnIndex].SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
 
                 break;
         }
@@ -396,7 +396,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (((RoundScriptHeats)RoundScript).RoundInfo.TrickNumber < 13)
+            if (((RoundScriptHearts)RoundScript).RoundInfo.TrickNumber < 13)
                 turnManager.BeginTurn();
         }
     }
@@ -423,7 +423,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
 
         if (passedCardsNo == 4)
         {
-            ((RoundScriptHeats)RoundScript).PassingCardsDone();
+            ((RoundScriptHearts)RoundScript).PassingCardsDone();
         }
     }
 
@@ -451,12 +451,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
         else if (lastIndex != MainPlayerIndex)
         {
-            ((RoundScriptHeats)RoundScript).UpdateDealInfo(lastIndex, hand.Value);
+            ((RoundScriptHearts)RoundScript).UpdateDealInfo(lastIndex, hand.Value);
             Players[hand.Key].ShowCard(hand.Value);
 
             if (nextIndex == MainPlayerIndex && !finished)
             {
-                MyPlayer.SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
+                MyPlayer.SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
             }
         }
     }
@@ -474,7 +474,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         {
             if (beginIndex == MainPlayerIndex)
             {
-                MyPlayer.SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
+                MyPlayer.SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
             }
         }
         else if (!Players[beginIndex].IsPlayer)
@@ -514,7 +514,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         else if (playerIndex == MainPlayerIndex)
         {
             turnManager.SendMove(Utils.SerializeCardAndPlayer(card, playerIndex), playerIndex == finishIndex);
-            ((RoundScriptHeats)RoundScript).UpdateDealInfo(playerIndex, card);
+            ((RoundScriptHearts)RoundScript).UpdateDealInfo(playerIndex, card);
         }
     }
 

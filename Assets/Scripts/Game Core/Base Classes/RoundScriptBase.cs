@@ -42,7 +42,7 @@ public class RoundScriptBase
             cardsOnDeck.Clear();
             players[winningHand].IncrementScore(value);
 
-            RoundInfo.DrawCards();
+            //RoundInfo.DrawCards();
             noOfCards = 0;
         }
     }
@@ -92,6 +92,7 @@ public class RoundScriptBase
     {
         await System.Threading.Tasks.Task.Delay(1000);
         OnEvent?.Invoke(TrickFinished);
+        RoundInfo.DrawCards();
         await System.Threading.Tasks.Task.Delay(1000);
         players[PlayingIndex].SetTurn(RoundInfo);
     }

@@ -336,9 +336,14 @@ public class GameScriptBaloot : GameScriptBase
         }
         if (RoundScript.RoundInfo.TrickNumber == 1)
         {
-            OnRevealProject?.Invoke(playerIndex);
+            RevealProject(playerIndex);
         }
         RoundScript.OnCardReady(playerIndex, card);
+    }
+
+    protected void RevealProject(int playerIndex)
+    {
+        OnRevealProject?.Invoke(playerIndex);
     }
 
     private void Deal_OnEvent(int eventIndex)
@@ -358,16 +363,15 @@ public class GameScriptBaloot : GameScriptBase
             case EventTypeBaloot.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
 
-                if (RoundScript.RoundInfo.TrickNumber != 1)
+                if (RoundScript.RoundInfo.TrickNumber == 0)
                 {
-                    break;
-                }
-                foreach (PlayerBaloot item in Players)
-                {
-                    item.ChooseProjects(balootRoundScript.RoundType);
-                }
+                    foreach (PlayerBaloot item in Players)
+                    {
+                        item.ChooseProjects(balootRoundScript.RoundType);
+                    }
 
-                CompareProjects();
+                    CompareProjects();
+                }
                 break;
             case EventTypeBaloot.DealFinished:
                 Deal_OnDealFinished();
@@ -408,7 +412,7 @@ public class GameScriptBaloot : GameScriptBase
         ((PlayerBaloot)Players[balootRoundScript.StartIndex]).CheckGameType(balootRoundScript);
     }
 
-    protected void CompareProjects()
+    protected virtual void CompareProjects()
     {
         int bestScore = 0;
         int bestPower = 0;

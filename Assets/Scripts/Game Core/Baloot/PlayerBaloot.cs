@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 public class PlayerBaloot : PlayerBase
@@ -42,6 +43,18 @@ public class PlayerBaloot : PlayerBase
         PlayerProjects = playerProjects;
         ProjectScore = score;
         ProjectPower = power;
+    }
+
+    public void SetProjects(Dictionary<List<Card>, Projects> playerProjects)
+    {
+        PlayerProjects = playerProjects;
+    }
+
+    public void RemoveProjects()
+    {
+        PlayerProjects.Clear();
+        ProjectScore = 0;
+        ProjectPower = 0;
     }
 
     public virtual void CheckGameType(RoundScriptBaloot roundScriptBaloot)
@@ -182,6 +195,7 @@ public class PlayerBaloot : PlayerBase
                     if (count == ((int)project + 2))
                     {
                         AddSequenceProject(i, project, count + 1);
+                        count = 0;
                         break;
                     }
                     count = 0;
@@ -192,27 +206,28 @@ public class PlayerBaloot : PlayerBase
                 if (count == ((int)project + 2))
                 {
                     AddSequenceProject(i, project, count + 1);
+                    count = 0;
                     break;
                 }
                 count = 0;
             }
         }
+
+        if (count == ((int)project + 2))
+        {
+            AddSequenceProject(startCards.Count, project, count + 1);
+        }
     }
 
     private void AddSequenceProject(int index, Projects project, int count)
     {
-        Debug.Log(startCards.Count + " " + index + " " + count);
+        //Debug.Log(startCards.Count + " " + index + " " + count);
         PlayerProjects.Add(startCards.GetRange(index - count, count), project);
 
         ProjectScore += projectScores[(int)project];
-        ProjectPower += ((int)project + ((int)startCards[index].Rank - 6));
+        ProjectPower += ((int)project + ((int)startCards[index - count].Rank - 6));
 
         startCards.RemoveRange(index - count, count);
-    }
-
-    internal void RemoveProjects()
-    {
-        PlayerProjects.Clear();
     }
 
     internal virtual void CancelDouble()

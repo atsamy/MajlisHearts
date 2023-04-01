@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,71 @@ public static class Utils
         return cardsSerialized;
     }
 
-    public static int[] SerializeProjects(Dictionary<List<Card>, Projects> projects,int power,int score)
+    public static int[] SerializePlayersProjects(PlayerBase[] players)
+    {
+        List<int> projectsSerialized = new List<int>();
+
+        foreach (PlayerBaloot player in players)
+        {
+            if (player.PlayerProjects.Count > 0)
+            {
+                projectsSerialized.Add(player.Index);
+                projectsSerialized.Add(player.PlayerProjects.Count);
+
+                foreach (var project in player.PlayerProjects)
+                {
+                    projectsSerialized.Add((int)project.Value);
+                    projectsSerialized.Add(project.Key.Count);
+
+                    foreach (var item in project.Key)
+                    {
+                        projectsSerialized.Add((int)item.Rank);
+                        projectsSerialized.Add((int)item.Shape);
+                    }
+                }
+            }
+        }
+
+        return projectsSerialized.ToArray();
+    }
+
+    public static Dictionary<int, Dictionary<List<Card>, Projects>> DeserializePlayersProjects(int[] data)
+    {
+        Dictionary<int, Dictionary<List<Card>, Projects>> allProjects = new();
+        int index = 0;
+
+        while (index < data.Length)
+        {
+            Dictionary<List<Card>, Projects> projects = new();
+
+            int playerIndex = data[index];
+            int noOfProjects = data[index + 1];
+            index += 2;
+
+            for (int i = 0; i < noOfProjects; i++)
+            {
+                Projects currentProject = (Projects)data[i + index];
+                int cardsCount = data[i + 1 + index];
+                index += 2;
+                List<Card> cards = new List<Card>();
+
+                for (int j = index; j < (cardsCount * 2) + index; j += 2)
+                {
+                    Card card = new Card((CardShape)data[j + 1], (CardRank)data[j]);
+                    cards.Add(card);
+                }
+
+                index += (cardsCount * 2);
+                projects.Add(cards, currentProject);
+            }
+
+            allProjects.Add(playerIndex, projects);
+        }
+
+        return allProjects;
+    }
+
+    public static int[] SerializeProjects(Dictionary<List<Card>, Projects> projects, int power, int score)
     {
         List<int> projectsSerialized = new List<int>
         {
@@ -25,7 +90,7 @@ public static class Utils
             score
         };
 
-        foreach (var project in projects) 
+        foreach (var project in projects)
         {
             projectsSerialized.Add((int)project.Value);
             projectsSerialized.Add(project.Key.Count);
@@ -40,33 +105,32 @@ public static class Utils
         return projectsSerialized.ToArray();
     }
 
-    public static Dictionary<List<Card>, Projects> DeserializeProjects(int[] data, out int power,out int score)
+    public static Dictionary<List<Card>, Projects> DeserializeProjects(int[] data, out int power, out int score)
     {
-        power = data[0]; 
+        power = data[0];
         score = data[1];
 
-        Dictionary<List<Card>, Projects> projects = new ();
+        Dictionary<List<Card>, Projects> projects = new();
 
         int index = 2;
 
-        for (int i = 2; i < projects.Count; i++)
+        for (int i = index; i < data.Length; i++)
         {
-            Projects project = (Projects)data[i + index];
-            int number = data[i + 1 + index];
-
-            index += 1;
+            Projects project = (Projects)data[i];
+            int number = data[i + 1];
+            index += 2;
 
             List<Card> cards = new List<Card>();
 
-            for (int j = 0; j < number; j += 2)
+            for (int j = index; j < (number * 2) + index; j += 2)
             {
-                Card card = new Card((CardShape)data[j + 1 + index], (CardRank)data[j + index]);
+                Card card = new Card((CardShape)data[j + 1], (CardRank)data[j]);
                 cards.Add(card);
             }
 
-            index += number;
+            index += (number * 2);
 
-            projects.Add(cards,project);
+            projects.Add(cards, project);
         }
 
         return projects;
@@ -100,7 +164,7 @@ public static class Utils
         return new Card((CardShape)data[1], (CardRank)data[0]);
     }
 
-    public static int[] SerializeCardAndPlayer(Card card , int playerIndex)
+    public static int[] SerializeCardAndPlayer(Card card, int playerIndex)
     {
         int[] cardSerialized = new int[3];
 
@@ -111,12 +175,12 @@ public static class Utils
         return cardSerialized;
     }
 
-    public static KeyValuePair<int,Card> DeSerializeCardAndPlayer(int[] data)
+    public static KeyValuePair<int, Card> DeSerializeCardAndPlayer(int[] data)
     {
         return new KeyValuePair<int, Card>(data[2], new Card((CardShape)data[1], (CardRank)data[0]));
     }
 
-    public static int[] SerializeCardValueAndIndex(Card card, bool value,int index)
+    public static int[] SerializeCardValueAndIndex(Card card, bool value, int index)
     {
         int[] cardSerialized = new int[4];
 

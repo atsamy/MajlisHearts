@@ -32,11 +32,28 @@ public class RoundScriptBaloot : RoundScriptBase
         StartIndex = -1;
     }
 
+
     public override void Deal()
     {
         AllCards = GetAllCards();
 
-        for (int i = 0; i < players.Length; i++)
+        players[0].Reset();
+        players[0].AddCard(new Card(CardShape.Club,CardRank.Knight));
+        AllCards.Remove(new Card(CardShape.Club, CardRank.Knight));
+
+        players[0].AddCard(new Card(CardShape.Club, CardRank.Queen));
+        AllCards.Remove(new Card(CardShape.Club, CardRank.Queen));
+
+        players[0].AddCard(new Card(CardShape.Club, CardRank.King));
+        AllCards.Remove(new Card(CardShape.Club, CardRank.King));
+
+        players[0].AddCard(new Card(CardShape.Heart, CardRank.Ten));
+        AllCards.Remove(new Card(CardShape.Heart, CardRank.Ten));
+
+        players[0].AddCard(new Card(CardShape.Diamond, CardRank.Nine));
+        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Nine));
+
+        for (int i = 1; i < players.Length; i++)
         {
             players[i].Reset();
 
@@ -52,6 +69,27 @@ public class RoundScriptBaloot : RoundScriptBase
         BalootCard = AllCards[Random.Range(0, AllCards.Count)];
         AllCards.Remove(BalootCard);
     }
+
+    //public override void Deal()
+    //{
+    //    AllCards = GetAllCards();
+
+    //    for (int i = 0; i < players.Length; i++)
+    //    {
+    //        players[i].Reset();
+
+    //        for (int j = 0; j < 5; j++)
+    //        {
+    //            int getRandom = Random.Range(0, AllCards.Count);
+
+    //            players[i].AddCard(AllCards[getRandom]);
+    //            AllCards.RemoveAt(getRandom);
+    //        }
+    //    }
+
+    //    BalootCard = AllCards[Random.Range(0, AllCards.Count)];
+    //    AllCards.Remove(BalootCard);
+    //}
 
     public void IncrementStartIndex()
     {
@@ -138,9 +176,8 @@ public class RoundScriptBaloot : RoundScriptBase
 
             playingIndex = winningHand;
 
-            RoundInfo.DrawCards();
 
-            if (RoundInfo.TrickNumber < 8)
+            if (RoundInfo.TrickNumber < 7)
             {
                 TrickFinished((int)EventTypeBaloot.TrickFinished);
             }
@@ -149,6 +186,8 @@ public class RoundScriptBaloot : RoundScriptBase
                 players[winningHand].IncrementScore(10);
                 DealFinished((int)EventTypeBaloot.TrickFinished, (int)EventTypeBaloot.DealFinished);
             }
+
+            //RoundInfo.DrawCards();
         }
         else
         {

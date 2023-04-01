@@ -223,8 +223,9 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         PhotonNetwork.RaiseEvent(eventCode, data, eventOptions, SendOptions.SendReliable);
     }
 
-    public void BeginTurn()
+    public void BeginTurn(int index)
     {
+        beginIndex = index;
         if (PhotonNetwork.IsMasterClient)
         {
             if (gameScript.RoundScript.RoundInfo.TrickNumber < TurnNumbers)
@@ -232,7 +233,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         }
     }
 
-    private void PlayerMove(object move, bool finished)
+    protected void PlayerMove(object move, bool finished)
     {
         KeyValuePair<int, Card> hand = Utils.DeSerializeCardAndPlayer((int[])move);
 
@@ -296,15 +297,14 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
                 }
                 break;
             case startGameCode:
-                beginIndex = (int)photonEvent.CustomData;
+                BeginTurn((int)photonEvent.CustomData);
                 gameScript.SetStartGame();
-
-                BeginTurn();
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
-                BeginTurn();
+                //BeginTurn((int)photonEvent.CustomData);
                 gameScript.SetTrickFinished(beginIndex);
+                gameScript.RoundScript.RoundInfo.DrawCards();
                 break;
             case dealFinishedCode:
                 if (!PhotonNetwork.IsMasterClient)

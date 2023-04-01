@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RoundScriptHeats: RoundScriptBase
+public class RoundScriptHearts: RoundScriptBase
 {
     //public delegate void Event(EventType eventType);
     //public event Event OnEvent;
@@ -17,7 +17,7 @@ public class RoundScriptHeats: RoundScriptBase
 
     int doubleCount;
 
-    public RoundScriptHeats()
+    public RoundScriptHearts()
     {
         cardsOnDeck = new Dictionary<int, Card>();
         RoundInfo = new RoundInfo();

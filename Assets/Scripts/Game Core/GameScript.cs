@@ -19,12 +19,12 @@ public class GameScript : GameScriptBase
     private void Awake()
     {
         Instance = this;
-        RoundScript = new RoundScriptHeats();
+        RoundScript = new RoundScriptHearts();
     }
 
     void Start()
     {
-        ((RoundScriptHeats)RoundScript).OnEvent += Deal_OnEvent;
+        ((RoundScriptHearts)RoundScript).OnEvent += Deal_OnEvent;
 
         Players = new Player[4];
 
@@ -49,7 +49,7 @@ public class GameScript : GameScriptBase
             
         }
 
-        ((RoundScriptHeats)RoundScript).SetPlayers(Players);
+        ((RoundScriptHearts)RoundScript).SetPlayers(Players);
 
         SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
              GameManager.Instance.EquippedItem["CardBack"]);
@@ -75,7 +75,7 @@ public class GameScript : GameScriptBase
 
     private void GameScript_OnDoubleCard(Card card, bool value, int playerIndex)
     {
-        ((RoundScriptHeats)RoundScript).DoubleCard(card, value);
+        ((RoundScriptHearts)RoundScript).DoubleCard(card, value);
 
         SetCardDoubled(card, value, playerIndex);
     }
@@ -136,7 +136,7 @@ public class GameScript : GameScriptBase
 
     private void GameScript_OnPassCardsReady(int playerIndex, List<Card> cards)
     {
-        ((RoundScriptHeats)RoundScript).GameScript_OnPassCardsReady(playerIndex, cards);
+        ((RoundScriptHearts)RoundScript).GameScript_OnPassCardsReady(playerIndex, cards);
     }
 
     public void SetCardsPassed()
