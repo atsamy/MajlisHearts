@@ -174,6 +174,7 @@ public class UIManagerBaloot : UIManager
 
     private async void BalootUIManager_OnStartCardsReady(Card balootCard, int startIndex)
     {
+        HideScores();
         UIElementsHolder.ScoresHolder.SetActive(true);
         await balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
         balootGame.CheckType();

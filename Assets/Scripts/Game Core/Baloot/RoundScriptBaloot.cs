@@ -56,8 +56,8 @@ public class RoundScriptBaloot : RoundScriptBase
         players[3].AddCard(new Card(CardShape.Heart, CardRank.Ace));
         AllCards.Remove(new Card(CardShape.Heart, CardRank.Ace));
 
-        players[3].AddCard(new Card(CardShape.Heart, CardRank.Knight));
-        AllCards.Remove(new Card(CardShape.Heart, CardRank.Knight));
+        players[3].AddCard(new Card(CardShape.Heart, CardRank.King));
+        AllCards.Remove(new Card(CardShape.Heart, CardRank.King));
 
         players[3].AddCard(new Card(CardShape.Heart, CardRank.Queen));
         AllCards.Remove(new Card(CardShape.Heart, CardRank.Queen));
@@ -250,6 +250,11 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public override void StartNewRound()
     {
+        foreach (PlayerBaloot player in players)
+        {
+            player.Reset();
+        }
+
         ResetValues();
         IncrementStartIndex();
         Deal();

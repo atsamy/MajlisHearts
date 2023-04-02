@@ -157,7 +157,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     }
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
+        //print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
         if (RoundScript.RoundInfo.TrickNumber == 0 && playerIndex == MainPlayerIndex)
         {
             OnHideProject?.Invoke();
