@@ -53,7 +53,22 @@ public class RoundScriptBaloot : RoundScriptBase
         players[0].AddCard(new Card(CardShape.Diamond, CardRank.Nine));
         AllCards.Remove(new Card(CardShape.Diamond, CardRank.Nine));
 
-        for (int i = 1; i < players.Length; i++)
+        players[3].AddCard(new Card(CardShape.Heart, CardRank.Ace));
+        AllCards.Remove(new Card(CardShape.Heart, CardRank.Ace));
+
+        players[3].AddCard(new Card(CardShape.Heart, CardRank.Knight));
+        AllCards.Remove(new Card(CardShape.Heart, CardRank.Knight));
+
+        players[3].AddCard(new Card(CardShape.Heart, CardRank.Queen));
+        AllCards.Remove(new Card(CardShape.Heart, CardRank.Queen));
+
+        players[3].AddCard(new Card(CardShape.Diamond, CardRank.Knight));
+        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Knight));
+
+        players[3].AddCard(new Card(CardShape.Diamond, CardRank.Queen));
+        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Queen));
+
+        for (int i = 1; i < players.Length - 1; i++)
         {
             players[i].Reset();
 

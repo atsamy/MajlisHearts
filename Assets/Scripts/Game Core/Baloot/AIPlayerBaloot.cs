@@ -55,16 +55,14 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
         {
             CheckFourhundredProject();
         }
-        else
-        {
-            CheckOneHundredProject(type);
 
-            CheckSequenceProject(Projects.OneHundred);
-            CheckSequenceProject(Projects.Fifty);
-            CheckSequenceProject(Projects.Fifty);
-            CheckSequenceProject(Projects.Sira);
-            CheckSequenceProject(Projects.Sira);
-        }
+        CheckOneHundredProject(type);
+
+        CheckSequenceProject(Projects.OneHundred);
+        CheckSequenceProject(Projects.Fifty);
+        CheckSequenceProject(Projects.Fifty);
+        CheckSequenceProject(Projects.Sira);
+        CheckSequenceProject(Projects.Sira);
     }
 
     public override async void CheckGameType(RoundScriptBaloot roundScript)

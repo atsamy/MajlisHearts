@@ -273,7 +273,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                     ((PlayerBaloot)Players[index]).SetProjects(projects, power, score);
                 }
                 projectsCount++;
-                if (multiPlayer.LookUpActors.Count == projectsCount)
+                if (projectsCount == 4)
                     CompareProjects();
                 break;
             case allProjectCode:
@@ -385,10 +385,18 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                         if (item is AIPlayerBaloot)
                         {
                             item.ChooseProjects(balootRoundScript.RoundType);
+                            projectsCount ++;
                         }
                     }
 
-                    multiPlayer.RaiseEventToOthers(checkProjectsCode, null);
+                    if (projectsCount == 4)
+                    {
+                        CompareProjects();
+                    }
+                    else
+                    {
+                        multiPlayer.RaiseEventToOthers(checkProjectsCode, null);
+                    }
                 }
 
                 multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);

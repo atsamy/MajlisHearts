@@ -225,6 +225,7 @@ public class PlayerBaloot : PlayerBase
         PlayerProjects.Add(startCards.GetRange(index - count, count), project);
 
         ProjectScore += projectScores[(int)project];
+        Debug.Log(string.Format("project {0} card rank {1}",project, startCards[index - count].Rank));
         ProjectPower += ((int)project + ((int)startCards[index - count].Rank - 6));
 
         startCards.RemoveRange(index - count, count);
