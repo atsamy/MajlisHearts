@@ -91,6 +91,7 @@ public class RoundScriptBase
     public async void TrickFinished(int TrickFinished)
     {
         await System.Threading.Tasks.Task.Delay(1000);
+        
         OnEvent?.Invoke(TrickFinished);
         RoundInfo.DrawCards();
         await System.Threading.Tasks.Task.Delay(1000);

@@ -92,8 +92,7 @@ public class RoundScriptHearts: RoundScriptBase
             playingIndex = winningHand;
 
             RoundInfo.DrawCards();
-
-            if (RoundInfo.TrickNumber < 13)
+            if (RoundInfo.TrickNumber < 12)
             {
                 TrickFinished((int)EventType.TrickFinished);
             }
@@ -101,6 +100,7 @@ public class RoundScriptHearts: RoundScriptBase
             {
                 DealFinished((int)EventType.TrickFinished, (int)EventType.DealFinished);
             }
+            RoundInfo.TrickNumber++;
         }
         else
         {

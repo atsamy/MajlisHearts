@@ -37,4 +37,9 @@ public class RoundInfo
         CardsDrawn.AddRange(CardsOntable);
         CardsOntable.Clear();
     }
+
+    //public void IncrementTrickNumber()
+    //{
+
+    //}
 }

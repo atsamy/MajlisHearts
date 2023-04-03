@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Photon.Realtime;
 using System.Linq;
 using Photon.Pun;
+using UnityEngine;
+using GooglePlayGames.BasicApi;
 
 public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
@@ -302,7 +304,6 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
-                //BeginTurn((int)photonEvent.CustomData);
                 gameScript.SetTrickFinished(beginIndex);
                 gameScript.RoundScript.RoundInfo.DrawCards();
                 break;
@@ -318,7 +319,6 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
                 break;
             case playerTurnCode:
                 int turnIndex = int.Parse(photonEvent.CustomData.ToString());
-
                 if (turnIndex != gameScript.MainPlayerIndex)
                     Players[turnIndex].SetTurn(gameScript.RoundScript.RoundInfo);
                 break;
@@ -371,19 +371,37 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         PlayerMove(move, false);
     }
 
-    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)
     {
 
     }
 
-    public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
 
     }
 
     public void OnTurnBegins(int turn)
     {
+        //if (!PhotonNetwork.IsMasterClient && Players[beginIndex] is AIPlayer)
+        //    return;
 
+        //Players[beginIndex].SetTurn(Deal.DealInfo);
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            if (beginIndex == gameScript.MainPlayerIndex)
+            {
+                gameScript.MyPlayer.SetTurn(gameScript.RoundScript.RoundInfo);
+            }
+        }
+        else if (!Players[beginIndex].IsPlayer)
+        {
+            gameScript.RoundScript.SetTurn();
+
+            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+            PhotonNetwork.RaiseEvent(playerTurnCode, beginIndex, eventOptionsCards, SendOptions.SendReliable);
+        }
     }
 
     public void OnTurnCompleted(int turn)

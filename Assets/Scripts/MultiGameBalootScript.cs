@@ -98,12 +98,8 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         doublerIndex = -1;
         DoubleValue = 0;
 
-        print("type selected");
-
         if (index != MainPlayerIndex && !(PhotonNetwork.IsMasterClient && Players[index] is AIPlayerBaloot))
             return;
-
-        print("type selected cont");
 
         if (gameType == BalootGameType.Hokum)
         {
@@ -349,7 +345,6 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 }
                 break;
             case EventTypeBaloot.CardsDealtFinished:
-                print("CardsDealtFinished");
                 foreach (var item in multiPlayer.LookUpActors)
                 {
                     if (item.Key == 0)
@@ -377,8 +372,6 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 {
                     ((MainPlayerBaloot)MyPlayer).ChooseProjects(balootRoundScript.RoundType);
                     projectsCount = 1;
-
-                    print("player proj count:" + ((MainPlayerBaloot)MyPlayer).PlayerProjects.Count);
 
                     foreach (PlayerBaloot item in Players)
                     {

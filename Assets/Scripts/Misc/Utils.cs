@@ -51,6 +51,8 @@ public static class Utils
         Dictionary<int, Dictionary<List<Card>, Projects>> allProjects = new();
         int index = 0;
 
+        Debug.Log(data.Length);
+
         while (index < data.Length)
         {
             Dictionary<List<Card>, Projects> projects = new();
@@ -61,8 +63,8 @@ public static class Utils
 
             for (int i = 0; i < noOfProjects; i++)
             {
-                Projects currentProject = (Projects)data[i + index];
-                int cardsCount = data[i + 1 + index];
+                Projects currentProject = (Projects)data[index];
+                int cardsCount = data[1 + index];
                 index += 2;
                 List<Card> cards = new List<Card>();
 

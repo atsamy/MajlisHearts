@@ -120,6 +120,7 @@ public class BalootCardsUIManager : CardsUIManager
 
     protected override bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
     {
+
         BalootRoundInfo info = (BalootRoundInfo)trickInfo;
         bool firstHand = trickInfo.CardsOntable.Count == 0;
 

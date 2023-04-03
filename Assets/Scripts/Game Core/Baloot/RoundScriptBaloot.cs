@@ -38,35 +38,35 @@ public class RoundScriptBaloot : RoundScriptBase
         AllCards = GetAllCards();
 
         players[0].Reset();
-        players[0].AddCard(new Card(CardShape.Club,CardRank.Knight));
-        AllCards.Remove(new Card(CardShape.Club, CardRank.Knight));
+        //players[0].AddCard(new Card(CardShape.Club,CardRank.Knight));
+        //AllCards.Remove(new Card(CardShape.Club, CardRank.Knight));
 
-        players[0].AddCard(new Card(CardShape.Club, CardRank.Queen));
-        AllCards.Remove(new Card(CardShape.Club, CardRank.Queen));
+        //players[0].AddCard(new Card(CardShape.Club, CardRank.Queen));
+        //AllCards.Remove(new Card(CardShape.Club, CardRank.Queen));
 
-        players[0].AddCard(new Card(CardShape.Club, CardRank.King));
-        AllCards.Remove(new Card(CardShape.Club, CardRank.King));
+        //players[0].AddCard(new Card(CardShape.Club, CardRank.King));
+        //AllCards.Remove(new Card(CardShape.Club, CardRank.King));
 
-        players[0].AddCard(new Card(CardShape.Heart, CardRank.Ten));
-        AllCards.Remove(new Card(CardShape.Heart, CardRank.Ten));
+        //players[0].AddCard(new Card(CardShape.Spade, CardRank.Ace));
+        //AllCards.Remove(new Card(CardShape.Spade, CardRank.Ace));
 
-        players[0].AddCard(new Card(CardShape.Diamond, CardRank.Nine));
-        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Nine));
+        //players[0].AddCard(new Card(CardShape.Spade, CardRank.King));
+        //AllCards.Remove(new Card(CardShape.Spade, CardRank.King));
 
-        players[3].AddCard(new Card(CardShape.Heart, CardRank.Ace));
-        AllCards.Remove(new Card(CardShape.Heart, CardRank.Ace));
+        //players[3].AddCard(new Card(CardShape.Heart, CardRank.Ace));
+        //AllCards.Remove(new Card(CardShape.Heart, CardRank.Ace));
 
-        players[3].AddCard(new Card(CardShape.Heart, CardRank.King));
-        AllCards.Remove(new Card(CardShape.Heart, CardRank.King));
+        //players[3].AddCard(new Card(CardShape.Heart, CardRank.King));
+        //AllCards.Remove(new Card(CardShape.Heart, CardRank.King));
 
-        players[3].AddCard(new Card(CardShape.Heart, CardRank.Queen));
-        AllCards.Remove(new Card(CardShape.Heart, CardRank.Queen));
+        //players[3].AddCard(new Card(CardShape.Heart, CardRank.Queen));
+        //AllCards.Remove(new Card(CardShape.Heart, CardRank.Queen));
 
-        players[3].AddCard(new Card(CardShape.Diamond, CardRank.Knight));
-        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Knight));
+        //players[3].AddCard(new Card(CardShape.Diamond, CardRank.Knight));
+        //AllCards.Remove(new Card(CardShape.Diamond, CardRank.Knight));
 
-        players[3].AddCard(new Card(CardShape.Diamond, CardRank.Queen));
-        AllCards.Remove(new Card(CardShape.Diamond, CardRank.Queen));
+        //players[3].AddCard(new Card(CardShape.Diamond, CardRank.Queen));
+        //AllCards.Remove(new Card(CardShape.Diamond, CardRank.Queen));
 
         for (int i = 1; i < players.Length - 1; i++)
         {
@@ -75,7 +75,13 @@ public class RoundScriptBaloot : RoundScriptBase
             for (int j = 0; j < 5; j++)
             {
                 int getRandom = Random.Range(0, AllCards.Count);
+                //if (i == 1 && j == 0)
+                //{
+                //    players[i].AddCard(new Card(CardShape.Club,CardRank.Ace));
+                //    AllCards.Remove(new Card(CardShape.Club, CardRank.Ace));
 
+                //    continue;
+                //}
                 players[i].AddCard(AllCards[getRandom]);
                 AllCards.RemoveAt(getRandom);
             }
