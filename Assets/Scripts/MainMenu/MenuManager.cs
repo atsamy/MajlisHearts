@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour
     public MainPanelScript MainPanel;
     public MeetingPanel meetingPanel;
     public FriendListPanel friendPanel;
+    public ChooseGamePanel ChooseGamePanel;
     public InvitePopup InvitePopup;
 
     public EditTimer EditTimer;
@@ -49,7 +50,7 @@ public class MenuManager : MonoBehaviour
             MainPanel.SetAvatar();
         }
 
-        GameManager.Instance.Game = Game.Baloot;
+        //GameManager.Instance.Game = Game.Baloot;
 
         DailyRewards.instance.onClaimPrize += ClaimDailyReward;
         ChatManager.OnGotPrivateMessage += ChatManager_OnGotPrivateMessage;
@@ -97,6 +98,13 @@ public class MenuManager : MonoBehaviour
             if (sender != GameManager.Instance.MyPlayer.Name)
                 ShowInvitePopup(sender, message);
         }
+    }
+
+    public void OpenChooseGame()
+    {
+        MainPanel.HideHeader(true, false);
+        SFXManager.Instance.PlayClip("Open");
+        ChooseGamePanel.Open();
     }
 
     void ClaimDailyReward(int day,int multiplier)
@@ -193,6 +201,8 @@ public class MenuManager : MonoBehaviour
         ChatManager.Instance.SendPrivateMessage(sender, "timeout");
         InvitePopup.gameObject.SetActive(false);
     }
+
+
 
     public void OpenGameMode()
     {

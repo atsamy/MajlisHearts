@@ -303,6 +303,6 @@ public enum GameType
 
 public enum Game
 {
-    Hearts,
-    Baloot
+    Hearts = 0,
+    Baloot = 1
 }
