@@ -28,7 +28,9 @@ public class UIManagerBaloot : UIManager
     MainPlayerBaloot mainPlayer;
 
     [SerializeField]
-    GameObject baloot;
+    GameObject wordEffect;
+    [SerializeField]
+    TextMeshProUGUI word;
 
     private void OnEnable()
     {
@@ -180,11 +182,17 @@ public class UIManagerBaloot : UIManager
         balootGame.CheckType();
     }
 
-    private async void Item_BalootCardsPlayed()
+    private void Item_BalootCardsPlayed()
     {
-        baloot.SetActive(true);
+        ShowWord("baloot");
+    }
+
+    private async void ShowWord(string wordCode)
+    {
+        wordEffect.SetActive(true);
+        word.text = LanguageManager.Instance.GetString(wordCode);
         await Task.Delay(1000);
-        baloot.SetActive(false);
+        wordEffect.SetActive(false);
     }
 
 
@@ -218,6 +226,7 @@ public class UIManagerBaloot : UIManager
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         doubleHokumPanel.gameObject.SetActive(false);
 
+        ShowWord(balootGame.balootRoundScript.RoundType.ToString());
         //if (GameManager.Instance.GameType == GameType.Single)
         //    Game.SetStartGame();
     }
