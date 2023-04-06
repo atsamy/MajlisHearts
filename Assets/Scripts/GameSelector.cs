@@ -9,10 +9,6 @@ public class GameSelector : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        //if (isSingleBalootGame)
-        //{
-            
-        //}
         if (GameManager.Instance.Game == Game.Baloot)
         {
             if (GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)

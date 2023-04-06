@@ -4,30 +4,28 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundResultBaloot : RoundResult
 {
     [SerializeField]
-    TextMeshProUGUI roundTeam1;
+    Image[] Avatars;
     [SerializeField]
-    TextMeshProUGUI roundTeam2;
+    TextMeshProUGUI[] Names;
     [SerializeField]
-    TextMeshProUGUI pointsTeam1;
+    TextMeshProUGUI[] roundPoints;
     [SerializeField]
-    TextMeshProUGUI pointsTeam2;
+    TextMeshProUGUI[] FloorPoints;
     [SerializeField]
-    TextMeshProUGUI projectsTeam1;
+    TextMeshProUGUI[] ProjectPoints;
     [SerializeField]
-    TextMeshProUGUI projectsTeam2;
+    TextMeshProUGUI[] totalPoints;
     [SerializeField]
-    TextMeshProUGUI totalPointsTeam1;
-    [SerializeField]
-    TextMeshProUGUI totalPointsTeam2;
+    TextMeshProUGUI[] teamTotalPoints;
 
     [SerializeField]
-    GameObject teamOneCrown;
-    [SerializeField]
-    GameObject teamTwoCrown;
+    GameObject[] teamCrown;
+
 
     public override void ShowRound(GameScriptBase game, bool inGame, bool gameOver, Action<int> OnPanelClosed)
     {
@@ -35,27 +33,22 @@ public class RoundResultBaloot : RoundResult
 
         GameScriptBaloot balootGame = game as GameScriptBaloot;
 
-        roundTeam1.text = (game.Players[0].Score + game.Players[2].Score).ToString();
-        roundTeam2.text = (game.Players[1].Score + game.Players[3].Score).ToString();
-
-        totalPointsTeam1.text = balootGame.TeamsTotalScore[0].ToString();
-        totalPointsTeam2.text = balootGame.TeamsTotalScore[1].ToString();
-
-        pointsTeam1.text = balootGame.TeamsScore[0].ToString();
-        pointsTeam2.text = balootGame.TeamsScore[1].ToString();
-
-        projectsTeam1.text = (((PlayerBaloot)game.Players[0]).ProjectScore + 
-            ((PlayerBaloot)game.Players[2]).ProjectScore).ToString();
-
-        projectsTeam2.text = (((PlayerBaloot)game.Players[1]).ProjectScore +
-            ((PlayerBaloot)game.Players[3]).ProjectScore).ToString();
-
-        teamOneCrown.SetActive(balootGame.WinningTeam == 0);
-        teamTwoCrown.SetActive(balootGame.WinningTeam == 1);
-
-        for (int i = 0; i < singlePlayers.Length; i++)
+        for (int i = 0; i < 2; i++)
         {
-            singlePlayers[i].Set(game.Players[i],false);
+            roundPoints[i].text = (game.Players[i + 0].Score + game.Players[i + 2].Score).ToString();
+            teamTotalPoints[i].text = balootGame.TeamsTotalScore[i].ToString();
+            totalPoints[i].text = balootGame.TeamsScore[i].ToString();
+            ProjectPoints[i].text = (((PlayerBaloot)game.Players[i + 0]).ProjectScore +
+                ((PlayerBaloot)game.Players[i + 2]).ProjectScore).ToString();
+            FloorPoints[i].text = balootGame.balootRoundScript.FloorPoints == i ? "10" : "0";
+            teamCrown[i].SetActive(balootGame.WinningTeam == i);
+        }
+
+
+        for (int i = 0; i < game.Players.Length; i++)
+        {
+            Avatars[i].sprite = AvatarManager.Instance.GetAvatarSprite(game.Players[i].Name);
+            Names[i].text = ArabicSupport.ArabicFixer.Fix(game.Players[i].Name, false, false);
         }
 
     }

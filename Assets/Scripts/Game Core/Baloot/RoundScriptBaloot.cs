@@ -21,7 +21,7 @@ public class RoundScriptBaloot : RoundScriptBase
     public int HokumIndex;
 
     public int AllTricks = -1;
-
+    public int FloorPoints { get; private set; }
     public event System.Action<int, BalootGameType> OnGameTypeSelected;
 
     public RoundScriptBaloot()
@@ -204,6 +204,7 @@ public class RoundScriptBaloot : RoundScriptBase
             }
             else
             {
+                FloorPoints = winningHand % 2;
                 players[winningHand].IncrementScore(10);
                 DealFinished((int)EventTypeBaloot.TrickFinished, (int)EventTypeBaloot.DealFinished);
             }
