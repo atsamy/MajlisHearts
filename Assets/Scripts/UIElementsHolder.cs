@@ -25,6 +25,18 @@ public class UIElementsHolder : MonoBehaviour
 
     public Sprite CardBack;
 
+    private void Awake()
+    {
+        if (GameManager.Instance.Game == Game.Hearts)
+        {
+            GetComponent<UIManagerHearts>().enabled = true;
+        }
+        else
+        {
+            GetComponent<UIManagerBaloot>().enabled = true;
+        }
+    }
+
     public void PauseGame()
     {
         PausePanel.Show();

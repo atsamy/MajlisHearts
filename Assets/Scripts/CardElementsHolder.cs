@@ -16,4 +16,16 @@ public class CardElementsHolder : MonoBehaviour
     public Transform[] DeckCardsPosition;
 
     public PlayerDetails[] playersDetails;
+
+    private void Awake()
+    {
+        if (GameManager.Instance.Game == Game.Hearts)
+        {
+            GetComponent<HeartsCardsUIManager>().enabled = true;
+        }
+        else
+        {
+            GetComponent<BalootCardsUIManager>().enabled = true;
+        }
+    }
 }

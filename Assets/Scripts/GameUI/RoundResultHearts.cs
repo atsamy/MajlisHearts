@@ -2,11 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class RoundResultHearts : RoundResult
 {
-
+    [SerializeField]
+    PlayerDealResult[] singlePlayers;
+    [SerializeField]
+    TextMeshProUGUI[] ranks;
     public override void ShowRound(GameScriptBase game, bool inGame, bool gameOver, Action<int> OnPanelClosed)
     {
         base.ShowRound(game,inGame,gameOver, OnPanelClosed);

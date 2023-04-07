@@ -9,10 +9,6 @@ using TMPro;
 public class RoundResult : MonoBehaviour
 {
     [SerializeField]
-    protected PlayerDealResult[] singlePlayers;
-    [SerializeField]
-    protected TextMeshProUGUI[] ranks;
-    [SerializeField]
     protected GameObject Footer;
     //[SerializeField]
     //protected TextMeshProUGUI buttonText;
