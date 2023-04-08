@@ -35,7 +35,7 @@ public class RoundResultBaloot : RoundResult
 
         for (int i = 0; i < 2; i++)
         {
-            roundPoints[i].text = (game.Players[i + 0].Score + game.Players[i + 2].Score).ToString();
+            roundPoints[i].text = balootGame.RoundScore[i].ToString();
             teamTotalPoints[i].text = balootGame.TeamsTotalScore[i].ToString();
             totalPoints[i].text = balootGame.TeamsScore[i].ToString();
             ProjectPoints[i].text = (((PlayerBaloot)game.Players[i + 0]).ProjectScore +

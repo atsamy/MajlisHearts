@@ -32,6 +32,9 @@ public class GameScriptBaloot : GameScriptBase
     public int[] TeamsScore;
 
     [HideInInspector]
+    public int[] RoundScore;
+
+    [HideInInspector]
     public int[] ProjectsScore;
 
     [HideInInspector]
@@ -52,6 +55,7 @@ public class GameScriptBaloot : GameScriptBase
         TeamsScore = new int[2];
         TeamsTotalScore = new int[2];
         ProjectsScore = new int[2];
+        RoundScore = new int[2];
     }
 
     void Start()
@@ -173,7 +177,6 @@ public class GameScriptBaloot : GameScriptBase
     public override bool SetFinalScore()
     {
         int team1TrickCount = Players[0].TricksCount + Players[2].TricksCount;
-        //print("team 1 count: " + team1TrickCount);
 
         switch (balootRoundScript.RoundType)
         {
@@ -183,13 +186,13 @@ public class GameScriptBaloot : GameScriptBase
             case BalootGameType.Hokum:
                 int[] total = new int[2];
 
-                total[0] = Players[0].Score + Players[2].Score;
+                RoundScore[0] = Players[0].Score + Players[2].Score;
                 ProjectsScore[0] = ((PlayerBaloot)Players[0]).ProjectScore + ((PlayerBaloot)Players[2]).ProjectScore;
-                total[0] = CalculatePointsHokum(total[0]);
+                total[0] = CalculatePointsHokum(RoundScore[0]);
 
-                total[1] = Players[1].Score + Players[3].Score;
+                RoundScore[1] = Players[1].Score + Players[3].Score;
                 ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
-                total[1] = CalculatePointsHokum(total[1]);
+                total[1] = CalculatePointsHokum(RoundScore[1]);
 
                 if (team1TrickCount == 8)
                 {
@@ -271,13 +274,13 @@ public class GameScriptBaloot : GameScriptBase
     {
         int[] total = new int[2];
 
-        total[0] = Players[0].Score + Players[2].Score;
+        RoundScore[0] = Players[0].Score + Players[2].Score;
         ProjectsScore[0] = ((PlayerBaloot)Players[0]).ProjectScore + ((PlayerBaloot)Players[2]).ProjectScore;
-        total[0] = CalculatePointsSuns(total[0]);
+        total[0] = CalculatePointsSuns(RoundScore[0]);
 
-        total[1] = Players[1].Score + Players[3].Score;
+        RoundScore[1] = Players[1].Score + Players[3].Score;
         ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
-        total[1] = CalculatePointsSuns(total[1]);
+        total[1] = CalculatePointsSuns(RoundScore[1]);
 
         if (team1TrickCount == 8)
         {
