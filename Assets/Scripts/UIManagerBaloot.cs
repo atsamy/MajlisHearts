@@ -176,6 +176,7 @@ public class UIManagerBaloot : UIManager
 
     private async void BalootUIManager_OnStartCardsReady(Card balootCard, int startIndex)
     {
+        ResetScore();
         HideScores();
         UIElementsHolder.ScoresHolder.SetActive(true);
         await balootCardsUI.ShowPlayerCardsBaloot(mainPlayer, balootCard, startIndex);
@@ -219,9 +220,10 @@ public class UIManagerBaloot : UIManager
         await balootCardsUI.AddRemaingCards(mainPlayer, balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
-            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape, balootGame.DoubleValue);
+            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape, 
+                balootGame.DoubleValue, balootGame);
         else
-            gameInfoPanel.ShowSuns();
+            gameInfoPanel.ShowSuns(balootGame);
 
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         doubleHokumPanel.gameObject.SetActive(false);
@@ -244,6 +246,14 @@ public class UIManagerBaloot : UIManager
             correctIndex %= 4;
 
             balootCardsUI.SetScore(i, Game.Players[correctIndex].Score);
+        }
+    }
+
+    public void ResetScore()
+    {
+        for (int i = 0; i < Game.Players.Length; i++)
+        {
+            balootCardsUI.SetScore(i, 0);
         }
     }
 

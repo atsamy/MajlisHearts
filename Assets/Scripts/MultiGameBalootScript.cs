@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
+public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
 {
     PunTurnManager turnManager;
     MultiPlayerScript multiPlayer;
@@ -26,7 +26,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     const int dealBeginCode = 51;
     const int dealFinishCode = 52;
     const int playerSelectedTypeCode = 53;
-    const int typeSelectedCode = 54;
+    //const int typeSelectedCode = 54;
     const int doubleSelectedCode = 55;
     const int changedShapeCode = 56;
     const int checkProjectsCode = 57;
@@ -66,6 +66,21 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         multiPlayer.OnNetworkEvent += MultiPlayer_OnNetworkEvent;
 
         OnStartPlaying?.Invoke(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S) && (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.WindowsEditor))
+        {
+            //foreach (var item in Players)
+            //{
+            //    item.Score = 140;
+            //}
+            TeamsTotalScore[0] = 150;
+            TeamsTotalScore[1] = 150;
+
+            multiPlayer.RaiseEventToOthers(73, null);
+        }
     }
 
     private void Player_OnCheckDouble(int index, int value)
@@ -151,6 +166,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
             multiPlayer.RaiseEventToMaster(doubleSelectedCode, data);
         }
     }
+
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
         //print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
@@ -190,6 +206,10 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
         //print(photonEvent.Code);
         switch (photonEvent.Code)
         {
+            case 73:
+                TeamsTotalScore[0] = 150;
+                TeamsTotalScore[1] = 150;
+                break;
             case RemaingCardsCode:
                 List<Card> ownedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 for (int i = 5; i < ownedCards.Count; i++)
@@ -238,7 +258,11 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
                 balootRoundScript.ResetValues();
 
                 allCards.RemoveAt(0);
-                MyPlayer.OwnedCards.AddRange(allCards);
+
+                foreach (var item in allCards)
+                {
+                    MyPlayer.AddCard(item);
+                }
                 DealCards();
                 break;
             case dealFinishCode:
@@ -408,5 +432,10 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom
     private void OnDisable()
     {
         multiPlayer.OnDisable();
+    }
+
+    public void SendMessage(object message)
+    {
+        multiPlayer.SendMessageToOthers(message);
     }
 }

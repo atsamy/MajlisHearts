@@ -293,7 +293,7 @@ public class UIManager : MonoBehaviour
 
     public void SendEmoji(int index)
     {
-        ((MultiGameScript)Game).SendMessageToOthers(index);
+        ((ISendMessage)Game).SendMessage(index);
 
         ShowEmoji(0, index);
 

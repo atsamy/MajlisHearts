@@ -8,27 +8,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks,ILeaveRoom
+public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
 {
-    float turnDuration = 40;
-
     PunTurnManager turnManager;
-    int passedCardsNo;
+    MultiPlayerScript multiPlayer;
 
-    int lastIndex;
-    int nextIndex;
-    int beginIndex;
+    int passedCardsNo;
 
     const int cardsDealtCode = 40;
     const int trickFinishedCode = 41;
-    const int passCardsCode = 42;
-    const int gameReadyCode = 43;
-    const int dealFinishedCode = 44;
+    const int roundFinishedCode = 44;
+
+    const int gameReadyCode = 52;
+    const int passCardsCode = 50;
+
     const int doubleCardCode = 45;
     const int checkDoubleCode = 46;
-    const int messageCode = 47;
-    //const int recievedCardsCode = 48;
-    const int playerTurnCode = 49;
 
     public delegate void messageRecieved(int playerIndex, object message);
     public static messageRecieved OnMessageRecieved;
@@ -38,150 +33,23 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     void Start()
     {
         turnManager = gameObject.AddComponent<PunTurnManager>();
-        turnManager.TurnManagerListener = this;
-        turnManager.TurnDuration = turnDuration;
+        multiPlayer = new MultiPlayerScript(turnManager, this, 8);
 
         passedCardsNo = 0;
-        Players = new Player[4];
+        //Players = new Player[4];
         //playerNumbers = PhotonNetwork.PlayerList.Length;
 
         lookUpActors = new Dictionary<int, int>();
         //Dictionary<int, string> lookUpAvatar = new Dictionary<int, string>();
 
-        string[] playersOrder;
-
-        if (GameManager.Instance.IsTeam && GameManager.Instance.GameType == GameType.Friends || GameManager.Instance.GameType == GameType.Online)
-        {
-            playersOrder = (string[])PhotonNetwork.CurrentRoom.CustomProperties["players"];
-
-            for (int i = 0; i < playersOrder.Length; i++)
-            {
-                for (int j = 0; j < PhotonNetwork.PlayerList.Length; j++)
-                {
-                    if (playersOrder[i] == PhotonNetwork.PlayerList[j].NickName)
-                    {
-                        lookUpActors.Add(i, PhotonNetwork.PlayerList[j].ActorNumber);
-                        break;
-                    }
-                }
-            }
-        }
-        else
-        {
-            playersOrder = new string[4];
-
-            for (int i = 0; i < playersOrder.Length; i++)
-            {
-                if (i < PhotonNetwork.PlayerList.Length)
-                {
-                    playersOrder[i] = PhotonNetwork.PlayerList[i].NickName;
-                    lookUpActors.Add(i, PhotonNetwork.PlayerList[i].ActorNumber);
-                    //lookUpAvatar.Add(i, PhotonNetwork.PlayerList[i].CustomProperties["avatar"].ToString());
-                }
-                else
-                {
-                    playersOrder[i] = "AI";
-                    //lookUpActors.Add(i, i + 1);
-                    //lookUpAvatar.Add(i, "default");
-                }
-            }
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                if (i == 0)
-                {
-                    Players[i] = new PlayerBase(i);
-                    Players[i].Name = playersOrder[i];
-                    Players[i].Avatar = AvatarManager.Instance.playerAvatar;//lookUpAvatar[i];
-                }
-                else if (lookUpActors.ContainsKey(i))
-                {
-                    Players[i] = new Player(i);
-                    Players[i].Name = playersOrder[i];
-                    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
-                }
-                else
-                {
-                    Players[i] = new AIPlayer(i);
-                    Players[i].Name = playersOrder[i];
-                    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
-
-                    if (GameManager.Instance.GameType == GameType.Online)
-                        ((AIPlayer)Players[i]).FakePlayer = true;
-                }
-            }
-            else
-            {
-                if (i < playersOrder.Length && playersOrder[i] == GameManager.Instance.MyPlayer.Name)
-                {
-                    Players[i] = new MainPlayer(i);
-                    MainPlayerIndex = i;
-                    Players[i].Avatar = AvatarManager.Instance.playerAvatar;
-                    Players[i].Name = playersOrder[i];
-                }
-                else
-                {
-                    Players[i] = new Player(i);
-                    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
-                    Players[i].Name = playersOrder[i];
-                }
-
-                //if (lookUpActors.ContainsKey(i))
-                //{
-                //    Players[i].Name = playersOrder[i];
-                //    Players[i].Avatar = AvatarManager.Instance.GetPlayerAvatar(playersOrder[i]);
-                //}
-                //else
-                //{
-                //    Players[i].Name = playersOrder[i];
-                //    Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
-                //}
-            }
-
-            ((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
-            Players[i].OnCardReady += GameScript_OnCardReady;
-            ((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
-            Players[i].OnPlayerTurn += GameScript_OnPlayerTurn;
-        }
-
-        //myPlayer.OnPlayerTurn += MainPlayerTurn;
-
         RoundScript.SetPlayers(Players);
         ((RoundScriptHearts)RoundScript).OnEvent += Deal_OnEvent;
 
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable
+        for (int i = 0; i < 4; i++)
         {
-            { "LoadedGame", 1 }
-        };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-
-        if (PhotonNetwork.IsMasterClient)
-            StartCoroutine(WaitForOthers());
-
-        if (GameManager.Instance.GameType == GameType.Friends)
-        {
-            SetEnvironment(PhotonNetwork.CurrentRoom.CustomProperties["TableTop"].ToString(),
-                PhotonNetwork.CurrentRoom.CustomProperties["CardBack"].ToString());
-        }
-        else
-        {
-            SetEnvironment(GameManager.Instance.EquippedItem["TableTop"], GameManager.Instance.EquippedItem["CardBack"]);
-        }
-    }
-
-    void GameScript_OnPlayerTurn(int index, RoundInfo info)
-    {
-        if (index == MainPlayerIndex)
-        {
-            StartTimer();//playerTimer = StartCoroutine(StartTimer());
-        }
-        if (PhotonNetwork.IsMasterClient)
-        {
-            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-            PhotonNetwork.RaiseEvent(playerTurnCode, index, eventOptionsCards, SendOptions.SendReliable);
+            ((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
+            //Players[i].OnCardReady += GameScript_OnCardReady;
+            ((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
         }
     }
 
@@ -193,38 +61,9 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
             eventOptionsCards, SendOptions.SendReliable);
     }
 
-    IEnumerator WaitForOthers()
-    {
-        bool waitForPlayers = true;
-
-        while (waitForPlayers)
-        {
-            waitForPlayers = false;
-
-            foreach (var item in PhotonNetwork.PlayerList)
-            {
-                if (!item.CustomProperties.ContainsKey("LoadedGame"))
-                {
-                    waitForPlayers = true;
-                    break;
-                }
-            }
-
-            yield return null;
-        }
-
-        SetGameReady();
-        StartGame();
-    }
-
-    private void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
-
     private void OnDisable()
     {
-        PhotonNetwork.RemoveCallbackTarget(this);
+        multiPlayer.OnDisable();
     }
 
     private void Update()
@@ -238,11 +77,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
-    internal void SendMessageToOthers(object message)
-    {
-        RaiseEventOptions eventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(messageCode, message, eventOptions, SendOptions.SendReliable);
-    }
 
     private void Deal_OnEvent(int eventIndex)
     {
@@ -261,7 +95,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                         eventOptionsCards, SendOptions.SendReliable);
                 }
 
-                SetCardsReady();
+                SetCard();
                 break;
             case EventType.CardsPassed:
                 SetCardsPassed();
@@ -286,7 +120,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 passedCardsNo = 0;
 
                 RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-                PhotonNetwork.RaiseEvent(dealFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
+                PhotonNetwork.RaiseEvent(roundFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
 
                 SetDealFinished(true);
                 break;
@@ -298,6 +132,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         switch (photonEvent.Code)
         {
             case cardsDealtCode:
+                passedCardsNo = 0;
                 List<Card> cards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 ((RoundScriptHearts)RoundScript).RoundInfo = new RoundInfo();
                 MyPlayer.Reset();
@@ -307,7 +142,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                     MyPlayer.AddCard(item);
                 }
 
-                SetCardsReady();
+                SetCard();
                 ((MainPlayer)MyPlayer).SelectPassCards();
                 break;
             case passCardsCode:
@@ -329,31 +164,7 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 }
                 else
                 {
-                    //print("recieved my cards");
                     ((MainPlayer)MyPlayer).AddPassCards(passedCards);
-
-                    //RaiseEventOptions raiseEventOptions = new RaiseEventOptions { TargetActors = new int[] { 1 } };
-                    //PhotonNetwork.RaiseEvent(recievedCardsCode, null, raiseEventOptions, SendOptions.SendReliable);
-                }
-                break;
-            case gameReadyCode:
-                beginIndex = (int)photonEvent.CustomData;
-                SetStartGame();
-
-                if (PhotonNetwork.IsMasterClient)
-                    BeginTurn();
-                break;
-            case trickFinishedCode:
-                beginIndex = (int)photonEvent.CustomData;
-                BeginTurn();
-                SetTrickFinished(beginIndex);
-                break;
-            case dealFinishedCode:
-                if (!PhotonNetwork.IsMasterClient)
-                {
-                    passedCardsNo = 0;
-                    SetDealFinished(false);
-
                 }
                 break;
             case doubleCardCode:
@@ -361,27 +172,12 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
                 int playerIndex;// = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
                 KeyValuePair<bool, Card> cardValue = Utils.DeSerializeCardvalueAndIndex((int[])photonEvent.CustomData, out playerIndex);
                 ((RoundScriptHearts)RoundScript).DoubleCard(cardValue.Value, cardValue.Key);
-                //print("double card index:" + playerIndex);
                 SetCardDoubled(cardValue.Value, cardValue.Key, playerIndex);
                 break;
             case checkDoubleCode:
                 //make sure people recieved passed cards first
                 SetCardsPassed();
                 ((MainPlayer)MyPlayer).CheckForDoubleCards();
-                break;
-            case messageCode:
-                int index = lookUpActors.First(x => x.Value == photonEvent.Sender).Key;
-                OnMessageRecieved?.Invoke(index, photonEvent.CustomData);
-                break;
-            //case recievedCardsCode:
-            //    InrementPassedCards();
-            //    break;
-            case playerTurnCode:
-                int turnIndex = int.Parse(photonEvent.CustomData.ToString());
-
-                if (turnIndex != MainPlayerIndex)
-                    Players[turnIndex].SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
-
                 break;
         }
     }
@@ -390,15 +186,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
     {
         base.SetStartGame();
         OnStartPlaying?.Invoke(true);
-    }
-
-    private void BeginTurn()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (((RoundScriptHearts)RoundScript).RoundInfo.TrickNumber < 13)
-                turnManager.BeginTurn();
-        }
     }
 
     private void GetDoubleCards()
@@ -417,6 +204,11 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         }
     }
 
+    async void SetCard()
+    {
+        await SetCardsReady();
+    }
+
     private void InrementPassedCards()
     {
         passedCardsNo++;
@@ -424,97 +216,6 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         if (passedCardsNo == 4)
         {
             ((RoundScriptHearts)RoundScript).PassingCardsDone();
-        }
-    }
-
-    public void OnPlayerMove(Photon.Realtime.Player player, int turn, object move)
-    {
-        PlayerMove(move, false);
-    }
-
-    public void OnPlayerFinished(Photon.Realtime.Player player, int turn, object move)
-    {
-        PlayerMove(move, true);
-    }
-
-    private void PlayerMove(object move, bool finished)
-    {
-        KeyValuePair<int, Card> hand = Utils.DeSerializeCardAndPlayer((int[])move);
-
-        lastIndex = hand.Key;
-        nextIndex = (lastIndex + 1) % 4;
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (Players[hand.Key].IsPlayer)
-                Players[hand.Key].ChooseCard(hand.Value);
-        }
-        else if (lastIndex != MainPlayerIndex)
-        {
-            ((RoundScriptHearts)RoundScript).UpdateDealInfo(lastIndex, hand.Value);
-            Players[hand.Key].ShowCard(hand.Value);
-
-            if (nextIndex == MainPlayerIndex && !finished)
-            {
-                MyPlayer.SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
-            }
-        }
-    }
-
-    public void OnTurnBegins(int turn)
-    {
-        // this code send twice when AI card is played for
-        //vif (DealInfo.roundNumber < 13)
-        if (!PhotonNetwork.IsMasterClient && Players[beginIndex] is AIPlayer)
-            return;
-
-        //Players[beginIndex].SetTurn(Deal.DealInfo);
-
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            if (beginIndex == MainPlayerIndex)
-            {
-                MyPlayer.SetTurn(((RoundScriptHearts)RoundScript).RoundInfo);
-            }
-        }
-        else if (!Players[beginIndex].IsPlayer)
-        {
-            RoundScript.SetTurn();
-
-            RaiseEventOptions eventOptionsCards = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-            PhotonNetwork.RaiseEvent(playerTurnCode, beginIndex, eventOptionsCards, SendOptions.SendReliable);
-        }
-    }
-
-    public void OnTurnCompleted(int turn)
-    {
-
-    }
-
-    public void OnTurnTimeEnds(int turn)
-    {
-
-    }
-
-    private void GameScript_OnCardReady(int playerIndex, Card card)
-    {
-        int finishIndex = beginIndex - 1;
-        finishIndex = (finishIndex < 0 ? 3 : finishIndex);
-
-        if (playerIndex == MainPlayerIndex)
-            StopCoroutine(playerTimer);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (!Players[playerIndex].IsPlayer)
-                turnManager.SendMove(Utils.SerializeCardAndPlayer(card, playerIndex), playerIndex == finishIndex);
-
-            RoundScript.OnCardReady(playerIndex, card);
-        }
-        else if (playerIndex == MainPlayerIndex)
-        {
-            turnManager.SendMove(Utils.SerializeCardAndPlayer(card, playerIndex), playerIndex == finishIndex);
-            ((RoundScriptHearts)RoundScript).UpdateDealInfo(playerIndex, card);
         }
     }
 
@@ -554,56 +255,23 @@ public class MultiGameScript : GameScript, IPunTurnManagerCallbacks, IOnEventCal
         InrementPassedCards();
     }
 
-    public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-
-    }
-
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
     }
 
-    public void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    public void SendMessage(object message)
     {
-        //    if (otherPlayer.ActorNumber == 1)
-        //    {
-        //        UIManagerHearts.Instance.HostLeft();
-        //    }
-        //    else if (PhotonNetwork.IsMasterClient)
-        //    {
-        //        int index = otherPlayer.ActorNumber - 1;
-
-        //        Player oldPlayer = ((Player)Players[index]);
-
-        //        AIPlayer aiPlayer = new AIPlayer(index);
-        //        Players[index] = aiPlayer;
-        //        aiPlayer.me(oldPlayer);
-
-        //        if (nextIndex == index)
-        //        {
-        //            aiPlayer.SetTurn(((RoundScriptHeats)RoundScript).RoundInfo);
-        //        }
-        //    }
-    }
-
-    public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
-    {
-
-    }
-
-    public void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    {
-
-    }
-
-    public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
-    {
-
+        multiPlayer.SendMessageToOthers(message);
     }
 }
 
 public interface ILeaveRoom
 {
     public void LeaveRoom();
+}
+
+public interface ISendMessage
+{
+    public void SendMessage(object message);
 }

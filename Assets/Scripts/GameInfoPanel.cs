@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class GameInfoPanel : MonoBehaviour
 {
     [SerializeField]
+    TextMeshProUGUI team1TotalScore;
+    [SerializeField]
+    TextMeshProUGUI team2TotalScore;
+    [SerializeField]
     TextMeshProUGUI team1Score;
     [SerializeField]
     TextMeshProUGUI team2Score;
@@ -20,17 +24,17 @@ public class GameInfoPanel : MonoBehaviour
     [SerializeField]
     Sprite[] shapes;
 
-    public void ShowSuns()
+    public void ShowSuns(GameScriptBaloot gameScriptBaloot)
     {
-        Show();
+        Show(gameScriptBaloot);
         gameTypeText.text = "Suns";
         hokumShape.gameObject.SetActive(false);
     }
 
-    public void ShowHokum(CardShape cardShape,int doubler)
+    public void ShowHokum(CardShape cardShape,int doubler, GameScriptBaloot gameScriptBaloot)
     {
         //print(doubler);
-        Show();
+        Show(gameScriptBaloot);
         gameTypeText.text = "Hokum";
         hokumShape.sprite = shapes[(int)cardShape];
         hokumShape.gameObject.SetActive(true);
@@ -55,11 +59,14 @@ public class GameInfoPanel : MonoBehaviour
         }
     }
 
-    private void Show()
+    private void Show(GameScriptBaloot gameScriptBaloot)
     {
         gameObject.SetActive(true);
         team1Score.text = "0";
         team2Score.text = "0";
+
+        team1TotalScore.text = gameScriptBaloot.TeamsTotalScore[0].ToString();
+        team2TotalScore.text = gameScriptBaloot.TeamsTotalScore[1].ToString();
     }
 
     public void UpdateScore(PlayerBase[] players)

@@ -47,7 +47,7 @@ public class RoundResultBaloot : RoundResult
 
         for (int i = 0; i < game.Players.Length; i++)
         {
-            Avatars[i].sprite = AvatarManager.Instance.GetAvatarSprite(game.Players[i].Name);
+            Avatars[i].sprite = game.Players[i].Avatar;
             Names[i].text = ArabicSupport.ArabicFixer.Fix(game.Players[i].Name, false, false);
         }
 

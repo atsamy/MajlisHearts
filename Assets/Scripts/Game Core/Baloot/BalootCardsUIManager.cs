@@ -29,16 +29,16 @@ public class BalootCardsUIManager : CardsUIManager
 
         for (int i = 0; i < 2; i++)
         {
-            await ShuffleCards(mainPlayer, startIndex, 3 - i, i * 3, () => 
+            await ShuffleCards(mainPlayer, startIndex, 3 - i, i * 3, () =>
             {
                 OrganizeCards();
-            },null);
+            }, null);
         }
 
         AddBalootCard(balootCard);
     }
 
-    private async Task ShuffleCards(PlayerBase mainPlayer, int startIndex, int count, int round,Action organizeCards,Action LastCards)
+    private async Task ShuffleCards(PlayerBase mainPlayer, int startIndex, int count, int round, Action organizeCards, Action LastCards)
     {
         for (int j = startIndex; j < 4 + startIndex; j++)
         {
@@ -121,8 +121,10 @@ public class BalootCardsUIManager : CardsUIManager
     protected override bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
     {
 
-        BalootRoundInfo info = (BalootRoundInfo)trickInfo;
+        //BalootRoundInfo info = (BalootRoundInfo)trickInfo;
         bool firstHand = trickInfo.CardsOntable.Count == 0;
+        print(string.Format("shape {0} first hand {1} has shape {2}", 
+            trickInfo.TrickShape, firstHand, player.HasShape(trickInfo.TrickShape)));
 
         if (trickInfo.TrickShape != card.Shape && player.HasShape(trickInfo.TrickShape) && !firstHand)
             return false;
@@ -130,17 +132,17 @@ public class BalootCardsUIManager : CardsUIManager
         return true;
     }
 
-    internal async Task AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType,int startIndex)
+    internal async Task AddRemaingCards(PlayerBase mainPlayer, BalootGameType balootGameType, int startIndex)
     {
         deck[1].gameObject.SetActive(false);
 
-        await ShuffleCards(mainPlayer, startIndex, 3, 5, () => 
+        await ShuffleCards(mainPlayer, startIndex, 3, 5, () =>
         {
             if (balootGameType == BalootGameType.Hokum)
                 OrganizeCards(CardHelper.HokumRank);
             else
                 OrganizeCards(CardHelper.SunRank);
-        }, () => 
+        }, () =>
         {
             deck[0].gameObject.SetActive(false);
         });

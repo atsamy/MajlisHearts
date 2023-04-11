@@ -119,7 +119,7 @@ public class RoundScriptHearts: RoundScriptBase
 
     public override void SetTurn()
     {
-        if (RoundInfo.TrickNumber < 13)
+        if (RoundInfo.TrickNumber < 12)
             players[playingIndex].SetTurn(RoundInfo);
     }
 

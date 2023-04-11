@@ -232,7 +232,6 @@ public class CardsUIManager : MonoBehaviour
 
     protected virtual bool CheckIfPlayable(Card card, RoundInfo trickInfo, PlayerBase player)
     {
-        print("here");
         return false;
     }
 }

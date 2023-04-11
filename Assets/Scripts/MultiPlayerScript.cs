@@ -25,12 +25,12 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     PlayerBase[] Players => gameScript.Players;
 
-    const int messageCode = 47;
-    const int playerTurnCode = 49;
     const int trickFinishedCode = 41;
     const int setGameReadyCode = 42;
     const int startGameCode = 43;
-    const int dealFinishedCode = 44;
+    const int roundFinishedCode = 44;
+    const int messageCode = 47;
+    const int playerTurnCode = 49;
 
     public int TurnNumbers = 8;
 
@@ -307,7 +307,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
                 gameScript.SetTrickFinished(beginIndex);
                 gameScript.RoundScript.RoundInfo.DrawCards();
                 break;
-            case dealFinishedCode:
+            case roundFinishedCode:
                 if (!PhotonNetwork.IsMasterClient)
                 {
                     gameScript.SetDealFinished(false);
@@ -413,11 +413,6 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
     {
 
     }
-
-    //private void OnEnable()
-    //{
-    //    PhotonNetwork.AddCallbackTarget(this);
-    //}
 
     public void OnDisable()
     {

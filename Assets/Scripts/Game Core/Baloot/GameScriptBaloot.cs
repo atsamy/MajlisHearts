@@ -8,7 +8,6 @@ using UnityEngine;
 public class GameScriptBaloot : GameScriptBase
 {
     public static GameScriptBaloot Instance;
-    //MainPlayerBaloot myPlayer => (MainPlayerBaloot)Players[0];
 
     public delegate void StartCardsReady(Card balootCard,int startIndex);
     public event StartCardsReady OnStartCardsReady;
@@ -69,13 +68,13 @@ public class GameScriptBaloot : GameScriptBase
             if (i == 0)
             {
                 Players[i] = new MainPlayerBaloot(i);
-                //Players[i].Avatar = AvatarManager.Instance.playerAvatar;
+                Players[i].Avatar = AvatarManager.Instance.playerAvatar;
                 Players[i].Name = GameManager.Instance.MyPlayer.Name;
             }
             else
             {
                 Players[i] = new AIPlayerBaloot(i);
-                //Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
+                Players[i].Avatar = AvatarManager.Instance.RobotAvatar;
                 Players[i].Name = "Player " + i;
             }
 
@@ -89,6 +88,7 @@ public class GameScriptBaloot : GameScriptBase
         balootRoundScript.OnGameTypeSelected += BalootRoundScript_OnGameTypeSelected;
         //SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
         //     GameManager.Instance.EquippedItem["CardBack"]);
+        OnStartPlaying?.Invoke(false);
         SetGameReady();
         StartGame();
     }
