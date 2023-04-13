@@ -73,15 +73,17 @@ public class RoundScriptHearts: RoundScriptBase
 
     public override void OnCardReady(int playerIndex, Card card)
     {
+        //Debug.Log(playerIndex + " " + card);
         cardsOnDeck.Add(playerIndex, card);
         RoundInfo.CardsOntable.Add(card);
         RoundInfo.ShapesOnGround[card.Shape]++;
-
+        
+        //Debug.Log(cardsOnDeck.Count);
+        
         if (cardsOnDeck.Count == 1)
         {
             RoundInfo.TrickShape = card.Shape;
         }
-
         if (cardsOnDeck.Count == 4)
         {
             int value = 0;
@@ -90,8 +92,8 @@ public class RoundScriptHearts: RoundScriptBase
             players[winningHand].IncrementScore(value);
 
             playingIndex = winningHand;
-
-            RoundInfo.DrawCards();
+            //Debug.Log("trick " + RoundInfo.TrickNumber);
+            //RoundInfo.DrawCards();
             if (RoundInfo.TrickNumber < 12)
             {
                 TrickFinished((int)EventType.TrickFinished);
@@ -100,14 +102,12 @@ public class RoundScriptHearts: RoundScriptBase
             {
                 DealFinished((int)EventType.TrickFinished, (int)EventType.DealFinished);
             }
-            RoundInfo.TrickNumber++;
+            //RoundInfo.TrickNumber++;
         }
         else
         {
             playingIndex++;
             playingIndex %= 4;
-
-            //OnNextTurn?.Invoke();
             players[playingIndex].SetTurn(RoundInfo);
         }
     }

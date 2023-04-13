@@ -15,6 +15,7 @@ public class AIPlayer : Player, IMergePlayer
 
     public override void SetTurn(RoundInfo info)
     {
+        //Debug.Log("index: " + index);
         base.SetTurn(info);
         playCard(info);
     }

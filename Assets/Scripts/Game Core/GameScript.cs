@@ -95,7 +95,7 @@ public class GameScript : GameScriptBase
         switch (eventType)
         {
             case EventType.CardsDealt:
-                SetCardsReady();
+                SetCards();
                 break;
             case EventType.CardsPassed:
                 SetCardsPassed();
@@ -114,6 +114,11 @@ public class GameScript : GameScriptBase
             default:
                 break;
         }
+    }
+
+    public async void SetCards()
+    {
+        await SetCardsReady();
     }
 
     public override void SetStartGame()

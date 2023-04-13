@@ -94,8 +94,8 @@ public class RoundScriptBase
         
         OnEvent?.Invoke(TrickFinished);
         RoundInfo.DrawCards();
-        await System.Threading.Tasks.Task.Delay(1000);
-        players[PlayingIndex].SetTurn(RoundInfo);
+        //await System.Threading.Tasks.Task.Delay(1000);
+        //players[PlayingIndex].SetTurn(RoundInfo);
     }
 
     public async void DealFinished(int TrickFinished, int DealFinished)
