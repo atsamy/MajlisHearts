@@ -191,7 +191,10 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     public void StartGame(int beginIndex)
     {
-        RaiseEventToAll(startGameCode, beginIndex);
+        RaiseEventToOthers(startGameCode, null);
+
+        BeginTurn(beginIndex);
+        gameScript.SetStartGame(true);
     }
 
     void GameScript_OnPlayerTurn(int index, RoundInfo info)
@@ -298,9 +301,15 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
                     gameScript.StartGame();
                 }
                 break;
+            //case gameReadyCode:
+            //    beginIndex = (int)photonEvent.CustomData;
+            //    gameScript.SetStartGame();
+
+            //    if (PhotonNetwork.IsMasterClient)
+            //        BeginTurn(beginIndex);
+            //    break;
             case startGameCode:
-                BeginTurn((int)photonEvent.CustomData);
-                gameScript.SetStartGame();
+                gameScript.SetStartGame(true);
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;

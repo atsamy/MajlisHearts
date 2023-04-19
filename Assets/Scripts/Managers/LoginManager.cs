@@ -85,7 +85,7 @@ public class LoginManager : MonoBehaviour
         else
         {
             print("account login");
-            playfab.DeviceLogin();
+            playfab.DeviceLogin("");
         }
 
 
@@ -179,7 +179,7 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-                playfab.DeviceLogin();
+                playfab.DeviceLogin("Social didnt authenticate");
             }
         });
     }

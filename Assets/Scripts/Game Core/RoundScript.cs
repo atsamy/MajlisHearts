@@ -250,7 +250,6 @@ public class RoundScriptHearts: RoundScriptBase
         doubleCount = 0;
 
         Deal();
-
         OnEvent?.Invoke((int)EventType.CardsDealt);
 
         RoundInfo = new RoundInfo();
@@ -271,11 +270,11 @@ public class RoundScriptHearts: RoundScriptBase
 
 public enum EventType
 {
-    CardsDealt,
-    CardsPassed,
-    TrickFinished,
-    DealFinished,
-    DoubleCardsFinished,
+    CardsDealt = 0,
+    CardsPassed = 1,
+    TrickFinished = 2,
+    DealFinished = 3,
+    DoubleCardsFinished = 4,
 }
 
 public enum GameState

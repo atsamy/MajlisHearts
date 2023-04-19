@@ -75,7 +75,7 @@ public class GameScriptBase : MonoBehaviour
         RoundScript.StartNewRound();
     }
 
-    public virtual void SetStartGame()
+    public virtual void SetStartGame(bool isMulti)
     {
         RoundScript.StartFirstTurn();
     }

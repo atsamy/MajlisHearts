@@ -56,7 +56,36 @@ public class AIPlayer : Player, IMergePlayer
             {
                 if (FakePlayer)
                     await Task.Delay(Mathf.Max(800, specificShape.Count * Random.Range(300, 400)));
-                ChooseCard(ChooseSpecificShape(specificShape, info));
+
+                //remove
+                if (info.TrickShape == CardShape.Spade && OwnedCards.Contains(CardHelper.QueenOfSpades))
+                {
+                    foreach (var item in info.CardsOntable)
+                    {
+                        if (item.Rank > CardRank.Queen)
+                        {
+                            ChooseCard(CardHelper.QueenOfSpades);
+                            return;
+                        }
+                    }
+                    ChooseCard(ChooseSpecificShape(specificShape, info));
+                }
+                else if (info.TrickShape == CardShape.Diamond && OwnedCards.Contains(CardHelper.TenOfDiamonds))
+                {
+                    foreach (var item in info.CardsOntable)
+                    {
+                        if (item.Rank > CardRank.Ten)
+                        {
+                            ChooseCard(CardHelper.TenOfDiamonds);
+                            return;
+                        }
+                    }
+                    ChooseCard(ChooseSpecificShape(specificShape, info));
+                }
+                else
+                {
+                    ChooseCard(ChooseSpecificShape(specificShape, info));
+                }
             }
             else
             {

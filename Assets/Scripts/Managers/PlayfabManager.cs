@@ -55,7 +55,7 @@ public class PlayfabManager : MonoBehaviour
 
     }
 
-    public void DeviceLogin()
+    public void DeviceLogin(string error)
     {
 #if UNITY_ANDROID
         Debug.Log("Login Android"); //Application.identifier };
@@ -81,11 +81,21 @@ public class PlayfabManager : MonoBehaviour
             (result) => SetupSessionData((titleData) =>
             {
                 OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
+
+                if (string.IsNullOrEmpty(error))
+                {
+                    PlayFabClientAPI.WritePlayerEvent(new WriteClientPlayerEventRequest() { Body = new Dictionary<string, object>()
+                {
+                    { "error",error }
+                }, EventName = "Login Error" }, (response) => { }, (error) => { });
+                }
             }),
             (error) =>
             {
                 Debug.Log("Login Error: " + error.ErrorMessage);
                 OnConnectionError?.Invoke(error.ErrorMessage);
+
+
             });
 #endif
     }
@@ -113,7 +123,7 @@ public class PlayfabManager : MonoBehaviour
         }, (errorResult) =>
         {
             Debug.Log(errorResult.GenerateErrorReport());
-            DeviceLogin();
+            DeviceLogin(errorResult.ErrorMessage);
         });
     }
 
