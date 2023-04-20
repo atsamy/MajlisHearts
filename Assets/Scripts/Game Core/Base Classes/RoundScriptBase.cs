@@ -88,17 +88,15 @@ public class RoundScriptBase
 
     }
 
-    public async void TrickFinished(int TrickFinished)
+    public virtual async void TrickFinished(int TrickFinished)
     {
         await System.Threading.Tasks.Task.Delay(1000);
-        
+
         OnEvent?.Invoke(TrickFinished);
         RoundInfo.DrawCards();
-        //await System.Threading.Tasks.Task.Delay(1000);
-        //players[PlayingIndex].SetTurn(RoundInfo);
     }
 
-    public async void DealFinished(int TrickFinished, int DealFinished)
+    public virtual async void DealFinished(int TrickFinished, int DealFinished)
     {
         await System.Threading.Tasks.Task.Delay(1000);
         OnEvent?.Invoke(TrickFinished);

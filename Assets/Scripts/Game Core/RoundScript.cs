@@ -112,6 +112,23 @@ public class RoundScriptHearts: RoundScriptBase
         }
     }
 
+    public override async void TrickFinished(int TrickFinished)
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+
+        RoundInfo.DrawCards();
+        OnEvent?.Invoke(TrickFinished);
+    }
+
+    public override async void DealFinished(int TrickFinished, int DealFinished)
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+        RoundInfo.DrawCards();
+        OnEvent?.Invoke(TrickFinished);
+        await System.Threading.Tasks.Task.Delay(1000);
+        OnEvent?.Invoke(DealFinished);
+    }
+
     internal override void StartFirstTurn()
     {
         players[playingIndex].SetTurn(RoundInfo);
@@ -119,7 +136,7 @@ public class RoundScriptHearts: RoundScriptBase
 
     public override void SetTurn()
     {
-        if (RoundInfo.TrickNumber < 12)
+        if (RoundInfo.TrickNumber < 13)
             players[playingIndex].SetTurn(RoundInfo);
     }
 

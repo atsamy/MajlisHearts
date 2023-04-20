@@ -7,6 +7,7 @@ using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 using GooglePlayGames.BasicApi;
+using System;
 
 public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks
 {
@@ -32,7 +33,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
     const int messageCode = 47;
     const int playerTurnCode = 49;
 
-    public int TurnNumbers = 8;
+    int turnNumbers;
 
     int lastIndex;
     int nextIndex;
@@ -45,7 +46,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
         this.turnManager = turnManager;
         this.gameScript = gameScript;
-        TurnNumbers = turns;
+        turnNumbers = turns;
         //turnManager = gameObject.AddComponent<PunTurnManager>();
         turnManager.TurnManagerListener = this;
         turnManager.TurnDuration = turnDuration;
@@ -191,10 +192,10 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     public void StartGame(int beginIndex)
     {
-        RaiseEventToOthers(startGameCode, null);
+        RaiseEventToOthers(startGameCode, beginIndex);
 
         BeginTurn(beginIndex);
-        gameScript.SetStartGame(true);
+        gameScript.SetPlaying(true);
     }
 
     void GameScript_OnPlayerTurn(int index, RoundInfo info)
@@ -230,10 +231,12 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     public void BeginTurn(int index)
     {
+        Debug.Log("begin Index:" + index);
         beginIndex = index;
         if (PhotonNetwork.IsMasterClient)
         {
-            if (gameScript.RoundScript.RoundInfo.TrickNumber < TurnNumbers)
+            Debug.Log(gameScript.RoundScript.RoundInfo.TrickNumber + " " + turnNumbers);
+            if (gameScript.RoundScript.RoundInfo.TrickNumber < turnNumbers)
                 turnManager.BeginTurn();
         }
     }
@@ -309,7 +312,8 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
             //        BeginTurn(beginIndex);
             //    break;
             case startGameCode:
-                gameScript.SetStartGame(true);
+                beginIndex = (int)photonEvent.CustomData;
+                gameScript.SetPlaying(true);
                 break;
             case trickFinishedCode:
                 beginIndex = (int)photonEvent.CustomData;
@@ -396,9 +400,10 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         //    return;
 
         //Players[beginIndex].SetTurn(Deal.DealInfo);
-
+        Debug.Log("on turn begin Index:" + beginIndex);
         if (!PhotonNetwork.IsMasterClient)
         {
+            Debug.Log(beginIndex + " " + gameScript.MainPlayerIndex);
             if (beginIndex == gameScript.MainPlayerIndex)
             {
                 gameScript.MyPlayer.SetTurn(gameScript.RoundScript.RoundInfo);

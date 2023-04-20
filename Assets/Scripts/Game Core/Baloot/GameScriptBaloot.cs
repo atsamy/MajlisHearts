@@ -388,7 +388,7 @@ public class GameScriptBaloot : GameScriptBase
     public virtual async void DealCardsThenStartGame()
     {
         await DealRemaingCards();
-        SetStartGame(false);
+        SetPlaying(false);
     }
 
     protected async Task DealRemaingCards()
