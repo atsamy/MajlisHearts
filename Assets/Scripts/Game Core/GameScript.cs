@@ -123,8 +123,6 @@ public class GameScript : GameScriptBase
 
     public override void SetPlaying(bool isMulti)
     {
-        print("hena");
-        //base.SetStartGame(isMulti);
         OnStartPlaying?.Invoke(isMulti);
     }
     protected void CheckDoubleCards()
