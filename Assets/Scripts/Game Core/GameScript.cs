@@ -102,8 +102,8 @@ public class GameScript : GameScriptBase
                 CheckDoubleCards();
                 break;
             case EventType.DoubleCardsFinished:
-                SetStartGame(false);
-                //RoundScript.SetTurn();
+                SetPlaying(false);
+                RoundScript.SetTurn();
                 break;
             case EventType.TrickFinished:
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
@@ -121,10 +121,8 @@ public class GameScript : GameScriptBase
         await SetCardsReady();
     }
 
-    public override void SetStartGame(bool isMulti)
+    public override void SetPlaying(bool isMulti)
     {
-        print("hena");
-        base.SetStartGame(isMulti);
         OnStartPlaying?.Invoke(isMulti);
     }
     protected void CheckDoubleCards()

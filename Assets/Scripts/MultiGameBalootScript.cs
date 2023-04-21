@@ -416,9 +416,9 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                     }
                 }
 
-                multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);
-                multiPlayer.BeginTurn(RoundScript.PlayingIndex);
-                SetTrickFinished(RoundScript.PlayingIndex);
+                multiPlayer.RaiseEventToAll(trickFinishedCode, RoundScript.PlayingIndex);
+                //multiPlayer.BeginTurn(RoundScript.PlayingIndex);
+                //SetTrickFinished(RoundScript.PlayingIndex);
                 break;
             case EventTypeBaloot.DealFinished:
                 RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };

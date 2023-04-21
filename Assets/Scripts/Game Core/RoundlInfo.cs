@@ -34,6 +34,11 @@ public class RoundInfo
     internal void DrawCards()
     {
         TrickNumber++;
+        ClearCards();
+    }
+
+    public void ClearCards()
+    {
         CardsDrawn.AddRange(CardsOntable);
         CardsOntable.Clear();
     }

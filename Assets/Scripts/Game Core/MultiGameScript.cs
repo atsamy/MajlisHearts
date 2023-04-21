@@ -34,7 +34,7 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
     void Start()
     {
         turnManager = gameObject.AddComponent<PunTurnManager>();
-        multiPlayer = new MultiPlayerScript(turnManager, this, 8);
+        multiPlayer = new MultiPlayerScript(turnManager, this, 13);
 
         passedCardsNo = 0;
         //Players = new Player[4];
@@ -223,17 +223,14 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
                 GetDoubleCards();
                 break;
             case EventType.TrickFinished:
-                SetTrickFinished(RoundScript.PlayingIndex);
-
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                PhotonNetwork.RaiseEvent(trickFinishedCode, RoundScript.PlayingIndex, raiseEventOptions, SendOptions.SendReliable);
+                //print();
+                TrickFinishedSequence();
                 break;
             case EventType.DoubleCardsFinished:
                 Debug.Log("double card finished");
 
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    print("sup");
                     multiPlayer.StartGame(RoundScript.PlayingIndex);
                 }
                 //if (PhotonNetwork.IsMasterClient)
@@ -251,6 +248,14 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
                 SetDealFinished(true);
                 break;
         }
+    }
+
+    private async void TrickFinishedSequence()
+    {
+        multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);
+        SetTrickFinished(RoundScript.PlayingIndex);
+        await System.Threading.Tasks.Task.Delay(100);
+        multiPlayer.BeginTurn(RoundScript.PlayingIndex);
     }
 
     public void OnEvent(EventData photonEvent)
