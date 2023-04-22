@@ -46,7 +46,7 @@ public class GameScript : GameScriptBase
             ((Player)Players[i]).OnPassCardsReady += GameScript_OnPassCardsReady;
             Players[i].OnCardReady += GameScript_OnCardReady;
             ((Player)Players[i]).OnDoubleCard += GameScript_OnDoubleCard;
-            
+
         }
 
         ((RoundScriptHearts)RoundScript).SetPlayers(Players);
@@ -109,7 +109,7 @@ public class GameScript : GameScriptBase
                 Deal_OnTrickFinished(RoundScript.PlayingIndex);
                 break;
             case EventType.DealFinished:
-                Deal_OnDealFinished();
+                RoundFinished(RoundScript.PlayingIndex,true);
                 break;
             default:
                 break;

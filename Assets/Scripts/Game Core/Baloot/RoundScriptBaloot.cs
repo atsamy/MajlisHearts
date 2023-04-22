@@ -147,7 +147,7 @@ public class RoundScriptBaloot : RoundScriptBase
             {
                 FloorPoints = winningHand % 2;
                 players[winningHand].IncrementScore(10);
-                DealFinished((int)EventTypeBaloot.TrickFinished, (int)EventTypeBaloot.DealFinished);
+                DealFinished((int)EventTypeBaloot.DealFinished);
             }
 
             //RoundInfo.DrawCards();

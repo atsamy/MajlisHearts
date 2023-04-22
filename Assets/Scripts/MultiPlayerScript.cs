@@ -323,7 +323,8 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
             case roundFinishedCode:
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                    gameScript.SetDealFinished(false);
+                    gameScript.RoundFinished((int)photonEvent.CustomData, false);
+                    //gameScript.SetDealFinished(false);
                 }
                 break;
             case messageCode:

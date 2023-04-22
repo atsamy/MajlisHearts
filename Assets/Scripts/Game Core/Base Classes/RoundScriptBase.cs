@@ -97,12 +97,12 @@ public class RoundScriptBase
         RoundInfo.TrickNumber++;
     }
 
-    public async void DealFinished(int TrickFinished, int DealFinished)
+    public async void DealFinished(int DealFinished)
     {
-        await System.Threading.Tasks.Task.Delay(1000);
+        //await System.Threading.Tasks.Task.Delay(1000);
         RoundInfo.ClearCards();
-        OnEvent?.Invoke(TrickFinished);
-        RoundInfo.TrickNumber++;
+        //OnEvent?.Invoke(TrickFinished);
+        //RoundInfo.TrickNumber++;
         await System.Threading.Tasks.Task.Delay(1000);
         OnEvent?.Invoke(DealFinished);
     }

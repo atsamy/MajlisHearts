@@ -66,8 +66,8 @@ public class GameScriptBase : MonoBehaviour
 
     public void Deal_OnTrickFinished(int winningHand)
     {
-        RoundScript.SetTurn();
         OnTrickFinished?.Invoke(winningHand);
+        RoundScript.SetTurn();
     }
 
     public void StartGame()
@@ -93,6 +93,13 @@ public class GameScriptBase : MonoBehaviour
     public void Deal_OnDealFinished()
     {
         SetDealFinished(true);
+    }
+
+    public async void RoundFinished(int winningHand,bool isHost)
+    {
+        OnTrickFinished?.Invoke(winningHand);
+        await System.Threading.Tasks.Task.Delay(1000);
+        SetDealFinished(isHost);
     }
 
     //private void MainPlayerTurn(int index, RoundInfo info)

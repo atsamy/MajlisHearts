@@ -100,7 +100,7 @@ public class RoundScriptHearts: RoundScriptBase
             }
             else
             {
-                DealFinished((int)EventType.TrickFinished, (int)EventType.DealFinished);
+                DealFinished((int)EventType.DealFinished);
             }
             //RoundInfo.TrickNumber++;
         }
@@ -119,8 +119,9 @@ public class RoundScriptHearts: RoundScriptBase
 
     public override void SetTurn()
     {
-        if (RoundInfo.TrickNumber < 13)
-            players[playingIndex].SetTurn(RoundInfo);
+        //Debug.Log(RoundInfo.TrickNumber);
+        //if (RoundInfo.TrickNumber < 12)
+        players[playingIndex].SetTurn(RoundInfo);
     }
 
     public override int EvaluateDeck(out int value)

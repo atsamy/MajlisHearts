@@ -243,9 +243,9 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
                 passedCardsNo = 0;
 
                 RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-                PhotonNetwork.RaiseEvent(roundFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
-
-                SetDealFinished(true);
+                PhotonNetwork.RaiseEvent(roundFinishedCode, RoundScript.PlayingIndex, eventOptionsDeal, SendOptions.SendReliable);
+                RoundFinished(RoundScript.PlayingIndex,true);
+                //SetDealFinished(true);
                 break;
         }
     }
