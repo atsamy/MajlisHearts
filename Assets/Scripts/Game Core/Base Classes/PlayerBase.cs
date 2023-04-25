@@ -28,7 +28,7 @@ public class PlayerBase
 
     protected bool isPlayer;
 
-    public int TricksCount { get; set; }
+    public int TricksCount { get;protected set; }
 
     public bool IsPlayer { get => isPlayer; }
     public Action OnForcePlay;

@@ -79,11 +79,11 @@ public class MultiPanel : MenuScene, IInRoomCallbacks, IMatchmakingCallbacks, IC
         string[] playersOrder = new string[4];
         playerInfos = new List<PlayerInfo>();
         //print(Names);
-//#if UNITY_IOS
+#if UNITY_IOS
         aiNames = Names.text.Split("\n");
-//#elif UNITY_ANDROID
-//        aiNames = Names.text.Split("\r\n");
-//#endif
+#elif UNITY_ANDROID
+        aiNames = Names.text.Split("\r\n");
+#endif
 
         GameManager.Instance.Bet = cost;
         gameType = type;

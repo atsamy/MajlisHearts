@@ -45,6 +45,13 @@ public class PlayerBaloot : PlayerBase
         ProjectPower = power;
     }
 
+    public void SetScores(int trickCount,int score,int projectScore)
+    {
+        TricksCount = trickCount;
+        ProjectScore = projectScore;
+        Score = score;
+    }
+
     public void SetProjects(Dictionary<List<Card>, Projects> playerProjects)
     {
         PlayerProjects = playerProjects;

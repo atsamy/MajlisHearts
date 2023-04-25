@@ -322,7 +322,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
 
                 for (int i = 0; i < 4; i++)
                 {
-                    Players[i].TricksCount = roundFinsihedData[i + 2];
+                    ((PlayerBaloot)Players[i]).SetScores(roundFinsihedData[i + 2], roundFinsihedData[i + 6],roundFinsihedData[i + 10]);
                 }
 
                 RoundScript.RoundInfo.ClearCards();
@@ -450,7 +450,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 //find me
                 RoundFinished(RoundScript.PlayingIndex, true);
 
-                int[] data = new int[6];
+                int[] data = new int[14];
 
                 data[0] = RoundScript.PlayingIndex;
                 data[1] = balootRoundScript.FloorPoints;
@@ -458,6 +458,8 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 for (int i = 0; i < 4; i++)
                 {
                     data[i + 2] = Players[i].TricksCount;
+                    data[i + 6] = Players[i].Score;
+                    data[i + 10] = ((PlayerBaloot)Players[i]).ProjectScore;
                 }
 
                 RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
