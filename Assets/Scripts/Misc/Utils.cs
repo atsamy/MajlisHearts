@@ -116,10 +116,10 @@ public static class Utils
 
         int index = 2;
 
-        for (int i = index; i < data.Length; i++)
+        while(index < data.Length)
         {
-            Projects project = (Projects)data[i];
-            int number = data[i + 1];
+            Projects project = (Projects)data[index];
+            int number = data[index + 1];
             index += 2;
 
             List<Card> cards = new List<Card>();
@@ -131,7 +131,6 @@ public static class Utils
             }
 
             index += (number * 2);
-
             projects.Add(cards, project);
         }
 
