@@ -224,7 +224,7 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
                 break;
             case EventType.TrickFinished:
                 //print();
-                TrickFinishedSequence();
+                multiPlayer.TrickFinishedSequence(RoundScript.PlayingIndex);
                 break;
             case EventType.DoubleCardsFinished:
                 Debug.Log("double card finished");
@@ -250,13 +250,13 @@ public class MultiGameScript : GameScript, ILeaveRoom, ISendMessage
         }
     }
 
-    private async void TrickFinishedSequence()
-    {
-        multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);
-        SetTrickFinished(RoundScript.PlayingIndex);
-        await System.Threading.Tasks.Task.Delay(100);
-        multiPlayer.BeginTurn(RoundScript.PlayingIndex);
-    }
+    //private async void TrickFinishedSequence()
+    //{
+    //    multiPlayer.RaiseEventToOthers(trickFinishedCode, RoundScript.PlayingIndex);
+    //    SetTrickFinished(RoundScript.PlayingIndex);
+    //    await System.Threading.Tasks.Task.Delay(100);
+    //    multiPlayer.BeginTurn(RoundScript.PlayingIndex);
+    //}
 
     public void OnEvent(EventData photonEvent)
     {

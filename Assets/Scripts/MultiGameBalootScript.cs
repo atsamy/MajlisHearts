@@ -35,6 +35,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
     const int continueDealCode = 60;
     const int checkDoubleCode = 61;
     const int RemaingCardsCode = 62;
+    const int roundFinsihedDataCode = 63;
     //const int RestartDealCode = 61;
     //const int checkTypeCode = 61;
 
@@ -169,7 +170,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        //print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
+        print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
         if (RoundScript.RoundInfo.TrickNumber == 0 && playerIndex == MainPlayerIndex)
         {
             OnHideProject?.Invoke();
@@ -252,6 +253,8 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                     item.Reset();
                 }
 
+                balootRoundScript.balootRoundInfo.TrickNumber = 0;
+
                 List<Card> allCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 balootRoundScript.BalootCard = allCards.First();
                 balootRoundScript.IncrementStartIndex();
@@ -311,6 +314,19 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                     }
                 }
 
+                break;
+
+            case roundFinsihedDataCode:
+                int[] roundFinsihedData = (int[])photonEvent.CustomData;
+                balootRoundScript.SetRoundData(roundFinsihedData[1]);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Players[i].TricksCount = roundFinsihedData[i + 2];
+                }
+
+                RoundScript.RoundInfo.ClearCards();
+                RoundFinished(roundFinsihedData[0], false);
                 break;
         }
     }
@@ -416,15 +432,38 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                     }
                 }
 
-                multiPlayer.RaiseEventToAll(trickFinishedCode, RoundScript.PlayingIndex);
+                multiPlayer.TrickFinishedSequence(RoundScript.PlayingIndex);
+                //multiPlayer.RaiseEventToAll(trickFinishedCode, RoundScript.PlayingIndex);
                 //multiPlayer.BeginTurn(RoundScript.PlayingIndex);
                 //SetTrickFinished(RoundScript.PlayingIndex);
                 break;
             case EventTypeBaloot.DealFinished:
-                RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-                PhotonNetwork.RaiseEvent(roundFinishedCode, null, eventOptionsDeal, SendOptions.SendReliable);
 
-                SetDealFinished(true);
+                //roundPoints[i].text = balootGame.RoundScore[i].ToString();
+                //teamTotalPoints[i].text = balootGame.TeamsTotalScore[i].ToString();
+                //totalPoints[i].text = balootGame.TeamsScore[i].ToString();
+                //ProjectPoints[i].text = (((PlayerBaloot)game.Players[i + 0]).ProjectScore +
+                //    ((PlayerBaloot)game.Players[i + 2]).ProjectScore).ToString();
+                //FloorPoints[i].text = balootGame.balootRoundScript.FloorPoints == i ? "10" : "0";
+                //teamCrown[i].SetActive(balootGame.WinningTeam == i);
+                //?????
+                //find me
+                RoundFinished(RoundScript.PlayingIndex, true);
+
+                int[] data = new int[6];
+
+                data[0] = RoundScript.PlayingIndex;
+                data[1] = balootRoundScript.FloorPoints;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    data[i + 2] = Players[i].TricksCount;
+                }
+
+                RaiseEventOptions eventOptionsDeal = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+                PhotonNetwork.RaiseEvent(roundFinsihedDataCode, data, eventOptionsDeal, SendOptions.SendReliable);
+
+
                 break;
         }
     }

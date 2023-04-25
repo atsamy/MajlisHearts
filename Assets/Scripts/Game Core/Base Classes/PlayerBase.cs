@@ -28,7 +28,7 @@ public class PlayerBase
 
     protected bool isPlayer;
 
-    public int TricksCount { get; private set; }
+    public int TricksCount { get; set; }
 
     public bool IsPlayer { get => isPlayer; }
     public Action OnForcePlay;
@@ -50,6 +50,7 @@ public class PlayerBase
 
     public virtual void ChooseCard(Card card)
     {
+        Debug.Log("choose card:" + card);
         OwnedCards.Remove(card);
         shapeCount[card.Shape]--;
         ShowCard(card);

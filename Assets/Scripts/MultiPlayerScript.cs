@@ -256,6 +256,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         else if (lastIndex != gameScript.MainPlayerIndex)
         {
             gameScript.RoundScript.UpdateDealInfo(lastIndex, hand.Value);
+            //Debug.Log("PlayerMove:" + hand.Value);
             Players[hand.Key].ShowCard(hand.Value);
 
             if (nextIndex == gameScript.MainPlayerIndex && !finished)
@@ -267,6 +268,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
+        Debug.Log(string.Format("card ready {0} {1}", playerIndex, card));
         int finishIndex = beginIndex - 1;
         finishIndex = (finishIndex < 0 ? 3 : finishIndex);
 
@@ -323,6 +325,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
             case roundFinishedCode:
                 if (!PhotonNetwork.IsMasterClient)
                 {
+                    gameScript.RoundScript.RoundInfo.ClearCards();
                     gameScript.RoundFinished((int)photonEvent.CustomData, false);
                     //gameScript.SetDealFinished(false);
                 }
@@ -339,6 +342,14 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         }
 
         OnNetworkEvent?.Invoke(photonEvent);
+    }
+
+    public async void TrickFinishedSequence(int playIndex)
+    {
+        RaiseEventToOthers(trickFinishedCode, playIndex);
+        gameScript.SetTrickFinished(playIndex);
+        await System.Threading.Tasks.Task.Delay(100);
+        BeginTurn(playIndex);
     }
 
     public void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)

@@ -47,9 +47,9 @@ public class RoundScriptBase
         }
     }
 
-    public virtual void SetTurn()
+    public void SetTurn()
     {
-
+        players[playingIndex].SetTurn(RoundInfo);
     }
 
     public virtual void StartRound()

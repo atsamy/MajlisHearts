@@ -32,6 +32,11 @@ public class RoundScriptBaloot : RoundScriptBase
         StartIndex = -1;
     }
 
+    public void SetRoundData(int floorPoints)
+    {
+        FloorPoints = floorPoints;
+    }
+
     public override void Deal()
     {
         AllCards = GetAllCards();
@@ -119,6 +124,7 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public override void OnCardReady(int playerIndex, Card card)
     {
+        Debug.Log(playerIndex + " " + card);
         cardsOnDeck.Add(playerIndex, card);
         RoundInfo.CardsOntable.Add(card);
         RoundInfo.ShapesOnGround[card.Shape]++;
@@ -146,7 +152,7 @@ public class RoundScriptBaloot : RoundScriptBase
             else
             {
                 FloorPoints = winningHand % 2;
-                players[winningHand].IncrementScore(10);
+                //players[winningHand].IncrementScore(10);
                 DealFinished((int)EventTypeBaloot.DealFinished);
             }
 

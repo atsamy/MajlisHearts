@@ -47,7 +47,7 @@ public class GameScriptBase : MonoBehaviour
         OnGameReady?.Invoke();
     }
 
-    public void SetDealFinished(bool hostPlayer)
+    private void SetDealFinished(bool hostPlayer)
     {
         bool isFinished = SetFinalScore();
         OnDealFinished?.Invoke(hostPlayer, isFinished);
@@ -77,7 +77,7 @@ public class GameScriptBase : MonoBehaviour
 
     public virtual void SetPlaying(bool isMulti)
     {
-        RoundScript.StartFirstTurn();
+        //RoundScript.StartFirstTurn();
     }
 
     public virtual void StartNextDeal()
@@ -90,10 +90,10 @@ public class GameScriptBase : MonoBehaviour
         return false;
     }
 
-    public void Deal_OnDealFinished()
-    {
-        SetDealFinished(true);
-    }
+    //public void Deal_OnDealFinished()
+    //{
+    //    SetDealFinished(true);
+    //}
 
     public async void RoundFinished(int winningHand,bool isHost)
     {
@@ -109,6 +109,7 @@ public class GameScriptBase : MonoBehaviour
 
     public void StartTimer()
     {
+        print("call start timer");
         playerTimer = StartCoroutine(TimerRoutine());
     }
 

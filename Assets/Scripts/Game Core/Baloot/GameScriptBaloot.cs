@@ -47,6 +47,7 @@ public class GameScriptBaloot : GameScriptBase
     public int DoubleValue;
     [HideInInspector]
     public int WinningTeam;
+
     private void Awake()
     {
         Instance = this;
@@ -81,7 +82,6 @@ public class GameScriptBaloot : GameScriptBase
             ((PlayerBaloot)Players[i]).OnTypeSelected += Players_SelectedType;
             ((PlayerBaloot)Players[i]).OnDoubleSelected += GameScriptBaloot_OnDoubleSelected;
             Players[i].OnCardReady += GameScript_OnCardReady;
-
         }
 
         RoundScript.SetPlayers(Players);
@@ -276,11 +276,11 @@ public class GameScriptBaloot : GameScriptBase
 
         RoundScore[0] = Players[0].Score + Players[2].Score;
         ProjectsScore[0] = ((PlayerBaloot)Players[0]).ProjectScore + ((PlayerBaloot)Players[2]).ProjectScore;
-        total[0] = CalculatePointsSuns(RoundScore[0]);
+        total[0] = CalculatePointsSuns(RoundScore[0] + balootRoundScript.FloorPoints == 0 ? 10 : 0);
 
         RoundScore[1] = Players[1].Score + Players[3].Score;
         ProjectsScore[1] = ((PlayerBaloot)Players[1]).ProjectScore + ((PlayerBaloot)Players[3]).ProjectScore;
-        total[1] = CalculatePointsSuns(RoundScore[1]);
+        total[1] = CalculatePointsSuns(RoundScore[1] + balootRoundScript.FloorPoints == 1 ? 10 : 0);
 
         if (team1TrickCount == 8)
         {
@@ -377,7 +377,8 @@ public class GameScriptBaloot : GameScriptBase
                 }
                 break;
             case EventTypeBaloot.DealFinished:
-                Deal_OnDealFinished();
+                //Deal_OnDealFinished();
+                RoundFinished(RoundScript.PlayingIndex,true);
 
                 TeamsScore[0] = 0;
                 TeamsScore[1] = 0;

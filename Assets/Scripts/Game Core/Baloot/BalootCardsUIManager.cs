@@ -55,6 +55,7 @@ public class BalootCardsUIManager : CardsUIManager
                     Card card = mainPlayer.OwnedCards[k + round];
                     cardUI.Set(cardElementsHolder.cardShapeSprites[(int)card.Shape].Sprites[(int)card.Rank], card, (card) =>
                     {
+                        //print("clicked on card");
                         mainPlayer.ChooseCard(card);
                         MainPlayerCard(cardUI);
                     });
@@ -123,8 +124,8 @@ public class BalootCardsUIManager : CardsUIManager
 
         //BalootRoundInfo info = (BalootRoundInfo)trickInfo;
         bool firstHand = trickInfo.CardsOntable.Count == 0;
-        print(string.Format("shape {0} first hand {1} has shape {2}", 
-            trickInfo.TrickShape, firstHand, player.HasShape(trickInfo.TrickShape)));
+        //print(string.Format("shape {0} first hand {1} has shape {2}", 
+        //    trickInfo.TrickShape, firstHand, player.HasShape(trickInfo.TrickShape)));
 
         if (trickInfo.TrickShape != card.Shape && player.HasShape(trickInfo.TrickShape) && !firstHand)
             return false;

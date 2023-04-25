@@ -117,12 +117,12 @@ public class RoundScriptHearts: RoundScriptBase
         players[playingIndex].SetTurn(RoundInfo);
     }
 
-    public override void SetTurn()
-    {
-        //Debug.Log(RoundInfo.TrickNumber);
-        //if (RoundInfo.TrickNumber < 12)
-        players[playingIndex].SetTurn(RoundInfo);
-    }
+    //public override void SetTurn()
+    //{
+    //    //Debug.Log(RoundInfo.TrickNumber);
+    //    //if (RoundInfo.TrickNumber < 12)
+
+    //}
 
     public override int EvaluateDeck(out int value)
     {
