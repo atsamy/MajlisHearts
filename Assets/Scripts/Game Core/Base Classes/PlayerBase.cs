@@ -50,7 +50,7 @@ public class PlayerBase
 
     public virtual void ChooseCard(Card card)
     {
-        Debug.Log("choose card:" + card);
+        //Debug.Log("choose card:" + card);
         OwnedCards.Remove(card);
         shapeCount[card.Shape]--;
         ShowCard(card);

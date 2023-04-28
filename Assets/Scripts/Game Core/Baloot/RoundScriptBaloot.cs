@@ -148,7 +148,7 @@ public class RoundScriptBaloot : RoundScriptBase
 
     public override void OnCardReady(int playerIndex, Card card)
     {
-        Debug.Log(playerIndex + " " + card);
+        //Debug.Log(playerIndex + " " + card);
         cardsOnDeck.Add(playerIndex, card);
         RoundInfo.CardsOntable.Add(card);
         RoundInfo.ShapesOnGround[card.Shape]++;

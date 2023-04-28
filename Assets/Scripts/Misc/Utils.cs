@@ -27,7 +27,6 @@ public static class Utils
             cardsSerialized[i * 2] = (int)cards[i].Rank;
             cardsSerialized[(i * 2) + 1] = (int)cards[i].Shape;
         }
-
         cardsSerialized[cards.Count * 2] = value;
 
         return cardsSerialized;
@@ -174,7 +173,7 @@ public static class Utils
             Card card = new Card((CardShape)data[i + 1], (CardRank)data[i]);
             cards.Add(card);
         }
-
+        Debug.Log("double:" + data[data.Length - 1]);
         value = data[data.Length - 1];
         return cards;
     }

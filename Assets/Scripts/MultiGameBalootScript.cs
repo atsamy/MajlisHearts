@@ -169,7 +169,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
+        //print(string.Format("player index:{0} trick number:{1}", playerIndex, RoundScript.RoundInfo.TrickNumber));
         if (RoundScript.RoundInfo.TrickNumber == 0 && playerIndex == MainPlayerIndex)
         {
             OnHideProject?.Invoke();
@@ -179,7 +179,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
         {
             if (((PlayerBaloot)Players[playerIndex]).PlayerProjects.Count > 0)
             {
-                print("project:" + playerIndex);
+                //print("project:" + playerIndex);
                 RevealProject(playerIndex);
             }
         }
