@@ -231,11 +231,11 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     public void BeginTurn(int index)
     {
-        //Debug.Log("begin Index:" + index);
+        Debug.Log("begin Index:" + index);
         beginIndex = index;
         if (PhotonNetwork.IsMasterClient)
         {
-            //Debug.Log(gameScript.RoundScript.RoundInfo.TrickNumber + " " + turnNumbers);
+            Debug.Log(gameScript.RoundScript.RoundInfo.TrickNumber + " " + turnNumbers);
             if (gameScript.RoundScript.RoundInfo.TrickNumber < turnNumbers)
                 turnManager.BeginTurn();
         }
@@ -268,7 +268,7 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
 
     private void GameScript_OnCardReady(int playerIndex, Card card)
     {
-        //Debug.Log(string.Format("card ready {0} {1}", playerIndex, card));
+        Debug.Log(string.Format("card ready {0} {1}", playerIndex, card));
         int finishIndex = beginIndex - 1;
         finishIndex = (finishIndex < 0 ? 3 : finishIndex);
 
@@ -412,10 +412,10 @@ public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IIn
         //    return;
 
         //Players[beginIndex].SetTurn(Deal.DealInfo);
-        //Debug.Log("on turn begin Index:" + beginIndex);
+        Debug.Log("on turn begin Index:" + beginIndex);
         if (!PhotonNetwork.IsMasterClient)
         {
-            //Debug.Log(beginIndex + " " + gameScript.MainPlayerIndex);
+            Debug.Log(beginIndex + " " + gameScript.MainPlayerIndex);
             if (beginIndex == gameScript.MainPlayerIndex)
             {
                 gameScript.MyPlayer.SetTurn(gameScript.RoundScript.RoundInfo);

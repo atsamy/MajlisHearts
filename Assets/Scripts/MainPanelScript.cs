@@ -85,6 +85,7 @@ public class MainPanelScript : MonoBehaviour
         main.SetActive(false);
         if (!hideCoins)
         {
+            coins.SetActive(true);
             coinsRect.DOAnchorPos(new Vector2(300, -105), 0.25f);
         }
         else
@@ -92,10 +93,12 @@ public class MainPanelScript : MonoBehaviour
             coins.SetActive(false);
         }
 
-        if (hideGems)
-        {
-            gems.SetActive(false);
-        }
+        //if (hideGems)
+        //{
+        gems.SetActive(!hideGems);
+        //}
+        //else
+
 
         IsOnMain = false;
     }

@@ -119,6 +119,9 @@ public class MuliGameOptions : MenuScene
             MenuManager.Instance.OpenPopup("nocoins",false,true, () =>
             {
                 MenuManager.Instance.OpenStore(0);
+            }, () =>
+            {
+                MenuManager.Instance.ShowMain();
             });
             return;
         }

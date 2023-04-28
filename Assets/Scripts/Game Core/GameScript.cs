@@ -125,6 +125,7 @@ public class GameScript : GameScriptBase
     {
         OnStartPlaying?.Invoke(isMulti);
     }
+
     protected void CheckDoubleCards()
     {
         foreach (var item in Players)

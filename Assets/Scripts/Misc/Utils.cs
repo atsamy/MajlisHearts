@@ -18,6 +18,21 @@ public static class Utils
         return cardsSerialized;
     }
 
+    public static int[] SerializeListOfCardsAndValue(List<Card> cards,int value)
+    {
+        int[] cardsSerialized = new int[cards.Count * 2 + 1];
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            cardsSerialized[i * 2] = (int)cards[i].Rank;
+            cardsSerialized[(i * 2) + 1] = (int)cards[i].Shape;
+        }
+
+        cardsSerialized[cards.Count * 2] = value;
+
+        return cardsSerialized;
+    }
+
     public static int[] SerializePlayersProjects(PlayerBase[] players)
     {
         List<int> projectsSerialized = new List<int>();
@@ -147,6 +162,20 @@ public static class Utils
             cards.Add(card);
         }
 
+        return cards;
+    }
+
+    public static List<Card> DeSerializeListOfCardsAndValue(int[] data,out int value)
+    {
+        List<Card> cards = new List<Card>();
+
+        for (int i = 0; i < data.Length - 1; i += 2)
+        {
+            Card card = new Card((CardShape)data[i + 1], (CardRank)data[i]);
+            cards.Add(card);
+        }
+
+        value = data[data.Length - 1];
         return cards;
     }
 

@@ -126,8 +126,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 if (multiPlayer.LookUpActors.ContainsKey(item))
                 {
                     RaiseEventOptions eventOptions = new RaiseEventOptions { TargetActors = new int[] { multiPlayer.LookUpActors[item] } };
-                    PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { item, 0 }
-                    , eventOptions, SendOptions.SendReliable);
+                    PhotonNetwork.RaiseEvent(checkDoubleCode, new int[] { item, 0 }, eventOptions, SendOptions.SendReliable);
                 }
                 else
                 {
@@ -212,7 +211,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 TeamsTotalScore[1] = 150;
                 break;
             case RemaingCardsCode:
-                List<Card> ownedCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
+                List<Card> ownedCards = Utils.DeSerializeListOfCardsAndValue((int[])photonEvent.CustomData,out DoubleValue);
                 for (int i = 5; i < ownedCards.Count; i++)
                 {
                     MyPlayer.AddCard(ownedCards[i]);
@@ -228,6 +227,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 balootRoundScript.DealContinue((int)photonEvent.CustomData);
                 break;
             case changedShapeCode:
+                print("change: "+(CardShape)photonEvent.CustomData);
                 balootRoundScript.balootRoundInfo.HokumShape = (CardShape)photonEvent.CustomData;
                 break;
             case checkTypeCode:
@@ -252,11 +252,14 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                 {
                     item.Reset();
                 }
-
+                //fix this
+                
                 balootRoundScript.balootRoundInfo.TrickNumber = 0;
 
                 List<Card> allCards = Utils.DeSerializeListOfCards((int[])photonEvent.CustomData);
                 balootRoundScript.BalootCard = allCards.First();
+                balootRoundScript.balootRoundInfo.HokumShape = balootRoundScript.BalootCard.Shape;
+
                 balootRoundScript.IncrementStartIndex();
                 balootRoundScript.ResetValues();
 
@@ -391,7 +394,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                         continue;
 
                     RaiseEventOptions eventOptionsCards = new RaiseEventOptions { TargetActors = new int[] { item.Value } };
-                    PhotonNetwork.RaiseEvent(RemaingCardsCode, Utils.SerializeListOfCards(Players[item.Key].OwnedCards),
+                    PhotonNetwork.RaiseEvent(RemaingCardsCode, Utils.SerializeListOfCardsAndValue(Players[item.Key].OwnedCards, DoubleValue),
                         eventOptionsCards, SendOptions.SendReliable);
                 }
                 DealCardsThenStartGame();
