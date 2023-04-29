@@ -208,7 +208,7 @@ public class GameScriptBaloot : GameScriptBase
                 }
                 else
                 {
-                    if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+                    if (total[balootRoundScript.BidingTeam] > 8)
                     {
                         TeamsScore[0] = total[0];
                         TeamsScore[1] = total[1];
@@ -242,7 +242,7 @@ public class GameScriptBaloot : GameScriptBase
         {
             TeamsTotalScore[i] += TeamsScore[i];
 
-            if (TeamsTotalScore[i] >= 152)
+            if (TeamsTotalScore[i] > 151)
             {
                 if (!finished)
                 {
@@ -296,7 +296,7 @@ public class GameScriptBaloot : GameScriptBase
         }
         else
         {
-            if (total[balootRoundScript.BidingTeam] > total[balootRoundScript.OtherTeam])
+            if (total[balootRoundScript.BidingTeam] > 13)
             {
                 TeamsScore[0] = total[0];
                 TeamsScore[1] = total[1];

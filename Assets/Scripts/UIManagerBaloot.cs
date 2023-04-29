@@ -28,7 +28,7 @@ public class UIManagerBaloot : UIManager
     MainPlayerBaloot mainPlayer;
 
     [SerializeField]
-    GameObject wordEffect;
+    WordEffectScript wordEffect;
     [SerializeField]
     TextMeshProUGUI word;
 
@@ -52,8 +52,26 @@ public class UIManagerBaloot : UIManager
         balootGame.OnRevealProject += BalootGame_OnRevealProject;
         balootGame.OnHideProject += BalootGame_OnHideProject;
         balootGame.OnRoundDoubled += BalootGame_OnRoundDoubled;
+        balootGame.balootRoundScript.OnGameTypeSelected += BalootRoundScript_OnGameTypeSelected;
 
         SetCardManager(balootCardsUI);
+    }
+
+    private void BalootRoundScript_OnGameTypeSelected(int arg1, BalootGameType arg2)
+    {
+        if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
+        {
+            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape,
+                balootGame.DoubleValue, balootGame);
+
+
+            wordEffect.ShowWordAndIcon(balootGame.balootRoundScript.RoundType.ToString(), balootGame.balootRoundScript.balootRoundInfo.HokumShape);
+        }
+        else
+        {
+            gameInfoPanel.ShowSuns(balootGame);
+            wordEffect.ShowWord(balootGame.balootRoundScript.RoundType.ToString());
+        }
     }
 
     private void BalootGame_OnRoundDoubled(int playerIndex, int doubleValue)
@@ -185,16 +203,10 @@ public class UIManagerBaloot : UIManager
 
     private void Item_BalootCardsPlayed()
     {
-        ShowWord("baloot");
+        wordEffect.ShowWord("baloot");
     }
 
-    private async void ShowWord(string wordCode)
-    {
-        wordEffect.SetActive(true);
-        word.text = LanguageManager.Instance.GetString(wordCode);
-        await Task.Delay(1000);
-        wordEffect.SetActive(false);
-    }
+
 
 
 
@@ -219,16 +231,10 @@ public class UIManagerBaloot : UIManager
     {
         await balootCardsUI.AddRemaingCards(mainPlayer, balootGame.balootRoundScript.RoundType, balootGame.DeclarerIndex);
 
-        if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
-            gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape, 
-                balootGame.DoubleValue, balootGame);
-        else
-            gameInfoPanel.ShowSuns(balootGame);
-
         projectsPanel.Show(balootGame.balootRoundScript.RoundType);
         doubleHokumPanel.gameObject.SetActive(false);
 
-        ShowWord(balootGame.balootRoundScript.RoundType.ToString());
+
         //if (GameManager.Instance.GameType == GameType.Single)
         //    Game.SetStartGame();
     }
@@ -266,7 +272,7 @@ public class UIManagerBaloot : UIManager
 
         balootGame.OnStartCardsReady -= BalootUIManager_OnStartCardsReady;
         balootGame.OnPlayerSelectedType -= BalootGame_OnPlayerSelectedType;
-
+        balootGame.balootRoundScript.OnGameTypeSelected -= BalootRoundScript_OnGameTypeSelected;
         gameTypePanel.OnGameTypeSelected -= GameTypePanel_OnGameTypeSelected;
     }
 }
