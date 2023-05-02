@@ -33,13 +33,19 @@ public class StoreScene : MenuScene
     {
         WatchVideoBtn.Set(LanguageManager.Instance.GetString("watchad"), 100, 0, (index) =>
         {
-            AdsManager.Instance.ShowRewardedAd((result) =>
+            //AdsManager.Instance.ShowRewardedAd((result) =>
+            //{
+            //    if (result)
+            //    {
+            //        SFXManager.Instance.PlayClip("Coins");
+            //        GameManager.Instance.AddCoins(100);
+            //    }
+            //});
+
+            GoogleMobileAdsScript.Instance.ShowRewardedAd(() => 
             {
-                if (result)
-                {
-                    SFXManager.Instance.PlayClip("Coins");
-                    GameManager.Instance.AddCoins(100);
-                }
+                SFXManager.Instance.PlayClip("Coins");
+                GameManager.Instance.AddCoins(100);
             });
         });
 
