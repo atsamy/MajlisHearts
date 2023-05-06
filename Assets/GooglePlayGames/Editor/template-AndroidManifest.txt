@@ -11,7 +11,7 @@
     <application>
 
      __NEARBY_SERVICE_ELEMENT__
-
+     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
         <!-- The space in these forces it to be interpreted as a string vs. int -->
         <meta-data android:name="com.google.android.gms.games.APP_ID"
             android:value="\u003__APP_ID__" />
