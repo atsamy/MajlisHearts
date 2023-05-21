@@ -102,7 +102,7 @@ public class PlayfabManager : MonoBehaviour
     public void LogAuthError(string error)
     {
 
-        if (string.IsNullOrEmpty(error))
+        if (!string.IsNullOrEmpty(error))
         {
             PlayFabClientAPI.WritePlayerEvent(new WriteClientPlayerEventRequest()
             {
@@ -111,7 +111,13 @@ public class PlayfabManager : MonoBehaviour
                     { "error",error }
                 },
                 EventName = "Login_Error"
-            }, (response) => { }, (error) => { });
+            }, (response) => 
+            {
+                Debug.Log("Send event success");
+            }, (error) => 
+            {
+                Debug.Log("Send event failed: " + error.ErrorMessage);
+            });
         }
     }
 
