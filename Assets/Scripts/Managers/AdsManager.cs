@@ -117,3 +117,7 @@ public class AdsManager : MonoBehaviour
 
     #endregion
 }
+
+
+//admob android ad id: ca-app-pub-2670962532803996~2137396297
+//admob ios ad id:ca-app-pub-2670962532803996~9796394466
