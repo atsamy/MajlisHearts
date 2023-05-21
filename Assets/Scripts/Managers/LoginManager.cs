@@ -86,6 +86,7 @@ public class LoginManager : MonoBehaviour
         {
             print("account login");
             playfab.DeviceLogin("");
+
         }
 
 

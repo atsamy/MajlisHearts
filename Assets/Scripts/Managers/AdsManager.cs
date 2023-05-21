@@ -48,14 +48,19 @@ public class AdsManager : MonoBehaviour
         IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
 
         //Add Rewarded Video Events
-        IronSourceEvents.onRewardedVideoAdOpenedEvent += RewardedVideoAdOpenedEvent;
-        IronSourceEvents.onRewardedVideoAdClosedEvent += RewardedVideoAdClosedEvent;
-        IronSourceEvents.onRewardedVideoAvailabilityChangedEvent += RewardedVideoAvailabilityChangedEvent;
-        IronSourceEvents.onRewardedVideoAdStartedEvent += RewardedVideoAdStartedEvent;
-        IronSourceEvents.onRewardedVideoAdEndedEvent += RewardedVideoAdEndedEvent;
-        IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
-        IronSourceEvents.onRewardedVideoAdShowFailedEvent += RewardedVideoAdShowFailedEvent;
-        IronSourceEvents.onRewardedVideoAdClickedEvent += RewardedVideoAdClickedEvent;
+
+        IronSourceRewardedVideoEvents.onAdOpenedEvent += RewardedVideoOnAdOpenedEvent;
+        IronSourceRewardedVideoEvents.onAdClosedEvent += RewardedVideoOnAdClosedEvent;
+        IronSourceRewardedVideoEvents.onAdAvailableEvent += RewardedVideoOnAdAvailable;
+        IronSourceRewardedVideoEvents.onAdUnavailableEvent += RewardedVideoOnAdUnavailable;
+        IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
+        IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
+        IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
+    }
+
+    private void IronSourceRewardedVideoEvents_onAdOpenedEvent(IronSourceAdInfo obj)
+    {
+        throw new NotImplementedException();
     }
 
     public void ShowRewardedAd(Action<bool> HandleShowResult)
@@ -78,89 +83,37 @@ public class AdsManager : MonoBehaviour
     }
 
 
-    #region RewardedAd callback handlers
-
-    void RewardedVideoAvailabilityChangedEvent(bool canShowAd)
+    #region AdInfo Rewarded Video
+    void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
     {
-        Debug.Log("unity-script: I got RewardedVideoAvailabilityChangedEvent, value = " + canShowAd);
+        Debug.Log("unity-script: I got ReardedVideoOnAdOpenedEvent With AdInfo " + adInfo.ToString());
     }
-
-    void RewardedVideoAdOpenedEvent()
+    void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
     {
-        Debug.Log("unity-script: I got RewardedVideoAdOpenedEvent");
+        Debug.Log("unity-script: I got ReardedVideoOnAdClosedEvent With AdInfo " + adInfo.ToString());
     }
-
-    void RewardedVideoAdRewardedEvent(IronSourcePlacement ssp)
+    void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
     {
-        Debug.Log("unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount() + " name = " + ssp.getRewardName());
-        getReward?.Invoke(true);
+        Debug.Log("unity-script: I got ReardedVideoOnAdAvailable With AdInfo " + adInfo.ToString());
     }
-
-    void RewardedVideoAdClosedEvent()
+    void RewardedVideoOnAdUnavailable()
     {
-        Debug.Log("unity-script: I got RewardedVideoAdClosedEvent");
+        Debug.Log("unity-script: I got ReardedVideoOnAdUnavailable");
     }
-
-    void RewardedVideoAdStartedEvent()
+    void RewardedVideoOnAdShowFailedEvent(IronSourceError ironSourceError, IronSourceAdInfo adInfo)
     {
-        Debug.Log("unity-script: I got RewardedVideoAdStartedEvent");
-    }
-
-    void RewardedVideoAdEndedEvent()
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdEndedEvent");
-    }
-
-    void RewardedVideoAdShowFailedEvent(IronSourceError error)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode() + ", description : " + error.getDescription());
         getReward?.Invoke(false);
+        Debug.Log("unity-script: I got RewardedVideoAdOpenedEvent With Error" + ironSourceError.ToString() + "And AdInfo " + adInfo.ToString());
     }
-
-    void RewardedVideoAdClickedEvent(IronSourcePlacement ssp)
+    void RewardedVideoOnAdRewardedEvent(IronSourcePlacement ironSourcePlacement, IronSourceAdInfo adInfo)
     {
-        Debug.Log("unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName());
+        getReward?.Invoke(true);
+        Debug.Log("unity-script: I got ReardedVideoOnAdRewardedEvent With Placement" + ironSourcePlacement.ToString() + "And AdInfo " + adInfo.ToString());
     }
-
-    /************* RewardedVideo DemandOnly Delegates *************/
-
-    void RewardedVideoAdLoadedDemandOnlyEvent(string instanceId)
+    void RewardedVideoOnAdClickedEvent(IronSourcePlacement ironSourcePlacement, IronSourceAdInfo adInfo)
     {
-
-        Debug.Log("unity-script: I got RewardedVideoAdLoadedDemandOnlyEvent for instance: " + instanceId);
+        Debug.Log("unity-script: I got ReardedVideoOnAdClickedEvent With Placement" + ironSourcePlacement.ToString() + "And AdInfo " + adInfo.ToString());
     }
-
-    void RewardedVideoAdLoadFailedDemandOnlyEvent(string instanceId, IronSourceError error)
-    {
-
-        Debug.Log("unity-script: I got RewardedVideoAdLoadFailedDemandOnlyEvent for instance: " + instanceId + ", code :  " + error.getCode() + ", description : " + error.getDescription());
-    }
-
-    void RewardedVideoAdOpenedDemandOnlyEvent(string instanceId)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdOpenedDemandOnlyEvent for instance: " + instanceId);
-    }
-
-    void RewardedVideoAdRewardedDemandOnlyEvent(string instanceId)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdRewardedDemandOnlyEvent for instance: " + instanceId);
-    }
-
-    void RewardedVideoAdClosedDemandOnlyEvent(string instanceId)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdClosedDemandOnlyEvent for instance: " + instanceId);
-    }
-
-    void RewardedVideoAdShowFailedDemandOnlyEvent(string instanceId, IronSourceError error)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdShowFailedDemandOnlyEvent for instance: " + instanceId + ", code :  " + error.getCode() + ", description : " + error.getDescription());
-    }
-
-    void RewardedVideoAdClickedDemandOnlyEvent(string instanceId)
-    {
-        Debug.Log("unity-script: I got RewardedVideoAdClickedDemandOnlyEvent for instance: " + instanceId);
-    }
-
 
     #endregion
 }

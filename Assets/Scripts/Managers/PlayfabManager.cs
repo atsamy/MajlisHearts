@@ -65,6 +65,7 @@ public class PlayfabManager : MonoBehaviour
             (result) => SetupSessionData((titleData) =>
             {
                 OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
+                LogAuthError(error);
             }),
             (error) =>
             {
@@ -81,14 +82,7 @@ public class PlayfabManager : MonoBehaviour
             (result) => SetupSessionData((titleData) =>
             {
                 OnPlayerLoggedIn?.Invoke(titleData, result.NewlyCreated);
-
-                if (string.IsNullOrEmpty(error))
-                {
-                    PlayFabClientAPI.WritePlayerEvent(new WriteClientPlayerEventRequest() { Body = new Dictionary<string, object>()
-                {
-                    { "error",error }
-                }, EventName = "Login Error" }, (response) => { }, (error) => { });
-                }
+                LogAuthError(error);
             }),
             (error) =>
             {
@@ -104,6 +98,22 @@ public class PlayfabManager : MonoBehaviour
     //{
 
     //}
+
+    public void LogAuthError(string error)
+    {
+
+        if (string.IsNullOrEmpty(error))
+        {
+            PlayFabClientAPI.WritePlayerEvent(new WriteClientPlayerEventRequest()
+            {
+                Body = new Dictionary<string, object>()
+                {
+                    { "error",error }
+                },
+                EventName = "Login_Error"
+            }, (response) => { }, (error) => { });
+        }
+    }
 
     internal void LoginWithApple()
     {

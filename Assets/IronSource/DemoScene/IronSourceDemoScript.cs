@@ -14,7 +14,7 @@ public class IronSourceDemoScript : MonoBehaviour
     {
 
 #if UNITY_ANDROID
-        string appKey = "19e4adc05";
+        string appKey = "85460dcd";
 #elif UNITY_IPHONE
         string appKey = "8545d445";
 #else
@@ -30,7 +30,7 @@ public class IronSourceDemoScript : MonoBehaviour
 
         // SDK init
         Debug.Log("unity-script: IronSource.Agent.init");
-        IronSource.Agent.init(appKey,IronSourceAdUnits.REWARDED_VIDEO,IronSourceAdUnits.INTERSTITIAL);
+        IronSource.Agent.init(appKey);
 
     }
 
