@@ -107,6 +107,17 @@ public class MenuManager : MonoBehaviour
         ChooseGamePanel.Open();
     }
 
+    public void OpenHeartsGame()
+    {
+        //MainPanel.HideHeader(true, false);
+        SFXManager.Instance.PlayClip("Open");
+        //ChooseGamePanel.Open();
+
+        GameManager.Instance.Game = Game.Hearts;
+        OpenGameMode();
+        //gameObject.SetActive(false);
+    }
+
     void ClaimDailyReward(int day,int multiplier)
     {
         GameManager.Instance.AddCoins(DailyRewards.instance.GetReward(day).reward * multiplier);
