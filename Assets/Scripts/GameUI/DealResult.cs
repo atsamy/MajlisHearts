@@ -42,7 +42,7 @@ public class RoundResult : MonoBehaviour
             //Footer.SetActive(false);
             //buttonText.text = LanguageManager.Instance.GetString("nextround");
             timerButton.SetActive(true);
-            StartCoroutine(CountNextRound(5));
+            StartCoroutine(CountNextRound(7));
         }
         this.PanelClosed = OnPanelClosed;
     }

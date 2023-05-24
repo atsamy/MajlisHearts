@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         CardsUI.SetCardBack(UIElementsHolder.CardBack);
 
         //uncomment later
-        //FadeScreen.Instance?.FadeOut(2);
+        FadeScreen.Instance?.FadeOut(2);
     }
 
     protected virtual void Game_OnGameReady()
