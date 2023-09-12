@@ -27,7 +27,7 @@ public class GameInfoPanel : MonoBehaviour
     public void ShowSuns(GameScriptBaloot gameScriptBaloot)
     {
         Show(gameScriptBaloot);
-        gameTypeText.text = "Suns";
+        gameTypeText.text = LanguageManager.Instance.GetString("Sun");
         hokumShape.gameObject.SetActive(false);
     }
 
@@ -35,7 +35,7 @@ public class GameInfoPanel : MonoBehaviour
     {
         //print(doubler);
         Show(gameScriptBaloot);
-        gameTypeText.text = "Hokum";
+        gameTypeText.text = LanguageManager.Instance.GetString("Hokum");
         hokumShape.sprite = shapes[(int)cardShape];
         hokumShape.gameObject.SetActive(true);
 
@@ -54,7 +54,7 @@ public class GameInfoPanel : MonoBehaviour
                 doubleText.text = "x4";
                 break;
                 case 5:
-                doubleText.text = "Qahwa";
+                doubleText.text = LanguageManager.Instance.GetString("Qahwa");
                 break;
         }
     }

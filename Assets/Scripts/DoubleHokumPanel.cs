@@ -20,16 +20,16 @@ public class DoubleHokumPanel : MonoBehaviour
         switch (value)
         {
             case 0:
-                doubleText.text = "double";
+                doubleText.text = LanguageManager.Instance.GetString("double");
                 break;
             case 1:
-                doubleText.text = "triple";
+                doubleText.text = LanguageManager.Instance.GetString("triple");
                 break;
             case 2:
-                doubleText.text = "quadruple";
+                doubleText.text = LanguageManager.Instance.GetString("quadruple");
                 break;
             case 3:
-                doubleText.text = "Qahwa";
+                doubleText.text = LanguageManager.Instance.GetString("Qahwa");
                 break;
             default:
                 break;

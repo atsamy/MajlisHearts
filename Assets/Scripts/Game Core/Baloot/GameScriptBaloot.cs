@@ -86,8 +86,8 @@ public class GameScriptBaloot : GameScriptBase
 
         RoundScript.SetPlayers(Players);
         balootRoundScript.OnGameTypeSelected += BalootRoundScript_OnGameTypeSelected;
-        //SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
-        //     GameManager.Instance.EquippedItem["CardBack"]);
+        SetEnvironment(GameManager.Instance.EquippedItem["TableTop"],
+             GameManager.Instance.EquippedItem["CardBack"]);
         OnStartPlaying?.Invoke(false);
         SetGameReady();
         StartGame();
@@ -390,6 +390,11 @@ public class GameScriptBaloot : GameScriptBase
     {
         await DealRemaingCards();
         SetPlaying(false);
+    }
+
+    public override void SetPlaying(bool isMulti)
+    {
+        RoundScript.StartFirstTurn();
     }
 
     protected async Task DealRemaingCards()

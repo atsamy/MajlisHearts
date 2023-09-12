@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManagerBaloot : UIManager
 {
@@ -31,6 +32,12 @@ public class UIManagerBaloot : UIManager
     WordEffectScript wordEffect;
     [SerializeField]
     TextMeshProUGUI word;
+
+    [SerializeField]
+    Image cardsPower;
+
+    [SerializeField]
+    Sprite[] cardsPowerSprites;
 
     private void OnEnable()
     {
@@ -59,6 +66,8 @@ public class UIManagerBaloot : UIManager
 
     private void BalootRoundScript_OnGameTypeSelected(int arg1, BalootGameType arg2)
     {
+        cardsPower.gameObject.SetActive(true);
+
         if (balootGame.balootRoundScript.RoundType == BalootGameType.Hokum)
         {
             gameInfoPanel.ShowHokum(balootGame.balootRoundScript.balootRoundInfo.HokumShape,
@@ -66,12 +75,19 @@ public class UIManagerBaloot : UIManager
 
 
             wordEffect.ShowWordAndIcon(balootGame.balootRoundScript.RoundType.ToString(), balootGame.balootRoundScript.balootRoundInfo.HokumShape);
+
+            cardsPower.sprite = cardsPowerSprites[1];
         }
         else
         {
             gameInfoPanel.ShowSuns(balootGame);
             wordEffect.ShowWord(balootGame.balootRoundScript.RoundType.ToString());
+
+
+            cardsPower.sprite = cardsPowerSprites[0];
         }
+
+
     }
 
     private void BalootGame_OnRoundDoubled(int playerIndex, int doubleValue)
@@ -179,6 +195,8 @@ public class UIManagerBaloot : UIManager
     {
         balootCardsUI.RemoveAllCards();
         UIElementsHolder.ScoresHolder.SetActive(false);
+
+        cardsPower.gameObject.SetActive(false);
     }
 
     private void BalootGame_OnPlayerSelectedType(int index, BalootGameType type)
@@ -214,6 +232,8 @@ public class UIManagerBaloot : UIManager
     {
         base.Game_OnDealFinished(hostPlayer, isGameOver);
         gameInfoPanel.gameObject.SetActive(false);
+
+        cardsPower.gameObject.SetActive(false);
     }
 
     protected override void Game_OnTrickFinished(int winningHand)

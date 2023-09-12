@@ -3881,7 +3881,7 @@ GameObject:
   - component: {fileID: 144708007}
   - component: {fileID: 144708006}
   m_Layer: 5
-  m_Name: Pass
+  m_Name: pass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9848,8 +9848,9 @@ GameObject:
   - component: {fileID: 497156323}
   - component: {fileID: 497156325}
   - component: {fileID: 497156324}
+  - component: {fileID: 497156326}
   m_Layer: 5
-  m_Name: hokum
+  m_Name: Hokum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9971,6 +9972,94 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497156322}
+  m_CullTransparentMesh: 1
+--- !u!114 &497156326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497156322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &503909217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 503909218}
+  - component: {fileID: 503909220}
+  - component: {fileID: 503909219}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &503909218
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503909217}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1078356344}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 340}
+  m_SizeDelta: {x: 465, y: 41}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &503909219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503909217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 76bc5699a508bab428254cb10f9994b2, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &503909220
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503909217}
   m_CullTransparentMesh: 1
 --- !u!1 &513071552
 GameObject:
@@ -10613,8 +10702,9 @@ GameObject:
   - component: {fileID: 524620210}
   - component: {fileID: 524620212}
   - component: {fileID: 524620211}
+  - component: {fileID: 524620213}
   m_Layer: 5
-  m_Name: ashkal
+  m_Name: Ashkal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10737,6 +10827,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 524620209}
   m_CullTransparentMesh: 1
+--- !u!114 &524620213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524620209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &533234362
 GameObject:
   m_ObjectHideFlags: 0
@@ -11003,8 +11105,9 @@ GameObject:
   - component: {fileID: 586697820}
   - component: {fileID: 586697822}
   - component: {fileID: 586697821}
+  - component: {fileID: 586697823}
   m_Layer: 5
-  m_Name: sun
+  m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11127,6 +11230,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586697819}
   m_CullTransparentMesh: 1
+--- !u!114 &586697823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586697819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &586807341
 GameObject:
   m_ObjectHideFlags: 0
@@ -12364,6 +12479,7 @@ GameObject:
   - component: {fileID: 661121419}
   - component: {fileID: 661121418}
   - component: {fileID: 661121420}
+  - component: {fileID: 661121421}
   m_Layer: 5
   m_Name: otherHokum
   m_TagString: Untagged
@@ -12489,6 +12605,18 @@ CanvasRenderer:
   m_GameObject: {fileID: 661121416}
   m_CullTransparentMesh: 1
 --- !u!114 &661121420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661121416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &661121421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19089,6 +19217,7 @@ GameObject:
   - component: {fileID: 933336819}
   - component: {fileID: 933336821}
   - component: {fileID: 933336820}
+  - component: {fileID: 933336822}
   m_Layer: 5
   m_Name: pass
   m_TagString: Untagged
@@ -19213,6 +19342,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933336818}
   m_CullTransparentMesh: 1
+--- !u!114 &933336822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933336818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 471aa4a8afd154fcca3ac3d5a4a9be5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &947078504
 GameObject:
   m_ObjectHideFlags: 0
@@ -20929,6 +21070,7 @@ RectTransform:
   m_Children:
   - {fileID: 465340809}
   - {fileID: 1175103590}
+  - {fileID: 503909218}
   m_Father: {fileID: 1288150477}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20957,7 +21099,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4a1b1750e600fd749a9976dcf38cc4df, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cb527331dbec16543b8c39fbaf7a246f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21431,7 +21573,7 @@ GameObject:
   - component: {fileID: 1106886898}
   - component: {fileID: 1106886897}
   m_Layer: 5
-  m_Name: OtherHokum
+  m_Name: otherHokum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29123,7 +29265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877c5f47753669242827698a2e368b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 70
+  spacing: 85
   rotationFactor: 1.5
   rotation: 0
   IsVertical: 0
@@ -39049,6 +39191,10 @@ MonoBehaviour:
   - {fileID: 997787591}
   wordEffect: {fileID: 1989782244}
   word: {fileID: 1216092355}
+  cardsPower: {fileID: 503909219}
+  cardsPowerSprites:
+  - {fileID: 21300000, guid: 76bc5699a508bab428254cb10f9994b2, type: 3}
+  - {fileID: 21300000, guid: 47b16f31eb56c5a498672034607f90a3, type: 3}
 --- !u!114 &2028200694
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -54,4 +54,9 @@ public class SettingsPanel : MenuScene
         MenuManager.Instance.ShowMain();
         base.Close();
     }
+
+    public void OpenTutorialLink(string url)
+    {
+        Application.OpenURL(url);
+    }
 }
