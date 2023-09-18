@@ -14,10 +14,12 @@ public class SettingsPanel : MenuScene
     [SerializeField]
     Sprite[] notificationSprites;
 
+    [SerializeField]
+    GameObject linksPanel;
 
     private void Start()
     {
-        tabScript[0].Pressed((int)LanguageManager.Instance.CurrentLanguage == 0);
+        tabScript[0].Pressed(LanguageManager.Instance.CurrentLanguage == 0);
         tabScript[1].Pressed((int)LanguageManager.Instance.CurrentLanguage == 1);
     }
 
@@ -47,6 +49,11 @@ public class SettingsPanel : MenuScene
         PlayerPrefs.SetInt("Notification", isOn);
 
         notification.sprite = notificationSprites[isOn];
+    }
+
+    public void OpenLinks()
+    {
+
     }
 
     public override void Close()
