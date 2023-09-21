@@ -408,7 +408,7 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
         else
         {
             Dictionary<Card, int> allCardsValues = new Dictionary<Card, int>();
-
+            Debug.Log("owned cards" + OwnedCards.Count);
             foreach (var item in OwnedCards)
             {
                 if (balootGameType == BalootGameType.Hokum)

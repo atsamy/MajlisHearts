@@ -37,8 +37,8 @@ public class GameTypePanel : MonoBehaviour
         {
             if (hokumIndex == playerIndex)
             {
-                hokumText.text = "Confirm Hokum";
-                passText.text = "Nothing";
+                hokumText.text = LanguageManager.Instance.GetString("confirmhokum");
+                passText.text = LanguageManager.Instance.GetString("nothing");
 
                 hokumButton.SetActive(true);
                 otherHokumButton.gameObject.SetActive(false);
@@ -48,14 +48,14 @@ public class GameTypePanel : MonoBehaviour
                 hokumButton.SetActive(false);
                 if (round == 1)
                 {
-                    passText.text = "Nothing";
+                    passText.text = LanguageManager.Instance.GetString("nothing");
                 }
             }
         }
         else if (round == 1)
         {
-            passText.text = "Nothing";
-            hokumText.text = "Other Hokum";
+            passText.text = LanguageManager.Instance.GetString("nothing");
+            hokumText.text = LanguageManager.Instance.GetString("otherHokum");
             hokumButton.SetActive(false);
             otherHokumButton.gameObject.SetActive(true);
         }
@@ -65,8 +65,8 @@ public class GameTypePanel : MonoBehaviour
     private void ResetButtons()
     {
         hokumButton.gameObject.SetActive(true);
-        passText.text = "Pass";
-        hokumText.text = "Hokum";
+        passText.text = LanguageManager.Instance.GetString("pass");
+        hokumText.text = LanguageManager.Instance.GetString("Hokum");
 
         hokumButton.SetActive(true);
         otherHokumButton.gameObject.SetActive(false);

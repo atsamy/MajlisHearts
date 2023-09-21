@@ -96,13 +96,13 @@ public class UIManagerBaloot : UIManager
         switch (doubleValue)
         {
             case 2:
-                text = "Double";
+                text = "double2";
                 break;
             case 3:
-                text = "Triple";
+                text = "triple";
                 break;
             case 4:
-                text = "Quadruple";
+                text = "quadruple";
                 break;
             case 5:
                 text = "Qahwa";
@@ -116,7 +116,7 @@ public class UIManagerBaloot : UIManager
     {
         playerIndex = CorrectIndex(playerIndex);
 
-        typeTexts[playerIndex].text = message;
+        typeTexts[playerIndex].text = LanguageManager.Instance.GetString(message);
         typeTexts[playerIndex].transform.parent.gameObject.SetActive(true);
 
         StartCoroutine(ShowTypeAnimation(playerIndex));
