@@ -341,7 +341,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
         int[] data = Utils.SerializePlayersProjects(Players);
         if (data.Length > 0)
         {
-            print("projects count: " + data.Length);
+            //print("projects count: " + data.Length);
             multiPlayer.RaiseEventToOthers(allProjectCode, data);
         }
         //send final project to all other players
@@ -434,6 +434,11 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
                         multiPlayer.RaiseEventToOthers(checkProjectsCode, null);
                     }
                 }
+
+                Debug.Log("player 1 cards: " + Players[0].OwnedCards.Count);
+                Debug.Log("player 2 cards: " + Players[1].OwnedCards.Count);
+                Debug.Log("player 3 cards: " + Players[2].OwnedCards.Count);
+                Debug.Log("player 4 cards: " + Players[3].OwnedCards.Count);
 
                 multiPlayer.TrickFinishedSequence(RoundScript.PlayingIndex);
                 //multiPlayer.RaiseEventToAll(trickFinishedCode, RoundScript.PlayingIndex);
