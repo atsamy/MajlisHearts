@@ -9,7 +9,7 @@ public class GameScriptBaloot : GameScriptBase
 {
     public static GameScriptBaloot Instance;
 
-    public delegate void StartCardsReady(Card balootCard,int startIndex);
+    public delegate void StartCardsReady(Card balootCard, int startIndex);
     public event StartCardsReady OnStartCardsReady;
 
     public delegate void PlayerSelectedType(int index, BalootGameType type);
@@ -95,7 +95,7 @@ public class GameScriptBaloot : GameScriptBase
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.Keypad1))
             PrintCard(1);
         else if (Input.GetKeyDown(KeyCode.Keypad2))
             PrintCard(2);
@@ -378,7 +378,7 @@ public class GameScriptBaloot : GameScriptBase
                 break;
             case EventTypeBaloot.DealFinished:
                 //Deal_OnDealFinished();
-                RoundFinished(RoundScript.PlayingIndex,true);
+                RoundFinished(RoundScript.PlayingIndex, true);
 
                 TeamsScore[0] = 0;
                 TeamsScore[1] = 0;
@@ -394,7 +394,8 @@ public class GameScriptBaloot : GameScriptBase
 
     public override void SetPlaying(bool isMulti)
     {
-        RoundScript.StartFirstTurn();
+        if (!isMulti)
+            RoundScript.StartFirstTurn();
     }
 
     protected async Task DealRemaingCards()
