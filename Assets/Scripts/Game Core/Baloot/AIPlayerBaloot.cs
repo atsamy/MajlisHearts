@@ -401,6 +401,7 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
 
     public Card ChooseLoseCard(BalootRoundInfo info, List<Card> shapeCards)
     {
+        //bug here owned cards 
         if (shapeCards.Count > 0)
         {
             return shapeCards.OrderBy(a => rankAdjust[a.Rank]).ToList().First();

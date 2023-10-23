@@ -39,7 +39,7 @@ public class HeartsCardsUIManager : CardsUIManager
 
     public void AddToPassCards(CardUI cardUI)
     {
-        if (((UIManagerHearts)UIManagerHearts.Instance).AddCard(cardUI))
+        if (((UIManagerHearts)UIManager.Instance).AddCard(cardUI))
         {
             playerCardsUI.Remove(cardUI);
             cardUI.SetOnPressed((card) =>
@@ -60,7 +60,7 @@ public class HeartsCardsUIManager : CardsUIManager
     {
         playerCardsUI.Add(cardUI);
         cardUI.transform.SetParent(cardElementsHolder.CardsHolder[0].transform);
-        ((UIManagerHearts)UIManagerHearts.Instance).RemoveCard(cardUI);
+        ((UIManagerHearts)UIManager.Instance).RemoveCard(cardUI);
         cardUI.PassCard = false;
         cardUI.SetOnPressed((card) =>
         {
@@ -97,7 +97,7 @@ public class HeartsCardsUIManager : CardsUIManager
         for (int i = 0; i < 3; i++)
         {
             GameObject newCard = Instantiate(cardElementsHolder.playerCard, cardElementsHolder.CardsHolder[0].transform);
-            newCard.transform.localPosition = new Vector3(i * 230 - 230, 400, 0);
+            newCard.transform.localPosition = new Vector3(i * 260 - 260, 400, 0);
             CardUI cardUI = newCard.GetComponent<CardUI>();
             playerCardsUI.Add(cardUI);
 
