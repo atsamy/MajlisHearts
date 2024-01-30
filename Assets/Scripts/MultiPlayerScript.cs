@@ -6,7 +6,7 @@ using Photon.Realtime;
 using System.Linq;
 using Photon.Pun;
 using UnityEngine;
-using GooglePlayGames.BasicApi;
+//using GooglePlayGames.BasicApi;
 using System;
 
 public class MultiPlayerScript : IPunTurnManagerCallbacks, IOnEventCallback, IInRoomCallbacks

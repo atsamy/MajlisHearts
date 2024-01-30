@@ -1,4 +1,4 @@
-using GooglePlayGames;
+//using GooglePlayGames;
 using PlayFab.ClientModels;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,10 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using GooglePlayGames.BasicApi;
 using DG.Tweening;
-using UnityEngine.Playables;
-//using UnityEngine.Analytics;
 
 public class LoginManager : MonoBehaviour
 {

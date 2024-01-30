@@ -1,5 +1,5 @@
 using ExitGames.Client.Photon;
-using GooglePlayGames.BasicApi;
+//using GooglePlayGames.BasicApi;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
