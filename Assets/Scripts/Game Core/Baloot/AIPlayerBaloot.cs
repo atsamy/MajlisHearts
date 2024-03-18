@@ -117,7 +117,7 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
             if (roundScript.HokumIndex == -1)
             {
                 CardShape cardShape;
-                int hokumScore = OtherHokumScore(allcards, out cardShape);
+                int hokumScore = OtherHokumScore(allcards,roundScript.BalootCard.Shape, out cardShape);
                 
                 ChangedHokumShape(cardShape);
 
