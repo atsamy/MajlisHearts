@@ -261,7 +261,7 @@ public class UIManagerBaloot : UIManager
 
     private void MainPlayer_OnWaitSelectType(RoundScriptBaloot roundScript)
     {
-        gameTypePanel.Show(roundScript.BiddingRound, roundScript.HokumIndex, Game.MainPlayerIndex);
+        gameTypePanel.Show(roundScript.BiddingRound, roundScript.HokumIndex, Game.MainPlayerIndex, roundScript.StartIndex);
     }
 
     public override void SetScore()

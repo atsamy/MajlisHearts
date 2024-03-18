@@ -208,7 +208,7 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
         return score;
     }
 
-    public int OtherHokumScore(List<Card> allCards, out CardShape shape)
+    public int OtherHokumScore(List<Card> allCards,CardShape balootCard, out CardShape shape)
     {
         int score = 0;
         int bestScore = 0;
@@ -217,6 +217,9 @@ public class AIPlayerBaloot : PlayerBaloot, IMergePlayer
 
         for (int i = 0; i < 4; i++)
         {
+            if (balootCard == (CardShape)i)
+                continue;
+
             List<Card> shapeCard = allCards.Where(a => a.Shape == (CardShape)i).OrderByDescending(
                 a => CardHelper.HokumRank[a.Rank]).ToList();
 

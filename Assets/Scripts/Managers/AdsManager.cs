@@ -3,121 +3,131 @@ using System.Collections;
 using UnityEngine.Advertisements;
 using System;
 
-public class AdsManager : MonoBehaviour
+public enum AdsNetwork { Unity, AdMob }
+
+public class AdsManager : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsInitializationListener
 {
     public static AdsManager Instance;
-  
+    Action<ShowResult> RewardedVideoCallback;
+    Action<ShowResult> InterstitialCallback;
+
+    public Action<bool> FinishedVideo;
+
+    bool isAddLoaded;
+    [SerializeField] 
+    bool testMode = true;    
     [SerializeField] 
     string androidGameId;
     [SerializeField] 
     string iOSGameId;
 
+    string _adUnitId = null;
+
     public bool IsVideoReady
     {
         get
         {
-            return false;// IronSource.Agent.isRewardedVideoAvailable();
+            return isAddLoaded;
         }
     }
 
-    public Action<bool> getReward;
-
-    private void Start()
+    private void Awake()
     {
         Instance = this;
-
+        string appId = "";
 
 #if UNITY_ANDROID
-        string appKey = androidGameId;
+        appId = androidGameId;
 #elif UNITY_IPHONE
-        string appKey = iOSGameId;
-#else
-        string appKey = "unexpected_platform";
+        appId = iOSGameId;
 #endif
 
-        //Debug.Log("unity-script: IronSource.Agent.validateIntegration");
-        //IronSource.Agent.validateIntegration();
-
-        //Debug.Log("unity-script: unity version" + IronSource.unityVersion());
-
-        // SDK init
-        //Debug.Log("unity-script: IronSource.Agent.init");
-        //IronSource.Agent.init(appKey, IronSourceAdUnits.REWARDED_VIDEO, IronSourceAdUnits.INTERSTITIAL);
-
-        ////Add Init Event
-        //IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
-
-        ////Add Rewarded Video Events
-
-        //IronSourceRewardedVideoEvents.onAdOpenedEvent += RewardedVideoOnAdOpenedEvent;
-        //IronSourceRewardedVideoEvents.onAdClosedEvent += RewardedVideoOnAdClosedEvent;
-        //IronSourceRewardedVideoEvents.onAdAvailableEvent += RewardedVideoOnAdAvailable;
-        //IronSourceRewardedVideoEvents.onAdUnavailableEvent += RewardedVideoOnAdUnavailable;
-        //IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
-        //IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
-        //IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
+        Advertisement.Initialize(appId, testMode, this);
     }
-
-    //private void IronSourceRewardedVideoEvents_onAdOpenedEvent(IronSourceAdInfo obj)
-    //{
-    //    throw new NotImplementedException();
-    //}
 
     public void ShowRewardedAd(Action<bool> HandleShowResult)
     {
-        Debug.Log("unity-script: ShowRewardedVideoButtonClicked");
-        //if (IronSource.Agent.isRewardedVideoAvailable())
-        //{
-        //    IronSource.Agent.showRewardedVideo();
-        //    getReward = HandleShowResult;
-        //}
-        //else
-        //{
-        //    Debug.Log("unity-script: IronSource.Agent.isRewardedVideoAvailable - False");
-        //}
+        if (isAddLoaded)
+        {
+            Advertisement.Show(_adUnitId, this);
+            FinishedVideo = HandleShowResult;
+
+            isAddLoaded = false;
+        }
     }
 
-    void SdkInitializationCompletedEvent()
+
+    public void OnUnityAdsDidError(string message)
     {
-        Debug.Log("unity-script: I got SdkInitializationCompletedEvent");
+
     }
 
+    public void OnUnityAdsDidStart(string placementId)
+    {
 
-    //#region AdInfo Rewarded Video
-    //void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
-    //{
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdOpenedEvent With AdInfo " + adInfo.ToString());
-    //}
-    //void RewardedVideoOnAdClosedEvent(IronSourceAdInfo adInfo)
-    //{
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdClosedEvent With AdInfo " + adInfo.ToString());
-    //}
-    //void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
-    //{
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdAvailable With AdInfo " + adInfo.ToString());
-    //}
-    //void RewardedVideoOnAdUnavailable()
-    //{
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdUnavailable");
-    //}
-    //void RewardedVideoOnAdShowFailedEvent(IronSourceError ironSourceError, IronSourceAdInfo adInfo)
-    //{
-    //    getReward?.Invoke(false);
-    //    Debug.Log("unity-script: I got RewardedVideoAdOpenedEvent With Error" + ironSourceError.ToString() + "And AdInfo " + adInfo.ToString());
-    //}
-    //void RewardedVideoOnAdRewardedEvent(IronSourcePlacement ironSourcePlacement, IronSourceAdInfo adInfo)
-    //{
-    //    getReward?.Invoke(true);
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdRewardedEvent With Placement" + ironSourcePlacement.ToString() + "And AdInfo " + adInfo.ToString());
-    //}
-    //void RewardedVideoOnAdClickedEvent(IronSourcePlacement ironSourcePlacement, IronSourceAdInfo adInfo)
-    //{
-    //    Debug.Log("unity-script: I got ReardedVideoOnAdClickedEvent With Placement" + ironSourcePlacement.ToString() + "And AdInfo " + adInfo.ToString());
-    //}
+    }
 
-    //#endregion
+    public void OnUnityAdsAdLoaded(string placementId)
+    {
+        Debug.Log("add loaded");
+        if (placementId.Equals(_adUnitId))
+        {
+            isAddLoaded = true;
+        }
+    }
+
+    public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(false);
+
+        LoadVideo();
+    }
+
+    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(false);
+
+        LoadVideo();
+    }
+
+    public void OnUnityAdsShowStart(string placementId)
+    {
+
+    }
+
+    public void OnUnityAdsShowClick(string placementId)
+    {
+
+    }
+
+    public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+    {
+        if (FinishedVideo != null)
+            FinishedVideo.Invoke(true);
+
+        LoadVideo();
+    }
+
+    public void OnInitializationComplete()
+    {
+        LoadVideo();
+    }
+
+    private void LoadVideo()
+    {
+#if UNITY_ANDROID
+        _adUnitId = "Rewarded_Android";
+#elif UNITY_IOS
+        _adUnitId = "Rewarded_iOS";
+#endif
+
+        Advertisement.Load(_adUnitId, this);
+    }
+
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+    {
+        Debug.Log(message);
+    }
 }
-
-
-//admob android ad id: ca-app-pub-2670962532803996~2137396297
-//admob ios ad id:ca-app-pub-2670962532803996~9796394466

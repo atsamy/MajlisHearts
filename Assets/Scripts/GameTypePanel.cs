@@ -18,6 +18,9 @@ public class GameTypePanel : MonoBehaviour
     TextMeshProUGUI passText;
 
     [SerializeField]
+    Button ashkalBtn;
+
+    [SerializeField]
     GameObject hokumButton;
     [SerializeField]
     Button otherHokumButton;
@@ -30,7 +33,7 @@ public class GameTypePanel : MonoBehaviour
             OnOtherHokumSelected?.Invoke(); 
         });
     }
-    public void Show(int round,int hokumIndex,int playerIndex)
+    public void Show(int round,int hokumIndex,int playerIndex, int startIndex)
     {
         gameObject.SetActive(true);
         if (hokumIndex != -1)
@@ -60,6 +63,10 @@ public class GameTypePanel : MonoBehaviour
             otherHokumButton.gameObject.SetActive(true);
         }
 
+        int leftPlayer = startIndex - 1;
+        leftPlayer = leftPlayer < 0 ? leftPlayer + 4 : leftPlayer;
+
+        ashkalBtn.interactable = (startIndex == playerIndex || leftPlayer == playerIndex);
     }
 
     private void ResetButtons()
