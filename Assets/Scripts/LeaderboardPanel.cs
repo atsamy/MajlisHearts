@@ -1,6 +1,3 @@
-//using PlayFab.ClientModels;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,36 +10,61 @@ public class LeaderboardPanel : MenuScene
     Button[] tabsButtons;
 
     [SerializeField]
-    RectTransform[] contents;
+    RectTransform[] Heartcontents;
+
+    [SerializeField]
+    RectTransform[] Balootcontents;
+
+    RectTransform[] currentcontents;
 
     [SerializeField]
     ScrollRect scrollRect;
 
+    [SerializeField]
+    GameObject balootParent;
+
+    [SerializeField]
+    GameObject heartParent;
+
+    [SerializeField]
+    Button heartBtn;
+
+    [SerializeField]
+    Button balootBtn;
+
     private void Awake()
     {
-        PlayfabManager.instance.GetHeartsLeaderboard((entries) => 
-        {
-            foreach (var entry in entries) 
-            {
-                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, contents[0]).GetComponent<LeaderboardEntry>();
-                newEntry.Set(entry.Position + 1,entry.Profile.DisplayName,entry.StatValue,entry.Profile.AvatarUrl);
-            }
-        });
+        GetGameData("HeartsPoints",Heartcontents);
+        GetGameData("BalootPoints", Balootcontents);
 
-        PlayfabManager.instance.GetHeartsFriendsLeaderboard((entries) =>
+        currentcontents = Heartcontents;
+    }
+
+    public void GetGameData(string gameName,Transform[] content)
+    {
+        PlayfabManager.instance.GetLeaderboard(gameName,(entries) =>
         {
             foreach (var entry in entries)
             {
-                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, contents[2]).GetComponent<LeaderboardEntry>();
+                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, content[0]).GetComponent<LeaderboardEntry>();
+                newEntry.Set(entry.Position + 1, entry.Profile.DisplayName, entry.StatValue, entry.Profile.AvatarUrl);
+            }
+        });
+
+        PlayfabManager.instance.GetFriendsLeaderboard(gameName,(entries) =>
+        {
+            foreach (var entry in entries)
+            {
+                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, content[2]).GetComponent<LeaderboardEntry>();
                 newEntry.Set(entry.Position + 1, entry.DisplayName, entry.StatValue, entry.Profile.AvatarUrl);
             }
         });
 
-        PlayfabManager.instance.GetHeartsLeaderboardAroundPlayer((entries) =>
+        PlayfabManager.instance.GetLeaderboardAroundPlayer(gameName,(entries) =>
         {
             foreach (var entry in entries)
             {
-                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, contents[1]).GetComponent<LeaderboardEntry>();
+                LeaderboardEntry newEntry = Instantiate(leaderBoardEntry, content[1]).GetComponent<LeaderboardEntry>();
                 newEntry.Set(entry.Position + 1, entry.DisplayName, entry.StatValue, entry.Profile.AvatarUrl);
             }
         });
@@ -53,10 +75,31 @@ public class LeaderboardPanel : MenuScene
         for (int i = 0; i < tabsButtons.Length; i++)
         {
             tabsButtons[i].interactable = (i != index);
-            contents[i].gameObject.SetActive(i == index);
+            Balootcontents[i].gameObject.SetActive(i == index);
+            Heartcontents[i].gameObject.SetActive(i == index);
         }
 
-        scrollRect.content = contents[index];
+        scrollRect.content = currentcontents[index];
+    }
+
+    public void OpenBaloot()
+    {
+        currentcontents = Balootcontents;
+        balootParent.SetActive(true);
+        heartParent.SetActive(false);
+
+        heartBtn.interactable = true;
+        balootBtn.interactable = false;
+    }
+
+    public void OpenHearts()
+    {
+        currentcontents = Heartcontents;
+        balootParent.SetActive(false);
+        heartParent.SetActive(true);
+
+        heartBtn.interactable = false;
+        balootBtn.interactable = true;
     }
 
     public override void Close()

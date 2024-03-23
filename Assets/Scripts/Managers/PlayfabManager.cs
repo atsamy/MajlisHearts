@@ -301,11 +301,11 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    internal void GetHeartsLeaderboard(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    internal void GetLeaderboard(string gameName, Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
     {
         GetLeaderboardRequest getLeaderboardRequest = new GetLeaderboardRequest()
         {
-            StatisticName = "HeartsPoints",
+            StatisticName = gameName,
             StartPosition = 0,
             MaxResultsCount = 10,
             ProfileConstraints = new PlayerProfileViewConstraints()
@@ -323,11 +323,11 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    internal void GetHeartsFriendsLeaderboard(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    internal void GetFriendsLeaderboard(string gameName, Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
     {
         GetFriendLeaderboardRequest getLeaderboardRequest = new GetFriendLeaderboardRequest()
         {
-            StatisticName = "HeartsPoints",
+            StatisticName = gameName,
             ProfileConstraints = new PlayerProfileViewConstraints()
             {
                 ShowAvatarUrl = true,
@@ -343,12 +343,12 @@ public class PlayfabManager : MonoBehaviour
         });
     }
 
-    internal void GetHeartsLeaderboardAroundPlayer(Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
+    internal void GetLeaderboardAroundPlayer(string gameName, Action<List<PlayerLeaderboardEntry>> leaderBoardResult)
     {
         GetLeaderboardAroundPlayerRequest getLeaderboardRequest = new GetLeaderboardAroundPlayerRequest()
         {
             MaxResultsCount = 10,
-            StatisticName = "HeartsPoints",
+            StatisticName = gameName,
             ProfileConstraints = new PlayerProfileViewConstraints()
             {
                 ShowAvatarUrl = true,
