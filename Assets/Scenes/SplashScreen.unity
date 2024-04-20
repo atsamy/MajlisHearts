@@ -4746,6 +4746,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5008755401835245824, guid: c08c43714abee436fbb292c069527d84, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5008755401835245829, guid: c08c43714abee436fbb292c069527d84, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4790,6 +4794,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5008755401835245831, guid: c08c43714abee436fbb292c069527d84, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5008755401835245832, guid: c08c43714abee436fbb292c069527d84, type: 3}
       propertyPath: testMode
       value: 0
@@ -4802,7 +4810,8 @@ PrefabInstance:
       propertyPath: androidGameId
       value: 4981388
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5008755401835245832, guid: c08c43714abee436fbb292c069527d84, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

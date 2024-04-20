@@ -51,10 +51,10 @@ public class LevelPanel : MonoBehaviour
     int reward;
     int gems;
 
-    public void Open(int rank,int totalScore, Action next)
+    public void Open(int rank, int totalScore, Action next)
     {
-        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name,false,false);
-        //nextLevelPoints = GameManager.Instance.MyPlayer.LevelPoints;
+        playerName.text = ArabicFixer.Fix(GameManager.Instance.MyPlayer.Name, false, false);
+
         nextPressed = next;
         scoreText.text = totalScore.ToString();
         gameObject.SetActive(true);
@@ -77,7 +77,6 @@ public class LevelPanel : MonoBehaviour
                 break;
         }
 
-        //this.nextPressed = nextPressed;
         int startPoints = GameManager.Instance.MyPlayer.Points;
         int score = GetScore(rank);
 
@@ -107,9 +106,8 @@ public class LevelPanel : MonoBehaviour
         coinsText.text = reward.ToString();
         gemsText.text = gems.ToString();
 
-        //StartCoroutine(CountNumbers(startGems,startCoins,gems, reward, 1f));
-
-        float progress = GameManager.Instance.AddPoints(score,GetPoints(rank));
+        float progress = GameManager.Instance.AddPoints(score, GetPoints(rank),
+            GameManager.Instance.Game == Game.Hearts ? "HeartsPoints" : "BalootPoints");
         float totalProgress = MathF.Min(1, currentProgress + progress);
         bool isNewLevel = currentProgress + progress >= 1;
 
@@ -152,47 +150,12 @@ public class LevelPanel : MonoBehaviour
         nextButton.SetActive(true);
     }
 
-    //public IEnumerator CountNumbers(int startgems,int startcoins, int gems, int reward, float time)
-    //{
-    //    float timer = 0;
-    //    yield return new WaitForSeconds(2);
-    //    GameSFXManager.Instance.PlayClip("Count");
-
-    //    while (timer < time)
-    //    {
-    //        coinsText.text = Mathf.Round(Mathf.Lerp(reward, 0, timer)).ToString();
-    //        totalCoinsText.text = Mathf.Round(Mathf.Lerp(startcoins, startcoins + reward, timer)).ToString();
-
-    //        timer += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    totalCoinsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Coins);
-    //    coinsText.text = "0";
-    //    ShowAddedAmount(addCoinsText, reward);
-
-    //    timer = 0;
-    //    GameSFXManager.Instance.PlayClip("Count");
-    //    while (timer < time)
-    //    {
-    //        gemsText.text = Mathf.Round(Mathf.Lerp(gems, 0, timer)).ToString();
-    //        totalGemsText.text = Mathf.Round(Mathf.Lerp(startgems, startgems + gems, timer)).ToString();
-
-    //        timer += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    totalGemsText.GetComponent<ChangeNumber>().setNumber(GameManager.Instance.Gems);
-    //    gemsText.text = "0";
-    //    ShowAddedAmount(addGemsText,gems);
-    //}
-
-    private void ShowAddedAmount(TextMeshProUGUI currencyText,int gems)
+    private void ShowAddedAmount(TextMeshProUGUI currencyText, int gems)
     {
         Vector3 originalPosition = currencyText.transform.position;
         currencyText.text = "+" + gems;
         currencyText.DOFade(0, 2f);
-        currencyText.transform.DOMoveY(originalPosition.y + 10, 2.1f).OnComplete(()=>
+        currencyText.transform.DOMoveY(originalPosition.y + 10, 2.1f).OnComplete(() =>
         {
             currencyText.text = "";
             currencyText.color = Color.white;

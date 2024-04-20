@@ -1,4 +1,4 @@
-//using GooglePlayGames;
+using GooglePlayGames;
 using PlayFab.ClientModels;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using GooglePlayGames.BasicApi;
+using PlayFab;
 
 public class LoginManager : MonoBehaviour
 {
@@ -77,7 +79,7 @@ public class LoginManager : MonoBehaviour
         {
             print("device login");
             InitPlayGames();
-            AccountLogin();
+            //AccountLogin();
         }
         else
         {
@@ -92,17 +94,40 @@ public class LoginManager : MonoBehaviour
     void InitPlayGames()
     {
 #if UNITY_ANDROID
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-        .AddOauthScope("profile")
-        .RequestServerAuthCode(false)
-        .Build();
+        //PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        //.AddOauthScope("profile")
+        //.RequestServerAuthCode(false)
+        //.Build();
 
-        PlayGamesPlatform.InitializeInstance(config);
-        // recommended for debugging:
-        PlayGamesPlatform.DebugLogEnabled = true;
-        // Activate the Google Play Games platform
-        PlayGamesPlatform.Activate();
+        //PlayGamesPlatform.InitializeInstance(config);
+        //// recommended for debugging:
+        //PlayGamesPlatform.DebugLogEnabled = true;
+        //// Activate the Google Play Games platform
+        //PlayGamesPlatform.Activate();
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
 #endif
+    }
+
+    internal void ProcessAuthentication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
+        {
+            PlayGamesPlatform.Instance.RequestServerSideAccess(false, ProcessServerAuthCode);
+        }
+    }
+
+    private void ProcessServerAuthCode(string serverAuthCode)
+    {
+        //Debug.Log("Server Auth Code: " + serverAuthCode);
+        PlayfabManager.instance.LoginWithGoogle(serverAuthCode);
+        //var request = new LoginWithGooglePlayGamesServicesRequest
+        //{
+        //    ServerAuthCode = serverAuthCode,
+        //    CreateAccount = true,
+        //    TitleId = PlayFabSettings.TitleId
+        //};
+
+        //PlayFabClientAPI.LoginWithGooglePlayGamesServices(request, OnLoginWithGooglePlayGamesServicesSuccess, OnLoginWithGooglePlayGamesServicesFailure);
     }
 
     private void Playfab_OnTitleDataReturned(Dictionary<string, string> titleData)
@@ -151,36 +176,36 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(LoadYourAsyncScene());
     }
 
-    public void AccountLogin()
-    {
-        Social.localUser.Authenticate((success) =>
-        {
-            print("social " + success);
-            //Debug.text = "Social: " + success;
+//    public void AccountLogin()
+//    {
+//        Social.localUser.Authenticate((success) =>
+//        {
+//            print("social " + success);
+//            //Debug.text = "Social: " + success;
 
-            if (success)
-            {
-#if UNITY_ANDROID
-                var serverAuthCode = PlayGamesPlatform.Instance.GetServerAuthCode();
-                print("Server Auth Code: " + serverAuthCode);
+//            if (success)
+//            {
+//#if UNITY_ANDROID
+//                var serverAuthCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+//                print("Server Auth Code: " + serverAuthCode);
 
-                //PlayGamesPlatform.Instance.RequestServerSideAccess(false, (code) =>
-                //{
-                //    print("code:"+code);
-                PlayfabManager.instance.LoginWithGoogle(serverAuthCode);
-                //});
+//                //PlayGamesPlatform.Instance.RequestServerSideAccess(false, (code) =>
+//                //{
+//                //    print("code:"+code);
+//                PlayfabManager.instance.LoginWithGoogle(serverAuthCode);
+//                //});
 
-#elif UNITY_IOS
-                //playfab.DeviceLogin();
-                playfab.LoginWithApple();
-#endif
-            }
-            else
-            {
-                playfab.DeviceLogin("Social didnt authenticate");
-            }
-        });
-    }
+//#elif UNITY_IOS
+//                //playfab.DeviceLogin();
+//                playfab.LoginWithApple();
+//#endif
+//            }
+//            else
+//            {
+//                playfab.DeviceLogin("Social didnt authenticate");
+//            }
+//        });
+//    }
 
     private void Playfab_OnPlayerLoggedIn(UserTitleInfo userInfo, bool newUser)
     {

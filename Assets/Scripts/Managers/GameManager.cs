@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         return Inventory.Contains(new InventoryItem(category, id));
     }
 
-    public float AddPoints(int value,int points)
+    public float AddPoints(int value,int points,string game)
     {
         MyPlayer.Points += value;
 
@@ -121,21 +121,21 @@ public class GameManager : MonoBehaviour
             { "Points",MyPlayer.Points.ToString()}
         });
 
-        if (MyPlayer.GamePoints.ContainsKey("HeartsPoints"))
+        if (MyPlayer.GamePoints.ContainsKey(game))
         {
-            MyPlayer.GamePoints["HeartsPoints"] += points;
+            MyPlayer.GamePoints[game] += points;
         }
         else
         {
-            MyPlayer.GamePoints.Add("HeartsPoints", points);
+            MyPlayer.GamePoints.Add(game, points);
         }
 
-        PlayfabManager.instance.UpdateStats("HeartsPoints", MyPlayer.GamePoints["HeartsPoints"], (result) =>
+        PlayfabManager.instance.UpdateStats(game, MyPlayer.GamePoints[game], (result) =>
         {
 
         });
 
-        return (float)value / LevelFactor;
+        return value / LevelFactor;
     }
 
     public int GetRewardAndSave(int rank)

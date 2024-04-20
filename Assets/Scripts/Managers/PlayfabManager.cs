@@ -159,42 +159,6 @@ public class PlayfabManager : MonoBehaviour
              Debug.Log(error.ErrorMessage);
          });
     }
-    //internal void UpdateQuests(Quest[] quests)
-    //{
-    //    Dictionary<string, string> data = new Dictionary<string, string>();
-    //    data.Add("Quests", JsonUtility.ToJson(quests));
-
-    //    UpdateUserDataRequest updateUserDataRequest = new UpdateUserDataRequest()
-    //    {
-    //        Data = data
-    //    };
-
-    //    PlayFabClientAPI.UpdateUserData(updateUserDataRequest,(result)=> 
-    //    {
-
-    //    },(error)=> {
-
-    //    });
-    //}
-
-    //public void AddFriend(string name, Action<bool> success)
-    //{
-    //    PlayFabClientAPI.AddFriend(new AddFriendRequest() { FriendTitleDisplayName = name },
-    //        (result) =>
-    //        {
-    //            if (result.Created)
-    //            {
-    //                success?.Invoke(true);
-    //            }
-    //            else
-    //            {
-    //                success?.Invoke(false);
-    //            }
-    //        }, (error) =>
-    //        {
-    //            success?.Invoke(false);
-    //        });
-    //}
 
     public void AddFriend(string name, Action<bool, string> success)
     {

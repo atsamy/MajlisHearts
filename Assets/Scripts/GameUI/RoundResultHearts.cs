@@ -23,8 +23,7 @@ public class RoundResultHearts : RoundResult
 
         string[] ranksText = new string[] { "1st", "2nd", "3rd", "4th" };
 
-        //if (!isTeam)
-        //{
+
         for (int i = 0; i < sortedPlayers.Length; i++)
         {
             currentPlayers[i].Set(sortedPlayers[i], inGame);
@@ -48,15 +47,5 @@ public class RoundResultHearts : RoundResult
                 rank = rankIndex;
             }
         }
-        //}
-        //else
-        //{
-        //    int loser = players.ToList().IndexOf(players.First(a => a.TotalScore == players.Max(a => a.TotalScore)));
-
-        //    currentPlayers[3].Set(players[loser], inGame);
-        //    currentPlayers[2].Set(players[(loser + 2) % 4], inGame);
-        //    currentPlayers[1].Set(players[(loser + 1) % 4], inGame);
-        //    currentPlayers[0].Set(players[(loser + 3) % 4], inGame);
-        //}
     }
 }
