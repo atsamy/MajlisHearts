@@ -24,7 +24,7 @@ public class CameraHover : MonoBehaviour
 
     //[SerializeField]
     //float hoverSpeed = 5;
-    new Camera camera;
+    private Camera mainCamera;
 
     float prevDistance;
     float NewTime = 0;
@@ -37,7 +37,7 @@ public class CameraHover : MonoBehaviour
 
     private void Start()
     {
-        camera = GetComponent<Camera>();
+        mainCamera = GetComponent<Camera>();
         TapCount = 0;
     }
 
@@ -62,10 +62,10 @@ public class CameraHover : MonoBehaviour
                 prevDistance = distance;
                 firstTouch = false;
 
-                startSize = camera.orthographicSize;
+                startSize = mainCamera.orthographicSize;
             }
 
-            camera.orthographicSize = Mathf.Clamp(startSize + ((prevDistance - distance) / 50), 3, 10);
+            mainCamera.orthographicSize = Mathf.Clamp(startSize + ((prevDistance - distance) / 50), 3, 10);
             return;
         }
         else if (Input.touchCount == 0)
@@ -83,8 +83,8 @@ public class CameraHover : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x - prevPos.x, Input.mousePosition.y - prevPos.y, 0);
-            float cameraHeight = camera.orthographicSize * 2 / Screen.height;
-            float cameraWidth = camera.orthographicSize * 2 * camera.aspect / Screen.width;
+            float cameraHeight = mainCamera.orthographicSize * 2 / Screen.height;
+            float cameraWidth = mainCamera.orthographicSize * 2 * mainCamera.aspect / Screen.width;
             Vector3 moveDelta = new Vector3(mousePosition.x * cameraWidth, mousePosition.y * cameraHeight, 0);
 
             transform.position -= moveDelta;
@@ -128,9 +128,9 @@ public class CameraHover : MonoBehaviour
 
                 //Whatever you want after a dubble tap    
                 print("Dubble tap");
-                if (camera.orthographicSize != 6)
+                if (mainCamera.orthographicSize != 6)
                 {
-                    camera.DOOrthoSize(6, 0.5f).SetEase(Ease.InCirc);
+                    mainCamera.DOOrthoSize(6, 0.5f).SetEase(Ease.InCirc);
                 }
 
                 TapCount = 0;

@@ -38,6 +38,19 @@ public class UIManager : MonoBehaviour
         //remove later
         CardsUI.SetCardBack(UIElementsHolder.CardBack);
 
+        UIElementsHolder.EmojiButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            OpenEmojiPanel();
+        });
+
+        for (int i = 0; i < UIElementsHolder.EmojiSendButtons.Length; i++)
+        {
+            UIElementsHolder.EmojiSendButtons[i].OnClicked = (index) =>
+            {
+                SendEmoji(index);
+            };
+        }
+
         //uncomment later
         FadeScreen.Instance?.FadeOut(2);
     }
@@ -167,45 +180,6 @@ public class UIManager : MonoBehaviour
     {
         
     }
-
-    //public Player[] OrderTeamPlayers()
-    //{
-    //    if (!GameManager.Instance.IsTeam)
-    //    {
-    //        return game.Players.OrderBy(a => a.TotalScore).ToArray();
-    //    }
-
-    //    Player[] players = game.Players;
-
-    //    int index = Array.FindIndex(players, a => a.Score == players.Max(b => b.Score));
-
-    //    Player[] orderedPlayers = new Player[4];
-    //    orderedPlayers[3] = players[index];
-    //    orderedPlayers[2] = players[(index + 2) % 4];
-
-    //    Player player1 = players[(index + 1) % 4];
-    //    Player player2 = players[(index + 3) % 4];
-
-    //    if (player1.Score > player2.Score)
-    //    {
-    //        orderedPlayers[0] = player2;
-    //        orderedPlayers[1] = player1;
-    //    }
-    //    else
-    //    {
-    //        orderedPlayers[0] = player1;
-    //        orderedPlayers[1] = player2;
-    //    }
-
-    //    return orderedPlayers;
-    //}
-
-
-
-    //public void AddDebugWeight(int playerIndex, Card card, int Weight)
-    //{
-    //    UIElementsHolder.DebugCards[playerIndex].ShowWeight(card, Weight);
-    //}
 
     public void SetPlayer()
     {

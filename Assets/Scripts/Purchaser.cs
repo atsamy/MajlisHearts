@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 using UnityEngine.UI;
+//using Unity.Services.Core;
+//using Unity.Services.Core.Environments;
 
-public class Purchaser : MonoBehaviour, IStoreListener
+public class Purchaser : MonoBehaviour, IDetailedStoreListener
 {
 
     private static IStoreController m_StoreController;
@@ -25,16 +28,21 @@ public class Purchaser : MonoBehaviour, IStoreListener
     Action purchaseComplete;
     internal int[] GemsPrices;
 
+
+    public string environment = "production";
+
     void Start()
     {
-        Instance = this;
-        HCAmount = new int[HCProductID.Length];
 
-        if (m_StoreController == null)
-        {
-            // Begin to configure our connection to Purchasing
-            InitializePurchasing();
-        }
+            Instance = this;
+            HCAmount = new int[HCProductID.Length];
+
+            if (m_StoreController == null)
+            {
+                // Begin to configure our connection to Purchasing
+                InitializePurchasing();
+            }
+
     }
 
     public void InitializePurchasing()
@@ -115,7 +123,6 @@ public class Purchaser : MonoBehaviour, IStoreListener
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
 
-
     public void BuyCurrency(int Index, Action onComplete)
     {
         // Buy the consumable product using its general identifier. Expect a response either 
@@ -183,7 +190,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
             var apple = m_StoreExtensionProvider.GetExtension<IAppleExtensions>();
             // Begin the asynchronous process of restoring purchases. Expect a confirmation response in 
             // the Action<bool> below, and ProcessPurchase if there are previously purchased products to restore.
-            apple.RestoreTransactions((result) =>
+            apple.RestoreTransactions((result,message) =>
             {
                 // The first phase of restoration. If no more responses are received on ProcessPurchase then 
                 // no purchases are available to be restored.
@@ -242,15 +249,19 @@ public class Purchaser : MonoBehaviour, IStoreListener
         return PurchaseProcessingResult.Complete;
     }
 
-
-    public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
+    public void OnInitializeFailed(InitializationFailureReason error, string message)
     {
-        // A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
-        // this reason with the user to guide their troubleshooting actions.
-        Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+        //throw new NotImplementedException();
+        Debug.Log("OnInitializeFailed InitializationFailureReason:" + error.ToString() + message);
     }
 
-    public void OnInitializeFailed(InitializationFailureReason error, string message)
+    public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
+    {
+        //throw new NotImplementedException();
+        Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureDescription));
+    }
+
+    public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         //throw new NotImplementedException();
     }

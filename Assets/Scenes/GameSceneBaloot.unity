@@ -10033,6 +10033,7 @@ GameObject:
   - component: {fileID: 513071555}
   - component: {fileID: 513071554}
   - component: {fileID: 513071557}
+  - component: {fileID: 513071558}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -10103,14 +10104,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 513071558}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -10173,6 +10174,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &513071558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513071552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 2
 --- !u!1 &517486919
 GameObject:
   m_ObjectHideFlags: 0
@@ -14683,6 +14697,7 @@ GameObject:
   - component: {fileID: 722130781}
   - component: {fileID: 722130780}
   - component: {fileID: 722130783}
+  - component: {fileID: 722130784}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -14753,14 +14768,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 722130784}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -14823,6 +14838,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &722130784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722130778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 1
 --- !u!1 &723514753
 GameObject:
   m_ObjectHideFlags: 0
@@ -15523,19 +15551,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 753735932}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OpenEmojiPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &753735932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26944,6 +26960,7 @@ GameObject:
   - component: {fileID: 1369998862}
   - component: {fileID: 1369998861}
   - component: {fileID: 1369998864}
+  - component: {fileID: 1369998865}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -27014,10 +27031,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 1369998865}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -27084,6 +27101,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &1369998865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369998859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
 --- !u!1 &1372616871
 GameObject:
   m_ObjectHideFlags: 0
@@ -30122,6 +30152,7 @@ GameObject:
   - component: {fileID: 1524161090}
   - component: {fileID: 1524161089}
   - component: {fileID: 1524161092}
+  - component: {fileID: 1524161093}
   m_Layer: 5
   m_Name: Button (5)
   m_TagString: Untagged
@@ -30192,14 +30223,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 1524161093}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -30262,6 +30293,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &1524161093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524161087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 5
 --- !u!224 &1533746001 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5904818465532148508, guid: 7e2d3fd2033b1fc47898c97b60f4b8b6, type: 3}
@@ -39109,6 +39153,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c2fb11757408443ef846622e07aa1faf, type: 3}
   EmojiButton: {fileID: 753735929}
   EmojiPanel: {fileID: 1486157403}
+  EmojiSendButtons:
+  - {fileID: 1369998865}
+  - {fileID: 722130784}
+  - {fileID: 513071558}
+  - {fileID: 2061698458}
+  - {fileID: 2059717015}
+  - {fileID: 1524161093}
   CardBack: {fileID: 21300000, guid: aa3a35d4bc1554790a49540ee321e87c, type: 3}
 --- !u!1 &2030309580
 GameObject:
@@ -39985,6 +40036,7 @@ GameObject:
   - component: {fileID: 2059717012}
   - component: {fileID: 2059717011}
   - component: {fileID: 2059717014}
+  - component: {fileID: 2059717015}
   m_Layer: 5
   m_Name: Button (4)
   m_TagString: Untagged
@@ -40055,14 +40107,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 2059717015}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -40125,6 +40177,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &2059717015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059717009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 4
 --- !u!1001 &2059782749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40310,6 +40375,7 @@ GameObject:
   - component: {fileID: 2061698455}
   - component: {fileID: 2061698454}
   - component: {fileID: 2061698457}
+  - component: {fileID: 2061698458}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -40380,14 +40446,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SendEmoji
-        m_Mode: 3
+      - m_Target: {fileID: 2061698458}
+        m_TargetAssemblyTypeName: IndexedButton, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -40450,6 +40516,19 @@ MonoBehaviour:
   ScaleAnimation: []
   ColorAnimation: []
   PlayOnEnable: 1
+--- !u!114 &2061698458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061698452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97f41472a5ca41f58cabc906b69fbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 3
 --- !u!1 &2064557463
 GameObject:
   m_ObjectHideFlags: 0

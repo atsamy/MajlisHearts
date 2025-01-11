@@ -66,7 +66,7 @@ public class MultiGameBalootScript : GameScriptBaloot, ILeaveRoom,ISendMessage
         balootRoundScript.OnGameTypeSelected += BalootRoundScript_OnGameTypeSelected;
         multiPlayer.OnNetworkEvent += MultiPlayer_OnNetworkEvent;
 
-        OnStartPlaying?.Invoke(false);
+        OnStartPlaying?.Invoke(true);
     }
 
     private void Update()

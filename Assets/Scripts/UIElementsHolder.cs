@@ -22,6 +22,7 @@ public class UIElementsHolder : MonoBehaviour
     public Sprite[] Emojes;
     public GameObject EmojiButton;
     public GameObject EmojiPanel;
+    public IndexedButton[] EmojiSendButtons;
 
     public Sprite CardBack;
 
